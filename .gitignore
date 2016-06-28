@@ -18,3 +18,8 @@ Default
 _TZ_*
 *.tex
 *.ptb
+*.idx
+*.lof
+*.lot
+*.out
+*.toc
