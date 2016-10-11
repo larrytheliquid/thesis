@@ -57,7 +57,7 @@
 
 \addtocontents{toc}{\protect\renewcommand{\protect\cftpartpresnum}{\partname\;}}
 \addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{\chaptername\;}}
-\setlength{\cftchapnumwidth}{\widthof{\sc\chaptername~00~}}
+\setlength{\cftchapnumwidth}{\widthof{\sc\chaptername~00~~~}}
 
 \makeindex
 
@@ -99,7 +99,7 @@
 \numberwithin{remark}{section}
 
 
-\newcommand{\Title}{Closed-Universe\\Generic Dependently Typed Programming}
+\newcommand{\Title}{Generic Dependently Typed Programming\\and Closed Universes}
 
 \begin{document}
 
@@ -132,43 +132,72 @@ Dedication goes here.
 \prefacesection{Acknowledgments}
 Acknowledgments go here.
 \newpage
-%%%% %% esac
 
 \afterpreface
 \body
 
-Body goes there.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\part{Prelude}\label{part:prelude}
 
-%% %% BEGIN PART1
-%% \part{Prelude}\label{part:Prelude}
-%% \include{intro}   %% Introduction                          {ch:intro}
-%% \include{poly}    %% Polymorphic type systems              {ch:poly}
-%% %% END PART1
+\chapter{Introduction}\label{ch:intro}
+\section{Motivation}
+\section{Depedently Typed Generic Programming}
+\section{Agda Color Conventions}
 
-%% %% BEGIN PART2
-%% \part{Mendler style}\label{part:Mendler}
-%% \include{mendler} %% Mendler-style recursion schemes       {ch:mendler}
-%% %% END PART2
+\chapter{Algebraic \& Computational Datatypes}\label{ch:algcomp}
+\section{Algebraic \& Computational Datatypes}
+\section{Computational Argument \& Return Types}
 
-%% %% BEGIN PART3
-%% \part{Term-Indexed Lambda Calculi}\label{part:Calculi}
-%% \include{fi}      %% System Fi                             {ch:fi}
-%% \include{fixi}    %% System Fixi                           {ch:fixi}
-%% %% END PART3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% %% BEGIN PART4
-%% \part{Nax Language}\label{part:Nax}
-%% \include{nax}     %% The Nax language                      {ch:nax}
-%% %%%% \include{casestd} %% Case studies                          {ch:casestd}
-%% %% END PART4
+\part{Open Type Theory}\label{part:open}
 
-%% %% BEGIN PART5
-%% \part{Postlude}\label{part:Postlude}
-%% \include{relwork} %% Related work                          {ch:relwork}
-%% \include{futwork} %% Future work                           {ch:futwork}
-%% \include{concl}   %% Conclusion                            {ch:concl}
-%% %% END PART5
+\chapter{Open Algebraic Datatypes}\label{ch:desc}
+\section{Dependent Types}
+\section{Indexed Types}
+\section{Inductive-Recursive Types}
+\section{Indexed Inductive-Recursive Types}
+\chapter{Type Theory as a DSL}\label{ch:gelim}
+\section{Generic Type Former}
+\section{Generic Constructor}
+\section{Generic Eliminator}
+\section{Generic Type Declaration}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Closed Type Theory}\label{part:closed}
+
+\chapter{Closed Type Universes}\label{ch:closed}
+\section{Closure under W Types}
+\section{Closure under $\mu$ Types}
+\chapter{Generic Lookup \& Replace}\label{ch:greplace}
+\section{Generic Lookup}
+\section{Generic Replace}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Hierarchical Closed Type Theory}\label{part:hier}
+
+\chapter{Closed Hierarchy of Universes}\label{ch:hier}
+\chapter{Generic Datatype Arguments}\label{ch:gargs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Large Datatype Constructions}\label{part:large}
+
+\chapter{Small Slice \& Family Equivalence}\label{ch:equiv}
+\chapter{Large Induction-Recursion}\label{ch:largeir}
+\chapter{Large Recursion-Induction}\label{ch:largeri}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\part{Postlude}\label{part:postlude}
+\chapter{Related Work}\label{ch:related}
+\chapter{Future Work}\label{ch:future}
+\chapter{Conclusion}\label{ch:conc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% \addtocontents{toc}{\protect\renewcommand{\protect\cftpartpresnum}{}}
 %% \addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{}}
