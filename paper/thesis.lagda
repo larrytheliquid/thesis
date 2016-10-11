@@ -1,7 +1,18 @@
 \documentclass[12pt]{report}
 \usepackage{psu-thesis}
 
-\usepackage{amssymb}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{amsmath,amsfonts,amssymb,textgreek,stmaryrd}
+\usepackage{bbm}
+\usepackage[greek,english]{babel}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{autofe}
+\usepackage[references]{agda}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usepackage{amsthm}
 \usepackage{lmodern}
 \usepackage[sort&compress,square,comma,numbers,longnamesfirst]{natbib}
@@ -10,9 +21,6 @@
 \usepackage{color}
 \usepackage{tcolorbox}
 \usepackage{comment}
-\usepackage{stmaryrd}
-\usepackage{amsmath}
-\usepackage{amssymb}
 \usepackage{textcomp}
 \usepackage{dashbox}
 \usepackage{lscape}
@@ -28,6 +36,22 @@
 
 \usepackage[subfigure]{tocloft}
 \usepackage[titletoc]{appendix}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareUnicodeCharacter{8759}{\ensuremath{::}}
+\DeclareUnicodeCharacter{10218}{\guillemotleft}
+\DeclareUnicodeCharacter{10219}{\guillemotright}
+
+\newcommand{\cL}{{\cal L}}
+
+\newcommand{\refsec}[1]{Section \ref{sec:#1}}
+\newcommand{\AgdaData}[1]{\AgdaDatatype{#1}}
+\newcommand{\AgdaCon}[1]{\AgdaInductiveConstructor{#1}}
+\newcommand{\AgdaFun}[1]{\AgdaFunction{#1}}
+\newcommand{\AgdaVar}[1]{\AgdaBound{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \renewcommand{\contentsname}{Table of Contents}
 
@@ -45,63 +69,12 @@
 \setlist{parsep=-2em}
 \setlist{itemsep=-.2em}
 
-\newcommand{\LD}[1]{\textcolor{blue}{#1 -- Larry}}
-\newcommand{\TS}[1]{\textcolor{red}{#1 -- Tim}}
-
 \newcommand{\Fig}[1]{Figure~\ref{fig:#1}}
 
 \newcommand{\cf}[0]{{cf.}}
 \newcommand{\eg}[0]{{e.g.}}
 \newcommand{\ie}[0]{{i.e.}}
 \newcommand{\aka}[0]{{a.k.a.}}
-
-\renewcommand{\l}{\lambda}
-\newcommand{\bbl}{\boldsymbol\lambda}
-\renewcommand{\L}{\Lambda}
-\renewcommand{\S}{Section~}
-
-\newcommand{\fix}{\ensuremath{\mathsf{fix}}}
-\newcommand{\dom}{\mathop{\mathrm{dom}}}
-\newcommand{\ran}{\mathop{\mathrm{ran}}}
-\newcommand{\FV}{\mathop{\mathrm{FV}}}
-\newcommand{\unify}{\mathop{\mathrm{unify}}}
-\newcommand{\occurs}{\mathop{\mathrm{occurs}}}
-
-\newcommand{\F}[0]{{\ensuremath{\mathsf{\uppercase{F}}}}}
-\newcommand{\Fw}[0]{{\ensuremath{\mathsf{\uppercase{F}}_{\!\omega}}}}
-\newcommand{\Fwhat}[0]{{\ensuremath{\mathsf{\uppercase{F}}_{\!\omega}\!\!\char`\^}}}
-\newcommand{\Fi}[0]{{\ensuremath{\mathsf{\uppercase{F}}_{\lowercase{i}}}}}
-\newcommand{\Fixw}[0]{{\ensuremath{\mathsf{\uppercase{F}\lowercase{ix}}_{\omega}}}}
-\newcommand{\Fixi}[0]{{\ensuremath{\mathsf{\uppercase{F}\lowercase{ix}}_{\lowercase{i}}}}}
-
-\newcommand{\karrow}[1]{\stackrel{#1\;}{\pmb{\pmb{->}}}}
-\newcommand{\rrarrow}[0]{\rightrightarrows}
-
-\newcommand{\SN}[0]{\mathsf{SN}}
-\newcommand{\SAT}[0]{\mathsf{SAT}}
-
-\newcommand{\unIn}{\ensuremath{\mathsf{unIn}}}
-\newcommand{\In}{\ensuremath{\mathsf{In}}}
-\newcommand{\It}[0]{\ensuremath{\mathbf{It}}}
-\newcommand{\PR}[0]{\ensuremath{\mathbf{Pr}}}
-\newcommand{\MIt}{\ensuremath{\mathbf{mit}}}
-\newcommand{\McoIt}{\ensuremath{\mathbf{mcoit}}}
-\newcommand{\MPr}{\ensuremath{\mathbf{mpr}}}
-\newcommand{\MsfIt}{\ensuremath{\mathbf{msfit}}}
-\newcommand{\McvIt}{\ensuremath{\mathbf{mcvit}}}
-\newcommand{\MsfcvIt}{\ensuremath{\mathbf{msfcvit}}}
-\newcommand{\McvPr}{\ensuremath{\mathbf{mcvpr}}}
-\newcommand{\McfvPr}{\ensuremath{\mathbf{msfcvpr}}}
-\newcommand{\mprsi}[0]{\ensuremath{\mathbf{mprsi}}}
-
-\newcommand{\rulename}[1]{{\small\sc #1}}
-
-\mathlig{=?=}{\stackrel{?}{=}}
-\mathlig{|-s}{\vdash\stackrel{\!\mathsf{s}}{}}
-\mathlig{~>}{\rightsquigarrow}
-\mathlig{[|}{\llbracket} %% since semantic defines |[ as \llbracket :(
-\reservestyle[\mathinner]{\command}{\mathbf}
-\command{case[case\;], data[data\;], let[let\;], of[\;of\;], in[\;in\;], if[if\;], then[\;then\;], else[\;else\;], where[\;where\;], when[\;when\;]}
 
 \newtheorem{proposition}{Proposition}
 \newtheorem*{proposition*}{Proposition}
@@ -126,15 +99,15 @@
 \numberwithin{remark}{section}
 
 
-\newcommand{\Eq}{\mathtt{Eq}}
-\newcommand{\LEq}{\mathtt{LEq}}
-\newcommand{\Ran}{\mathtt{Ran}}
-\newcommand{\Lan}{\mathtt{Lan}}
-\newcommand{\s}[1]{\{#1\}}
-
 \newcommand{\Title}{Closed-Universe\\Generic Dependently Typed Programming}
 
 \begin{document}
+
+\AgdaHide{
+\begin{code}
+module Thesis where
+\end{code}}
+
 \title{\Title}
 \titleline{\Title}
 
@@ -145,7 +118,7 @@
 \thirdreader{Andrew Tolmach}
 \graduaterepresentative{Robert Bass}
 \departmenthead{Warren Harrison}
-\grantdate{November}{30}{2016}
+\grantdate{January}{1}{2017}
 
 \titlep
 \prefatory
