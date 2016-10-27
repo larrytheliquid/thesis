@@ -142,9 +142,43 @@ Acknowledgments go here.
 
 \chapter{Introduction}\label{ch:intro}
 \section{Motivation}
-\section{Depedently Typed Generic Programming}
+\section{Depedently Typed Universes \& Generic Programming}
+
+%% could do universe of bool closed under list formation (all and any functions)
+
+%% then Dan PLMW licata's (also Ulf gist and idris github) printf
+%% extend this to Vec IR Format types from Power of Pi
+%% extend this to codes for function types
+%%   and domain supplement for how to print function types
+
+%% typed Format strings as:
+%% "Hello " < %nat > " world."
+%% 3 , tt
+
+%% hardcoded collection of types, what if we want to define this for
+%% any type in the language?
+
+%% bool + list universe
+%% domain specific functions like any and all
+%% domain generic functions like show/lookup/update
+%% maybe domain generic elim...
+
+%% maybe extend elim from just Desc/Mu to also Type
+
+%% lookup and update of Bool/List scales to Set/List
+%% any/all of Bool/List do not scale to Set/List
+%%%% if this Set is Bool, and its value is true, then true else false
+%%%% or if this Set is any type with two arguments, and value is right injection
+%%%% or any type with >1 argument, any constructor besides first is true
+%%%% now we can show expanding closed universe with Vec and cons is true
+%%%% or just add Prod and Sum for conjuction and disjunction
+%% however Any/All works for (Bool -> Set)/List (open universe) or Set/List
+
 \section{Agda Color Conventions}
 
+%% Inductive \& Recursive Type Families
+%% inductive introduces new inductiion principle, recursive derives
+%% from IP of index
 \chapter{Algebraic \& Computational Datatypes}\label{ch:algcomp}
 \section{Algebraic \& Computational Datatypes}
 \section{Computational Argument \& Return Types}
@@ -155,25 +189,62 @@ Acknowledgments go here.
 
 \chapter{Open Algebraic Datatypes}\label{ch:desc}
 \section{Dependent Types}
+%% start with Func, then specialize to mutual Args
+%% List, Rose, and Term
 \section{Indexed Types}
+%% Vec, BigStep, ScopedTerm
+%% show both constructor Vec and computational Vec
+%% Algebraic = Inductve, Computational = Recursive
+%% Algebraic Type Families vs Computational Type Families
+%% vs Computational-Algebraic Type Families
+%% PRE: Recursive-Inductive Families of Types
+%% FINAL: Recursive-Inductive Families of Inductive-Recursive Types
 \section{Inductive-Recursive Types}
+%% Arith, Type
 \section{Indexed Inductive-Recursive Types}
+%% Norm
+
 \chapter{Type Theory as a DSL}\label{ch:gelim}
+%% write example using anon pattern matching lambdas
+%% then same example using only elims for pairs
 \section{Generic Type Former}
 \section{Generic Constructor}
 \section{Generic Eliminator}
-\section{Generic Type Declaration}
+%% Hyps an example of domain-supplement to ind
+
+%% First chapter on regular generic-elim/Swedish
+%% Second on index and parameter awareness
+%% Third on `Desc codes with implicit args and FO \delta
+
+%% OPEN generic example of lookup/update only at recursive positions
+%% this should make index-preservation easy to state
+
+%% data List (A : Set) : Set really module Foo (A : Set) data List : Set -> Set
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \part{Closed Type Theory}\label{part:closed}
 
+%% maybe show how lookup/update cannot effectively work in open
+%% universe for certain types, and maybe show closed univ elim
+%% (extending elim to Type too)
+
+%% generalized universe
+%% not Uni (U : Set) (El : U -> Set)
+%% but Uni (A : Set a) (B : Set b) (U : A) (El : U -> B) : suc (max a b)
+
 \chapter{Closed Type Universes}\label{ch:closed}
 \section{Closure under W Types}
+\chapter{Closure under First-Order Types}\label{ch:closed}
 \section{Closure under $\mu$ Types}
-\chapter{Generic Lookup \& Replace}\label{ch:greplace}
+\chapter{Generic Lookup \& Update}\label{ch:gupdate}
+%% PropVecRose for needing inductive PathVec and update of type family
+%% ConstantVecRose for update of infinitary value
 \section{Generic Lookup}
-\section{Generic Replace}
+\section{Generic Update}
+
+%% combinator for congruence over restricted Desc (no Bool/Sum or
+%% kappa), doing congruence for Type cases (GP tactical)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -192,8 +263,17 @@ Acknowledgments go here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\part{Irish Encodings}\label{part:irish}
+\chapter{Irish Descriptions}\label{ch:irish}
+\chapter{Description-Only Closed Universes}\label{ch:desconly}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \part{Postlude}\label{part:postlude}
+\chapter{Inductive vs Recursive Families}\label{ch:related}
+%% when to use one over the other
 \chapter{Related Work}\label{ch:related}
+%% comparison with other Desc representations
 \chapter{Future Work}\label{ch:future}
 \chapter{Conclusion}\label{ch:conc}
 
