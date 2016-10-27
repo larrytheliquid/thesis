@@ -16,7 +16,7 @@ Default
 *.bbl
 *.blg
 _TZ_*
-*.tex
+Thesis/*.tex
 *.ptb
 *.idx
 *.lof
