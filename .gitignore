@@ -17,6 +17,7 @@ Default
 *.blg
 _TZ_*
 paper/Thesis/*.tex
+paper/Thesis/agda.sty
 *.ptb
 *.idx
 *.lof
