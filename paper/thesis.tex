@@ -99,7 +99,7 @@
 \numberwithin{remark}{section}
 
 
-\newcommand{\Title}{Closed Universes for Generic Dependently Typed Programming}
+\newcommand{\Title}{Closed Universes for Generic Programming}
 
 \begin{document}
 
@@ -137,39 +137,14 @@ Acknowledgments go here.
 
 \chapter{Introduction}\label{ch:intro}
 \section{Motivation}
-\section{Depedently Typed Universes \& Generic Programming}
-
-%% could do universe of bool closed under list formation (all and any functions)
-
-%% then Dan PLMW licata's (also Ulf gist and idris github) printf
-%% extend this to Vec IR Format types from Power of Pi
-%% extend this to codes for function types
-%%   and domain supplement for how to print function types
-
-%% typed Format strings as:
-%% "Hello " < %nat > " world."
-%% 3 , tt
-
-%% hardcoded collection of types, what if we want to define this for
-%% any type in the language?
-
-%% bool + list universe
-%% domain specific functions like any and all
-%% domain generic functions like show/lookup/update
-%% maybe domain generic elim...
-
-%% maybe extend elim from just Desc/Mu to also Type
-
-%% lookup and update of Bool/List scales to Set/List
-%% any/all of Bool/List do not scale to Set/List
-%%%% if this Set is Bool, and its value is true, then true else false
-%%%% or if this Set is any type with two arguments, and value is right injection
-%%%% or any type with >1 argument, any constructor besides first is true
-%%%% now we can show expanding closed universe with Vec and cons is true
-%%%% or just add Prod and Sum for conjuction and disjunction
-%% however Any/All works for (Bool -> Set)/List (open universe) or Set/List
-
 \section{Agda Color Conventions}
+
+\chapter{Universes \& Generic Programming}\label{ch:univ}
+\section{Spectrum of Open \& Closed Universes}
+\include{Thesis/Universes}
+\section{Closed Inductive Universe}
+\section{Generic Programming}
+
 
 %% Inductive \& Recursive Type Families
 %% inductive introduces new inductiion principle, recursive derives
@@ -180,6 +155,7 @@ Acknowledgments go here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Open Universe of Inductive Types
 \part{Open Type Theory}\label{part:open}
 
 %% spectrum of open type theory
@@ -221,6 +197,7 @@ Acknowledgments go here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Closed Universe of Inductive Types
 \part{Closed Type Theory}\label{part:closed}
 
 %% closed universe TT as DSL
@@ -248,6 +225,7 @@ Acknowledgments go here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Closed Hierarchy of Universes of Inductive Types
 \part{Hierarchical Closed Type Theory}\label{part:hier}
 
 \chapter{Closed Hierarchy of Universes}\label{ch:hier}
@@ -266,6 +244,21 @@ Acknowledgments go here.
 %% \part{Irish Encodings}\label{part:irish}
 %% \chapter{Irish Descriptions}\label{ch:irish}
 %% \chapter{Description-Only Closed Universes}\label{ch:desconly}
+
+%% Morris thesis distinguishes syntactic (concrete) prog from
+%% semantic (generic) prog. this is bc container/w types (semantics)
+%% are a large translation from from their declarations
+%% IR is less of a translation, almost to the point that generic
+%% prog is also syntactic (counterexample is Rec arg with Unit domain)
+%% another way this thesis is different is closed universes
+%% gelim `Desc shows how we can get more syntactic
+%% truly syntactic GP using Irish IR, but not semantically understood
+%% Generic semantic Swedish function has Unit codomains
+%% also big translation of product or dis-union infinitary types
+%% Generic Swedish also supports large IR, which W does not
+%% But Irish still does not handle List (Rose A) translation
+%% can always copy Desc of list into Rose, but then cant pass a List in
+%% However Exp (Maybe A) does work with large RI
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

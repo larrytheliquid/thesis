@@ -1,8 +1,12 @@
+%% function over a types
+%% function over a universe
+%% function say what to do for values
+
 \AgdaHide{
 \begin{code}
-open import Data.Bool    
+open import Data.Bool
 open import Data.Product hiding ( map )
-module Thesis.Universes where
+module _ where
 \end{code}}
 
 \subsection{Types}
@@ -11,13 +15,13 @@ notion of a collection of \textit{values}.
 A primary motivation of types is the ability to assign them to the
 inputs and output of a function, thereby allowing the function to
 only consider sensible values.
-
 For example, below the \AgdaFun{concat} function assumes that
 it receives a list of lists and flattens it to a single list.
 
 \AgdaHide{
 \begin{code}
-module PList where
+module _ where
+ private
   data List (A : Set) : Set where
     nil : List A
     cons : A → List A → List A
@@ -30,9 +34,13 @@ module PList where
   concat (cons xs xss) = append xs (concat xss)
 \end{code}
 
+Because the outer list always contains a sublist, the \AgdaCon{cons}
+case can assume that its first argument is a list that can be
+\AgdaFun{append}ed to the recursive call.
+
 \paragraph{Open Types}
 
-We call an \textit{open type} any type whose definition uses the type
+We call an \textit{open type} any type whose definition mentions the type
 of types (\AgdaData{Set}). For example, the type of parametrically
 polymorphic lists takes a \AgdaData{Set} as its parameter.
 
@@ -45,8 +53,8 @@ data List (A : Set) : Set where
 Another example is the type of heterogenous lists, which are lists
 containing values of possibly distinct types. The
 \AgdaCon{cons} constructor of heterogenous lists takes a
-\AgdaData{Set} as an argument (which is the type of the heterogenous
-value that the list is being extended by).
+\AgdaData{Set} as an implicit argument, indicating the type of the
+value that the list is being extended by.
 
 \AgdaHide{
 \begin{code}
@@ -86,7 +94,7 @@ because we can never be sure if the first value of a
 module ClosedType where
 \end{code}}
 
-We call a \textit{closed type} any type whose definition does not use 
+We call a \textit{closed type} any type whose definition does not mention
 \AgdaData{Set}. For example, the type of bits (lists specialized to
 only contain booleans).
 
@@ -107,8 +115,8 @@ on \textit{any} value within the type. For example, below the
 \end{code}
 
 The \AgdaFun{all} function makes a decision based on the boolean value
-contained in a \AgdaCon{cons}. In contrast, a function over an open
-\AgdaData{HList} would not be able to make such a decision. If a
+contained in the first argument of \AgdaCon{cons}. In contrast, a function over an open
+\AgdaData{HList} cannot make such a decision. If a
 function over an \AgdaData{HList} did make a decision based on which
 \AgdaData{Set} was passed in, it would only be able to consider all
 types currently defined, not any type definable in the future.
@@ -122,10 +130,10 @@ module Spectrum where
 
 While a closed type makes no reference to \AgdaData{Set} in its
 definition, certain open types may refer to \AgdaData{Set} more than
-others. To a first approximation, we can imagine a spectrum of
-datatypes ordered according how how many times their definition refers
-to \AgdaData{Set}.
-
+others. We can imagine a spectrum of
+open and closed datatypes. Informally, we
+might order datatypes in the spectrum by counting the occurrences of
+\AgdaData{Set} in the datatype definitions.
 For example, consider the type of binary trees whose branches may
 contain a value of two possibly distinct types.
 
@@ -142,45 +150,55 @@ specializing \AgdaData{Tree} \AgdaVar{A} \AgdaVar{B} to
 \AgdaData{Tree} \AgdaData{Bool} \AgdaVar{B} turns it from
 more open to less open (two references to \AgdaData{Set} versus one).
 
-More generally, the spectrum of open versus closed is not necessarily
-about how many times a type definition mentions \AgdaData{Set}, but
-about how many values in a type we can make decisions about. In other
-words, the spectrum is really about abstract versus concrete.
+Formally, we order datatypes in the spectrum is
+by the number of values that we can make decisions about.
+We can make a decision
+about a function by applying it to a value, and we can make a
+decision about an inductive value by pattern matching against
+it. However, we cannot make a decision about a \AgdaData{Set}
+because we cannot pattern match against it.
+\footnote{Any collection of pattern matching clauses for currently
+defined \AgdaData{Set}s becomes partial as soon as another
+datatype is defined in the future.}
 
-The act of defining a datatype inductively pushes
+More generally, our open versus closed spectrum is actually ordering
+abstract versus concrete datatypes. However, this thesis only
+considers \AgdaData{Set} arguments as a means of creating abstract types,
+so in our context abstract can be identified with open, and concrete
+can be identified with closed.
+\footnote{The more general spectrum could also include
+definitions given as abstract datatypes (ADTs). An abstract datatype
+exports an interface to its values and operations, but we cannot make
+any decisions about their concrete implementations.}
+
+The act of defining an inductive datatype pushes
 us closer to the closed side of the spectrum, because we can make
 decisions by pattern matching on the constructors of the new
 type. However, the arguments of the constructors of an open type may
 contain \AgdaData{Set}s that we may \textit{not} inspect. As we
 replace \AgdaData{Set}s with specialized types, we move even closer
-towards the closed spectrum. A fully closed type is one that allows
-functions to make decisions based on any of its values.
-A fully open type is one that does not allow functions to make any
-decisions, such as the \AgdaData{Set} itself as demonstrated by the
-unique inhabitant of the identity function. 
+towards the closed side of the spectrum.
+One end of the spectrum includes closed types, which allow
+functions to make decisions about all of their values. The other end of
+the spectrum includes \textit{fully} open types, which do \textit{not} allow
+functions to make decisions about any of their values.
+In our setting the only fully open type is \AgdaData{Set} itself, as
+demonstrated by the unique inhabitant of the identity function (there
+are no decisions to be made). 
 
 \begin{code}
   id : {A : Set} → A → A
   id a = a
 \end{code}
 
-Fully open and fully closed types are the endpoints of our
-spectrum.
-\footnote{Although this thesis only considers occurrences of
-\AgdaData{Set} as a means to make a definition open, another example
-would be definitions given as abstract datatypes (ADTs). For example,
-the abstract datatype of key/value dictionaries exports the type
-of dictionaries and their operations (create an empty dictionary,
-insert into a dictionary, and delete from a dictionary.) Importantly,
-the constructors of the underlying dictionary type and the
-implementation details of its operations are not exported.}
-
 \subsection{Universes}
 
 Just as a type is a collection of values, a \textit{universe}
 is a collection of \textit{types}. 
 A primary motivation of universes is allowing functions to only
-consider the values of a sensible collection of types.
+consider the values of a sensible collection of types. As demonstrated
+below, a collection of types can be defined as a type itself, so
+universes also fit into our spectrum.
 
 \paragraph{Open Universes}
 
@@ -189,17 +207,17 @@ collection of codes representing the types in the universe, and a
 meaning function mapping each code to the actual type in the language.
 
 An \textit{open universe} refers to \AgdaData{Set} either in its
-codes, or in its meaning function. For example, below is the universe of
+codes or in its meaning function. For example, below is the universe of
 some base type closed under list formation.
 
 \AgdaHide{
 \begin{code}
-module OpenUniv where
+module ListStar where
   postulate append : ∀{A} → List A → List A → List A
 \end{code}}
 
 \begin{code}
-  data ListStar (A : Set) : Set₁ where
+  data ListStar (A : Set) : Set where
     `Base : ListStar A
     `List : ListStar A → ListStar A
   
@@ -220,7 +238,43 @@ function below operating over our universe.
   concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
 \end{code}
 
-``closed under list formation''
+A value of the \AgdaData{ListStar} universe is either a base type, or
+some number of nested lists ending in a base type. Thus, we can define
+\AgdaFun{concat} for any value of our
+universe (a base value is flattened as the singleton list, and a list
+is recursively flattened).
+
+%% ``closed under list formation''
+
+We can also define an even more open universe, the universe of
+all \textit{all} base types closed under list formation.
+
+\AgdaHide{
+\begin{code}
+module ListStarH where
+  open HList
+\end{code}}
+
+\begin{code}
+  data ListStarH : Set₁ where
+    `Base : Set → ListStarH
+    `List : ListStarH → ListStarH
+  
+  ⟦_⟧ : ListStarH → Set
+  ⟦ `Base A ⟧ = A
+  ⟦ `List A ⟧ = List ⟦ A ⟧
+\end{code}
+
+This universe also allows us to define concat, but our output type
+changes from a list of a statically known base type to a
+heterogenous list of many possibly different base types.
+
+\begin{code}
+  concat : (A : ListStarH) → ⟦ A ⟧ → HList
+  concat (`Base A) x = cons x nil
+  concat (`List A) nil = nil
+  concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
+\end{code}
 
 \paragraph{Closed Universes}
 
@@ -230,18 +284,48 @@ booleans closed under list formation.
 
 \AgdaHide{
 \begin{code}
-module ClosedUniv where
+module _ where
+ private
 \end{code}}
 
 \begin{code}
-  data Code : Set₁ where
-    `Bool : Code
-    `List : Code → Code
+  data BitsStar : Set where
+    `Bool : BitsStar
+    `List : BitsStar → BitsStar
   
-  ⟦_⟧ : Code → Set
+  ⟦_⟧ : BitsStar → Set
   ⟦ `Bool ⟧ = Bool
   ⟦ `List A ⟧ = List ⟦ A ⟧
 \end{code}
+
+Because \AgdaData{BitsStar} is closed (it makes no
+references to \AgdaData{Set}), we can write functions over it that make
+decisions about any of its values. For example, below is an
+\AgdaFun{all} function that returns true only if all boolean
+sublists contain \AgdaCon{true} values.
+
+\begin{code}
+  all : (A : BitsStar) → ⟦ A ⟧ → Bool
+  all `Bool b = b
+  all (`List A) nil = true
+  all (`List A) (cons x xs) = all A x ∧ all (`List A) xs
+\end{code}
+
+
+%% \section{Closed Universe of Inductive Types}
+
+%% para poly concat generic despite not being able to make decisions
+%% about values of open types
+
+%% Para poly concat, hlist append, universe poly concat
+%% ... finally fully-generic all
+
+%% \section{Generic Programming with (Co)Domain Supplements}
+
+%% inductive vs recursive type families (Vec)
+
+%% head, append for unis, and quicksort
+
 
 %% \paragraph{More Closed}
 %% Add a `Pair or `Tree constructor for concat
