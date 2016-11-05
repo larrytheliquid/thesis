@@ -132,7 +132,7 @@ sublists contain \AgdaCon{true} values.
   all (`List A) (cons x xs) = all A x ∧ all (`List A) xs
 \end{code}
 
-\subsection{Fully Closed Universes}
+\subsection{Fully Closed Universes}\label{sec:treestar}
 
 \AgdaHide{
 \begin{code}
