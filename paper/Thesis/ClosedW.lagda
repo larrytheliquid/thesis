@@ -7,6 +7,9 @@ open import Data.Product
 module _ where
 \end{code}}
 
+%% Extensional?
+\section{Closed Inductive Universe}
+
 \subsection{Closed Type Theory}
 
 \AgdaHide{
@@ -20,15 +23,10 @@ module _ where
 \end{code}}
 
 A \textit{closed type theory} is a dependently typed language with a
-built in collection of types that will not be extended. Such a type
-theory can be modeled as a \textit{fully closed universe}. Modeling a
-closed type theory as a fully closed universe allows you to write
-generic functions that work over any type
-(and can make decisions about any value) in the language,
-which is a powerful feature that this thesis focuses upon.
-Writing generic functions over a fully closed universe models a closed
-type theory that supports pattern matching on its types.
-
+built in collection of types that will never be extended. Such a type
+theory can be modeled as a \textit{fully closed universe}. To qualify
+as a closed type theory, we require that its collection of types is at
+least closed under dependent function formation.
 Consider the closed type theory below of the empty type, the unit
 type, booleans, natural numbers, and finite sets closed under
 vector formation, dependent pair formation, and dependent function
@@ -52,9 +50,18 @@ formation.
    ⟦ `Π A B ⟧ = (a : ⟦ A ⟧) → ⟦ B a ⟧
 \end{code}
 
-The universe above has enough types to write a lot of interesting
+Just like the fully closed \AgdaData{ListStar} universe of
+\ref{section-ListStar}, \AgdaData{`Set} also supports writing fully
+generic functions. Fully generic functions take advantage of the
+ability to pattern match on codes, which models pattern matching on
+types. Thus pattern matching on types is supported in a closed type
+theory, because we know ahead of time that the collection of types
+will never be extended (hence total functions over types will never
+become partial).
+
+The \AgdaData{`Set} universe above has enough types to write a lot of interesting
 functions, but the specific collection of types that our closed
-language contains is arbitrarily chosen. What if we later decide we also want
+type theory contains is arbitrarily chosen. What if we later decide we also want
 binary trees? By definition we cannot add datatypes to a closed type
 theory (and if we did it would break generic generic functions over
 the original universe).
@@ -69,13 +76,20 @@ module _ where
   mutual
 \end{code}}
 
-Ideally we want a closed type theory with the minimum
-number of type primitives necessary to simulate adding new datatypes
-to the language, but only actually using the closed collection of
-primitive types.
+On one hand, we would like a closed type theory because it supports
+generic programing via pattern matching on types. On the other hand,
+we want to support user defined datatypes (like an open type theory)
+that may not be accounted for in our closed collection of types.
 
-The type of \textit{well orderings} (\AgdaData{W}) is used to define
-the semantics of inductive datatypes in type theory. After pruning
+What if our closed theory had enough primitive types and type
+formers to simulate adding new datatypes to the language?
+That is, we want to support translating any ``new'' type
+declaration into a definition in terms of an existing closed
+collection of primitive types and type formers.
+
+The type of \textit{well-orderings} (\AgdaData{W}) is used to define
+the semantics of inductive datatypes in type theory, and is the key to
+our debacle. After pruning
 some derivable types from the previous universe and adding
 W types, we get a closed type theory that can internally represent any
 type that would normally extend the language in an open type theory.
@@ -98,8 +112,7 @@ The closed type theory above consisting of the empty type, the unit
 type, and booleans closed under
 dependent pair formation,
 dependent function formation, and well-order formation allows us to
-model datatype declarations of an open type theory, but without
-needing to actually extend the theory. We show how to model datatype
+model datatype declarations. We show how to model datatype
 declarations by translating them into types from our closed universe
 in the next section.
 
