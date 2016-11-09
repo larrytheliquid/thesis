@@ -340,10 +340,9 @@
   \newdimen\mathindent\mathindent\leftmargini
 \fi
 
-\newenvironment{code}%
-{\noindent\ignorespaces\AgdaCodeStyle\pboxed\\}%
-{\\\endpboxed\noindent%
-\ignorespacesafterend}
+\newenvironment{code}
+{\vspace*{2mm}\singlespace\noindent\ignorespaces\pboxed}
+{\endpboxed\endsinglespace\vspace*{2mm}}
 
 % Default column for polytable.
 \defaultcolumn{@{~}l@{~}}
