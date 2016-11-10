@@ -56,7 +56,7 @@ generic functions. Fully generic functions take advantage of the
 ability to pattern match on codes, which models pattern matching on
 types. Thus pattern matching on types is supported in a closed type
 theory, because we know ahead of time that the collection of types
-will never be extended (hence total functions over types will never
+will never be extended (hence total functions over types never
 become partial).
 
 The \AgdaData{`Set} universe above has enough types to write a lot of interesting
@@ -89,10 +89,10 @@ collection of primitive types and type formers.
 
 The type of \textit{well-orderings} (\AgdaData{W}) is used to define
 the semantics of inductive datatypes in type theory, and is the key to
-our debacle. After pruning
-some derivable types from the previous universe and adding
-W types, we get a closed type theory that can internally represent any
-type that would normally extend the language in an open type theory.
+our debacle. After pruning some derivable types from the previous
+universe and adding W types, we get a closed type theory that can
+internally represent any type that would normally extend the language
+in an open type theory.
 
 \begin{code}
    data `Set : Set where
@@ -117,6 +117,144 @@ declarations by translating them into types from our closed universe
 in the next section.
 
 \subsection{W Types}
+
+The type of well-orderings (\AgdaData{W}) can be used to model definitions of
+inductively defined well-founded trees.
+\footnote{The etymology of
+``well-orderings'' comes from \AgdaData{W} being the constructive
+version of the classical notion of a well-order. A well-order
+interprets a set as an ordinal $\alpha$ and a relation specifying
+which ordinals are less than $\alpha$. However, in this thesis we
+focus on the more practical interpretation of \AgdaData{W} types as a
+means to define inductive datatypes.}
+We show how to model the semantics of inductive datatypes by:
+
+\begin{enumerate}
+\item Starting with a high-level inductive datatype declaration.
+\item Translating between a series of isomorphic datatype
+  declarations.
+\item Finally reaching a datatype declaration that can be encoded
+  using a \AgdaData{W} type.
+\end{enumerate}
+
+As an example of elaborating a datatype declaration to a \AgdaData{W}
+type, we begin with the tree type below. We define
+binary \AgdaData{Tree}s with leaves containing \AgdaVar{A} values and binary
+branches containing \AgdaVar{B} values in the middle of each branch.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+\begin{code}
+  data Tree (A B : Set) : Set where
+    leaf : A → Tree A B
+    branch : Tree A B → B → Tree A B → Tree A B
+\end{code}
+
+\paragraph{\texttt{A × B → C ≅ A → B → C}}
+Constructors with multiple arguments have their arguments replaced by
+a single \textit{uncurried} argument.
+Constructors with a single argument remain unchanged.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+\begin{code}
+  data Tree (A B : Set) : Set where
+    leaf : A → Tree A B
+    branch : Tree A B × B × Tree A B → Tree A B
+\end{code}
+
+\paragraph{\texttt{A × B ≅ B × A}}
+By commutativity of pairs, rearrange recursive constructor arguments
+to all appear at the end.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+\begin{code}
+  data Tree (A B : Set) : Set where
+    leaf : A → Tree A B
+    branch : B × Tree A B × Tree A B → Tree A B
+\end{code}
+
+\paragraph{\texttt{A × B ≅ Π Bool (λ b → if b then A else B)}}
+A non-dependent pair can be defined as a dependent function from a
+boolean to each component of the pair. Replace all pairs of recursive
+constructor arguments with such a dependent function whose domain
+cardinality is equal to the number of recursive arguments for that
+constructor (i.e. \AgdaData{Bool} for 2 recursive arguments and
+\AgdaData{⊥} for 0 recursive arguments).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+\begin{code}
+  data Tree (A B : Set) : Set where
+    leaf : A × (⊥ → Tree A B) → Tree A B
+    branch : B × (Bool → Tree A B) → Tree A B
+\end{code}
+
+\paragraph{\texttt{(A → C) ⊎ (B → C) ≅ A ⊎ B → C}}
+Replace the collection of constructors with a single constructor whose
+argument type is the disjoint union of the argument types of each constructor.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Sum
+ private
+\end{code}}
+\begin{code}
+  data Tree (A B : Set) : Set where
+    list : (A × (⊥ → Tree A B))
+      ⊎ (B × (Bool → Tree A B))
+      → Tree A B
+\end{code}
+
+%% \paragraph{\texttt{(A × B) ⊎ (A' × B') ≅ Σ (A ⊎ A') (λ x → if isLeft x then B else B')}}
+
+%% \AgdaHide{
+%% \begin{code}
+%% module _ where
+%%  open import Data.Sum
+%%  postulate isLeft : {A B : Set} → A ⊎ B → Bool
+%%  private
+%% \end{code}}
+%% \begin{code}
+%%   data Tree (A B : Set) : Set where
+%%     list : Σ (A ⊎ B) (λ x → if isLeft x
+%%       then (⊥ → Tree A B)
+%%       else (Bool → Tree A B))
+%%       → Tree A B
+%% \end{code}
+
+\paragraph{\texttt{A ⊎ B ≅ Σ Bool (λ b → if b then A else B)}}
+The disjoint union of two types can be defined as a dependent pair whose
+domain is a boolean and codomain is a function selecting the component
+of the disjoint union.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+\begin{code}
+  data Tree (A B : Set) : Set where
+    list : Σ Bool (λ b → if b
+      then A × (⊥ → Tree A B)
+      else B × (Bool → Tree A B)
+      ) → Tree A B
+\end{code}
+
 
 %% \section{Closed Universe of Inductive Types}
 
