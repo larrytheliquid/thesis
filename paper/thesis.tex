@@ -143,45 +143,51 @@ Acknowledgments go here.
 \include{Thesis/Types}
 \include{Thesis/Universes}
 \include{Thesis/ClosedW}
-\section{Total Programming}
 %% \section{Generic Programming}
 %% domain and codomain refinements
 %% (adding precision, restrict(predicate), supplement)
 %% maybe `all` for `Set
 %% cannot immediately take \Pi case to Bool
 
+\chapter{Inductive Universes}\label{ch:iuniv}
+\section{Dependent Types}
+\section{Infinitary Types}
+\section{Indexed Types}
+\section{Inductive-Recursive Types}
+\section{Indexed Inductive-Recursive Types}
 
-%% Inductive \& Recursive Type Families
-%% inductive introduces new inductiion principle, recursive derives
-%% from IP of index
-\chapter{Inductive \& Recursive Families}\label{ch:indrec}
-\section{Inductive \& Recursive Families}
-\section{Recursive Argument \& Return Families}
+
+%% %% Inductive \& Recursive Type Families
+%% %% inductive introduces new inductiion principle, recursive derives
+%% %% from IP of index
+%% \chapter{Inductive \& Recursive Families}\label{ch:indrec}
+%% \section{Inductive \& Recursive Families}
+%% \section{Recursive Argument \& Return Families}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Open Universe of Inductive Types
-\part{Open Type Theory}\label{part:open}
+%% %% Open Universe of Inductive Types
+%% \part{Open Type Theory}\label{part:open}
 
-%% spectrum of open type theory
-%% get more closed by using `Desc
+%% %% spectrum of open type theory
+%% %% get more closed by using `Desc
 
-\chapter{Open Algebraic Datatypes}\label{ch:desc}
-\section{Dependent Types}
-%% start with Func, then specialize to mutual Args
-%% List, Rose, and Term
-\section{Indexed Types}
-%% Vec, BigStep, ScopedTerm
-%% show both constructor Vec and computational Vec
-%% Algebraic = Inductve, Computational = Recursive
-%% Algebraic Type Families vs Computational Type Families
-%% vs Computational-Algebraic Type Families
-%% PRE: Recursive-Inductive Families of Types
-%% FINAL: Recursive-Inductive Families of Inductive-Recursive Types
-\section{Inductive-Recursive Types}
-%% Arith, Type
-\section{Indexed Inductive-Recursive Types}
-%% Norm
+%% \chapter{Open Algebraic Datatypes}\label{ch:desc}
+%% \section{Dependent Types}
+%% %% start with Func, then specialize to mutual Args
+%% %% List, Rose, and Term
+%% \section{Indexed Types}
+%% %% Vec, BigStep, ScopedTerm
+%% %% show both constructor Vec and computational Vec
+%% %% Algebraic = Inductve, Computational = Recursive
+%% %% Algebraic Type Families vs Computational Type Families
+%% %% vs Computational-Algebraic Type Families
+%% %% PRE: Recursive-Inductive Families of Types
+%% %% FINAL: Recursive-Inductive Families of Inductive-Recursive Types
+%% \section{Inductive-Recursive Types}
+%% %% Arith, Type
+%% \section{Indexed Inductive-Recursive Types}
+%% %% Norm
 
 \chapter{Type Theory as a DSL}\label{ch:gelim}
 %% write example using anon pattern matching lambdas
@@ -219,6 +225,7 @@ Acknowledgments go here.
 \section{Closure under W Types}
 \chapter{Closure under First-Order Types}\label{ch:closed}
 \section{Closure under $\mu$ Types}
+
 \chapter{Generic Lookup \& Update}\label{ch:gupdate}
 %% PropVecRose for needing inductive PathVec and update of type family
 %% ConstantVecRose for update of infinitary value

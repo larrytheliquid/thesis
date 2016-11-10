@@ -70,9 +70,8 @@ the original universe).
 
 \AgdaHide{
 \begin{code}
-module _ where
- data W (A : Set) (B : A → Set) : Set where
- private
+module SetW where
+  data W (A : Set) (B : A → Set) : Set where
   mutual
 \end{code}}
 
@@ -127,7 +126,23 @@ interprets a set as an ordinal $\alpha$ and a relation specifying
 which ordinals are less than $\alpha$. However, in this thesis we
 focus on the more practical interpretation of \AgdaData{W} types as a
 means to define inductive datatypes.}
-We show how to model the semantics of inductive datatypes by:
+It is defined as followed, where the \AgdaVar{A} parameter
+is used for non-recursive arguments for each constructor of an
+inductive datatype, and the cardinality of the \AgdaVar{B} parameter
+(for each constructor) determines the number of recursive arguments.
+\footnote{Besides cardinailty, the content of the \AgdaVar{B} parameter
+also determines the domain of infinitary arguments, discussed in
+\ref{section-inf}.
+}
+
+\begin{code}
+data W (A : Set) (B : A → Set) : Set where
+  sup : (a : A) (f : B a → W A B) → W A B
+\end{code}
+
+\noindent
+We show how to model the semantics of inductive datatypes using
+\AgdaData{W} by:
 
 \begin{enumerate}
 \item Starting with a high-level inductive datatype declaration.
@@ -154,9 +169,9 @@ module _ where
 \end{code}
 
 \paragraph{\texttt{A × B → C ≅ A → B → C}}
-Constructors with multiple arguments have their arguments replaced by
+Replace multiple arguments of constructors by
 a single \textit{uncurried} argument.
-Constructors with a single argument remain unchanged.
+Single argument constructors remain unchanged.
 
 \AgdaHide{
 \begin{code}
@@ -220,40 +235,121 @@ module _ where
       → Tree A B
 \end{code}
 
-%% \paragraph{\texttt{(A × B) ⊎ (A' × B') ≅ Σ (A ⊎ A') (λ x → if isLeft x then B else B')}}
-
-%% \AgdaHide{
-%% \begin{code}
-%% module _ where
-%%  open import Data.Sum
-%%  postulate isLeft : {A B : Set} → A ⊎ B → Bool
-%%  private
-%% \end{code}}
-%% \begin{code}
-%%   data Tree (A B : Set) : Set where
-%%     list : Σ (A ⊎ B) (λ x → if isLeft x
-%%       then (⊥ → Tree A B)
-%%       else (Bool → Tree A B))
-%%       → Tree A B
-%% \end{code}
-
-\paragraph{\texttt{A ⊎ B ≅ Σ Bool (λ b → if b then A else B)}}
-The disjoint union of two types can be defined as a dependent pair whose
-domain is a boolean and codomain is a function selecting the component
-of the disjoint union.
+\paragraph{\texttt{(A × B) ⊎ (A' × B') ≅ Σ (A ⊎ A') (λ x → if isLeft x then B else B')}}
+Replace the disjoint union of pairs whose domain is non-recursive
+arguments and codomain is recursive arguments, with a single pair
+whose domain is the disjoint union of non-recursive arguments and
+codomain is the disjoint union of recursive arguments.
+\footnote{For datatypes with infinitary arguments,
+\AgdaVar{B} and \AgdaVar{B'} may depend on \AgdaVar{A} and
+\AgdaVar{A'} respectively, so the \texttt{if} conditional is replaced by
+\texttt{case} analysis.}
 
 \AgdaHide{
 \begin{code}
 module _ where
+ open import Data.Sum
  private
+  postulate isLeft : {A B : Set} → A ⊎ B → Bool
 \end{code}}
 \begin{code}
   data Tree (A B : Set) : Set where
-    list : Σ Bool (λ b → if b
-      then A × (⊥ → Tree A B)
-      else B × (Bool → Tree A B)
-      ) → Tree A B
+    list : Σ (A ⊎ B) (λ x → if isLeft x
+      then (⊥ → Tree A B)
+      else (Bool → Tree A B))
+      → Tree A B
 \end{code}
+
+\paragraph{\texttt{data ≅ W}} Encode the final datatype declaration as a \AgdaData{W}
+type by using the first component of the pair for the \AgdaVar{A}
+parameter, and the domains of each function in the second component of the
+pair for the \AgdaVar{B} parameter.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Sum
+ private
+  postulate isLeft : {A B : Set} → A ⊎ B → Bool
+\end{code}}
+\begin{code}
+  Tree : Set → Set → Set
+  Tree A B = W (A ⊎ B) λ x → if isLeft x
+    then ⊥
+    else Bool
+\end{code}
+
+\subsection{Inadequacy of W}
+
+It would seem like \AgdaData{W} is a sufficient datatype to represent
+any inductive datatype a user would define. Our
+fully closed universe from \ref{subsection-closedw} has enough
+primitives to represent types in terms of \AgdaData{W} as values of
+type \AgdaData{`Set}. For example, below we internalize (i.e. as universe
+codes) disjoint unions in terms of internal dependent pairs and
+booleans, and then internalize the \AgdaData{Tree} type in terms of
+internal well-orderings.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open SetW
+ private
+\end{code}}
+\begin{code}
+  _`⊎_ : `Set → `Set → `Set
+  A `⊎ B = `Σ `Bool (λ b → if b then A else B)
+
+  `Tree : `Set → `Set → `Set
+  `Tree A B = `W (A `⊎ B) λ x → if (not (proj₁ x))
+    then `⊥
+    else `Bool
+\end{code}
+
+If \AgdaData{W} were adequate for our purposes, then this
+thesis could focus on writing fully generic functions over the
+\AgdaData{`Set} universe. However, there are two issues:
+
+\begin{enumerate}
+\item Although \AgdaData{W} types can be extended to support
+  definitions of inductively defined type families
+  (described in \ref{section-indexed-desc}), they cannot be extended to support
+  definitions of inductive-recursive datatypes
+  (described in \ref{section-ir-desc}).
+
+\item The base cases of inductively defined datatypes using
+  \AgdaData{W} have an infinite number of intentionally distinct
+  values. Recall that the base case \AgdaCon{leaf} had
+   \texttt{⊥ → Tree A B} as its inductive argument. Because the
+   codomain of the function is bottom, we can write it many different
+   ways (i.e. \AgdaFun{elim⊥}, \AgdaFun{elim⊥ ∘ elim⊥}, etc). Even
+   though all leaves containing such functions are extentionally
+   equivalent, it is inadequate to have an infinite number of
+   intentionally distinct canonical forms for the model of
+   \AgdaData{Tree} (whose initial declaration was first-order).
+\end{enumerate}
+
+These two issues lead us to an alernative representation of inductive
+datatypes, from the induction-recursion literature.
+
+
+%% \paragraph{\texttt{A ⊎ B ≅ Σ Bool (λ b → if b then A else B)}}
+%% The disjoint union of two types can be defined as a dependent pair whose
+%% domain is a boolean and codomain is a function selecting the component
+%% of the disjoint union.
+
+%% \AgdaHide{
+%% \begin{code}
+%% module _ where
+%%  private
+%% \end{code}}
+%% \begin{code}
+%%   data Tree (A B : Set) : Set where
+%%     list : Σ Bool (λ b → if b
+%%       then A × (⊥ → Tree A B)
+%%       else B × (Bool → Tree A B)
+%%       ) → Tree A B
+%% \end{code}
 
 
 %% \section{Closed Universe of Inductive Types}
