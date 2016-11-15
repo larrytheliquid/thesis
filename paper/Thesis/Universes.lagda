@@ -3,10 +3,9 @@
 open import Data.Bool
 open import Data.Product hiding ( map )
 module _ where
- private
-  data List (A : Set) : Set where
-    nil : List A
-    cons : A → List A → List A
+ data List (A : Set) : Set where
+   nil : List A
+   cons : A → List A → List A
 \end{code}}
 
 \section{Universes}
