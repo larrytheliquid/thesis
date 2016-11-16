@@ -12,6 +12,42 @@ module _ where
 
 \section{Generic Programming}
 
+%% TODO makes sense to have param poly and uni poly both
+%% be generic, bc param is also a universe
+
+%% TODO Generic & generic
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\subsection{Generic Programming}
+
+\textit{Generic programming} is the act of writing
+functions that can be applied to values of a collection of types
+(a \textit{universe}).
+types. Given a collection of types, a \textit{generic function} can be
+applied to values of any type in the collection. A generic
+function is valuable because a single definition can replace many
+specialized, or concrete, definitions (one for each type the generic
+function is defined over).
+
+\paragraph{Parametrically Polymorphic Functions}
+
+A popular form of generic programming in non-dependent languages is
+writing \textit{parametrically polymorphic functions}.
+
+\begin{code}
+  append : {A : Set} → List A → List A → List A
+  append = {!!}
+\end{code}
+
+
+\paragraph{Universe Polymorphic Functions}
+
+
 %% gp: fun that works for many datatypes
 %% parametric poly vs gp
 %% fully generic functions like `any`

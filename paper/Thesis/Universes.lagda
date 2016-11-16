@@ -8,6 +8,9 @@ module _ where
    cons : A → List A → List A
 \end{code}}
 
+%% TODO ListStar (A : Set) : Set ~> Set
+%% TODO concat ~> flatten
+
 \section{Universes}
 
 Just as a type is a collection of values, a \textit{universe}
@@ -34,13 +37,13 @@ module ListStar where
 \end{code}}
 
 \begin{code}
-  data ListStar (A : Set) : Set where
-    `Base : ListStar A
-    `List : ListStar A → ListStar A
+  data ListStar : Set where
+    `Base : ListStar
+    `List : ListStar → ListStar
   
-  ⟦_⟧ : ∀{A} → ListStar A → Set
-  ⟦_⟧ {A} `Base = A
-  ⟦ `List A ⟧ = List ⟦ A ⟧
+  ⟦_⟧ : ListStar → Set → Set
+  ⟦ `Base ⟧ X = X
+  ⟦ `List A ⟧ X = List (⟦ A ⟧ X)
 \end{code}
 
 The act of defining a universe also pushes us towards the closed side
@@ -49,7 +52,7 @@ the codes of the universe. For example, consider the \AgdaFun{concat}
 function below operating over our universe.
 
 \begin{code}
-  concat : ∀{A} (B : ListStar A) → ⟦ B ⟧ → List A
+  concat : ∀{X} (A : ListStar) → ⟦ A ⟧ X → List X
   concat `Base x = cons x nil
   concat (`List A) nil = nil
   concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
