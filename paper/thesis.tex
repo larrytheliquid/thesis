@@ -99,7 +99,7 @@
 \numberwithin{remark}{section}
 
 
-\newcommand{\Title}{Concrete Generic Programming}
+\newcommand{\Title}{Towards Concrete Generic Programming}
 
 \begin{document}
 
@@ -136,27 +136,24 @@ Acknowledgments go here.
 \part{Prelude}\label{part:prelude}
 
 \chapter{Introduction}\label{ch:intro}
+\section{Dependently Typed Programming}
 \section{Motivation}
-\section{Agda Color Conventions}
+\section{Thesis \& Contributions}
+\section{Agda Conventions}
 
-\chapter{Universes \& Generic Programming}\label{ch:univ}
+\chapter{Universes}\label{ch:univ}
 \include{Thesis/Types}
 \include{Thesis/Universes}
 \include{Thesis/TypesAsUniverses}
+
+\chapter{Concrete Generic Programming}\label{ch:univ}
 \include{Thesis/GenericW}
 \include{Thesis/ClosedW}
-%% funs over prev unis carefully chosen
-%% so type sigs applied to entire domain
-%% may not be so lucky / partial domains
+\section{Concrete Programming}
 
-%% domain and codomain refinements
-%% (adding precision, restrict(predicate), supplement)
-%% maybe `all` for `Set
-%% cannot immediately take \Pi case to Bool
+\part{Open Inductive Universes}\label{part:open}
 
-\part{Open Inductive Types}\label{part:open}
-
-\chapter{Open Inductive Universes}\label{ch:open}
+\chapter{Open Inductive Types}\label{ch:open}
 \section{Dependent Types}
 \section{Infinitary Types}
 \section{Indexed Types}
@@ -197,11 +194,15 @@ Acknowledgments go here.
 %% %% Norm
 
 \chapter{Type Theory as a DSL}\label{ch:gelim}
+
+%% syntatic = use less isomorphism transformations
+%% generalized universe where meaning maps to something kinded Set1
+\section{Syntactic versus Semantic Encodings}
+\section{Generic Type Formers}
 %% write example using anon pattern matching lambdas
 %% then same example using only elims for pairs
-\section{Generic Type Former}
-\section{Generic Constructor}
-\section{Generic Eliminator}
+\section{Generic Constructors}
+\section{Generic Eliminators}
 %% Hyps an example of domain supplement to ind
 
 %% First chapter on regular generic-elim/Swedish
@@ -216,7 +217,7 @@ Acknowledgments go here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Closed Universe of Inductive Types
-\part{Closed Inductive Types}\label{part:closed}
+\part{Closed Inductive Universes}\label{part:closed}
 
 %% closed universe TT as DSL
 
@@ -228,10 +229,9 @@ Acknowledgments go here.
 %% not Uni (U : Set) (El : U -> Set)
 %% but Uni (A : Set a) (B : Set b) (U : A) (El : U -> B) : suc (max a b)
 
-\chapter{Closed Type Universes}\label{ch:closed}
-\section{Closure under W Types}
-\chapter{Closure under First-Order Types}\label{ch:closed}
-\section{Closure under $\mu$ Types}
+\chapter{Closed Inductive Types}\label{ch:closed}
+\section{Closure under indexed W Types}
+\section{Closure under indexed inductive-recursive $\mu$ Types}
 
 \chapter{Generic Lookup \& Update}\label{ch:gupdate}
 %% PropVecRose for needing inductive PathVec and update of type family
@@ -245,18 +245,19 @@ Acknowledgments go here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Closed Hierarchy of Universes of Inductive Types
-\part{Closed Hierarchy of Types}\label{part:hier}
+\part{Closed Hierarchy of Universes}\label{part:hier}
 
-\chapter{Closed Hierarchy of Universes}\label{ch:hier}
+\chapter{Closed Hierarchy of W Universes}\label{ch:hier}
+\chapter{Closed Hierarchy of $\mu$ Universes}\label{ch:hier}
 \chapter{Generic Datatype Arguments}\label{ch:gargs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\part{Large Datatype Constructions}\label{part:large}
+%% \part{Large Datatype Constructions}\label{part:large}
 
-\chapter{Small Slice \& Family Equivalence}\label{ch:equiv}
-\chapter{Large Induction-Recursion}\label{ch:largeir}
-\chapter{Large Recursion-Induction}\label{ch:largeri}
+%% \chapter{Small Slice \& Family Equivalence}\label{ch:equiv}
+%% \chapter{Large Induction-Recursion}\label{ch:largeir}
+%% \chapter{Large Recursion-Induction}\label{ch:largeri}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -282,10 +283,12 @@ Acknowledgments go here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \part{Postlude}\label{part:postlude}
-\chapter{Inductive vs Recursive Families}\label{ch:related}
+\chapter{Inductive versus Recursive Families}\label{ch:ivsr}
 %% when to use one over the other
 \chapter{Related Work}\label{ch:related}
 %% comparison with other Desc representations
+%%   peter morris ``semantic'' vs ``syntatic''
+%%   irish pushes towards syntatic from semantic
 \chapter{Future Work}\label{ch:future}
 \chapter{Conclusion}\label{ch:conc}
 

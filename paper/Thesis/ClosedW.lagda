@@ -306,6 +306,15 @@ module _ where
     else `Bool
 \end{code}
 
+%% TODO subo or auto for model in metalang
+%%  only auto for object lang
+
+%% TODO only dealing with first universe
+%%   see Section Hier for hierarchy
+
+%% TODO W types as denotational semantics of syntactic
+%%   inductively declared datatypes
+
 If \AgdaData{W} were adequate for our purposes, then this
 thesis could focus on writing fully generic functions over the
 \AgdaData{`Set} universe. However, there are two issues:

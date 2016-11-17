@@ -17,13 +17,22 @@ module _ where
 
 %% TODO Generic & generic
 
+%% funs over prev unis carefully chosen
+%% so type sigs applied to entire domain
+%% may not be so lucky / partial domains
+
+%% domain and codomain refinements
+%% (adding precision, restrict(predicate), supplement)
+%% maybe `all` for `Set
+%% cannot immediately take \Pi case to Bool
+
 \AgdaHide{
 \begin{code}
 module _ where
  private
 \end{code}}
 
-\subsection{Generic Programming}
+\subsection{Generic Functions}
 
 \textit{Generic programming} is the act of writing
 functions that can be applied to values of a collection of types
@@ -40,8 +49,7 @@ A popular form of generic programming in non-dependent languages is
 writing \textit{parametrically polymorphic functions}.
 
 \begin{code}
-  append : {A : Set} → List A → List A → List A
-  append = {!!}
+  postulate append : {A : Set} → List A → List A → List A
 \end{code}
 
 

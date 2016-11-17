@@ -11,6 +11,17 @@ module _ where
 %% TODO ListStar (A : Set) : Set ~> Set
 %% TODO concat ~> flatten
 
+%% open if collection of values grows
+%%   when a new type is declared
+
+%% universe as Univ (A : Set) (B : A -> Set) -> Set
+%% All, then ListStarH, then ListStar
+%% ListStar as parameterized universe
+%% IDesc/mu as paramd and indexed universe?
+
+%% defining a hiearchy of levels by *clos*ing over
+%% universe param of Type
+
 \section{Universes}
 
 Just as a type is a collection of values, a \textit{universe}
@@ -134,7 +145,11 @@ sublists contain \AgdaCon{true} values.
   all (`List A) (cons x xs) = all A x ∧ all (`List A) xs
 \end{code}
 
-\subsection{Fully Closed Universes}\label{sec:treestar}
+\subsection{Subordinate Universes}
+
+%% TODO can be open or closed
+
+\subsection{Autonomous Universes}\label{sec:treestar}
 
 \AgdaHide{
 \begin{code}
@@ -198,4 +213,3 @@ We fully close the universe by adding a code for natural numbers
 parameterized by the type of their left branches, but the specialized
 version also defines a fully closed universe so long as their is a
 code for natural numbers.
-

@@ -9,6 +9,8 @@ module _ where
 
 %% TODO universe as a semantic concept vs codes/meaning model
 
+%% TODO Singleton type as identity universe
+
 \section{Types as Universes}
 
 Recall that types are collections of values and universes are

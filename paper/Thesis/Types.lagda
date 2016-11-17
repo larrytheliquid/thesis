@@ -117,7 +117,7 @@ function over an \AgdaData{HList} did make a decision based on which
 \AgdaData{Set} was passed in, it would only be able to consider all
 types currently defined, not any type definable in the future.
 
-\subsection{Spectrum of Open and Closed Types}
+\subsection{Spectrum of Open Types}
 
 \AgdaHide{
 \begin{code}
