@@ -8,7 +8,7 @@ module _ where
 \end{code}}
 
 %% Extensional?
-\section{Closed Inductive Universe}
+\section{Closed Algebraic Universe}
 
 \subsection{Closed Type Theory}
 
@@ -115,7 +115,7 @@ model datatype declarations. We show how to model datatype
 declarations by translating them into types from our closed universe
 in the next section.
 
-\subsection{W Types}
+\subsection{W Types}\label{sec:wtypes}
 
 The type of well-orderings (\AgdaData{W}) can be used to model definitions of
 inductively defined well-founded trees.

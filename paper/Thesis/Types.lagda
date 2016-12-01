@@ -5,7 +5,7 @@ open import Data.Product hiding ( map )
 module _ where
 \end{code}}
 
-\section{Types}
+\section{Open \& Closed Types}
 In programming languages, a \textit{type} is a construct used to capture the
 notion of a collection of \textit{values}.
 A primary motivation of types is the ability to assign them to the

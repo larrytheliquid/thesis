@@ -99,7 +99,7 @@
 \numberwithin{remark}{section}
 
 
-\newcommand{\Title}{Towards Concrete Generic Programming}
+\newcommand{\Title}{Closed Universes for Generic Programming}
 
 \begin{document}
 
@@ -142,18 +142,20 @@ Acknowledgments go here.
 \section{Agda Conventions}
 
 \chapter{Universes}\label{ch:univ}
+\include{Thesis/Classifications}
 \include{Thesis/Types}
 \include{Thesis/Universes}
 \include{Thesis/TypesAsUniverses}
 
-\chapter{Concrete Generic Programming}\label{ch:univ}
+\chapter{Closed Type Theory}\label{ch:univ}
+\section{Total Programming}
 \include{Thesis/GenericW}
 \include{Thesis/ClosedW}
-\section{Concrete Programming}
+\section{Concrete Generic Programming}
 
-\part{Open Inductive Universes}\label{part:open}
+\part{Open Algebraic Universes}\label{part:open}
 
-\chapter{Open Inductive Types}\label{ch:open}
+\chapter{Open Algebraic Types}\label{ch:open}
 \section{Dependent Types}
 \section{Infinitary Types}
 \section{Indexed Types}
@@ -216,8 +218,7 @@ Acknowledgments go here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Closed Universe of Inductive Types
-\part{Closed Inductive Universes}\label{part:closed}
+\part{Closed Algebraic Universes}\label{part:closed}
 
 %% closed universe TT as DSL
 
@@ -229,7 +230,7 @@ Acknowledgments go here.
 %% not Uni (U : Set) (El : U -> Set)
 %% but Uni (A : Set a) (B : Set b) (U : A) (El : U -> B) : suc (max a b)
 
-\chapter{Closed Inductive Types}\label{ch:closed}
+\chapter{Closed Algebraic Types}\label{ch:closed}
 \section{Closure under indexed W Types}
 \section{Closure under indexed inductive-recursive $\mu$ Types}
 
@@ -244,7 +245,6 @@ Acknowledgments go here.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% Closed Hierarchy of Universes of Inductive Types
 \part{Closed Hierarchy of Universes}\label{part:hier}
 
 \chapter{Closed Hierarchy of W Universes}\label{ch:hier}

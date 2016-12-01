@@ -22,7 +22,7 @@ module _ where
 %% defining a hiearchy of levels by *clos*ing over
 %% universe param of Type
 
-\section{Universes}
+\section{Open \& Closed Universes}
 
 Just as a type is a collection of values, a \textit{universe}
 is a collection of \textit{types}. 
