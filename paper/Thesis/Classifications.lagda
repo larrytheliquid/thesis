@@ -155,7 +155,7 @@ parameterized by some type \AgdaVar{A}. The example function
 \end{code}
 
 
-\subsection{Indexed Types}
+\subsection{Indexed Types}\label{sec:prod}
 
 An \textit{indexed} type is a collection of types, indexed
 by some type \AgdaVar{I}, such that each type in the collection may
@@ -232,6 +232,7 @@ module _ where
  open import Data.Empty
  open import Data.Unit
  open import Data.Sum
+ open import Data.Product
  open import Data.Nat
  private
 \end{code}}
@@ -249,8 +250,8 @@ module _ where
 
 Notice that the type former of an indexed type (such as the type of
 finite sets) is a function. Thus, we can derive an indexed type by
-computing the appropriate type for the input index. For example, the
-type of finite sets can be derived as a sequence of disjoint unions of
+\textit{computing} the appropriate type for the input index. For example, the
+type of finite sets can be derived as a right-nested tuple of disjoint unions of
 unit types, ending with a bottom type (\AgdaVar{⊥}, the type without
 any constructors). This makes sense because the finite set of zero
 elements should be uninhabited, and the finite set of any other number
@@ -269,4 +270,102 @@ subset of natural numbers bounded by \AgdaVar{n} minus one).
   there p = inj₂ p
 \end{code}
 
+Similarly, we can derive the indexed type of vectors of length
+\AgdaVar{n} as a right-nested tuple of pairs containing \AgdaVar{n} values of
+type \AgdaVar{A} (each \AgdaVar{A} instance represents a \AgdaFun{cons}),
+ending in the type of unit (representing \AgdaFun{nil}).
 
+\begin{code}
+  Vec : Set → ℕ → Set
+  Vec A zero = ⊤
+  Vec A (suc n) = A × Vec A n
+
+  nil : ∀{A} → Vec A zero
+  nil = tt
+
+  cons : ∀{A n} → A → Vec A n → Vec A (suc n)
+  cons x xs = x , xs
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Empty
+ open import Data.Unit
+ open import Data.Sum
+ open import Data.Product
+ open import Data.Nat
+ open import Data.Fin renaming ( zero to here ; suc to there )
+ private
+\end{code}}
+
+Vectors are a special case of a class of datatypes called
+\textit{containers}~\ref{TODO}. Because of this, we can represent a
+vector as a type synonym (a constant function) rather than a
+computation. Below, the type of vectors is represented as a function
+whose domain is a finite set of \AgdaVar{n} elements, and whose
+codomain is \AgdaVar{A}. Think of the function as an \AgdaVar{n}-ary
+projection for each \AgdaVar{A} value in the vector.
+
+\begin{code}
+  Vec : Set → ℕ → Set
+  Vec A n = Fin n → A
+
+  nil : ∀{A} → Vec A zero
+  nil ()
+
+  cons : ∀{A n} → A → Vec A n → Vec A (suc n)
+  cons x f here = x
+  cons x f (there p) = f p
+\end{code}
+
+Above, the \AgdaFun{nil} function receives bottom (\AgdaData{⊥}) as an
+argument, so we need not define it.
+The \AgdaFun{cons} function ``extends'' the function
+\AgdaVar{f} by returning \AgdaVar{x} if the finite set points to the
+head of the vector, and otherwise calls the ``tail'' by applying
+\AgdaVar{f} to the sub-index \AgdaVar{p}. Notice that in
+\refsec{prod} the ``list'' argument was actually
+this functional vector representation, so it could have been written like:
+
+\AgdaHide{
+\begin{code}
+  postulate
+\end{code}}
+
+\begin{code}
+   prod : (n : ℕ) (f : Vec ℕ n) → ℕ
+\end{code}
+
+Finally, we can derive non-indexed from indexed types by using a
+dependent pair. The dependent pair acts like an existential, where the
+first component is a value from the the index domain and acts as a
+witness, and the second component is the indexed type former applied
+to the witness and acts like a predicate. For example, we can derive
+the type of lists from the type of vectors as follows.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Product
+ open import Data.Nat
+ open import Data.Vec renaming ([] to vnil ; _∷_ to vcons)
+ private
+\end{code}}
+
+\begin{code}
+  List : Set → Set
+  List A = Σ ℕ (λ n → Vec A n)
+
+  nil : {A : Set} → List A
+  nil = zero , vnil
+
+  cons : {A : Set} → A → List A → List A
+  cons x (n , xs) = suc n , vcons x xs
+\end{code}
+
+The first component is zero for the \AgdaCons{nil} constructor. For
+the \AgdaCons{cons} constuctor, the first component is the successor
+of the natural number \AgdaVar{n} contained within the list being
+extended (the second argument to \AgdaCons{cons}) represented as a
+pair.
