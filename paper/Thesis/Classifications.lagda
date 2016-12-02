@@ -1,4 +1,4 @@
-\AgdaHide{
+AgdaHide{
 \begin{code}
 module _ where
 \end{code}}
@@ -39,7 +39,7 @@ module _ where
 \end{code}
 
 
-\subsection{Non-Inductive Types}
+\subsection{Non-Inductive Types}\label{sec:nonind}
 
 A \textit{non-inductive} type is any type that is not recursively
 defined. In particular, the definition of a non-inductive type does
@@ -213,7 +213,7 @@ sum of the lengths of the input vectors.
   append (cons x xs) ys = cons x (append xs ys)
 \end{code}
 
-\subsection{Derived Types}
+\subsection{Derived Types}\label{sec:derived}
 
 Thus far we have only seen \textit{primitive} types. The type of
 functions already existed as a primitive in the language. We defined
@@ -364,8 +364,189 @@ module _ where
   cons x (n , xs) = suc n , vcons x xs
 \end{code}
 
-The first component is zero for the \AgdaCons{nil} constructor. For
-the \AgdaCons{cons} constuctor, the first component is the successor
+The first component is zero for the \AgdaCon{nil} constructor. For
+the \AgdaCon{cons} constuctor, the first component is the successor
 of the natural number \AgdaVar{n} contained within the list being
-extended (the second argument to \AgdaCons{cons}) represented as a
+extended (the second argument to \AgdaCon{cons}) represented as a
 pair.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Product
+ open import Data.Nat
+ open import Data.Fin
+ open import Data.Vec hiding ( sum )
+ private
+  postulate sum prod : (n : ℕ) (f : Fin n → ℕ) → ℕ
+\end{code}}
+
+\subsection{Computational Types}
+
+
+
+\subsection{Inductive-Recursive Types}
+
+An \textit{inductive-recursive} type is a collection of values
+mutually defined with a function parameterized by said type.
+An example of an inductive-recursive type is the type of arithmetic
+expressions \AgdaData{Arith}.
+Values of type \AgdaData{Arith} encode ``Big Pi''
+mathematical arithmetic product equations up to some finite
+bound, such as the one below. 
+\begin{equation*}
+  \prod_{i=1}^{3} i
+\end{equation*}
+
+The intuition is that this expression should evaluate to something
+(the number six in this case). The mutually defined function is
+exactly the evaluation function.
+The type is defined as follows.
+
+\begin{code}
+  mutual
+    data Arith : Set where
+      Num : ℕ → Arith
+      Prod : (a : Arith) (f : Fin (eval a) → Arith) → Arith
+  
+    eval : Arith → ℕ
+    eval (Num n) = n
+    eval (Prod a f) = prod (eval a) (λ a → eval (f a))
+\end{code}
+
+A literal number is represented using the \AgdaCon{Num} constructor,
+evaluating to said number. A mathematical product is represented using
+the \AgdaCon{Prod} constructor, where the first argument \AgdaVar{a}
+is the upper bound of the product as an arithmetic expression, and the
+second argument \AgdaVar{f} is the
+body (of the product) as a functional representation of a vector of arithmetic
+expressions. The length of the vector (the argument to \AgdaData{Fin})
+should be the \AgdaFun{eval}uation of the of the upper bound
+\AgdaVar{a}. Hence, the evaluation function \AgdaFun{eval} must be mutually defined
+with the type \AgdaData{Arith}. The \AgdaCon{Prod} constructor
+evaluates to the product computed with our \AgdaFun{prod} function
+from \refsec{prod}.
+We can represent the mathematical equation given earlier as follows.
+
+\AgdaHide{
+\begin{code}
+    num : ∀ {n} → Fin n → ℕ
+    num zero = suc zero
+    num (suc i) = suc (num i)
+\end{code}}
+
+\begin{code}
+    six : Arith
+    six = Prod (Num 3) (λ i → Num (num i))
+\end{code}
+
+An \AgdaData{Arith} equation may be nested in its upper bound
+(\AgdaVar{a}) or body (codomain of \AgdaVar{f}), but the lower
+bound is always the value 1.
+Note that above we define the expression \AgdaFun{six} with the helper function
+\AgdaFun{num}, which converts the finite set value \AgdaVar{i} to a natural number
+using one-based indexing.
+
+A more typical example of an inductive-recursive type is a
+\textit{universe} modeling a dependently typed language, which we will
+see in \refsec{closedu}.
+
+\subsection{Infinitary Types}
+
+An \textit{infinitary} type is an inductive type where at least one
+constructor has one function argument whose codomain is the type being
+defined. The \AgdaData{Arith} type from the previous section is an
+example, where the \AgdaCon{Prod} construtor has a function argument
+\AgdaVar{f} whose domain is a finite set \AgdaData{Fin} and codomain
+is \AgdaData{Arith} itself. Note that the domain can never be the
+type being defined, because negative datatypes~\ref{TODO} make type
+theory inconsistent.
+
+\subsection{Algebraic Types}
+
+An \textit{algebraic} type is a type defined as the fixpoint of a suitable
+algebra. Although this fixpoint construction is not given directly,
+it is the semantics of types defined using \AgdaKeyword{data}
+declarations. For example, the inductive type of lists is defined as the
+fixpoint below.
+\begin{equation*}
+\rm{List} = \lambda A. ~\mu X. ~1 + A \times X
+\end{equation*}
+
+In the equation, X is used to ask for recursive arguments (such as
+the second argument to \AgdaData{cons}).
+A non-inductive type like booleans can also be defined by ignoring
+X.
+\begin{equation*}
+\rm{Bool} = \mu X. ~1 + 1
+\end{equation*}
+
+We would like to emphasize that this definition of booleans
+corresponds to the semantics of defining \AgdaData{Bool} using a
+\AgdaKeyword{data} declaration (as in \refsec{nonind}). 
+Although it looks
+syntatically similar to the \textit{derived} definition of booleans
+using unit and disjoint union in \refsec{derived}, that derived
+definition is \textit{not} algebraic because it is not defined with
+$\mu$ (either syntatically or semanticsally).
+However, some derived types \textit{can} be algebraic if we
+internalize $\mu$ as a type former \AgdaData{μ} (as in
+\refsec{TODO}), and use this type former to derive type definitions.
+In the scope of this thesis, an algebraic type is one defined using
+a \AgdaKeyword{data} declaration, a \AgdaData{μ} type former, or a
+\AgdaData{W} type former (introduced in \refsec{wtypes}). Although
+\AgdaData{W} types are not syntatically fixpoint constructions, they
+are semantically very similar so we still call them algebraic.
+
+Finally, below is an example of an indexed type defined algebraic. The
+index is given as a lambda argument (\AgdaVar{n}) just like the
+parameter (\AgdaVar{A}). However, the \AgdaCon{nil} and \AgdaCon{cons}
+constructor must appropriately constrain the index argument (to zero
+or the successor of the previous vector respectively). Additionally,
+the recursive argument X takes the index as an argument. 
+\begin{equation*}
+\rm{Vec} = \lambda A. ~\lambda n. ~\mu X. ~(n=\rm{zero}) +
+((m : \mathbb{N}) \times A \times X~m \times n=\rm{suc}~m)
+\end{equation*}
+
+Notice that
+in \AgdaCon{cons} the index of the previous vector is given as an
+explicit argument (m), and the index (n) is constrained to be the
+successor of that argument.
+
+\subsection{Computational Types}
+
+A \textit{computational} type is an indexed type defined by computing
+over its index. We have already seen a non-algebraic computational
+type, namely the derived type of vectors from \refsec{derived}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Empty
+ open import Data.Unit
+ open import Data.Sum
+ open import Data.Product
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  Vec : Set → ℕ → Set
+  Vec A zero = ⊤
+  Vec A (suc n) = A × Vec A n
+\end{code}
+
+However, computational types can also be algebraic. In the previous
+section, vectors are algebraically defined by constraining the input
+index given as a lambda argument. As a computational algebraic type,
+we case-analyze the lambda index argument to determine the algebra
+that we take the fixpoint of rather than constraining the
+input.
+\begin{singlespace}
+\begin{align*}
+\rm{Vec} &= \lambda A. ~\lambda n. ~\mu X. ~\rm{\textbf{case}}~n~\rm{\textbf{of}}\\
+\rm{zero} &\mapsto 1\\
+\rm{suc}~n &\mapsto A \times X~n
+\end{align*}
+\end{singlespace}

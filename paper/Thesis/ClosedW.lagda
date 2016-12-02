@@ -10,7 +10,7 @@ module _ where
 %% Extensional?
 \section{Closed Algebraic Universe}
 
-\subsection{Closed Type Theory}
+\subsection{Closed Type Theory}\label{sec:closedu}
 
 \AgdaHide{
 \begin{code}
