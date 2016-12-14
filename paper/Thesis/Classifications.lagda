@@ -16,13 +16,13 @@ functions operating over said types.
 \subsection{Function Types}
 
 Dependently typed functional languages include dependent functions
-as a primitive. Below we define the type former \AgdaFun{Π}
-as a type synonym for function types. This type former is occasionally
-used in later parts of the thesis (because its application is syntactially similar
-to the application of the dependent pair type former \AgdaData{Σ}), but mostly we
-use Agda's primitive syntax for forming function types (demonstrated
-below in the definition of the \AgdaFun{Π} type former and in the type of the
-identify function \AgdaFun{id}).
+as a primitive. 
+$$
+(\AgdaVar{a} : \AgdaVar{A}) → \AgdaVar{B}~\AgdaVar{a}
+$$
+
+Values of function types are lambda expressions, for example the lambda
+expression in the body of the identify function (\AgdaVar{id}) below.
 
 \AgdaHide{
 \begin{code}
@@ -31,11 +31,8 @@ module _ where
 \end{code}}
 
 \begin{code}
-  Π : (A : Set) (B : A → Set) → Set
-  Π A B = (a : A) → B a
-
-  id : {A : Set} → A → A
-  id a = a
+  id : (A : Set) → A → A
+  id = λ A → λ a → a
 \end{code}
 
 
@@ -211,6 +208,54 @@ sum of the lengths of the input vectors.
   append : ∀{A n m} → Vec A n → Vec A m → Vec A (n + m)
   append nil ys = ys
   append (cons x xs) ys = cons x (append xs ys)
+\end{code}
+
+\subsection{Type Families}
+
+A \textit{type family} is a collection of types, represented as a
+function from some domain \AgdaVar{A} to the codomain \AgdaData{Set}.
+$$
+\AgdaVar{A} → \AgdaData{Set}
+$$
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+  postulate
+\end{code}}
+
+\noindent
+Any parameterized datatype is a type family, for example the type of
+lists.
+
+\begin{code}
+   List : Set → Set
+\end{code}
+
+\noindent
+Any indexed type is also a type family, for example the type of vectors.
+
+\begin{code}
+   Vec : Set → ℕ → Set
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open import Data.Product
+ private
+  postulate
+\end{code}}
+
+\noindent
+Although the type of vectors contains two arguments rather than one,
+it is isomorphic to an uncurried version with a single argument:
+
+\begin{code}
+   Vec : Set × ℕ → Set
 \end{code}
 
 \subsection{Derived Types}\label{sec:derived}
