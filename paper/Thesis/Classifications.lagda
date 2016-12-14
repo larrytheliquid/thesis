@@ -3,7 +3,7 @@
 module _ where
 \end{code}}
 
-\section{Classifications of Types}
+\section{Classifications of Types}\label{sec:types}
 
 In programming languages, a \textit{type} is a construct used to capture the
 notion of a collection of \textit{values}.
@@ -94,7 +94,11 @@ module _ where
   suc n + m = suc (n + m)
 \end{code}
 
-\subsection{Parameterized Types}
+An alternative definition of an inductive type is a collection of
+values closed under certain value constructors (e.g. \AgdaData{ℕ} as
+\AgdaCon{zero} closed under \AgdaCon{suc}).
+
+\subsection{Parameterized Types}\label{sec:param}
 
 A \textit{parameterized} type is a collection of types, parameterized
 by some type \AgdaVar{A}, such that the collection is
@@ -597,4 +601,72 @@ Agda does not currently support a high-level syntax (like
 \AgdaKeyword{data}) for defining computational algebraic
 types. Nonetheless, we semantically model them using an internalized \AgdaData{μ} type
 former in \refsec{TODO}.
+
+\subsection{Open Types}
+
+An \textit{open} type is any type whose definition mentions the type
+of types (\AgdaData{Set}). In an \textit{open type theory} datatype
+declarations add new types to the language, extending \AgdaData{Set}
+with additional type formers. Therefore the collection of type formers
+(values of type \AgdaData{Set}) is considered to be ``open''.
+Consequently, open languages must prohibit case
+analysis over \AgdaData{Set}, because a total function matching against
+currently defined types becomes partial when a new datatype is
+declared.
+One example of an open datatype is the type of heterogenous lists
+(\AgdaData{HList}).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data HList : Set₁ where
+    nil : HList
+    cons : {A : Set} → A → HList → HList
+
+  append : HList → HList → HList
+  append nil ys = nil
+  append (cons x xs) ys = cons x (append xs ys)
+\end{code}
+
+\AgdaData{HList} is an open type because its
+\AgdaCon{cons} constructor has an argument \AgdaVar{A} of type
+\AgdaData{Set}, and an argument \AgdaVar{a} whose type is the open
+type \AgdaData{A}.
+
+The parametric lists from \refsec{param} are another example of an open
+type, as the \AgdaVar{a} argument in the \AgdaCon{cons} constructor
+has type \AgdaVar{A}. \AgdaVar{A} is the parameter of the list
+datatype, and it is open because its type is \AgdaData{Set}.
+
+\subsection{Closed Types}
+
+A \textit{closed} type is any type whose definition does not mention
+\AgdaData{Set}. For example, if we specialize the type of parametric
+lists to booleans (as the type \AgdaFun{Bits}) the source of openess
+(the parameter \AgdaVar{A} of type \AgdaData{Set}) disappears.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Bool
+ private
+  data List (A : Set) : Set where
+    nil : List A
+    cons : A → List A → List A
+\end{code}}
+
+\begin{code}
+  Bits : Set
+  Bits = List Bool
+
+  all : Bits → Bool
+  all nil = true
+  all (cons false xs) = false
+  all (cons true xs) = all xs
+\end{code}
+
 
