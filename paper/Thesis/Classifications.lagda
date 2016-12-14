@@ -1,4 +1,4 @@
-AgdaHide{
+\AgdaHide{
 \begin{code}
 module _ where
 \end{code}}
@@ -381,9 +381,6 @@ module _ where
   postulate sum prod : (n : ℕ) (f : Fin n → ℕ) → ℕ
 \end{code}}
 
-\subsection{Computational Types}
-
-
 
 \subsection{Inductive-Recursive Types}
 
@@ -470,7 +467,7 @@ it is the semantics of types defined using \AgdaKeyword{data}
 declarations. For example, the inductive type of lists is defined as the
 fixpoint below.
 \begin{equation*}
-\rm{List} = \lambda A. ~\mu X. ~1 + A \times X
+\rm{List} \triangleq \lambda A. ~\mu X. ~1 + A \times X
 \end{equation*}
 
 In the equation, X is used to ask for recursive arguments (such as
@@ -478,7 +475,7 @@ the second argument to \AgdaData{cons}).
 A non-inductive type like booleans can also be defined by ignoring
 X.
 \begin{equation*}
-\rm{Bool} = \mu X. ~1 + 1
+\rm{Bool} \triangleq \mu X. ~1 + 1
 \end{equation*}
 
 We would like to emphasize that this definition of booleans
@@ -505,7 +502,7 @@ constructor must appropriately constrain the index argument (to zero
 or the successor of the previous vector respectively). Additionally,
 the recursive argument X takes the index as an argument. 
 \begin{equation*}
-\rm{Vec} = \lambda A. ~\lambda n. ~\mu X. ~(n=\rm{zero}) +
+\rm{Vec} \triangleq \lambda A. ~\lambda n. ~\mu X. ~(n=\rm{zero}) +
 ((m : \mathbb{N}) \times A \times X~m \times n=\rm{suc}~m)
 \end{equation*}
 
@@ -545,8 +542,14 @@ that we take the fixpoint of rather than constraining the
 input.
 \begin{singlespace}
 \begin{align*}
-\rm{Vec} &= \lambda A. ~\lambda n. ~\mu X. ~\rm{\textbf{case}}~n~\rm{\textbf{of}}\\
+\rm{Vec} &\triangleq \lambda A. ~\lambda n. ~\mu X. ~\rm{\textbf{case}}~n~\rm{\textbf{of}}\\
 \rm{zero} &\mapsto 1\\
 \rm{suc}~n &\mapsto A \times X~n
 \end{align*}
 \end{singlespace}
+
+Agda does not currently support a high-level syntax (like
+\AgdaKeyword{data}) for defining computational algebraic
+types. Nonetheless, we semantically model them using an internalized \AgdaData{μ} type
+former in \refsec{TODO}.
+
