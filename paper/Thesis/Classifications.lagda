@@ -544,7 +544,7 @@ a \AgdaKeyword{data} declaration, a \AgdaData{μ} type former, or a
 \AgdaData{W} types are not syntatically fixpoint constructions, they
 are semantically very similar so we still call them algebraic.
 
-Finally, below is an example of an indexed type defined algebraic. The
+Finally, below is an example of an indexed type defined algebraically. The
 index is given as a lambda argument (\AgdaVar{n}) just like the
 parameter (\AgdaVar{A}). However, the \AgdaCon{nil} and \AgdaCon{cons}
 constructor must appropriately constrain the index argument (to zero
@@ -639,8 +639,9 @@ type \AgdaData{A}.
 
 The parametric lists from \refsec{param} are another example of an open
 type, as the \AgdaVar{a} argument in the \AgdaCon{cons} constructor
-has type \AgdaVar{A}. \AgdaVar{A} is the parameter of the list
-datatype, and it is open because its type is \AgdaData{Set}.
+has type \AgdaVar{A}. The type of lists parameterized by \AgdaVar{A}
+is open because \AgdaCon{cons} uses \AgdaVar{A}, and \AgdaVar{A} has
+type \AgdaData{Set}.
 
 \subsection{Closed Types}
 
