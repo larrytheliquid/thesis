@@ -387,7 +387,7 @@ this functional vector representation, so it could have been written like:
    prod : (n : ℕ) (f : Vec ℕ n) → ℕ
 \end{code}
 
-Finally, we can derive non-indexed from indexed types by using a
+Finally, we can derive non-indexed types from indexed types by using a
 dependent pair. The dependent pair acts like an existential, where the
 first component is a value from the the index domain and acts as a
 witness, and the second component is the indexed type former applied

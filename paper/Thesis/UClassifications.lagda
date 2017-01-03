@@ -20,7 +20,7 @@ universes with example \textit{generic functions} in this section. A
 
 \subsection{Universe Model}
 
-In a dependently typed language, a universe can be defined as a
+In a dependently typed language, a universe can be modelled as a
 type of codes (representing the actual types of the universe), and a
 meaning function (mapping each code to its actual type).
 
@@ -162,5 +162,50 @@ For completeness, above is the generic \AgdaFun{concat} for
 result to a heterogenous list, as the base case
 values of this universe are already heterogenous lists.
 
+\subsection{Inductive Universes}
 
+We call a universe \textit{inductive} if its type are closed over one
+or more type formers. For example, the \AgdaData{BitsStar},
+\AgdaData{ListStarH}, and \AgdaData{HListStar} universes above are
+inductive because they are closed under \AgdaData{List} formation (via
+the inductive \AgdaCon{`List} code constructor).
+
+\subsection{Non-Inductive Universes}
+
+A universe is \textit{non-inductive} if its types are not closed under
+any type formers. For example, the \AgdaData{Truthy} universe
+below represents types that we want to consider as boolean
+conditional values.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  data Truthy : Set where
+    `Bool `ℕ `Bits : Truthy
+  
+  ⟦_⟧ : Truthy → Set
+  ⟦ `Bool ⟧ = Bool
+  ⟦ `ℕ ⟧ = ℕ
+  ⟦ `Bits ⟧ = List Bool
+\end{code}
+
+Below we define the \AgdaData{isTrue} operation, allowing us to
+consider any value of the universe as being true or false.
+
+\begin{code}
+  isTrue : (A : Truthy) → ⟦ A ⟧ → Bool
+  isTrue `Bool b = b
+  isTrue `ℕ zero = false
+  isTrue `ℕ (suc n) = true
+  isTrue `Bits nil = true
+  isTrue `Bits (cons false xs) = false
+  isTrue `Bits (cons true xs) = isTrue `Bits xs
+\end{code}
+
+\subsection{Autonomous Universes}
 
