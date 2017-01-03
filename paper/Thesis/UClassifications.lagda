@@ -7,7 +7,6 @@ module _ where
  data HList : Set₁ where
    nil : HList
    cons : {A : Set} → A → HList → HList
- postulate append : HList → HList → HList
 \end{code}}
 
 \section{Classifications of Universes}\label{sec:bitsstar}
@@ -59,7 +58,7 @@ nested sublists are \AgdaCon{true}.
   all (`List A) (cons x xs) = all A x ∧ all (`List A) xs
 \end{code}
 
-\subsection{Open Universes}
+\subsection{Open Universes}\label{sec:openu}
 
 An \textit{open} universe mentions \AgdaData{Set} in its type of
 codes or meaning function. Just as open types grow their collection of
@@ -96,6 +95,7 @@ increasing number of outer lists.
 \AgdaHide{
 \begin{code}
   postulate
+   append : HList → HList → HList
 \end{code}}
 
 \begin{code}
@@ -119,7 +119,7 @@ of the universe are heterogenous.
 In the \AgdaCon{`Base} case, we cast the heterogenous value of type
 \AgdaVar{A} to a single-element heterogenous list.
 
-\subsection{Closed Universes}
+\subsection{Closed Universes}\label{sec:closedu}
 
 A \textit{closed} universe does not mention \AgdaData{Set} in its type of
 codes or meaning function. The \AgdaData{BitsStar} universe of
@@ -132,6 +132,7 @@ heterogenous lists closed under list formation below.
 \begin{code}
 module _ where
  private
+  postulate append : HList → HList → HList
 \end{code}}
 
 \begin{code}
@@ -144,7 +145,7 @@ module _ where
   ⟦ `List A ⟧ = List ⟦ A ⟧
 \end{code}
 
-Even though \AdgaData{HListStar} does not mention \AgdaData{Set}
+Even though \AgdaData{HListStar} does not mention \AgdaData{Set}
 \textit{directly} in its codes or meaning function, it does mention it
 \textit{indirectly} because the \AgdaCon{`HList} code maps to the open
 type \AgdaData{HList} (which mentions \AgdaData{Set}). Therefore,
@@ -207,5 +208,36 @@ consider any value of the universe as being true or false.
   isTrue `Bits (cons true xs) = isTrue `Bits xs
 \end{code}
 
+
+\subsection{Subordinate Universes}
+
+A universe is \textit{subordinate} if one of its types contains a
+nested type that is not a member of the universe. Hence, a universe is
+subordinate if one of its types has a constructor with an argument whose
+type is not a member of the universe.
+
+For example, the open \AgdaData{HListStar} universe from
+\refsec{closedu} is subordinate because it contains \AgdaData{HList},
+which has a \AgdaData{Set} argument in the \AgdaCon{cons} constructor,
+and \AgdaData{Set} is not a member of \AgdaData{HListStar}.
+
 \subsection{Autonomous Universes}
 
+A universe is \textit{autonomous} if all nested types of its types
+are also types in the universe. Hence, the type of every argument to
+every constructor of a universe type must also be a type in the
+universe.
+
+For example, the closed \AgdaData{BitsStar} universe of \refsec{bitsstar} is
+closed because \AgdaCon{Bool} does not have constructor arguments,
+and because the universe is closed under \AgdaData{List} formation
+(thus any sublist only contains types also in the universe).
+
+Note that open universes can be autonomous. For example,
+\AgdaData{ListStarH} from \refsec{openu} includes all types
+\AgdaVar{A} (of type \AgdaData{Set}) via the \AgdaCon{`Base}
+constructor. Regardless of any other types in the universe,
+\AgdaData{ListStarH} is autonomous because any type can be injected
+using \AgdaCon{`Base}.
+
+\subsection{Type Families as Universes}
