@@ -16,7 +16,8 @@ functions operating over said types.
 \subsection{Function Types}
 
 Dependently typed functional languages include dependent functions
-as a primitive. 
+as a primitive. The codomain of a dependent function type may
+dependent on a value of its domain.
 $$
 (\AgdaVar{a} : \AgdaVar{A}) → \AgdaVar{B}~\AgdaVar{a}
 $$
@@ -127,7 +128,7 @@ module _ where
 Dependent pairs (\AgdaData{Σ}) are another example, albeit dependent, also
 non-inductive, and parameterized by a type \AgdaVar{A} and a function
 type \AgdaVar{B} (whose domain is \AgdaVar{A} and codomain is
-\AgdaData{Set}). We define the type of dependents product along with
+\AgdaData{Set}). We define the type of dependents pairs along with
 its dependent projections.
 
 \begin{code}
