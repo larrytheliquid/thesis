@@ -4,9 +4,6 @@ open import Data.Bool
 open import Data.Product hiding ( map )
 module _ where
  open import Data.List hiding ( concat ; all ) renaming ( [] to nil ; _∷_ to cons )
- data HList : Set₁ where
-   nil : HList
-   cons : {A : Set} → A → HList → HList
 \end{code}}
 
 \section{Classifications of Universes}\label{sec:bitsstar}
@@ -77,6 +74,7 @@ module _ where
  private
 \end{code}}
 
+%% TODO rename to DListStar
 \begin{code}
   data ListStarH : Set₁ where
     `Base : Set → ListStarH
@@ -94,6 +92,9 @@ increasing number of outer lists.
 
 \AgdaHide{
 \begin{code}
+  data HList : Set₁ where
+    nil : HList
+    cons : {A : Set} → A → HList → HList
   postulate
    append : HList → HList → HList
 \end{code}}
@@ -132,6 +133,9 @@ heterogenous lists closed under list formation below.
 \begin{code}
 module _ where
  private
+  data HList : Set₁ where
+   nil : HList
+   cons : {A : Set} → A → HList → HList
   postulate append : HList → HList → HList
 \end{code}}
 
@@ -240,4 +244,178 @@ constructor. Regardless of any other types in the universe,
 \AgdaData{ListStarH} is autonomous because any type can be injected
 using \AgdaCon{`Base}.
 
-\subsection{Type Families as Universes}
+\subsection{Type Families as Universes}\label{sec:famu}
+
+Recall from \refsec{bitsstar} that a universe is modelled as a type of
+codes \textit{and} a meaning function. Therefore, a value in this
+universe can be captured as a dependent pair, where the first
+component specifies the code and the second component specifies the
+type returned by the meaning function applied to the first component.
+For example, we might refer to values of the \AgdaData{BitsStar}
+universe (rather than just codes) as follows. 
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  data BitsStar : Set where
+    `Bool : BitsStar
+    `List : BitsStar → BitsStar
+  
+  ⟦_⟧ : BitsStar → Set
+  ⟦ `Bool ⟧ = Bool
+  ⟦ `List A ⟧ = List ⟦ A ⟧
+\end{code}}
+
+\begin{code}
+  BitsStarU : Set
+  BitsStarU = Σ BitsStar ⟦_⟧
+
+  bits₁ : BitsStarU
+  bits₁ = `List `Bool , cons true (cons false nil)
+
+  bits₂ : BitsStarU
+  bits₂ = `List (`List `Bool) , cons (cons true nil) (cons (cons false nil) nil)
+\end{code}
+
+Thus far we have constructed universes with certain properties from
+scratch. However, we can also turn any \textit{type family} into a
+universe by considering the type of its indices the codes and the type
+family itself the meaning function. If we do this for the indexed type of
+finite sets (\AgdaData{Fin}), we get a universe (\AgdaFun{Pow}) like powerset but
+without the empty set.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Bool
+ open import Data.Nat
+ open import Data.Fin renaming ( zero to here ; suc to there )
+ private
+\end{code}}
+
+\begin{code}
+  Pow : Set
+  Pow = Σ ℕ Fin
+
+  one₁ : Pow
+  one₁ = 1 , here
+
+  one₂ : Pow
+  one₂ = 2 , here
+
+  two₂ : Pow
+  two₂ = 2 , there here
+\end{code}
+
+That is, for every natural number (each \AgdaData{ℕ} code) we get the subset of the
+natural numbers from zero  to that number minus one
+(the \AgdaData{Fin}ite set).
+
+We can use the same method to transform the parameterized type of lists
+into a type of \textit{dynamic} lists
+(\AgdaFun{DList}). A dynamic list may contain values
+of any type, but the type must be shared by all values.
+
+\begin{code}
+  DList : Set₁
+  DList = Σ Set List
+
+  blist : DList
+  blist = Bool , cons true (cons false nil)
+
+  nlist : DList
+  nlist = ℕ , cons 1 (cons 2 nil)
+\end{code}
+
+\subsection{Parameterized Universes}
+
+A \textit{parameterized} universe is a collection of universes, parameterized
+by some type \AgdaVar{A}, such that the collection is
+uniformly defined for each universe regardless of what \AgdaVar{A} is.
+
+The model of a parameterized universe depends on its parameter
+in its codes, meaning function, or both. Recall
+\AgdaData{BitsStar} (\refsec{bitsstar}) and
+\AgdaData{HListStar} (\refsec{bitsstar}), universe closed under list
+formation with booleans and heterogenous lists as base types
+respectively. Our example parameterized universe abstracts out the
+base type as a parameter.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+  postulate append : {A : Set} → List A → List A → List A
+\end{code}}
+
+\begin{code}
+  data ListStar : Set where
+    `Param : ListStar
+    `List : ListStar → ListStar
+  
+  ⟦_⟧ : ListStar → Set → Set
+  ⟦ `Param ⟧ X = X
+  ⟦ `List A ⟧ X = List (⟦ A ⟧ X)
+\end{code}
+
+The \AgdaCon{`Param} code represents the parameterized type, and is
+interpreted as the second argument to the meaning function.
+To more easily see how this is a ``parameterized'' universe, we give the type
+of the universe as a dependent pair below.
+
+\begin{code}
+  ListStarU : Set → Set
+  ListStarU X = Σ ListStar (λ A → ⟦ A ⟧ X)
+
+  bits₁ : ListStarU Bool
+  bits₁ = `List `Param , cons true (cons false nil)
+
+  bits₂ : ListStarU Bool
+  bits₂ = `List (`List `Param) , cons (cons true nil) (cons (cons false nil) nil)
+\end{code}
+
+
+We can still write \AgdaFun{concat}, by injecting values of the
+parameterized type into a singleton list as with \AgdaData{DListStar}
+(\refsec{openu}). The type signature of \AgdaFun{concat} for
+\AgdaData{ListStar} tells us more than \AgdaFun{concat} for
+\AgdaData{DListStar}, as the output is a list containing values whose type
+is the parameter \AgdaVar{X} (rather than an arbitary \AgdaData{HList}).
+
+\begin{code}
+  concat : ∀{X} (A : ListStar) → ⟦ A ⟧ X → List X
+  concat `Param x = cons x nil
+  concat (`List A) nil = nil
+  concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+  postulate append : {A : Set} → List A → List A → List A
+  data ListStar : Set where
+    `Param : ListStar
+    `List : ListStar → ListStar
+  
+  ⟦_⟧ : ListStar → Set → Set
+  ⟦ `Param ⟧ X = X
+  ⟦ `List A ⟧ X = List (⟦ A ⟧ X)
+\end{code}}
+
+\begin{code}
+  DListStarU : Set₁
+  DListStarU = Σ (ListStar × Set) (λ { (A , X) → ⟦ A ⟧ X })
+
+  bits₁ : DListStarU
+  bits₁ = (`List `Param , Bool) , cons true (cons false nil)
+
+  bits₂ : DListStarU
+  bits₂ = (`List (`List `Param) , Bool) , cons (cons true nil) (cons (cons false nil) nil)
+\end{code}
+
+
+%% List A = Pair Nat (Vec A)
