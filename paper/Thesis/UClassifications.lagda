@@ -252,7 +252,7 @@ universe can be captured as a dependent pair, where the first
 component specifies the code and the second component specifies the
 type returned by the meaning function applied to the first component.
 For example, we might refer to values of the \AgdaData{BitsStar}
-universe (rather than just codes) as follows. 
+universe (rather than just its codes) as follows. 
 
 \AgdaHide{
 \begin{code}
@@ -283,7 +283,7 @@ scratch. However, we can also turn any \textit{type family} into a
 universe by considering the type of its indices the codes and the type
 family itself the meaning function. If we do this for the indexed type of
 finite sets (\AgdaData{Fin}), we get a universe (\AgdaFun{Pow}) like powerset but
-without the empty set.
+without the empty set (because \AgdaData{Fin} \AgdaCon{zero} is not inhabited).
 
 \AgdaHide{
 \begin{code}
