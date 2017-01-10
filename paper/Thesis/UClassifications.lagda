@@ -27,7 +27,7 @@ module _ where
 \end{code}}
 
 For example the \AgdaData{BitsStar} universe is comprised of the type of booleans,
-lists of boolesns, lists of lists of booleans, and so on. Its type of
+lists of booleans, lists of lists of booleans, and so on. Its type of
 codes is \AgdaData{BitsStar}, and its meaning function is
 \AgdaFun{⟦\_⟧}. As a convention, we prefix constructors of the code
 type with a backtick to emphasize the distinction betwee a code
@@ -42,6 +42,33 @@ type with a backtick to emphasize the distinction betwee a code
   ⟦_⟧ : BitsStar → Set
   ⟦ `Bool ⟧ = Bool
   ⟦ `List A ⟧ = List ⟦ A ⟧
+\end{code}
+
+To get the actual universe type, apply the dependent pair type
+former (\AgdaData{Σ}) to the codes and meaning function. Therefore,
+values of the universe are dependent pairs whose first component is
+a code and second component is a value (the type of the value is the
+meaning function applied to the code).
+
+\begin{code}
+  BitsStarU : Set
+  BitsStarU = Σ BitsStar ⟦_⟧
+\end{code}
+
+Our first example member of this universe is represents the list of
+booleans \texttt{[true, false]}.
+
+\begin{code}
+  bits₁ : BitsStarU
+  bits₁ = `List `Bool , cons true (cons false nil)
+\end{code}
+
+Our second example universe value represents the list of lists of
+booleans \texttt{[[true], [false]]}.
+
+\begin{code}
+  bits₂ : BitsStarU
+  bits₂ = `List (`List `Bool) , cons (cons true nil) (cons (cons false nil) nil)
 \end{code}
 
 Our generic function over this universe is \AgdaFun{all}, which
@@ -244,43 +271,13 @@ constructor. Regardless of any other types in the universe,
 \AgdaData{ListStarH} is autonomous because any type can be injected
 using \AgdaCon{`Base}.
 
-\subsection{Type Families as Universes}\label{sec:famu}
-
-Recall from \refsec{bitsstar} that a universe is modelled as a type of
-codes \textit{and} a meaning function. Therefore, a value in this
-universe can be captured as a dependent pair, where the first
-component specifies the code and the second component specifies the
-type returned by the meaning function applied to the first component.
-For example, we might refer to values of the \AgdaData{BitsStar}
-universe (rather than just its codes) as follows. 
-
-\AgdaHide{
-\begin{code}
-module _ where
- private
-  data BitsStar : Set where
-    `Bool : BitsStar
-    `List : BitsStar → BitsStar
-  
-  ⟦_⟧ : BitsStar → Set
-  ⟦ `Bool ⟧ = Bool
-  ⟦ `List A ⟧ = List ⟦ A ⟧
-\end{code}}
-
-\begin{code}
-  BitsStarU : Set
-  BitsStarU = Σ BitsStar ⟦_⟧
-
-  bits₁ : BitsStarU
-  bits₁ = `List `Bool , cons true (cons false nil)
-
-  bits₂ : BitsStarU
-  bits₂ = `List (`List `Bool) , cons (cons true nil) (cons (cons false nil) nil)
-\end{code}
+\subsection{Derived Universes}\label{sec:famu}
 
 Thus far we have constructed universes with certain properties from
-scratch. However, we can also turn any \textit{type family} into a
-universe by considering the type of its indices the codes and the type
+scratch, extending the \textit{primitive} types of our language with a
+\textit{primitive} universe. However, we can also \textit{derive} a
+universe from any \textit{type family} by
+considering the type of its indices the codes and the type
 family itself the meaning function. If we do this for the indexed type of
 finite sets (\AgdaData{Fin}), we get a universe (\AgdaFun{Pow}) like powerset but
 without the empty set (because \AgdaData{Fin} \AgdaCon{zero} is not inhabited).
@@ -312,9 +309,10 @@ That is, for every natural number (each \AgdaData{ℕ} code) we get the subset o
 natural numbers from zero  to that number minus one
 (the \AgdaData{Fin}ite set).
 
-We can use the same method to transform the parameterized type of lists
-into a type of \textit{dynamic} lists
-(\AgdaFun{DList}). A dynamic list may contain values
+We can use the same method to derive
+type of \textit{dynamic} lists (\AgdaFun{DList})
+from the type of parameterized lists.
+A dynamic list may contain values
 of any type, but the type must be shared by all values.
 
 \begin{code}
@@ -334,12 +332,12 @@ A \textit{parameterized} universe is a collection of universes, parameterized
 by some type \AgdaVar{A}, such that the collection is
 uniformly defined for each universe regardless of what \AgdaVar{A} is.
 
-The model of a parameterized universe depends on its parameter
+The model of a parameterized universe (i.e. its representation in type
+theory) may depend on its parameter
 in its codes, meaning function, or both. Recall
 \AgdaData{BitsStar} (\refsec{bitsstar}) and
-\AgdaData{HListStar} (\refsec{bitsstar}), universe closed under list
-formation with booleans and heterogenous lists as base types
-respectively. Our example parameterized universe abstracts out the
+\AgdaData{HListStar} (\refsec{bitsstar}), the universes of booleans and heterogenous lists
+respectively, closed under list formation. Our example parameterized universe abstracts out the
 base type as a parameter.
 
 \AgdaHide{
