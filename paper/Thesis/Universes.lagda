@@ -448,31 +448,40 @@ return type.
   concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
 \end{code}
 
-%% \AgdaHide{
-%% \begin{code}
-%% module _ where
-%%  open import Data.Nat
-%%  private
-%%   postulate append : {A : Set} → List A → List A → List A
-%%   data ParStar : Set where
-%%     `Par : ParStar
-%%     `List : ParStar → ParStar
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+  postulate append : {A : Set} → List A → List A → List A
+  data ParStar : Set where
+    `Par : ParStar
+    `List : ParStar → ParStar
   
-%%   ⟦_⟧ : ParStar → Set → Set
-%%   ⟦ `Par ⟧ X = X
-%%   ⟦ `List A ⟧ X = List (⟦ A ⟧ X)
-%% \end{code}}
+  ⟦_⟧ : ParStar → Set → Set
+  ⟦ `Par ⟧ X = X
+  ⟦ `List A ⟧ X = List (⟦ A ⟧ X)
+\end{code}}
 
-%% \begin{code}
-%%   DynStarU : Set₁
-%%   DynStarU = Σ (ParStar × Set) (λ { (A , X) → ⟦ A ⟧ X })
+We've seen how to derive a universe from a \textit{type family}
+in \refsec{famu}, but we can also derive a universe from a
+\textit{universe family}. As an example, we derive the
+\AgdaFun{DynStar} universe from the \AgdaData{ParStar} universe.
+In \refsec{openu} we defined the type of \AgdaData{DynStar}
+codes as a primitive, whereas below we derive \AgdaFun{DynStar} codes
+as the pair of \AgdaData{ParStar} and \AgdaData{Set} (the parameter
+type of \AgdaFun{ParStarU}).
 
-%%   bits₁ : DynStarU
-%%   bits₁ = (`List `Par , Bool) , cons true (cons false nil)
+\begin{code}
+  DynStarU : Set₁
+  DynStarU = Σ (ParStar × Set) (λ { (A , X) → ⟦ A ⟧ X })
 
-%%   bits₂ : DynStarU
-%%   bits₂ = (`List (`List `Par) , Bool) , cons (cons true nil) (cons (cons false nil) nil)
-%% \end{code}
+  bits₁ : DynStarU
+  bits₁ = (`List `Par , Bool) , cons true (cons false nil)
+
+  bits₂ : DynStarU
+  bits₂ = (`List (`List `Par) , Bool) , cons (cons true nil) (cons (cons false nil) nil)
+\end{code}
 
 
 %% List A = Pair Nat (Vec A)
