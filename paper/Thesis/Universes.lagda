@@ -57,6 +57,8 @@ meaning function applied to the code).
   BoolStarU = Σ BoolStar ⟦_⟧
 \end{code}
 
+As a convention, we append the letter \AgdaFun{U} to the type of codes
+to define the universe type.
 Our first example member of this universe represents the list of
 booleans \texttt{[true, false]}.
 
