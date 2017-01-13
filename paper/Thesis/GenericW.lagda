@@ -10,7 +10,7 @@ module _ where
    cons : A → List A → List A
 \end{code}}
 
-\section{Generic Programming}
+\section{Generic Functions}\label{sec:genfun}
 
 %% TODO makes sense to have param poly and uni poly both
 %% be generic, bc param is also a universe
@@ -32,7 +32,7 @@ module _ where
  private
 \end{code}}
 
-\subsection{Generic Functions}
+\subsection{Polymorphic Functions}
 
 \textit{Generic programming} is the act of writing
 functions that can be applied to values of a collection of types

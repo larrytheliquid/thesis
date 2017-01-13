@@ -26,20 +26,20 @@ module _ where
  private
 \end{code}}
 
-For example the \AgdaData{BitsStar} universe is comprised of the type of booleans,
+For example the \AgdaData{BoolStar} universe is comprised of the type of booleans,
 lists of booleans, lists of lists of booleans, and so on. Its type of
-codes is \AgdaData{BitsStar}, and its meaning function is
+codes is \AgdaData{BoolStar}, and its meaning function is
 \AgdaFun{⟦\_⟧}. As a convention, we prefix constructors of the code
 type with a backtick to emphasize the distinction betwee a code
 (e.g. \AgdaCon{`Bool}) and the actual type it denotes
 (e.g. \AgdaData{Bool}).
 
 \begin{code}
-  data BitsStar : Set where
-    `Bool : BitsStar
-    `List : BitsStar → BitsStar
+  data BoolStar : Set where
+    `Bool : BoolStar
+    `List : BoolStar → BoolStar
   
-  ⟦_⟧ : BitsStar → Set
+  ⟦_⟧ : BoolStar → Set
   ⟦ `Bool ⟧ = Bool
   ⟦ `List A ⟧ = List ⟦ A ⟧
 \end{code}
@@ -51,15 +51,15 @@ a code and second component is a value (the type of the value is the
 meaning function applied to the code).
 
 \begin{code}
-  BitsStarU : Set
-  BitsStarU = Σ BitsStar ⟦_⟧
+  BoolStarU : Set
+  BoolStarU = Σ BoolStar ⟦_⟧
 \end{code}
 
 Our first example member of this universe represents the list of
 booleans \texttt{[true, false]}.
 
 \begin{code}
-  bits₁ : BitsStarU
+  bits₁ : BoolStarU
   bits₁ = `List `Bool , cons true (cons false nil)
 \end{code}
 
@@ -67,7 +67,7 @@ Our second example universe value represents the list of lists of
 booleans \texttt{[[true], [false]]}.
 
 \begin{code}
-  bits₂ : BitsStarU
+  bits₂ : BoolStarU
   bits₂ = `List (`List `Bool) , cons (cons true nil) (cons (cons false nil) nil)
 \end{code}
 
@@ -76,7 +76,7 @@ returns \AgdaCon{true} if all the booleans in any potential list and
 nested sublists are \AgdaCon{true}.
 
 \begin{code}
-  all : (A : BitsStar) → ⟦ A ⟧ → Bool
+  all : (A : BoolStar) → ⟦ A ⟧ → Bool
   all `Bool b = b
   all (`List A) nil = true
   all (`List A) (cons x xs) = all A x ∧ all (`List A) xs
@@ -89,7 +89,7 @@ codes or meaning function. Just as open types grow their collection of
 values when new types are declared, open universes grow their
 collection of types when new types are declared.
 
-An example open universe is \AgdaData{DListStar}, the universe of
+An example open universe is \AgdaData{DynStar}, the universe of
 dynamic lists closed under list formation.
 A dynamic list may contain values
 of any type, but the type must be shared by all values.
@@ -101,11 +101,11 @@ module _ where
 \end{code}}
 
 \begin{code}
-  data DListStar : Set₁ where
-    `Dyn : Set → DListStar
-    `List : DListStar → DListStar
+  data DynStar : Set₁ where
+    `Dyn : Set → DynStar
+    `List : DynStar → DynStar
   
-  ⟦_⟧ : DListStar → Set
+  ⟦_⟧ : DynStar → Set
   ⟦ `Dyn A ⟧ = A
   ⟦ `List A ⟧ = List ⟦ A ⟧
 \end{code}
@@ -130,13 +130,13 @@ increasing number of outer lists.
    concat3 : {A : Set} → List (List (List (List A))) → List A
 \end{code}
 
-Using the \AgdaData{DListStar} universe, we can define a generic
+Using the \AgdaData{DynStar} universe, we can define a generic
 function that flattens any number of outer lists. The flattened
 output must be a heterogenous list because the \AgdaCon{`Dyn} values
 of the universe are not statically known.
 
 \begin{code}
-  concat : (A : DListStar) → ⟦ A ⟧ → HList
+  concat : (A : DynStar) → ⟦ A ⟧ → HList
   concat (`Dyn A) x = cons x nil
   concat (`List A) nil = nil
   concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
@@ -148,7 +148,7 @@ In the \AgdaCon{`Dyn} case, we cast the dynamic value of type
 \subsection{Closed Universes}\label{sec:closedu}
 
 A \textit{closed} universe does not mention \AgdaData{Set} in its type of
-codes or meaning function. The \AgdaData{BitsStar} universe of
+codes or meaning function. The \AgdaData{BoolStar} universe of
 \refsec{bitsstar} is an example of a closed universe.
 
 As an edge case, consider the universe (\AgdaData{HListStar}) of
@@ -195,8 +195,8 @@ values of this universe are already heterogenous lists.
 \subsection{Inductive Universes}
 
 We call a universe \textit{inductive} if its type are closed over one
-or more type formers. For example, the \AgdaData{BitsStar},
-\AgdaData{DListStar}, and \AgdaData{HListStar} universes above are
+or more type formers. For example, the \AgdaData{BoolStar},
+\AgdaData{DynStar}, and \AgdaData{HListStar} universes above are
 inductive because they are closed under \AgdaData{List} formation (via
 the inductive \AgdaCon{`List} code constructor).
 
@@ -257,16 +257,16 @@ are also types in the universe. Hence, the type of every argument to
 every constructor of a universe type must also be a type in the
 universe.
 
-For example, the closed \AgdaData{BitsStar} universe of \refsec{bitsstar} is
+For example, the closed \AgdaData{BoolStar} universe of \refsec{bitsstar} is
 closed because \AgdaCon{Bool} does not have constructor arguments,
 and because the universe is closed under \AgdaData{List} formation
 (thus any sublist only contains types also in the universe).
 
 Note that open universes can be autonomous. For example,
-\AgdaData{DListStar} from \refsec{openu} includes all types
+\AgdaData{DynStar} from \refsec{openu} includes all types
 \AgdaVar{A} (of type \AgdaData{Set}) via the \AgdaCon{`Dyn}
 constructor. Regardless of any other types (such as lists) in the
-universe, \AgdaData{DListStar} is autonomous because any type can be
+universe, \AgdaData{DynStar} is autonomous because any type can be
 injected using \AgdaCon{`Dyn}.
 
 \subsection{Derived Universes}\label{sec:famu}
@@ -311,7 +311,7 @@ We can use the same method to derive
 type of \textit{dynamic} lists (\AgdaFun{DList})
 from the type of parameterized lists. Note that this is the type
 of dynamic lists, rather than the Kleene star of dynamic lists
-(\AgdaData{DListStar} from \refsec{openu}).
+(\AgdaData{DynStar} from \refsec{openu}).
 
 \begin{code}
   DList : Set₁
@@ -333,7 +333,7 @@ uniformly defined for each universe regardless of what \AgdaVar{A} is.
 The model of a parameterized universe (i.e. its representation in type
 theory) may depend on its parameter
 in its codes, meaning function, or both. Recall
-\AgdaData{BitsStar} (\refsec{bitsstar}) and
+\AgdaData{BoolStar} (\refsec{bitsstar}) and
 \AgdaData{HListStar} (\refsec{bitsstar}), the universes of booleans and heterogenous lists
 respectively, closed under list formation. Our example parameterized universe abstracts out the
 base type as a parameter.
@@ -374,10 +374,10 @@ of the universe as a dependent pair below.
 
 
 We can still write \AgdaFun{concat}, by injecting values of the
-parameterized type into a singleton list as with \AgdaData{DListStar}
+parameterized type into a singleton list as with \AgdaData{DynStar}
 (\refsec{openu}). The type signature of \AgdaFun{concat} for
 \AgdaData{ListStar} tells us more than \AgdaFun{concat} for
-\AgdaData{DListStar}, as the output is a list containing values whose type
+\AgdaData{DynStar}, as the output is a list containing values whose type
 is the parameter \AgdaVar{X} (rather than an arbitary \AgdaData{HList}).
 
 \begin{code}
@@ -403,13 +403,13 @@ module _ where
 \end{code}}
 
 \begin{code}
-  DListStarU : Set₁
-  DListStarU = Σ (ListStar × Set) (λ { (A , X) → ⟦ A ⟧ X })
+  DynStarU : Set₁
+  DynStarU = Σ (ListStar × Set) (λ { (A , X) → ⟦ A ⟧ X })
 
-  bits₁ : DListStarU
+  bits₁ : DynStarU
   bits₁ = (`List `Param , Bool) , cons true (cons false nil)
 
-  bits₂ : DListStarU
+  bits₂ : DynStarU
   bits₂ = (`List (`List `Param) , Bool) , cons (cons true nil) (cons (cons false nil) nil)
 \end{code}
 
