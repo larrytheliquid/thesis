@@ -55,7 +55,7 @@ meaning function applied to the code).
   BitsStarU = Σ BitsStar ⟦_⟧
 \end{code}
 
-Our first example member of this universe is represents the list of
+Our first example member of this universe represents the list of
 booleans \texttt{[true, false]}.
 
 \begin{code}
@@ -89,11 +89,10 @@ codes or meaning function. Just as open types grow their collection of
 values when new types are declared, open universes grow their
 collection of types when new types are declared.
 
-An example open universe is \AgdaData{ListStarH}, the universe of all
-base types closed under list formation. The ``H'' in the name stands
-for ``heterogenous'', as this universe is similar to the type of
-heterogenous lists (except each position contains either a heterogenous value,
-or a possibly nested list containing heterogenous values).
+An example open universe is \AgdaData{DListStar}, the universe of
+dynamic lists closed under list formation.
+A dynamic list may contain values
+of any type, but the type must be shared by all values.
 
 \AgdaHide{
 \begin{code}
@@ -101,14 +100,13 @@ module _ where
  private
 \end{code}}
 
-%% TODO rename to DListStar
 \begin{code}
-  data ListStarH : Set₁ where
-    `Base : Set → ListStarH
-    `List : ListStarH → ListStarH
+  data DListStar : Set₁ where
+    `Dyn : Set → DListStar
+    `List : DListStar → DListStar
   
-  ⟦_⟧ : ListStarH → Set
-  ⟦ `Base A ⟧ = A
+  ⟦_⟧ : DListStar → Set
+  ⟦ `Dyn A ⟧ = A
   ⟦ `List A ⟧ = List ⟦ A ⟧
 \end{code}
 
@@ -132,19 +130,19 @@ increasing number of outer lists.
    concat3 : {A : Set} → List (List (List (List A))) → List A
 \end{code}
 
-Using the \AgdaData{ListStarH} universe, we can define a generic
-function that flattens any number of outer lists. Of course, the
-output must be a heterogenous list because the \AgdaCon{`Base} values
-of the universe are heterogenous.
+Using the \AgdaData{DListStar} universe, we can define a generic
+function that flattens any number of outer lists. The flattened
+output must be a heterogenous list because the \AgdaCon{`Dyn} values
+of the universe are not statically known.
 
 \begin{code}
-  concat : (A : ListStarH) → ⟦ A ⟧ → HList
-  concat (`Base A) x = cons x nil
+  concat : (A : DListStar) → ⟦ A ⟧ → HList
+  concat (`Dyn A) x = cons x nil
   concat (`List A) nil = nil
   concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
 \end{code}
 
-In the \AgdaCon{`Base} case, we cast the heterogenous value of type
+In the \AgdaCon{`Dyn} case, we cast the dynamic value of type
 \AgdaVar{A} to a single-element heterogenous list.
 
 \subsection{Closed Universes}\label{sec:closedu}
@@ -190,7 +188,7 @@ the \AgdaData{HListStar} universe is \textit{open}!
 \end{code}
 
 For completeness, above is the generic \AgdaFun{concat} for
-\AgdaData{HListStar}. The \AgdaCon{`Base} case need not cast its
+\AgdaData{HListStar}. The \AgdaCon{`Dyn} case need not cast its
 result to a heterogenous list, as the base case
 values of this universe are already heterogenous lists.
 
@@ -198,7 +196,7 @@ values of this universe are already heterogenous lists.
 
 We call a universe \textit{inductive} if its type are closed over one
 or more type formers. For example, the \AgdaData{BitsStar},
-\AgdaData{ListStarH}, and \AgdaData{HListStar} universes above are
+\AgdaData{DListStar}, and \AgdaData{HListStar} universes above are
 inductive because they are closed under \AgdaData{List} formation (via
 the inductive \AgdaCon{`List} code constructor).
 
@@ -265,11 +263,11 @@ and because the universe is closed under \AgdaData{List} formation
 (thus any sublist only contains types also in the universe).
 
 Note that open universes can be autonomous. For example,
-\AgdaData{ListStarH} from \refsec{openu} includes all types
-\AgdaVar{A} (of type \AgdaData{Set}) via the \AgdaCon{`Base}
-constructor. Regardless of any other types in the universe,
-\AgdaData{ListStarH} is autonomous because any type can be injected
-using \AgdaCon{`Base}.
+\AgdaData{DListStar} from \refsec{openu} includes all types
+\AgdaVar{A} (of type \AgdaData{Set}) via the \AgdaCon{`Dyn}
+constructor. Regardless of any other types (such as lists) in the
+universe, \AgdaData{DListStar} is autonomous because any type can be
+injected using \AgdaCon{`Dyn}.
 
 \subsection{Derived Universes}\label{sec:famu}
 
@@ -311,19 +309,19 @@ natural numbers from zero  to that number minus one
 
 We can use the same method to derive
 type of \textit{dynamic} lists (\AgdaFun{DList})
-from the type of parameterized lists.
-A dynamic list may contain values
-of any type, but the type must be shared by all values.
+from the type of parameterized lists. Note that this is the type
+of dynamic lists, rather than the Kleene star of dynamic lists
+(\AgdaData{DListStar} from \refsec{openu}).
 
 \begin{code}
   DList : Set₁
   DList = Σ Set List
 
-  blist : DList
-  blist = Bool , cons true (cons false nil)
+  bits : DList
+  bits = Bool , cons true (cons false nil)
 
-  nlist : DList
-  nlist = ℕ , cons 1 (cons 2 nil)
+  nums : DList
+  nums = ℕ , cons 1 (cons 2 nil)
 \end{code}
 
 \subsection{Parameterized Universes}
