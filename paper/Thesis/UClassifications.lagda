@@ -14,7 +14,7 @@ functions operating over them in \refsec{types}, we accompany
 universes with example \textit{generic functions} in this section. A
 \textit{generic function} is any function defined over multiple types.
 
-\subsection{Universe Model}
+\subsection{Universe Model}\label{sec:umodel}
 
 In a dependently typed language, a universe can be modelled as a
 type of codes (representing the actual types of the universe), and a
@@ -27,8 +27,10 @@ module _ where
 \end{code}}
 
 For example the \AgdaData{BoolStar} universe is comprised of the type of booleans,
-lists of booleans, lists of lists of booleans, and so on. Its type of
-codes is \AgdaData{BoolStar}, and its meaning function is
+lists of booleans, lists of lists of booleans, and so on.
+In other words, it is the Kleene star version of \AgdaData{Bits}
+(non-nested lists of booleans) from \refsec{closed}.
+The type of codes is \AgdaData{BoolStar}, and its meaning function is
 \AgdaFun{⟦\_⟧}. As a convention, we prefix constructors of the code
 type with a backtick to emphasize the distinction betwee a code
 (e.g. \AgdaCon{`Bool}) and the actual type it denotes
@@ -71,7 +73,7 @@ booleans \texttt{[[true], [false]]}.
   bits₂ = `List (`List `Bool) , cons (cons true nil) (cons (cons false nil) nil)
 \end{code}
 
-Our generic function over this universe is \AgdaFun{all}, which
+Our example generic function over this universe is \AgdaFun{all}, which
 returns \AgdaCon{true} if all the booleans in any potential list and
 nested sublists are \AgdaCon{true}.
 
@@ -111,17 +113,14 @@ module _ where
 \end{code}
 
 A commmon function to define over parameterized lists is ``concat'',
-which flattens a list of lists to a single list. Ordinarilly we might
+which flattens a list of lists to a single list. Ordinarily we might
 define multiple versions of this function, each flattening an
 increasing number of outer lists.
 
 \AgdaHide{
 \begin{code}
-  data HList : Set₁ where
-    nil : HList
-    cons : {A : Set} → A → HList → HList
   postulate
-   append : HList → HList → HList
+   append : {A : Set} → List A → List A → List A
 \end{code}}
 
 \begin{code}
@@ -131,19 +130,32 @@ increasing number of outer lists.
 \end{code}
 
 Using the \AgdaData{DynStar} universe, we can define a generic
-function that flattens any number of outer lists. The flattened
-output must be a heterogenous list because the \AgdaCon{`Dyn} values
-of the universe are not statically known.
+\AgdaFun{concat} function that flattens any number of outer lists.
+The return type of this function should be a \AgdaData{List} of
+\AgdaVar{A}s, where \AgdaVar{A} is the dynamic type for the dynamic
+lists to be flattened. Thus, we first define a function \AgdaFun{Dyn} to
+extract the dynamic type from a \AgdaData{DynStar} code by recursing
+down to the base case \AgdaCon{`Dyn}.
 
 \begin{code}
-  concat : (A : DynStar) → ⟦ A ⟧ → HList
+  Dyn : (A : DynStar) → Set
+  Dyn (`Dyn A) = A
+  Dyn (`List A) = Dyn A
+\end{code}
+
+Now that we have defined \AgdaFun{Dyn}, we can define generic
+\AgdaFun{concat} to return a flattened list of dynamic universe
+values.
+
+\begin{code}
+  concat : (A : DynStar) → ⟦ A ⟧ → List (Dyn A)
   concat (`Dyn A) x = cons x nil
   concat (`List A) nil = nil
   concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
 \end{code}
 
-In the \AgdaCon{`Dyn} case, we cast the dynamic value of type
-\AgdaVar{A} to a single-element heterogenous list.
+Note that a dynamic \AgdaCon{`Dyn} value is flattened by turning it
+into a single-element list.
 
 \subsection{Closed Universes}\label{sec:closedu}
 
@@ -179,18 +191,6 @@ Even though \AgdaData{HListStar} does not mention \AgdaData{Set}
 \textit{indirectly} because the \AgdaCon{`HList} code maps to the open
 type \AgdaData{HList} (which mentions \AgdaData{Set}). Therefore,
 the \AgdaData{HListStar} universe is \textit{open}!
-
-\begin{code}
-  concat : (A : HListStar) → ⟦ A ⟧ → HList
-  concat `HList xs = xs
-  concat (`List A) nil = nil
-  concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
-\end{code}
-
-For completeness, above is the generic \AgdaFun{concat} for
-\AgdaData{HListStar}. The \AgdaCon{`Dyn} case need not cast its
-result to a heterogenous list, as the base case
-values of this universe are already heterogenous lists.
 
 \subsection{Inductive Universes}
 
@@ -249,6 +249,29 @@ For example, the open \AgdaData{HListStar} universe from
 \refsec{closedu} is subordinate because it contains \AgdaData{HList},
 which has a \AgdaData{Set} argument in the \AgdaCon{cons} constructor,
 and \AgdaData{Set} is not a member of \AgdaData{HListStar}.
+
+Closed universes can be subordinate too, for example the universe
+\AgdaData{BitsStar} contains lists of booleans closed under list
+formation. The \AgdaCon{`Bits} values of this universe contain
+booleans in \AgdaCon{cons} positions, but booleans are not
+members of the universe.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data BitsStar : Set where
+    `Bits : BitsStar
+    `List : BitsStar → BitsStar
+  
+  ⟦_⟧ : BitsStar → Set
+  ⟦ `Bits ⟧ = List Bool
+  ⟦ `List A ⟧ = List ⟦ A ⟧
+\end{code}
+
 
 \subsection{Autonomous Universes}
 
@@ -310,7 +333,7 @@ natural numbers from zero  to that number minus one
 We can use the same method to derive
 type of \textit{dynamic} lists (\AgdaFun{DList})
 from the type of parameterized lists. Note that this is the type
-of dynamic lists, rather than the Kleene star of dynamic lists
+of dynamic lists, rather than the Kleene star of dynamic values
 (\AgdaData{DynStar} from \refsec{openu}).
 
 \begin{code}
@@ -324,6 +347,12 @@ of dynamic lists, rather than the Kleene star of dynamic lists
   nums = ℕ , cons 1 (cons 2 nil)
 \end{code}
 
+Reflect on the fact that universes are modeled in type theory as a dependent pair
+consisting of codes and a meaning function. This pair is just
+another type, therefore whether we consider \AgdaFun{Pow} and
+\AgdaFun{DList} to be derived types (\refsec{derived}) or derived
+universes is merely a matter of perspective.
+
 \subsection{Parameterized Universes}
 
 A \textit{parameterized} universe is a collection of universes, parameterized
@@ -332,10 +361,11 @@ uniformly defined for each universe regardless of what \AgdaVar{A} is.
 
 The model of a parameterized universe (i.e. its representation in type
 theory) may depend on its parameter
-in its codes, meaning function, or both. Recall
-\AgdaData{BoolStar} (\refsec{bitsstar}) and
-\AgdaData{HListStar} (\refsec{bitsstar}), the universes of booleans and heterogenous lists
-respectively, closed under list formation. Our example parameterized universe abstracts out the
+in its codes, meaning function, or both. The Kleene star universes of booleans
+(\AgdaData{BoolStar}), heterogenous lists (\AgdaData{HListStar}) and
+bits (\AgdaData{BitsStar}) all have a similar structure, namely a
+specialized base type closed under list formation.
+Our example parameterized universe abstracts out the
 base type as a parameter.
 
 \AgdaHide{
@@ -347,71 +377,72 @@ module _ where
 \end{code}}
 
 \begin{code}
-  data ListStar : Set where
-    `Param : ListStar
-    `List : ListStar → ListStar
+  data ParStar : Set where
+    `Par : ParStar
+    `List : ParStar → ParStar
   
-  ⟦_⟧ : ListStar → Set → Set
-  ⟦ `Param ⟧ X = X
+  ⟦_⟧ : ParStar → Set → Set
+  ⟦ `Par ⟧ X = X
   ⟦ `List A ⟧ X = List (⟦ A ⟧ X)
 \end{code}
 
-The \AgdaCon{`Param} code represents the parameterized type, and is
+The \AgdaCon{`Par} code represents the parameterized type, and is
 interpreted as the second argument to the meaning function.
 To more easily see how this is a ``parameterized'' universe, we give the type
-of the universe as a dependent pair below.
+of the universe as a parameterized dependent pair below.
 
 \begin{code}
-  ListStarU : Set → Set
-  ListStarU X = Σ ListStar (λ A → ⟦ A ⟧ X)
+  ParStarU : Set → Set
+  ParStarU X = Σ ParStar (λ A → ⟦ A ⟧ X)
 
-  bits₁ : ListStarU Bool
-  bits₁ = `List `Param , cons true (cons false nil)
+  bits₁ : ParStarU Bool
+  bits₁ = `List `Par , cons true (cons false nil)
 
-  bits₂ : ListStarU Bool
-  bits₂ = `List (`List `Param) , cons (cons true nil) (cons (cons false nil) nil)
+  bits₂ : ParStarU Bool
+  bits₂ = `List (`List `Par) , cons (cons true nil) (cons (cons false nil) nil)
 \end{code}
 
 
 We can still write \AgdaFun{concat}, by injecting values of the
 parameterized type into a singleton list as with \AgdaData{DynStar}
-(\refsec{openu}). The type signature of \AgdaFun{concat} for
-\AgdaData{ListStar} tells us more than \AgdaFun{concat} for
-\AgdaData{DynStar}, as the output is a list containing values whose type
-is the parameter \AgdaVar{X} (rather than an arbitary \AgdaData{HList}).
+(\refsec{openu}). Recall that \AgdaFun{concat} for \AgdaData{DynStar}
+required a special function \AgdaFun{Dyn} to extract the base
+type. When defining \AgdaFun{concat} for \AgdaData{ParStar}, the base
+type is already an explicit parameter that we can refer to in the
+return type.
 
 \begin{code}
-  concat : ∀{X} (A : ListStar) → ⟦ A ⟧ X → List X
-  concat `Param x = cons x nil
+  concat : ∀{X} (A : ParStar) → ⟦ A ⟧ X → List X
+  concat `Par x = cons x nil
   concat (`List A) nil = nil
   concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
 \end{code}
 
-\AgdaHide{
-\begin{code}
-module _ where
- open import Data.Nat
- private
-  postulate append : {A : Set} → List A → List A → List A
-  data ListStar : Set where
-    `Param : ListStar
-    `List : ListStar → ListStar
+%% \AgdaHide{
+%% \begin{code}
+%% module _ where
+%%  open import Data.Nat
+%%  private
+%%   postulate append : {A : Set} → List A → List A → List A
+%%   data ParStar : Set where
+%%     `Par : ParStar
+%%     `List : ParStar → ParStar
   
-  ⟦_⟧ : ListStar → Set → Set
-  ⟦ `Param ⟧ X = X
-  ⟦ `List A ⟧ X = List (⟦ A ⟧ X)
-\end{code}}
+%%   ⟦_⟧ : ParStar → Set → Set
+%%   ⟦ `Par ⟧ X = X
+%%   ⟦ `List A ⟧ X = List (⟦ A ⟧ X)
+%% \end{code}}
 
-\begin{code}
-  DynStarU : Set₁
-  DynStarU = Σ (ListStar × Set) (λ { (A , X) → ⟦ A ⟧ X })
+%% \begin{code}
+%%   DynStarU : Set₁
+%%   DynStarU = Σ (ParStar × Set) (λ { (A , X) → ⟦ A ⟧ X })
 
-  bits₁ : DynStarU
-  bits₁ = (`List `Param , Bool) , cons true (cons false nil)
+%%   bits₁ : DynStarU
+%%   bits₁ = (`List `Par , Bool) , cons true (cons false nil)
 
-  bits₂ : DynStarU
-  bits₂ = (`List (`List `Param) , Bool) , cons (cons true nil) (cons (cons false nil) nil)
-\end{code}
+%%   bits₂ : DynStarU
+%%   bits₂ = (`List (`List `Par) , Bool) , cons (cons true nil) (cons (cons false nil) nil)
+%% \end{code}
 
 
 %% List A = Pair Nat (Vec A)

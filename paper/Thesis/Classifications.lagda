@@ -644,7 +644,7 @@ has type \AgdaVar{A}. The type of lists parameterized by \AgdaVar{A}
 is open because \AgdaCon{cons} uses \AgdaVar{A}, and \AgdaVar{A} has
 type \AgdaData{Set}.
 
-\subsection{Closed Types}
+\subsection{Closed Types}\label{sec:closed}
 
 A \textit{closed} type is any type whose definition does not mention
 \AgdaData{Set}. For example, if we specialize the type of parametric
