@@ -99,6 +99,7 @@ of any type, but the type must be shared by all values.
 \AgdaHide{
 \begin{code}
 module _ where
+ open import Data.Nat
  private
 \end{code}}
 
@@ -112,7 +113,36 @@ module _ where
   ⟦ `List A ⟧ = List ⟦ A ⟧
 \end{code}
 
-A commmon function to define over parameterized lists is ``concat'',
+Again, we can encode the actual Kleene star of dynamic types
+universe (rather than just its codes or meaning function) using a
+dependent pair.
+
+\begin{code}
+  DynStarU : Set₁
+  DynStarU = Σ DynStar ⟦_⟧
+\end{code}
+
+In our first example, we represent the list of booleans
+\texttt{[true, false]}. The \AgdaCon{`Dyn} part of the first component
+of the pair indicates the type of values contained in our list, namely
+\AgdaData{Bool}.
+
+\begin{code}
+  bits₁ : DynStarU
+  bits₁ = `List (`Dyn Bool) , cons true (cons false nil)
+\end{code}
+
+Our second example represents the list of lists of
+natural numbers \texttt{[[1], [2]]}. This time,
+\AgdaCon{`Dyn} is applied to the type of natural numbers
+(\AgdaData{ℕ}).
+
+\begin{code}
+  nums₂ : DynStarU
+  nums₂ = `List (`List (`Dyn ℕ)) , cons (cons 1 nil) (cons (cons 2 nil) nil)
+\end{code}
+
+A common function to define over parameterized lists is ``concat'',
 which flattens a list of lists to a single list. Ordinarily we might
 define multiple versions of this function, each flattening an
 increasing number of outer lists.
