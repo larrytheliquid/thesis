@@ -270,7 +270,7 @@ consider any value of the universe as being true or false.
 \end{code}
 
 
-\subsection{Subordinate Universes}
+\subsection{Subordinate Universes}\label{sec:subord}
 
 A universe is \textit{subordinate} if one of its types contains a
 nested type that is not a member of the universe. Hence, a universe is
