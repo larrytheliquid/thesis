@@ -6,7 +6,7 @@ module _ where
  open import Data.List hiding ( concat ; all ) renaming ( [] to nil ; _∷_ to cons )
 \end{code}}
 
-\section{Universes}\label{sec:bitsstar}
+\section{Universes}\label{sec:universes}
 
 A \textit{universe} is a collection of \textit{types}, possibly closed
 under certain type formers. Just as we accompanied types with example
@@ -193,7 +193,7 @@ into a single-element list.
 
 A \textit{closed} universe does not mention \AgdaData{Set} in its type of
 codes or meaning function. The \AgdaData{BoolStar} universe of
-\refsec{bitsstar} is an example of a closed universe.
+\refsec{umodel} is an example of a closed universe.
 
 As an edge case, consider the universe (\AgdaData{HListStar}) of
 heterogenous lists closed under list formation below.
@@ -232,7 +232,7 @@ or more type formers. For example, the \AgdaData{BoolStar},
 inductive because they are closed under \AgdaData{List} formation (via
 the inductive \AgdaCon{`List} code constructor).
 
-\subsection{Non-Inductive Universes}
+\subsection{Non-Inductive Universes}\label{sec:noninductive}
 
 A universe is \textit{non-inductive} if its types are not closed under
 any type formers. For example, the \AgdaData{Truthy} universe

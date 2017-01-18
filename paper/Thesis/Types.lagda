@@ -19,7 +19,7 @@ Dependently typed functional languages include dependent functions
 as a primitive. The codomain of a dependent function type may
 dependent on a value of its domain.
 $$
-(\AgdaVar{a} : \AgdaVar{A}) → \AgdaVar{B}~\AgdaVar{a}
+(\AgdaVar{a} : \AgdaFun{A}) → \AgdaFun{B}~\AgdaVar{a}
 $$
 
 Values of function types are lambda expressions, for example the lambda
