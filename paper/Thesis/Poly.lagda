@@ -39,7 +39,7 @@ module _ where
 Notice that \AgdaFun{append} over lists behaves the same way for any
 type \AgdaVar{A} it gets applied to.
 
-\subsection{Parametric over Levels}
+\subsection{Parametric over Levels}\label{sec:levelpoly}
 
 Functions can also be defined parametrically over universe
 \AgdaData{Level}s. Types in Agda are arranged in a hierarchy, where
@@ -153,7 +153,7 @@ module _ where
 \end{code}
 
 
-\subsection{Ad hoc by Coercion}
+\subsection{Ad hoc by Coercion}\label{sec:coercion}
 
 If the type of \AgdaFun{Code}s for our universe is
 \textit{algebraic}, \textit{inductive}, and \textit{autonomous},

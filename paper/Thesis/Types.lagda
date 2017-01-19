@@ -603,7 +603,7 @@ Agda does not currently support a high-level syntax (like
 types. Nonetheless, we semantically model them using an internalized \AgdaData{μ} type
 former in \refsec{TODO}.
 
-\subsection{Open Types}
+\subsection{Open Types}\label{sec:open}
 
 An \textit{open} type is any type whose definition mentions the type
 of types (\AgdaData{Set}). In an \textit{open type theory} datatype
