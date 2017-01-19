@@ -64,14 +64,14 @@ module _ where
 Note that \AgdaFun{append} now behaves the same way for
 any type at any level that it is applied to.
 
-\section{Ad hoc Polymorphism}
+\section{Ad Hoc Polymorphism}
 
 An \textit{ad hoc polymorphic} function is defined non-uniformly
 over its codes or their meanings. That is, the function may inspect
 codes and its interpretation (the values in the type returned by the
 meaning function applied to a code).
 
-\subsection{Ad hoc by Overloading}
+\subsection{Ad Hoc by Overloading}
 
 If the type of \AgdaFun{Code}s for our universe is \textit{algebraic} and
 \textit{non-inductive}, then generic functions over the universe amount to a
@@ -153,7 +153,7 @@ module _ where
 \end{code}
 
 
-\subsection{Ad hoc by Coercion}\label{sec:coercion}
+\subsection{Ad Hoc by Coercion}\label{sec:coercion}
 
 If the type of \AgdaFun{Code}s for our universe is
 \textit{algebraic}, \textit{inductive}, and \textit{autonomous},
@@ -194,7 +194,7 @@ module _ where
   concat (`List A) (cons x xs) = append (concat A x) (concat (`List A) xs)
 \end{code}
 
-\subsection{Ad hoc by Overloading \& Coercion}
+\subsection{Ad Hoc by Overloading \& Coercion}
 
 Ad hoc polymorphic functions may also be a hybrid of
 the overloading and coercion styles.
