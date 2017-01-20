@@ -192,7 +192,10 @@ are built into the theory (compared to an \textit{open} theory where
 users may \textit{extend} the language with custom types).
 However, it turns out that a closed theory with an appropriate
 collection of primitives can be used to \textit{model} any custom type
-using only the primitives.
+using only the primitives. Hence, instead of extending an open theory
+with custom types using datatype declarations,
+isomorphic versions of custom types
+may be formed in a closed theory from its primitives.
 
 Therefore, a closed type theory can model a dependently typed
 programming language supporting custom types. Assume that we make
