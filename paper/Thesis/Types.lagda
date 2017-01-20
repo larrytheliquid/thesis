@@ -561,11 +561,13 @@ in \AgdaCon{cons} the index of the previous vector is given as an
 explicit argument (m), and the index (n) is constrained to be the
 successor of that argument.
 
-\subsection{Computational Types}
+%% TODO Constrained Families
 
-A \textit{computational} type is an indexed type defined by computing
+\subsection{Computational Families}\label{sec:compu}
+
+A \textit{computational family} is an indexed type defined by computing
 over its index. We have already seen a non-algebraic computational
-type, namely the derived type of vectors from \refsec{derived}.
+family, namely the derived type of vectors from \refsec{derived}.
 
 \AgdaHide{
 \begin{code}
@@ -584,9 +586,10 @@ module _ where
   Vec A (suc n) = A × Vec A n
 \end{code}
 
-However, computational types can also be algebraic. In the previous
+However, computational families can also be algebraic. In the previous
 section, vectors are algebraically defined by constraining the input
-index given as a lambda argument. As a computational algebraic type,
+index given as a lambda argument.
+As a computational algebraic family,
 we case-analyze the lambda index argument to determine the algebra
 that we take the fixpoint of rather than constraining the
 input.
@@ -600,7 +603,7 @@ input.
 
 Agda does not currently support a high-level syntax (like
 \AgdaKeyword{data}) for defining computational algebraic
-types. Nonetheless, we semantically model them using an internalized \AgdaData{μ} type
+families. Nonetheless, we semantically model them using an internalized \AgdaData{μ} type
 former in \refsec{TODO}.
 
 \subsection{Open Types}\label{sec:open}
