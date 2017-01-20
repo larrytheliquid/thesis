@@ -8,9 +8,8 @@ module _ where
 \end{code}}
 
 %% Extensional?
-\section{Closed Algebraic Universe}
 
-\subsection{Closed Type Theory}\label{sec:closedu}
+\section{Closed Vector Universe}\label{sec:closedu}
 
 \AgdaHide{
 \begin{code}
@@ -22,11 +21,6 @@ module _ where
   mutual
 \end{code}}
 
-A \textit{closed type theory} is a dependently typed language with a
-built in collection of types that will never be extended. Such a type
-theory can be modeled as a \textit{fully closed universe}. To qualify
-as a closed type theory, we require that its collection of types is at
-least closed under dependent function formation.
 Consider the closed type theory below of the empty type, the unit
 type, booleans, natural numbers, and finite sets closed under
 vector formation, dependent pair formation, and dependent function
@@ -66,7 +60,7 @@ binary trees? By definition we cannot add datatypes to a closed type
 theory (and if we did it would break generic generic functions over
 the original universe).
 
-\subsection{Universe Closed Under W}
+\section{Closed Well-Order Universe}
 
 \AgdaHide{
 \begin{code}
@@ -115,7 +109,7 @@ model datatype declarations. We show how to model datatype
 declarations by translating them into types from our closed universe
 in the next section.
 
-\subsection{W Types}\label{sec:wtypes}
+\section{Types as Well-Orders}\label{sec:wtypes}
 
 The type of well-orderings (\AgdaData{W}) can be used to model definitions of
 inductively defined well-founded trees.
@@ -279,7 +273,7 @@ module _ where
     else Bool
 \end{code}
 
-\subsection{Inadequacy of W}
+\section{Inadequacy of Well-Orders}
 
 It would seem like \AgdaData{W} is a sufficient datatype to represent
 any inductive datatype a user would define. Our

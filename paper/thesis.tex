@@ -176,8 +176,42 @@ each of these examples, we emphasize the definition of
 \include{Thesis/Total}
 
 
-\chapter{Closed Type Theory}\label{ch:univ}
-\include{Thesis/ClosedTT}
+\chapter{Closed Type Theory}\label{ch:closedtt}
+
+A \textit{closed type theory} is a dependently typed language with a
+built-in collection of types
+(i.e. \textit{primitives}) that will never be extended.
+Such a type
+theory can be modeled as a \textit{fully closed universe}. To qualify
+as a closed type theory, we require that its collection of types is at
+least closed under dependent function ($\Pi$) formation.
+
+It is reasonable to assume that programming in a closed type theory
+would be limiting, as programmers can only work with the types that
+are built into the theory (compared to an \textit{open} theory where
+users may \textit{extend} the language with custom types).
+However, it turns out that a closed theory with an appropriate
+collection of primitives can be used to \textit{model} any custom type
+using only the primitives.
+
+Therefore, a closed type theory can model a dependently typed
+programming language supporting custom types. Assume that we make
+the universe model of such a theory algebraic, inductive, autonomous,
+and concrete. This language supports
+\textit{fully generic programming} (\refsec{fullygeneric}), allowing
+programmers to write functions over all types of the
+language, including custom types!
+\footnote{By analogy, consider generic functions
+  (like equality via \texttt{Eq} or comparison via \texttt{Ord})
+  that a language like
+  Haskell can derive for any appropriate type using the
+  \texttt{deriving} keyword. While users of Haskell are limited to
+  deriving the generic functions built into the compiler, users of
+  such a closed type theory may write their own generic functions
+  operating over any appropriate type.
+}
+
+\include{Thesis/ClosedW}
 
 \part{Open Algebraic Universes}\label{part:open}
 

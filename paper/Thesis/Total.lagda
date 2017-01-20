@@ -226,7 +226,7 @@ more interesting than ones using domain predicates, as the supplement
 adds computationally relevant data rather than just restricting the
 domain to be undefined for certain cases.
 
-\subsection{Summary}
+\subsection{Conclusion}
 
 We have seen how to encode partial functions within total type theory
 by modifying the domain or codomain of a function, with and without
