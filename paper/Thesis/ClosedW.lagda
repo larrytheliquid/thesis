@@ -4,27 +4,45 @@ open import Data.Empty
 open import Data.Unit
 open import Data.Bool
 open import Data.Product
+open import Data.Nat
+open import Data.Fin hiding ( _+_ ) renaming ( zero to here ; suc to there )
+open import Data.Vec hiding ( sum ) renaming ( [] to nil ; _∷_ to cons )
 module _ where
+postulate ??? : {A : Set} → A
 \end{code}}
 
 %% Extensional?
 
 \section{Closed Vector Universe}\label{sec:closedu}
 
+In this section we present one example of a closed type theory, which
+we call the \textit{Closed Vector Universe}. This universe contains
+some standard types along with some types specifically for writing
+programs operating over vectors.
+The \textit{Closed Vector Universe} is an example of a simple closed
+type theory (or programming language)
+with a fixed set of primitives that does \textit{not}
+support custom user-defined types.
+
 \AgdaHide{
 \begin{code}
-module _ where
- open import Data.Nat
- open import Data.Fin
- open import Data.Vec
- private
+module ClosedVec where
   mutual
 \end{code}}
 
-Consider the closed type theory below of the empty type, the unit
-type, booleans, natural numbers, and finite sets closed under
-vector formation, dependent pair formation, and dependent function
-formation.
+\subsection{Universe Model}
+
+Below is the model of the \textit{Closed Vector Universe}. 
+It has standard types like the empty type (\AgdaData{⊥}),
+the unit type (\AgdaData{⊤}), booleans (\AgdaData{Bool})
+and is closed under
+dependent pair formation (\AgdaData{Σ})
+and dependent function (\AgdaData{Π}) formation.
+However, we call it the \textit{Closed Vector Universe} because it
+also includes types for writing vector-manipulating programs,
+namely the natural numbers (\AgdaData{ℕ})
+and finite sets (\AgdaData{Fin}), and is
+closed under vector (\AgdaData{Vec}) formation.
 
 \begin{code}
    data `Set : Set where
@@ -44,23 +62,132 @@ formation.
    ⟦ `Π A B ⟧ = (a : ⟦ A ⟧) → ⟦ B a ⟧
 \end{code}
 
-Just like the fully closed \AgdaData{ListStar} universe of
-\ref{section-ListStar}, \AgdaData{`Set} also supports writing fully
-generic functions. Fully generic functions take advantage of the
-ability to pattern match on codes, which models pattern matching on
-types. Thus pattern matching on types is supported in a closed type
+Recall our convention of prefixing universe code constructors
+(e.g. \AgdaCon{`Bool}) with a backtick to distinguish the code (the
+``quoted'' version of the type) from the actual type it models
+(in this case \AgdaData{Bool}, which is the result of applying the
+meaning function to the code). For closed type theories we establish the
+new convention of prefixing the type of codes (\AgdaData{`Set}) with a
+backtick. Applying the meaning function to a \AgdaData{`Set}
+(a ``quoted'' type of types) yields a
+\AgdaData{Set} (the actual type of types).
+
+Finally, notice that \AgdaData{`Set} is
+inductive-recursive (\refsec{irtypes}), as its
+\AgdaCon{`Σ} and \AgdaCon{`Π} constructors refer to the
+meaning function in their codomain argument (\AgdaVar{B}). 
+Any universe modeling a dependently typed language is
+similarly inductive-recursive, as the universe must have
+$\Pi$ types to qualify as a model for DTT.
+
+
+\subsection{Generic Programming}
+
+Just like the fully closed \AgdaData{BoolStar} universe of
+\refsec{fullygeneric}, \AgdaData{`Set} also supports writing fully
+generic functions. Fully generic functions, over a universe model of a
+closed type theory, model pattern matching on types (\AgdaData{Set})
+by pattern matching on codes (\AgdaData{`Set}) instead.
+Therefore, a generic function over all values of all types is modeled
+by matching on a code, then a value from the interpretation of that
+code, followed by any additional arguments and the return type.
+$$
+(\AgdaVar{A} : \AgdaData{`Set}) → \AgdaFun{⟦}~\AgdaVar{A}~\AgdaFun{⟧} → ...
+$$
+
+Thus pattern matching on types is supported in a closed type
 theory, because we know ahead of time that the collection of types
 will never be extended (hence total functions over types never
 become partial).
 
-The \AgdaData{`Set} universe above has enough types to write a lot of interesting
+\subsubsection{Generic Sum without $\Pi$}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open ClosedVec
+ private
+\end{code}}
+
+\begin{code}
+  sum : (A : `Set) (a : ⟦ A ⟧) → ℕ
+  sum `⊥ ()
+  sum `⊤ tt = 0
+  sum `Bool true = 0
+  sum `Bool false = 1
+  sum `ℕ n = n
+  sum (`Fin (suc n)) here = 0
+  sum (`Fin (suc n)) (there p) = sum (`Fin n) p
+  sum (`Vec A zero) nil = 0
+  sum (`Vec A (suc n)) (cons x xs) = sum A x + sum (`Vec A n) xs
+\end{code}
+
+\begin{code}
+  sum (`Σ A B) (x , xs) = sum A x + sum (B x) xs
+  sum (`Π A B) f = ???
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ (A : ClosedVec.`Set) where
+ open ClosedVec
+ private
+  postulate
+\end{code}}
+
+\begin{code}
+   B : ⟦ A ⟧ → `Set
+   f : (x : ⟦ A ⟧) → ⟦ B x ⟧
+\end{code}
+
+
+\subsubsection{Generic Sum with $\Pi$}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open ClosedVec
+ private
+\end{code}}
+
+\begin{code}
+  Sum : (A : `Set) → ⟦ A ⟧ → Set
+  Sum (`Π A B) f = Σ ⟦ A ⟧ λ a → Sum (B a) (f a)
+  Sum (`Σ A B) (x , xs) = Sum A x × Sum (B x) xs
+  Sum (`Vec A zero) nil = ⊤
+  Sum (`Vec A (suc n)) (cons x xs) = Sum A x × Sum (`Vec A n) xs
+  Sum A a = ⊤
+\end{code}
+
+\begin{code}
+  sum : (A : `Set) (a : ⟦ A ⟧) → Sum A a → ℕ
+  sum `⊥ () tt
+  sum `⊤ tt tt = 0
+  sum `Bool false tt = 0
+  sum `Bool true tt = 1
+  sum `ℕ n tt = n
+  sum (`Fin (suc n)) here tt = 0
+  sum (`Fin (suc n)) (there p) tt = sum (`Fin n) p tt
+  sum (`Vec A zero) nil tt = 0
+  sum (`Vec A (suc n)) (cons x xs) (y , ys) = sum A x y + sum (`Vec A n) xs ys
+  sum (`Σ A B) (x , xs) (y , ys) = sum A x y + sum (B x) xs ys
+  sum (`Π A B) f (x , y) = sum (B x) (f x) y
+\end{code}
+
+
+
+\subsection{Conclusion}
+
+The \textit{Closed Vector Universe} has enough types to write a lot of interesting
 functions, but the specific collection of types that our closed
 type theory contains is arbitrarily chosen. What if we later decide we also want
-binary trees? By definition we cannot add datatypes to a closed type
+binary trees? By definition we cannot add custom types to a closed type
 theory (and if we did it would break generic generic functions over
 the original universe).
+Next, in \refsec{closedw}, we see how to model a closed type theory that
+\textit{does} support custom user-defined types.
 
-\section{Closed Well-Order Universe}
+\section{Closed Well-Order Universe}\label{sec:closedw}
 
 \AgdaHide{
 \begin{code}

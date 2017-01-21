@@ -432,7 +432,7 @@ module _ where
 \end{code}}
 
 
-\subsection{Inductive-Recursive Types}
+\subsection{Inductive-Recursive Types}\label{sec:irtypes}
 
 An \textit{inductive-recursive} type is a collection of values
 mutually defined with a function parameterized by said type.
