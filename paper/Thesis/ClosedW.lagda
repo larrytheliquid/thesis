@@ -100,7 +100,7 @@ theory, because we know ahead of time that the collection of types
 will never be extended (hence total functions over types never
 become partial).
 
-\subsubsection{Generic Sum without $\Pi$}
+\subsubsection{Generic Sum without $\Pi$ Body}
 
 \AgdaHide{
 \begin{code}
@@ -195,7 +195,7 @@ In the next section we
 change our definitions to end up with an \AgdaVar{x} in the function
 case that we can pass to both \AgdaVar{B} and \AgdaVar{f}.
 
-\subsubsection{Generic Sum with $\Pi$}
+\subsubsection{Generic Sum with $\Pi$ Body}
 
 Step back for a moment and consider what the \AgdaFun{sum} of a function
 should mean. One interpretation is to consider the \AgdaFun{sum} of a
