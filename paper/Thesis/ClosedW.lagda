@@ -318,15 +318,17 @@ module SetW where
 \end{code}}
 
 On one hand, we would like a closed type theory because it supports
-generic programing via pattern matching on types. On the other hand,
-we want to support user defined datatypes (like an open type theory)
-that may not be accounted for in our closed collection of types.
+fully generic programming (\refsec{fullygeneric})
+via pattern matching on types. On the other hand,
+we want to support custom user-defined types (like an open type theory)
+that may not be present in the closed collection of types we fixed
+ahead of time.
 
-What if our closed theory had enough primitive types and type
-formers to simulate adding new datatypes to the language?
+What if our closed theory had enough primitive base types and type
+families to simulate adding new datatypes to the language?
 That is, we want to support translating any ``new'' type
-declaration into a definition in terms of an existing closed
-collection of primitive types and type formers.
+declaration into an isomorphic type defined in terms of our
+closed collection of primitive types.
 
 The type of \textit{well-orderings} (\AgdaData{W}) is used to define
 the semantics of inductive datatypes in type theory, and is the key to
@@ -359,8 +361,8 @@ in the next section.
 
 \section{Types as Well-Orders}\label{sec:wtypes}
 
-The type of well-orderings (\AgdaData{W}) can be used to model definitions of
-inductively defined well-founded trees.
+The type of well-orderings (\AgdaData{W}) can be used to model
+inductive datatype declarations as well-founded trees.
 \footnote{The etymology of
 ``well-orderings'' comes from \AgdaData{W} being the constructive
 version of the classical notion of a well-order. A well-order
@@ -525,12 +527,12 @@ module _ where
 
 It would seem like \AgdaData{W} is a sufficient datatype to represent
 any inductive datatype a user would define. Our
-fully closed universe from \ref{subsection-closedw} has enough
+fully closed universe from \refsec{closedw} has enough
 primitives to represent types in terms of \AgdaData{W} as values of
 type \AgdaData{`Set}. For example, below we internalize (i.e. as universe
-codes) disjoint unions in terms of internal dependent pairs and
+codes) disjoint unions in terms of primitive dependent pairs and
 booleans, and then internalize the \AgdaData{Tree} type in terms of
-internal well-orderings.
+primitive well-orderings.
 
 \AgdaHide{
 \begin{code}
@@ -559,14 +561,17 @@ module _ where
 
 If \AgdaData{W} were adequate for our purposes, then this
 thesis could focus on writing fully generic functions over the
-\AgdaData{`Set} universe. However, there are two issues:
+\AgdaData{`Set} universe. We could write functions similar to
+\AgdaFun{sum} from \refsec{closedu}, except they would work for
+any custom user-defined types!
+However, there are two issues:
 
 \begin{enumerate}
 \item Although \AgdaData{W} types can be extended to support
-  definitions of inductively defined type families
-  (described in \ref{section-indexed-desc}), they cannot be extended to support
-  definitions of inductive-recursive datatypes
-  (described in \ref{section-ir-desc}).
+  definitions of indexed types (\refsec{indx}),
+  they cannot be extended to support
+  definitions of inductive-recursive types
+  (\refsec{irtypes}).
 
 \item The base cases of inductively defined datatypes using
   \AgdaData{W} have an infinite number of intentionally distinct

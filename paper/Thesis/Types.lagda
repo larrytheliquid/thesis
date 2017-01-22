@@ -157,7 +157,7 @@ parameterized by some type \AgdaVar{A}. The example function
 \end{code}
 
 
-\subsection{Indexed Types}\label{sec:prod}
+\subsection{Indexed Types}\label{sec:indx}
 
 An \textit{indexed} type is a collection of types, indexed
 by some type \AgdaVar{I}, such that each type in the collection may
@@ -375,7 +375,7 @@ The \AgdaFun{cons} function ``extends'' the function
 \AgdaVar{f} by returning \AgdaVar{x} if the finite set points to the
 head of the vector, and otherwise calls the ``tail'' by applying
 \AgdaVar{f} to the sub-index \AgdaVar{p}. Notice that in
-\refsec{prod} the ``list'' argument was actually
+\refsec{indx} the ``list'' argument was actually
 this functional vector representation, so it could have been written like:
 
 \AgdaHide{
@@ -472,7 +472,7 @@ should be the \AgdaFun{eval}uation of the of the upper bound
 \AgdaVar{a}. Hence, the evaluation function \AgdaFun{eval} must be mutually defined
 with the type \AgdaData{Arith}. The \AgdaCon{Prod} constructor
 evaluates to the product computed with our \AgdaFun{prod} function
-from \refsec{prod}.
+from \refsec{indx}.
 We can represent the mathematical equation given earlier as follows.
 
 \AgdaHide{
