@@ -156,7 +156,7 @@ Rather than dynamically enforcing partiality by returning a
 is statically ``partial'' as its definition for the empty list case is
 uniquely determined.
 
-\subsection{Domain Supplements}
+\subsection{Domain Supplements}\label{sec:domsup}
 
 \AgdaHide{
 \begin{code}

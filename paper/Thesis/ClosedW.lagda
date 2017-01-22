@@ -109,24 +109,64 @@ module _ where
  private
 \end{code}}
 
+Our example fully generic function is \AgdaFun{sum}, summing up
+all natural numbers (and values that can be coerced
+into natural numbers) contained within a value of the
+closed vector universe.
+
+
 \begin{code}
   sum : (A : `Set) (a : ⟦ A ⟧) → ℕ
+\end{code}
+
+Let's begin with \AgdaFun{sum}ming values of base types
+(non-function type formers, like \AgdaData{Bool}):
+Summing a natural number just means returning it. We can never receive
+a value of the empty type, so we need not define that
+case. The sum of unit is 0. The sum of a boolean is 0 if it is
+false, and 1 if it is true (\AgdaCon{true}
+is the second constructor of \AgdaData{Bool}, just as
+\AgdaCon{suc zero} is the second value in the ordered
+natural numbers). The sum of a finite set
+\AgdaData{Fin} value is 0 for the \AgdaCon{here} index, and the
+\AgdaCon{suc}essor of the previous index for the \AgdaCon{there}
+case. 
+
+\begin{code}
+  sum `ℕ n = n
   sum `⊥ ()
   sum `⊤ tt = 0
   sum `Bool true = 0
   sum `Bool false = 1
-  sum `ℕ n = n
   sum (`Fin (suc n)) here = 0
-  sum (`Fin (suc n)) (there p) = sum (`Fin n) p
+  sum (`Fin (suc n)) (there p) = suc (sum (`Fin n) p)
+\end{code}
+
+We \AgdaFun{sum} a vector by adding together all of the values it
+contains, where each value is interpreted as a natural number by
+recursive application of \AgdaFun{sum}. The empty vector contains no
+values, so its sum is 0.
+
+\begin{code}
   sum (`Vec A zero) nil = 0
   sum (`Vec A (suc n)) (cons x xs) = sum A x + sum (`Vec A n) xs
 \end{code}
 
+A pair is like a two-element vector, so we \AgdaFun{sum} a pair by
+adding its components.
+Finally, the \AgdaFun{sum} of a function is 0.
+
 \begin{code}
   sum (`Σ A B) (x , xs) = sum A x + sum (B x) xs
-  sum (`Π A B) f = ???
+  sum (`Π A B) f = 0
 \end{code}
 
+Defining the \AgdaFun{sum} of a function to be 0 may seem
+unsatisfying, as its body contains other values of our closed vector
+universe. Consider the types of variables in context when defining the
+function case of \AgdaFun{sum}:
+
+\AgdaBind
 \AgdaHide{
 \begin{code}
 module _ (A : ClosedVec.`Set) where
@@ -139,9 +179,40 @@ module _ (A : ClosedVec.`Set) where
    B : ⟦ A ⟧ → `Set
    f : (x : ⟦ A ⟧) → ⟦ B x ⟧
 \end{code}
+\AgdaUnbind
 
+The \AgdaFun{sum} cases for pairs and functions are actually for
+\textit{dependent} pairs (\AgdaCon{`Σ})
+and functions (\AgdaCon{`Π}). Notice that in our definition of sum for
+pairs the recursive call of \AgdaFun{sum} for the second
+component applies the codomain \AgdaVar{B} to an
+\AgdaFun{⟦}~\AgdaVar{A}~\AgdaFun{⟧} value. Luckily, the first
+component of the pair (\AgdaVar{x}) is exactly the value we need.
+If we wanted to provide an alternative definition of sum for
+functions, we would have no such luck because the value we are summing
+(\AgdaVar{f}) is itself a function (i.e. there is no \AgdaVar{x} in sight).
+In the next section we 
+change our definitions to end up with an \AgdaVar{x} in the function
+case that we can pass to both \AgdaVar{B} and \AgdaVar{f}.
 
 \subsubsection{Generic Sum with $\Pi$}
+
+Step back for a moment and consider what the \AgdaFun{sum} of a function
+should mean. One interpretation is to consider the \AgdaFun{sum} of a
+function to be many possible sums, one for each argument in the domain
+of the function. Under this interpretation our \AgdaFun{sum} is
+missing an argument, one that provides a domain value for each
+occurrence of a function in the closed vector universe value we wish
+to sum.
+
+In other words, we consider our previous definition of
+\AgdaFun{sum} to be a partial function (we cannot appropriately define
+the function case).
+In \refsec{domsup} we
+learned how to create a total function from a partial one by adding a
+\textit{domain supplement}.
+Below, we define the computational argument family \AgdaFun{Sum} to be
+used as a domain supplement for \AgdaFun{sum}.
 
 \AgdaHide{
 \begin{code}
@@ -150,27 +221,77 @@ module _ where
  private
 \end{code}}
 
+The most significant case is the supplement for functions, in
+which we request the interpretation of \AgdaVar{A} as an additional
+argument (let's call it \AgdaVar{x}).
+When defining \AgdaFun{sum} we will want to use \AgdaVar{x}
+to recursively sum the body of the function, so we also
+recursively request a supplement for the codomain of our
+function (\AgdaVar{B}) applied to \AgdaVar{x}.
+
 \begin{code}
   Sum : (A : `Set) → ⟦ A ⟧ → Set
-  Sum (`Π A B) f = Σ ⟦ A ⟧ λ a → Sum (B a) (f a)
+  Sum (`Π A B) f = Σ ⟦ A ⟧ (λ x → Sum (B x) (f x))
+\end{code}
+
+A pair may contain functions in either of its components, so we
+recursively request supplements for its domain and codomain. An
+empty vector requires no supplement, but a non-empty vector
+requires one for each of its elements. Finally, the base types do not
+need supplemental values to sum them, so their supplement is a trivial
+unit value.
+
+\begin{code}
   Sum (`Σ A B) (x , xs) = Sum A x × Sum (B x) xs
   Sum (`Vec A zero) nil = ⊤
   Sum (`Vec A (suc n)) (cons x xs) = Sum A x × Sum (`Vec A n) xs
   Sum A a = ⊤
 \end{code}
 
+Below the domain of \AgdaFun{sum}'s type is altered to take the
+supplement \AgdaFun{Sum} as an additional argument.
+
 \begin{code}
   sum : (A : `Set) (a : ⟦ A ⟧) → Sum A a → ℕ
+\end{code}
+
+The only change we make to defining \AgdaFun{sum} for
+base types and \AgdaData{Fin} is to ignore the additional
+trivial unit value (\AgdaCon{tt}), and to supply it as an argument in
+the recursive case of \AgdaCon{`Fin}.
+
+\begin{code}
   sum `⊥ () tt
   sum `⊤ tt tt = 0
   sum `Bool false tt = 0
   sum `Bool true tt = 1
   sum `ℕ n tt = n
   sum (`Fin (suc n)) here tt = 0
-  sum (`Fin (suc n)) (there p) tt = sum (`Fin n) p tt
+  sum (`Fin (suc n)) (there p) tt = suc (sum (`Fin n) p tt)
+\end{code}
+
+Summing pairs and vectors is also relatively unchanged. For pairs the
+only difference is that we thread along the left component of the
+supplement (\AgdaVar{y})
+when summing the left component of the pair (\AgdaVar{x}), and
+the right component of the supplement (\AgdaVar{ys}) when summing the
+right component of the pair (\AgdaVar{xs}). Summing a non-empty vector
+is similar to summing a pair, and summing an empty vector remains 0.
+
+\begin{code}
+  sum (`Σ A B) (x , xs) (y , ys) = sum A x y + sum (B x) xs ys
   sum (`Vec A zero) nil tt = 0
   sum (`Vec A (suc n)) (cons x xs) (y , ys) = sum A x y + sum (`Vec A n) xs ys
-  sum (`Σ A B) (x , xs) (y , ys) = sum A x y + sum (B x) xs ys
+\end{code}
+
+Finally, we can sum a function by summing its body. Its body is
+obtained by applying the function \AgdaVar{f} to \AgdaVar{x}
+(whose type is the interpretation of \AgdaVar{A}), readily available
+in the domain supplement. Of course, the body may have additional
+functions to sum, so we thread along the domain supplement \AgdaVar{y} for
+any of those.
+
+\begin{code}
   sum (`Π A B) f (x , y) = sum (B x) (f x) y
 \end{code}
 
@@ -182,9 +303,9 @@ The \textit{Closed Vector Universe} has enough types to write a lot of interesti
 functions, but the specific collection of types that our closed
 type theory contains is arbitrarily chosen. What if we later decide we also want
 binary trees? By definition we cannot add custom types to a closed type
-theory (and if we did it would break generic generic functions over
-the original universe).
-Next, in \refsec{closedw}, we see how to model a closed type theory that
+theory (and if we did it would violate the totality of generic
+functions over the original universe).
+Next (in \refsec{closedw}) we see how to model a closed type theory that
 \textit{does} support custom user-defined types.
 
 \section{Closed Well-Order Universe}\label{sec:closedw}

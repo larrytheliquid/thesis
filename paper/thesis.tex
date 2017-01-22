@@ -52,6 +52,14 @@
 \newcommand{\AgdaFun}[1]{\AgdaFunction{#1}}
 \newcommand{\AgdaVar}[1]{\AgdaBound{#1}}
 
+\newcommand{\AgdaBind}{\renewcommand{\AgdaPostulate}[1]
+  {\AgdaNoSpaceMath{\AgdaFontStyle{\textcolor{AgdaBound}{\AgdaLink{##1}}}}}
+}
+
+\newcommand{\AgdaUnbind}{\renewcommand{\AgdaPostulate}[1]
+  {\AgdaNoSpaceMath{\AgdaFontStyle{\textcolor{AgdaPostulate}{\AgdaLink{##1}}}}}
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \renewcommand{\contentsname}{Table of Contents}
