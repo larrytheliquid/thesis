@@ -552,13 +552,13 @@ An example of an inductive-recursive type is the type of arithmetic
 expressions \AgdaData{Arith}.
 Values of type \AgdaData{Arith} encode ``Big Pi''
 mathematical arithmetic product equations up to some finite
-bound, such as the one below. 
+bound, such as the one below.
 \begin{equation*}
   \prod_{i=1}^{3} i
 \end{equation*}
 
 The intuition is that this expression should evaluate to something
-(the number six in this case). The mutually defined function is
+(the number 6 in this case). The mutually defined function is
 exactly the evaluation function.
 The type is defined as follows.
 
@@ -576,10 +576,15 @@ The type is defined as follows.
 A literal number is represented using the \AgdaCon{Num} constructor,
 evaluating to said number. A mathematical product is represented using
 the \AgdaCon{Prod} constructor, where the first argument \AgdaVar{a}
-is the upper bound of the product as an arithmetic expression, and the
+is the upper bound of the product as an arithmetic expression (3 in
+the example above), and the
 second argument \AgdaVar{f} is the
-body (of the product) as a functional representation of a vector of arithmetic
-expressions. The length of the vector (the argument to \AgdaData{Fin})
+body of the product ($i$ in the example above)
+as a functional representation of a vector of arithmetic
+expressions.
+
+The length of the vector (the argument to \AgdaData{Fin} in the type
+of \AgdaVar{f})
 should be the \AgdaFun{eval}uation of the of the upper bound
 \AgdaVar{a}. Hence, the evaluation function \AgdaFun{eval} must be mutually defined
 with the type \AgdaData{Arith}. The \AgdaCon{Prod} constructor
@@ -599,12 +604,16 @@ We can represent the mathematical equation given earlier as follows.
     six = Prod (Num 3) (λ i → Num (num i))
 \end{code}
 
+The result of applying \AgdaFun{eval} to the inductive-recursive
+(\AgdaData{Arith})
+equation \AgdaFun{six}
+is the natural number \AgdaNum{6}.
 An \AgdaData{Arith} equation may be nested in its upper bound
 (\AgdaVar{a}) or body (codomain of \AgdaVar{f}), but the lower
-bound is always the value 1.
+bound is always 1.
 Note that above we define the expression \AgdaFun{six} with the helper function
 \AgdaFun{num}, which converts the finite set value \AgdaVar{i} to a natural number
-using one-based indexing.
+using one-based indexing. 
 
 A more typical example of an inductive-recursive type is a
 \textit{universe} modeling a dependently typed language, which we will
