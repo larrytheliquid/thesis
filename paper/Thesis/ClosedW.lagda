@@ -582,7 +582,7 @@ However, there are two issues:
    codomain of the function is bottom, we can write it many different
    ways (i.e. \AgdaFun{elim⊥}, \AgdaFun{elim⊥ ∘ elim⊥}, etc). Even
    though all leaves containing such functions are extensionally
-   equivalent, it is inadequate to have an infinite number of
+   equivalent, it is inadequate~\cite{TODO} to have an infinite number of
    intentionally distinct canonical forms for the model of
    \AgdaData{Tree} (whose initial declaration was first-order).
 \end{enumerate}
