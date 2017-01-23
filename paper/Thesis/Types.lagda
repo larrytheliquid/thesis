@@ -40,11 +40,19 @@ module _ where
 \subsection{Non-Inductive Types}\label{sec:nonind}
 
 A \textit{non-inductive} type is any type that is not recursively
-defined. In particular, the definition of a non-inductive type does
+defined.
+A type can have one or more constructors used to introduce its
+values. The definition of a non-inductive type does
 not mention itself in the types of any of the arguments to its
-constructors. Functions are one example of non-inductive types,
-and booleans are another (defined with the negation function
-\AgdaFun{not} as an example).
+constructors.
+
+Functions are an example of a non-inductive type,
+because the domain and codomain of a $\lambda$ does not
+recursively mention the function type.
+Booleans are another example, because the \AgdaCon{true} and
+\AgdaCon{false} constructors do not have arguments.
+Below is the type of booleans, defined with the negation function
+\AgdaFun{not} as an example.
 
 \AgdaHide{
 \begin{code}
@@ -69,6 +77,17 @@ single constructor without any arguments.
     tt : ⊤
 \end{code}
 
+A non-trivial example is the ``maybe'' type specialized to
+booleans (\AgdaData{MaybeBool}).
+The \AgdaCon{just} constructor has an argument, but its type is
+\AgdaData{Bool} rather than the type being defined
+(\AgdaData{MaybeBool}).
+
+\begin{code}
+  data MaybeBool : Set where
+    nothing : MaybeBool
+    just : Bool → MaybeBool
+\end{code}
 
 \subsection{Inductive Types}
 
