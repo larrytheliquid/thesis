@@ -229,6 +229,15 @@ sum of the lengths of the input vectors.
   append (cons x xs) ys = cons x (append xs ys)
 \end{code}
 
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Bool
+ open import Data.Nat
+ open import Function
+ private
+\end{code}}
+
 Another example is the type of finite sets (\AgdaData{Fin}), indexed by
 the natural numbers. For each natural number \AgdaVar{n}, the type
 \AgdaData{Fin} \AgdaVar{n} represents the subset of natural numbers
@@ -260,9 +269,34 @@ values of the \AgdaData{Fin}~\AgdaNum{3} type.
   three = there (there here)
 \end{code}
 
-The example function \AgdaFun{prod} below computes the product of a
-list of \AgdaVar{n} natural numbers (represented as a function
-from \AgdaData{Fin} \AgdaVar{n} to \AgdaData{ℕ}). The base case
+Our example function using finite sets, named \AgdaFun{prod}, computes
+the product of a list of \AgdaVar{n} natural numbers. However, we
+represent a list of numbers as a function from \AgdaData{Fin}
+\AgdaVar{n} to \AgdaData{ℕ}. The idea is that each member of the
+finite set maps to a number (a member of our ``list'').
+For example, the list \texttt{[1,2,3]} is represented as
+the function below.
+\footnote{
+  Technically this is a length-3 vector rather than a list. However,
+  \AgdaFun{prod} also takes a natural number argument, and a dependent
+  pair consisting of a number \AgdaVar{n} and a vector of length
+  \AgdaVar{n} is isomorphic to a list. See
+  \refsec{derived} on derived types for more discussion.
+  }
+
+\begin{code}
+  nums : Fin 3 → ℕ
+  nums here = 1
+  nums (there here) = 2
+  nums (there (there here)) = 3
+  nums (there (there (there ())))
+\end{code}
+
+Once again, \AgdaFun{prod} takes this functional list representation
+as an input and returns the the mathematical product of all members of
+the ``list''. 
+
+The base case
 represents the empty list, for which we return the number one (the
 identify of the product operation).
 The recursive case multiplies the current number at the
@@ -277,6 +311,9 @@ sets).
   prod zero f = suc zero
   prod (suc n) f = f here * prod n (f ∘ there)
 \end{code}
+
+Hence, \AgdaFun{prod} applied to \AgdaNum{3} and \AgdaFun{nums}
+produces \AgdaNum{6} (which is $1\cdot2\cdot3$).
 
 \subsection{Type Families}
 
@@ -447,7 +484,7 @@ The \AgdaFun{cons} function ``extends'' the function
 \AgdaVar{f} by returning \AgdaVar{x} if the finite set points to the
 head of the vector, and otherwise calls the ``tail'' by applying
 \AgdaVar{f} to the sub-index \AgdaVar{p}. Notice that in
-\refsec{indx} the ``list'' argument was actually
+\refsec{indx} the ``list'' argument to \AgdaFun{prod} was actually
 this functional vector representation, so it could have been written like:
 
 \AgdaHide{
