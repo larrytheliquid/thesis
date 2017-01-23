@@ -123,8 +123,10 @@ values closed under certain value constructors (e.g. \AgdaData{ℕ} as
 A \textit{parameterized} type is a collection of types, parameterized
 by some type \AgdaVar{A}, such that the collection is
 uniformly defined for each of its types regardless of what \AgdaVar{A}
-is. For example, below the type of disjoin unions (\AgdaData{⊎}) is
-non-dependent, non-inductive, and parameterized by two types
+is.
+
+For example, below the type of disjoin unions (\AgdaData{⊎}) is
+\textit{non-dependent}, \textit{non-inductive}, and parameterized by two types
 \AgdaVar{A} and \AgdaVar{B}. We define the type of disjoint unions
 along with a function to \AgdaFun{case}-analyze them.
 
@@ -144,8 +146,9 @@ module _ where
   case (inj₂ b) ca cb = cb
 \end{code}
 
-Dependent pairs (\AgdaData{Σ}) are another example, albeit dependent, also
-non-inductive, and parameterized by a type \AgdaVar{A} and a function
+Dependent pairs (\AgdaData{Σ}) are another example.
+They are \textit{dependent},
+\textit{non-inductive}, and parameterized by a type \AgdaVar{A} and a function
 type \AgdaVar{B} (whose domain is \AgdaVar{A} and codomain is
 \AgdaData{Set}). We define the type of dependents pairs along with
 its dependent projections.
@@ -161,8 +164,10 @@ its dependent projections.
   proj₂ (a , b) = b
 \end{code}
 
-A third example, this time inductive, is the type of polymorphic lists
-parameterized by some type \AgdaVar{A}. The example function
+A third example is the type of polymorphic lists.
+They are \textit{non-dependent}, \textit{inductive}, and
+parameterized by some type \AgdaVar{A}.
+The example function
 \AgdaFun{append} combines two lists into a single list.
 
 \begin{code}
@@ -178,14 +183,6 @@ parameterized by some type \AgdaVar{A}. The example function
 
 \subsection{Indexed Types}\label{sec:indx}
 
-An \textit{indexed} type is a collection of types, indexed
-by some type \AgdaVar{I}, such that each type in the collection may
-vary for any particular value of \AgdaVar{I}.
-One example is the type of finite sets (\AgdaData{Fin}), indexed by
-the natural numbers. For each natural number \AgdaVar{n}, the type
-\AgdaData{Fin} \AgdaVar{n} represents the subset of natural numbers
-from zero to \AgdaVar{n} minus one.
-
 \AgdaHide{
 \begin{code}
 module _ where
@@ -193,6 +190,36 @@ module _ where
  open import Function
  private
 \end{code}}
+
+An \textit{indexed} type is a collection of types, indexed
+by some type \AgdaVar{I}, such that each type in the collection may
+vary for any particular value of \AgdaVar{I}.
+For example, the type of vectors (\AgdaData{Vec}), or length-indexed
+lists. 
+Vectors are \textit{indexed} by a natural number \AgdaVar{n}
+(representing their length) and also \textit{parameterized} by some
+type \AgdaVar{A}.
+
+\begin{code}
+  data Vec (A : Set) : ℕ → Set where
+    nil : Vec A zero
+    cons : ∀{n} → A → Vec A n → Vec A (suc n)
+\end{code}
+
+The example function
+\AgdaFun{append} ensures that the length of the output vector is the
+sum of the lengths of the input vectors.
+
+\begin{code}
+  append : ∀{A n m} → Vec A n → Vec A m → Vec A (n + m)
+  append nil ys = ys
+  append (cons x xs) ys = cons x (append xs ys)
+\end{code}
+
+Another example is the type of finite sets (\AgdaData{Fin}), indexed by
+the natural numbers. For each natural number \AgdaVar{n}, the type
+\AgdaData{Fin} \AgdaVar{n} represents the subset of natural numbers
+from zero to \AgdaVar{n} minus one.
 
 \begin{code}
   data Fin : ℕ → Set where
@@ -216,22 +243,6 @@ sets).
   prod : (n : ℕ) (f : Fin n → ℕ) → ℕ
   prod zero f = suc zero
   prod (suc n) f = f here * prod n (f ∘ there)
-\end{code}
-
-Another classic indexed datatype is vectors. Vectors are parameterized
-by some type \AgdaVar{A}, indexed by a natural number \AgdaVar{n},
-and represents lists of length \AgdaVar{n}. The example function
-\AgdaFun{append} ensures that the length of the output vector is the
-sum of the lengths of the input vectors.
-
-\begin{code}
-  data Vec (A : Set) : ℕ → Set where
-    nil : Vec A zero
-    cons : ∀{n} → A → Vec A n → Vec A (suc n)
-
-  append : ∀{A n m} → Vec A n → Vec A m → Vec A (n + m)
-  append nil ys = ys
-  append (cons x xs) ys = cons x (append xs ys)
 \end{code}
 
 \subsection{Type Families}
