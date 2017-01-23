@@ -141,9 +141,9 @@ module _ where
     inj₁ : A → A ⊎ B
     inj₂ : B → A ⊎ B
 
-  case : {A B C : Set} → A ⊎ B → C → C → C
-  case (inj₁ a) ca cb = ca
-  case (inj₂ b) ca cb = cb
+  case : {A B C : Set} → A ⊎ B → (A → C) → (B → C) → C
+  case (inj₁ a) f g = f a
+  case (inj₂ b) f g = g b
 \end{code}
 
 Dependent pairs (\AgdaData{Σ}) are another example.
@@ -328,32 +328,16 @@ module _ where
   true = inj₂ tt
 \end{code}
 
-Notice that the type former of an indexed type (such as the type of
-finite sets) is a function. Thus, we can derive an indexed type by
-\textit{computing} the appropriate type for the input index. For example, the
-type of finite sets can be derived as a right-nested tuple of disjoint unions of
-unit types, ending with a bottom type (\AgdaVar{⊥}, the type without
-any constructors). This makes sense because the finite set of zero
-elements should be uninhabited, and the finite set of any other number
-\AgdaVar{n} should offer a choice up to that number (representing a
-subset of natural numbers bounded by \AgdaVar{n} minus one).
+An \textit{indexed type} can be derived as a function by
+\textit{computing} an appropriate existing type from its index.
+This is because the type former of an indexed type (such as the type of
+vectors or finite sets) is a function.
 
-\begin{code}
-  Fin : ℕ → Set
-  Fin zero = ⊥
-  Fin (suc n) = ⊤ ⊎ Fin n
-
-  here : ∀{n} → Fin (suc n)
-  here = inj₁ tt
-
-  there : ∀{n} → Fin n → Fin (suc n)
-  there p = inj₂ p
-\end{code}
-
-Similarly, we can derive the indexed type of vectors of length
+For example, we can derive the indexed type of vectors of length
 \AgdaVar{n} as a right-nested tuple of pairs containing \AgdaVar{n} values of
-type \AgdaVar{A} (each \AgdaVar{A} instance represents a \AgdaFun{cons}),
-ending in the type of unit (representing \AgdaFun{nil}).
+type \AgdaVar{A}. Each occurrence of \AgdaVar{A} represents a
+\AgdaFun{cons}). The tuple terminates in the unit type,
+representing \AgdaFun{nil}.
 
 \begin{code}
   Vec : Set → ℕ → Set
@@ -365,6 +349,27 @@ ending in the type of unit (representing \AgdaFun{nil}).
 
   cons : ∀{A n} → A → Vec A n → Vec A (suc n)
   cons x xs = x , xs
+\end{code}
+
+As another example, consider the type of finite sets.
+The finite set type can be derived as a right-nested tuple of disjoint unions of
+unit types, ending with a bottom type (\AgdaVar{⊥}, the type without
+any constructors). This makes sense because the finite set of zero
+elements is uninhabited, and the finite set of any other number
+\AgdaVar{n} offers a choice (of \AgdaCon{here}s and \AgdaCon{there}s)
+to index any subnumber of \AgdaVar{n}. Here ``choice'' is interpreted
+as disjoint union.
+
+\begin{code}
+  Fin : ℕ → Set
+  Fin zero = ⊥
+  Fin (suc n) = ⊤ ⊎ Fin n
+
+  here : ∀{n} → Fin (suc n)
+  here = inj₁ tt
+
+  there : ∀{n} → Fin n → Fin (suc n)
+  there p = inj₂ p
 \end{code}
 
 \AgdaHide{
@@ -379,10 +384,14 @@ module _ where
  private
 \end{code}}
 
+Besides deriving vectors as a function whose type is \textit{computed}
+from its index, we can also derive the type of vectors as a
+\textit{constant} function.
 Vectors are a special case of a class of datatypes called
-\textit{containers}~\ref{TODO}. Because of this, we can represent a
-vector as a type synonym (a constant function) rather than a
-computation. Below, the type of vectors is represented as a function
+\textit{containers}~\ref{TODO}, which are functions from datatype
+positions to contained values. Below, the type of vectors is
+represented as a
+\textit{constant} function (i.e. one that does not vary for \AgdaVar{n})
 whose domain is a finite set of \AgdaVar{n} elements, and whose
 codomain is \AgdaVar{A}. Think of the function as an \AgdaVar{n}-ary
 projection for each \AgdaVar{A} value in the vector.
@@ -417,8 +426,8 @@ this functional vector representation, so it could have been written like:
    prod : (n : ℕ) (f : Vec ℕ n) → ℕ
 \end{code}
 
-Finally, we can derive non-indexed types from indexed types by using a
-dependent pair. The dependent pair acts like an existential, where the
+Finally, we can derive \textit{non-indexed} types from indexed types by using a
+\textit{dependent pair}. The dependent pair acts like an existential, where the
 first component is a value from the the index domain and acts as a
 witness, and the second component is the indexed type former applied
 to the witness and acts like a predicate. For example, we can derive
@@ -533,7 +542,7 @@ see in \refsec{closedu}.
 An \textit{infinitary} type is an inductive type where at least one
 constructor has one function argument whose codomain is the type being
 defined. The \AgdaData{Arith} type from the previous section is an
-example, where the \AgdaCon{Prod} construtor has a function argument
+example, where the \AgdaCon{Prod} constructor has a function argument
 \AgdaVar{f} whose domain is a finite set \AgdaData{Fin} and codomain
 is \AgdaData{Arith} itself. Note that the domain can never be the
 type being defined, because negative datatypes~\ref{TODO} make type
@@ -565,7 +574,7 @@ Although it looks
 syntatically similar to the \textit{derived} definition of booleans
 using unit and disjoint union in \refsec{derived}, that derived
 definition is \textit{not} algebraic because it is not defined with
-$\mu$ (either syntatically or semanticsally).
+$\mu$ (either syntatically or semantically).
 However, some derived types \textit{can} be algebraic if we
 internalize $\mu$ as a type former \AgdaData{μ} (as in
 \refsec{TODO}), and use this type former to derive type definitions.
