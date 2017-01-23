@@ -186,6 +186,7 @@ The example function
 \AgdaHide{
 \begin{code}
 module _ where
+ open import Data.Bool
  open import Data.Nat
  open import Function
  private
@@ -206,6 +207,18 @@ type \AgdaVar{A}.
     cons : ∀{n} → A → Vec A n → Vec A (suc n)
 \end{code}
 
+Below we encode the 2-length vector of booleans \texttt{[true,false]}
+and the 3-length vector of natural numbers \texttt{[1,2,3]}
+using \AgdaData{Vec}.
+
+\begin{code}
+  bits : Vec Bool 2
+  bits = cons true (cons false nil)
+
+  nums : Vec ℕ 3
+  nums = cons 1 (cons 2 (cons 3 nil))
+\end{code}
+
 The example function
 \AgdaFun{append} ensures that the length of the output vector is the
 sum of the lengths of the input vectors.
@@ -219,12 +232,32 @@ sum of the lengths of the input vectors.
 Another example is the type of finite sets (\AgdaData{Fin}), indexed by
 the natural numbers. For each natural number \AgdaVar{n}, the type
 \AgdaData{Fin} \AgdaVar{n} represents the subset of natural numbers
-from zero to \AgdaVar{n} minus one.
+from 1 to \AgdaVar{n}.
+\footnote{
+  Note that the finite set \AgdaData{Fin}~\AgdaNum{0} is
+  uninhabited, as the subset of natural numbers from 1 to 0 does not
+  make sense.
+}
 
 \begin{code}
   data Fin : ℕ → Set where
     here : ∀{n} → Fin (suc n)
     there : ∀{n} → Fin n → Fin (suc n)
+\end{code}
+
+The type \AgdaData{Fin}~\AgdaNum{3} encodes the finite set
+\texttt{\{1,2,3\}}. Below we construct the numbers 1, 2, and 3 as
+values of the \AgdaData{Fin}~\AgdaNum{3} type.
+
+\begin{code}
+  one : Fin 3
+  one = here
+
+  two : Fin 3
+  two = there here
+
+  three : Fin 3
+  three = there (there here)
 \end{code}
 
 The example function \AgdaFun{prod} below computes the product of a
