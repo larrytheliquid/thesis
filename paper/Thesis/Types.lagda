@@ -313,7 +313,10 @@ sets).
 \end{code}
 
 Hence, \AgdaFun{prod} applied to \AgdaNum{3} and \AgdaFun{nums}
-produces \AgdaNum{6} (which is $1\cdot2\cdot3$).
+produces \AgdaNum{6}. This is the result of reducing the expression
+$1\cdot1\cdot2\cdot3$. Note that the first 1 is from the
+\AgdaCon{zero} case of \AgdaFun{prod}, and the second 1 is the first
+element of \AgdaFun{nums}.
 
 \subsection{Type Families}
 
