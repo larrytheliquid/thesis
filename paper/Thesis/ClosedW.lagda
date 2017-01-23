@@ -330,6 +330,8 @@ That is, we want to support translating any ``new'' type
 declaration into an isomorphic type defined in terms of our
 closed collection of primitive types.
 
+\subsection{Universe Model}
+
 The type of \textit{well-orderings} (\AgdaData{W}) is used to define
 the semantics of inductive datatypes in type theory, and is the key to
 our debacle. After pruning some derivable types from the previous
@@ -359,7 +361,7 @@ model datatype declarations. We show how to model datatype
 declarations by translating them into types from our closed universe
 in the next section.
 
-\section{Types as Well-Orders}\label{sec:wtypes}
+\subsection{Types as Well-Orders}\label{sec:wtypes}
 
 The type of well-orderings (\AgdaData{W}) can be used to model
 inductive datatype declarations as well-founded trees.
@@ -523,7 +525,7 @@ module _ where
     else Bool
 \end{code}
 
-\section{Inadequacy of Well-Orders}
+\subsection{Inadequacy of Well-Orders}
 
 It would seem like \AgdaData{W} is a sufficient datatype to represent
 any inductive datatype a user would define. Our
