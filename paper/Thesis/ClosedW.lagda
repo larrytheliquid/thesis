@@ -545,9 +545,11 @@ any inductive datatype a user would define. Our
 fully closed universe from \refsec{closedw} has enough
 primitives to represent types in terms of \AgdaData{W} as values of
 type \AgdaData{`Set}. For example, below we internalize (i.e. as universe
-codes) disjoint unions in terms of primitive dependent pairs and
-booleans, and then internalize the \AgdaData{Tree} type in terms of
-primitive well-orderings.
+codes) disjoint unions in terms of primitive
+dependent pairs (\AgdaCon{`Σ}) and
+booleans (\AgdaCon{`Bool}),
+and then internalize the \AgdaData{Tree} type in terms of
+primitive well-orderings (\AgdaCon{`W}).
 
 \AgdaHide{
 \begin{code}
