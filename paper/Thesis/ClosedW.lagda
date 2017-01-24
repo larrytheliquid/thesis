@@ -334,10 +334,13 @@ closed collection of primitive types.
 
 The type of \textit{well-orderings} (\AgdaData{W}) is used to define
 the semantics of inductive datatypes in type theory, and is the key to
-our debacle. After pruning some derivable types from the previous
-universe and adding W types, we get a closed type theory that can
+solving our problem. After pruning some derivable types from the previous
+universe and adding \AgdaData{W} types, we get a closed type theory that can
 internally represent any type that would normally extend the language
-in an open type theory.
+in an open type theory. Before explaining what \AgdaData{W} types are
+and how they can be used to derive inductive types (\refsec{wtypes}),
+we use them below to define a closed type theory universe supporting
+custom user-defined types.
 
 \begin{code}
    data `Set : Set where
@@ -353,17 +356,23 @@ in an open type theory.
    ⟦ `W A B ⟧ = W ⟦ A ⟧ (λ a → ⟦ B a ⟧)
 \end{code}
 
-The closed type theory above consisting of the empty type, the unit
-type, and booleans closed under
-dependent pair formation,
-dependent function formation, and well-order formation allows us to
+The closed type theory above consisting of the
+empty type (\AgdaData{⊥}),
+the unit type (\AgdaData{⊤}),
+and booleans (\AgdaData{Bool})
+closed under
+dependent pair (\AgdaData{Σ}) formation,
+dependent function (\AgdaData{Π}) formation,
+and well-order (\AgdaData{W})
+formation allows us to
 model datatype declarations. We show how to model datatype
-declarations by translating them into types from our closed universe
-in the next section.
+declarations by translating them into \AgdaData{W} types and other
+primitive types in \refsec{wtypes}. In \refsec{inad} we show that the
+universe of this section is sufficient for all such translations. 
 
 \subsection{Types as Well-Orders}\label{sec:wtypes}
 
-The type of well-orderings (\AgdaData{W}) can be used to model
+The type of well-orderings~\cite{TODO} (\AgdaData{W}) can be used to model
 inductive datatype declarations as well-founded trees.
 \footnote{The etymology of
 ``well-orderings'' comes from \AgdaData{W} being the constructive
@@ -372,10 +381,10 @@ interprets a set as an ordinal $\alpha$ and a relation specifying
 which ordinals are less than $\alpha$. However, in this thesis we
 focus on the more practical interpretation of \AgdaData{W} types as a
 means to define inductive datatypes.}
-It is defined as followed, where the \AgdaVar{A} parameter
-is used for non-recursive arguments for each constructor of an
-inductive datatype, and the cardinality of the \AgdaVar{B} parameter
-(for each constructor) determines the number of recursive arguments.
+It is defined below, where the \AgdaVar{A} parameter
+encodes non-recursive arguments for each constructor of an
+inductive datatype, and the cardinality of \AgdaVar{B}~\AgdaVar{a}
+encodes the number of recursive arguments for each constructor.
 \footnote{Besides cardinailty, the content of the \AgdaVar{B} parameter
 also determines the domain of infinitary arguments, discussed in
 \ref{section-inf}.
@@ -399,8 +408,11 @@ We show how to model the semantics of inductive datatypes using
 \end{enumerate}
 
 As an example of elaborating a datatype declaration to a \AgdaData{W}
-type, we begin with the tree type below. We define
-binary \AgdaData{Tree}s with leaves containing \AgdaVar{A} values and binary
+type, we begin with the \AgdaData{Tree} type below. In the series of paragraphs
+that follow, we change the definition of \AgdaData{Tree} by applying
+isomorphisms.
+Our binary \AgdaData{Tree} type begins with leaves containing
+\AgdaVar{A} values and binary
 branches containing \AgdaVar{B} values in the middle of each branch.
 
 \AgdaHide{
@@ -525,7 +537,7 @@ module _ where
     else Bool
 \end{code}
 
-\subsection{Inadequacy of Well-Orders}
+\subsection{Inadequacy of Well-Orders}\label{sec:inad}
 
 It would seem like \AgdaData{W} is a sufficient datatype to represent
 any inductive datatype a user would define. Our
@@ -563,9 +575,10 @@ module _ where
 
 If \AgdaData{W} were adequate for our purposes, then this
 thesis could focus on writing fully generic functions over the
-\AgdaData{`Set} universe. We could write functions similar to
+\AgdaData{`Set} universe of \refsec{closedw}.
+We could write functions similar to
 \AgdaFun{sum} from \refsec{closedu}, except they would work for
-any custom user-defined types!
+any custom user-defined type!
 However, there are two issues:
 
 \begin{enumerate}
@@ -579,7 +592,7 @@ However, there are two issues:
   \AgdaData{W} have an infinite number of intentionally distinct
   values. Recall that the base case \AgdaCon{leaf} had
    \texttt{⊥ → Tree A B} as its inductive argument. Because the
-   codomain of the function is bottom, we can write it many different
+   domain of the function is bottom, we can write it many different
    ways (i.e. \AgdaFun{elim⊥}, \AgdaFun{elim⊥ ∘ elim⊥}, etc). Even
    though all leaves containing such functions are extensionally
    equivalent, it is inadequate~\cite{TODO} to have an infinite number of
