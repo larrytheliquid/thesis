@@ -328,14 +328,17 @@ What if our closed theory had enough primitive base types and type
 families to simulate adding new datatypes to the language?
 That is, we want to support translating any ``new'' type
 declaration into an isomorphic type defined in terms of our
-closed collection of primitive types.
+closed collection of primitive types. In this section we present such
+a theory and call it the \textit{Closed Well-Order Universe}.
 
 \subsection{Universe Model}
 
 The type of \textit{well-orderings} (\AgdaData{W}) is used to define
 the semantics of inductive datatypes in type theory, and is the key to
 solving our problem. After pruning some derivable types from the previous
-universe and adding \AgdaData{W} types, we get a closed type theory that can
+universe and adding \AgdaData{W} types, we get a closed type theory
+(the \textit{Closed Well-Order Universe})
+that can
 internally represent any type that would normally extend the language
 in an open type theory. Before explaining what \AgdaData{W} types are
 and how they can be used to derive inductive types (\refsec{wtypes}),
