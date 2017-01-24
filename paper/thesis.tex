@@ -246,11 +246,38 @@ language, including custom types!
 \part{Open Algebraic Universes}\label{part:open}
 
 \chapter{Open Algebraic Types}\label{ch:open}
-\section{Dependent Types}
-\section{Infinitary Types}
-\section{Indexed Types}
-\section{Inductive-Recursive Types}
-\section{Indexed Inductive-Recursive Types}
+
+In \refsec{wtypes} we derived custom user-defined types as
+\textit{well-founded trees}, or
+\textit{well-orderings} (\AgdaData{W} types). \AgdaData{W} types
+can be used to model
+datatype declarations
+in a \textit{closed type theory} (\refsec{wuni}),
+without actually extending the metalanguage as done in
+\textit{open type theory}. Unfortunately, \AgdaData{W} types are
+inadequate (\refsec{inad}) models of first-order canonical terms, and
+cannot be extended to support induction-recursion.
+
+In this chapter we present an adequate alternative to modeling
+datatype declarations, using \textit{algebraic semantics}. In
+algebraic semantics a datatype is modeled as the \textit{fixpoint}
+of a \textit{pattern functor}. We reify these two concepts as
+datatypes to model them in type theory, where the type of fixpoints is
+\AgdaData{μ} and the type of pattern functors is \AgdaData{Desc}.
+
+This chapter begins with type-theoretic models of algebraic
+non-dependent types, and progresses through a series of
+extensions to model all the classes of types reviewed in
+\refsec{types}. Finally, we restrict ourselves to deriving
+user-defined types using algebraic semantics in
+\textit{open type theory} (as is done in \refsec{wtypes} for
+\AgdaData{W} types).
+\refch{closed} covers how to use the
+algebraic semantics presented in this chapter to instead derive
+user-defined types in \textit{closed type theory} (as is done
+in \refsec{wuni} for \AgdaData{W} types).
+
+\include{Thesis/OpenAlg}
 
 
 %% %% Inductive \& Recursive Type Families

@@ -331,7 +331,7 @@ declaration into an isomorphic type defined in terms of our
 closed collection of primitive types. In this section we present such
 a theory and call it the \textit{Closed Well-Order Universe}.
 
-\subsection{Universe Model}
+\subsection{Universe Model}\label{sec:wuni}
 
 The type of \textit{well-orderings} (\AgdaData{W}) is used to define
 the semantics of inductive datatypes in type theory, and is the key to
