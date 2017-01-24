@@ -477,8 +477,9 @@ module _ where
 \end{code}
 
 \paragraph{\texttt{(A → C) ⊎ (B → C) ≅ A ⊎ B → C}}
-Replace the collection of constructors with a single constructor whose
-argument type is the disjoint union of the argument types of each constructor.
+Replace the collection of constructors with a single constructor.
+The new constructor's argument type is the tuple of right-nested disjoint
+unions formed from the argument types of each old constructor.
 
 \AgdaHide{
 \begin{code}
