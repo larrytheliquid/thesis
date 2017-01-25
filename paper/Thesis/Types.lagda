@@ -691,7 +691,7 @@ it is the semantics of types defined using \AgdaKeyword{data}
 declarations. For example, the inductive type of lists is defined as the
 fixpoint below.
 \begin{equation*}
-\rm{List} \triangleq \lambda A. ~\mu X. ~1 + A \times X
+\rm{List} \triangleq \lambda A. ~\mu X. ~1 + A \cdot X
 \end{equation*}
 
 In the equation, X is used to ask for recursive arguments (such as
@@ -727,7 +727,7 @@ or the successor of the previous vector respectively). Additionally,
 the recursive argument X takes the index as an argument. 
 \begin{equation*}
 \rm{Vec} \triangleq \lambda A. ~\lambda n. ~\mu X. ~(n=\rm{zero}) +
-((m : \mathbb{N}) \times A \times X~m \times n=\rm{suc}~m)
+((m : \mathbb{N}) \cdot A \cdot X~m \cdot n=\rm{suc}~m)
 \end{equation*}
 
 Notice that
@@ -771,7 +771,7 @@ input.
 \begin{align*}
 \rm{Vec} &\triangleq \lambda A. ~\lambda n. ~\mu X. ~\rm{\textbf{case}}~n~\rm{\textbf{of}}\\
 \rm{zero} &\mapsto 1\\
-\rm{suc}~n &\mapsto A \times X~n
+\rm{suc}~n &\mapsto A \cdot X~n
 \end{align*}
 \end{singlespace}
 
