@@ -16,7 +16,7 @@ universes with example \textit{generic functions} in this section. A
 
 \subsection{Universe Model}\label{sec:umodel}
 
-In a dependently typed language, a universe can be modelled as a
+In a dependently typed language, a universe can be modeled as a
 type of codes (representing the actual types of the universe), and a
 meaning function (mapping each code to its actual type).
 

@@ -615,9 +615,9 @@ expressions \AgdaData{Arith}.
 Values of type \AgdaData{Arith} encode ``Big Pi''
 mathematical arithmetic product equations up to some finite
 bound, such as the one below.
-\begin{equation*}
-  \prod_{i=1}^{3} i
-\end{equation*}
+$$
+\prod_{i=1}^{3} i
+$$
 
 The intuition is that this expression should evaluate to something
 (the number 6 in this case). The mutually defined function is
