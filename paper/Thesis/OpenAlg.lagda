@@ -31,10 +31,33 @@ For example, consider datatype declaration for the natural numbers.
     suc : ℕ → ℕ
 \end{code}
 
-The algebraic semantics of the \AgdaData{ℕ} type is as follows.
+The algebraic semantics of the \AgdaData{ℕ} type is the following
+fixpoint equation.
 $$
 \nat \triangleq \mu X.~1 + X
 $$
+
+The 'X' variable bound by '$\mu$' represents inductive
+constructor arguments
+(like the \AgdaData{ℕ} argument of the \AgdaCon{suc}
+constructor), '1' represents a lack of constructor arguments
+(similar to the unit type \AgdaData{⊤}), and  
+'+' represents the a choice between constructors (similar to
+the disjoint union type \AgdaData{⊎}). The equation used above is
+actually a shorthand for explicitly defining a pattern functor
+$F : \set \arr \set$ and obtaining its least fixed point by applying
+$\mu : (\set \arr \set) \arr \set$.
+
+$$
+F \triangleq \lambda X.~1 + X\\
+$$
+$$
+\nat \triangleq \mu~F
+$$
+
+Consider the notation using $\mu$ as a binder to be a shorthand for
+taking the fixpoint of an anonymous functor where the binding is
+replaced by a $\lambda$. 
 
 
 \section{Infinitary Types}

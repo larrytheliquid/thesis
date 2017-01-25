@@ -690,17 +690,17 @@ algebra. Although this fixpoint construction is not given directly,
 it is the semantics of types defined using \AgdaKeyword{data}
 declarations. For example, the inductive type of lists is defined as the
 fixpoint below.
-\begin{equation*}
+$$
 \rm{List} \triangleq \lambda A. ~\mu X. ~1 + A \cdot X
-\end{equation*}
+$$
 
 In the equation, X is used to ask for recursive arguments (such as
 the second argument to \AgdaData{cons}).
 A non-inductive type like booleans can also be defined by ignoring
 X.
-\begin{equation*}
+$$
 \rm{Bool} \triangleq \mu X. ~1 + 1
-\end{equation*}
+$$
 
 We would like to emphasize that this definition of booleans
 corresponds to the semantics of defining \AgdaData{Bool} using a
@@ -725,10 +725,10 @@ parameter (\AgdaVar{A}). However, the \AgdaCon{nil} and \AgdaCon{cons}
 constructor must appropriately constrain the index argument (to zero
 or the successor of the previous vector respectively). Additionally,
 the recursive argument X takes the index as an argument. 
-\begin{equation*}
+$$
 \rm{Vec} \triangleq \lambda A. ~\lambda n. ~\mu X. ~(n=\rm{zero}) +
 ((m : \mathbb{N}) \cdot A \cdot X~m \cdot n=\rm{suc}~m)
-\end{equation*}
+$$
 
 Notice that
 in \AgdaCon{cons} the index of the previous vector is given as an
