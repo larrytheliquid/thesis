@@ -23,7 +23,7 @@ module _ where
 The algebraic semantics for an inductive datatype is the
 \textit{least fixed point} of a polynomial equation
 represented as a \textit{pattern functor}.
-For example, consider datatype declaration for the natural numbers.
+For example, consider the datatype declaration for the natural numbers.
 
 \begin{code}
   data ℕ : Set where
@@ -56,8 +56,9 @@ $$
 $$
 
 Consider the notation using $\mu$ as a binder to be a shorthand for
-taking the fixpoint of an anonymous functor where the binding is
-replaced by a $\lambda$. 
+taking the fixpoint of an anonymous functor obtained by replacing the
+binding with a $\lambda$.
+$$\mu X.~1 + X \triangleq \mu~(\lambda X.~1 + X)$$
 
 
 \section{Infinitary Types}
