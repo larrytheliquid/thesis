@@ -532,6 +532,71 @@ of the natural number \AgdaVar{n} contained within the list being
 extended (the second argument to \AgdaCon{cons}) represented as a
 pair.
 
+\subsection{Infinitary Types}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.List
+ private
+\end{code}}
+
+An \textit{infinitary} type is an inductive type where at least one
+constructor has one function argument whose codomain is the type being
+defined. The domain can never be the
+type being defined, because negative datatypes~\ref{TODO} make type
+theory inconsistent.
+Consider the type of rose trees, containing values in node positions
+and allowing each node to have any finite number of branches.
+
+\begin{code}
+  data Rose (A : Set) : Set where
+    rose : A → List (Rose A) → Rose A
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open import Data.Fin
+ open import Data.Product
+ private
+\end{code}}
+
+Now recall the derived definitions of vectors and lists from
+\refsec{derived}.
+
+\begin{code}
+  Vec : Set → ℕ → Set
+  Vec A n = Fin n → A
+
+  List : Set → Set
+  List A = Σ ℕ (λ n → Vec A n)
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open import Data.Fin
+ private
+\end{code}}
+
+If we expand this derived definition of lists (and the inner derived
+definition of vectors) in the definition of \AgdaData{Rose} above,
+we arrive at an alternative but isomorphic definition of rose trees.
+
+\begin{code}
+  data Rose (A : Set) : Set where
+    rose : A → (n : ℕ) (f : Fin n → Rose A) → Rose A
+\end{code}
+
+Our new definition of rose trees is an example of an infinitary type,
+as it contains an argument (\AgdaVar{f}) whose domain is a finite set but whose
+codomain is the type being defined (\AgdaData{Rose}).
+
+\subsection{Inductive-Recursive Types}\label{sec:irtypes}
+
 \AgdaHide{
 \begin{code}
 module _ where
@@ -542,9 +607,6 @@ module _ where
  private
   postulate sum prod : (n : ℕ) (f : Fin n → ℕ) → ℕ
 \end{code}}
-
-
-\subsection{Inductive-Recursive Types}\label{sec:irtypes}
 
 An \textit{inductive-recursive} type is a collection of values
 mutually defined with a function parameterized by said type.
@@ -581,7 +643,9 @@ the example above), and the
 second argument \AgdaVar{f} is the
 body of the product ($i$ in the example above)
 as a functional representation of a vector of arithmetic
-expressions.
+expressions. Note that \AgdaData{Arith} is also an
+\textit{infinitary type}, as the codomain of \AgdaVar{f} is
+\AgdaData{Arith}. 
 
 The length of the vector (the argument to \AgdaData{Fin} in the type
 of \AgdaVar{f})
@@ -618,17 +682,6 @@ using one-based indexing.
 A more typical example of an inductive-recursive type is a
 \textit{universe} modeling a dependently typed language, which we will
 see in \refsec{closedu}.
-
-\subsection{Infinitary Types}
-
-An \textit{infinitary} type is an inductive type where at least one
-constructor has one function argument whose codomain is the type being
-defined. The \AgdaData{Arith} type from the previous section is an
-example, where the \AgdaCon{Prod} constructor has a function argument
-\AgdaVar{f} whose domain is a finite set \AgdaData{Fin} and codomain
-is \AgdaData{Arith} itself. Note that the domain can never be the
-type being defined, because negative datatypes~\ref{TODO} make type
-theory inconsistent.
 
 \subsection{Algebraic Types}
 
