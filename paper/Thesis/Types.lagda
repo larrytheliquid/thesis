@@ -89,7 +89,7 @@ The \AgdaCon{just} constructor has an argument, but its type is
     just : Bool → MaybeBool
 \end{code}
 
-\subsection{Inductive Types}
+\subsection{Inductive Types}\label{sec:ind}
 
 An \textit{inductive} type mentions itself in its definition. That is,
 at least one constructor has one argument whose type is the type being
