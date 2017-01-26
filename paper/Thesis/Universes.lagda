@@ -17,7 +17,7 @@ universes with example \textit{generic functions} in this section. A
 \subsection{Universe Model}\label{sec:umodel}
 
 In a dependently typed language, a universe can be modeled as a
-type of codes (representing the actual types of the universe), and a
+type of codes (\textit{representing} the actual types of the universe), and a
 meaning function (mapping each code to its actual type).
 
 \AgdaHide{
@@ -32,7 +32,7 @@ In other words, it is the Kleene star version of \AgdaData{Bits}
 (non-nested lists of booleans) from \refsec{closed}.
 The type of codes is \AgdaData{BoolStar}, and its meaning function is
 \AgdaFun{⟦\_⟧}. As a convention, we prefix constructors of the code
-type with a backtick to emphasize the distinction betwee a code
+type with a backtick to emphasize the distinction between a code
 (e.g. \AgdaCon{`Bool}) and the actual type it denotes
 (e.g. \AgdaData{Bool}).
 
@@ -175,9 +175,14 @@ down to the base case \AgdaCon{`Dyn}.
   Dyn (`List A) = Dyn A
 \end{code}
 
-Now that we have defined \AgdaFun{Dyn}, we can define generic
+Note that \AgdaFun{Dyn} is a \textit{computational family}
+(\refsec{compu}). Later in the thesis we introduce more specific
+terminology, calling \AgdaFun{Dyn} a
+\textit{computational argument family} (\refsec{comparg})
+that serves as a \textit{domain supplement} (\refsec{domsup}).
+Having defined \AgdaFun{Dyn}, we can define generic
 \AgdaFun{concat} to return a flattened list of dynamic universe
-values.
+values. 
 
 \begin{code}
   concat : (A : DynStar) → ⟦ A ⟧ → List (Dyn A)

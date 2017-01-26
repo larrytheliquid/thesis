@@ -196,9 +196,10 @@ type \AgdaData{⊥} is known to not exist.
 It is clear that the computational argument family
 \AgdaFun{HeadArg} above acts a
 \textit{domain predicate}, refining the domain of all lists to be
-undefined for the empty list by asking the user to provide a value of
-the empty type. Compare this to the version of \AgdaFun{HeadArg} in
-\refsec{comparg}, which requests an extra argument in the empty list
+undefined for the empty list by asking
+the user to provide a value of
+the empty type (\AgdaData{⊥}). Compare this to the version of \AgdaFun{HeadArg} in
+\refsec{comparg}, which requests an extra argument (\AgdaVar{A}) in the empty list
 case. The \refsec{comparg} \AgdaFun{HeadArg} is also technically a
 domain predicate, as it restricts the input of all lists to supply
 additional data (\AgdaVar{A}) in the empty list case

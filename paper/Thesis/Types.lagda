@@ -17,7 +17,7 @@ functions operating over said types.
 
 Dependently typed functional languages include dependent functions
 as a primitive. The codomain of a dependent function type may
-dependent on a value of its domain.
+depend on a value of its domain.
 $$
 (\AgdaVar{a} : \AgdaFun{A}) → \AgdaFun{B}~\AgdaVar{a}
 $$
@@ -294,7 +294,15 @@ the function below.
 
 Once again, \AgdaFun{prod} takes this functional list representation
 as an input and returns the the mathematical product of all members of
-the ``list''. 
+the ``list''. \footnote{
+  The final clause serves as a proof that \AgdaData{Fin}~\AgdaNum{3}
+  has no inhabitants beyond three. The parentheses \texttt{()} serve
+  as a witness that a value of the type that \textit{would} be there
+  there (\AgdaData{Fin}~\AgdaNum{0} in this case, which is
+  \AgdaData{Fin}~\AgdaNum{3} minus 3 \AgdaCon{there}s) is
+  uninhbated. Such witnesses are required for type checking to be
+  decidable in Agda.
+  }
 
 The base case
 represents the empty list, for which we return the number one (the

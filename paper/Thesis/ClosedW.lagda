@@ -62,15 +62,19 @@ closed under vector (\AgdaData{Vec}) formation.
    ⟦ `Π A B ⟧ = (a : ⟦ A ⟧) → ⟦ B a ⟧
 \end{code}
 
-Recall our convention of prefixing universe code constructors
+Recall our naming convention of prefixing universe code constructors
 (e.g. \AgdaCon{`Bool}) with a backtick to distinguish the code (the
 ``quoted'' version of the type) from the actual type it models
 (in this case \AgdaData{Bool}, which is the result of applying the
 meaning function to the code). For closed type theories we establish the
-new convention of prefixing the type of codes (\AgdaData{`Set}) with a
-backtick. Applying the meaning function to a \AgdaData{`Set}
-(a ``quoted'' type of types) yields a
-\AgdaData{Set} (the actual type of types).
+new naming convention of prefixing the type of codes (e.g. \AgdaData{`Set}) with a
+backtick. Thus the type of the meaning function is a function
+whose domain is \AgdaData{`Set}
+(a ``quoted'' type of types) and whose codomain is
+\AgdaData{Set} (the actual type of types). This promotes our
+definition-level quoting analogy
+(\AgdaFun{⟦} \AgdaCon{`Bool} \AgdaFun{⟧} = \AgdaData{Bool}) to the type signature
+level (\AgdaFun{⟦\_⟧} : \AgdaData{`Set} $\arr$ \AgdaData{Set}).
 
 Finally, notice that \AgdaData{`Set} is
 inductive-recursive (\refsec{irtypes}), as its
@@ -319,7 +323,8 @@ module SetW where
 
 On one hand, we would like a closed type theory because it supports
 fully generic programming (\refsec{fullygeneric})
-via pattern matching on types. On the other hand,
+via pattern matching on types (modeled by pattern matching on
+\textit{codes} of types). On the other hand,
 we want to support custom user-defined types (like an open type theory)
 that may not be present in the closed collection of types we fixed
 ahead of time.
