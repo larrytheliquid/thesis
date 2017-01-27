@@ -132,17 +132,17 @@ The first part of our algebraic model is the type of descriptions
 (\AgdaData{Desc}). A \AgdaData{Desc} is the syntactic reification of
 the polynomial expression language that must be used for a functor to
 qualify as a \textit{pattern} functor. Rather than defining a pattern
-functor directly, it is first represented as a \AgdaData{Desc} such
+functor directly, we first represent it as a \AgdaData{Desc} such
 that any well typed description can be converted into a functor
 meeting all pattern restrictions.
 
 Below, the \AgdaData{Desc} constructors
 \AgdaCon{`1}, \AgdaCon{`X},
-\AgdaCon{`+}, and \AgdaCon{`∙} respectively reify
+\AgdaCon{`+}, and \AgdaCon{`∙} respectively reify a \textit{syntax} for
 the 1, $X$, (+), and ($\cdot$) polynomial set constructions.
 Of special note is the \AgdaCon{`κ} \textit{constant} constructor.
-The \textit{constant} constructor reifies the injection of
-non-inductive constructor arguments (such as \AgdaVar{A} in the
+The \textit{constant} constructor reifies a syntax for injecting
+\textit{non-inductive} constructor arguments (such as \AgdaVar{A} in the
 \AgdaCon{leaf} constructor of \AgdaData{Tree}). 
 
 \AgdaHide{
