@@ -1,5 +1,6 @@
 \AgdaHide{
 \begin{code}
+{-# OPTIONS --no-positivity-check #-}
 module _ where
 \end{code}}
 
@@ -326,7 +327,7 @@ $1\cdot1\cdot2\cdot3$. Note that the first 1 is from the
 \AgdaCon{zero} case of \AgdaFun{prod}, and the second 1 is the first
 element of \AgdaFun{nums}.
 
-\subsection{Type Families}
+\subsection{Type Families}\label{sec:tfam}
 
 A \textit{type family} is a collection of types, represented as a
 function from some domain \AgdaVar{A} to the codomain \AgdaData{Set}.
@@ -540,7 +541,7 @@ of the natural number \AgdaVar{n} contained within the list being
 extended (the second argument to \AgdaCon{cons}) represented as a
 pair.
 
-\subsection{Infinitary Types}
+\subsection{Infinitary Types}\label{sec:inft}
 
 \AgdaHide{
 \begin{code}
@@ -553,8 +554,16 @@ An \textit{infinitary} type is an inductive type where at least one
 constructor has one function argument whose codomain is the type being
 defined. The domain can never be the
 type being defined, because negative datatypes~\ref{TODO} make type
-theory inconsistent.
-Consider the type of rose trees, containing values in node positions
+theory inconsistent. For example, the datatype below is inconsistent
+with type theory.
+
+\begin{code}
+  data Neg : Set where
+    neg : (Neg → Neg) → Neg
+\end{code}
+
+To motivate the definition of an infinitary type, 
+consider the type of rose trees containing values in node positions
 and allowing each node to have any finite number of branches.
 
 \begin{code}

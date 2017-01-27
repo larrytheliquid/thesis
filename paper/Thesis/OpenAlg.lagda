@@ -123,7 +123,8 @@ Informally we can check that a functor is defined under these
 restrictions, but in type theory we must formally capture these
 restrictions. We model algebraic semantics in type theory by reifying
 the pattern functor \textit{restrictions} as a datatype, the
-pattern \textit{functor} as a function, and the \textit{fixpoint}
+pattern \textit{functor}
+as a computational type family (\refsec{compu}), and the \textit{fixpoint}
 operator as a datatype.
 
 \paragraph{Descriptions}
@@ -138,16 +139,23 @@ meeting all pattern restrictions.
 
 Below, the \AgdaData{Desc} constructors
 \AgdaCon{`1}, \AgdaCon{`X},
-\AgdaCon{`+}, and \AgdaCon{`∙} respectively reify a \textit{syntax} for
+(\AgdaCon{`+}), and (\AgdaCon{`∙}) respectively reify a \textit{syntax} for
 the 1, $X$, (+), and ($\cdot$) polynomial set constructions.
 Of special note is the \AgdaCon{`κ} \textit{constant} constructor.
 The \textit{constant} constructor reifies a syntax for injecting
+\footnote{
+  As is often the case with injections, its syntax is implicit when
+  defining pattern functors using polynomial set constructions.
+  }
 \textit{non-inductive} constructor arguments (such as \AgdaVar{A} in the
 \AgdaCon{leaf} constructor of \AgdaData{Tree}). 
 
 \AgdaHide{
 \begin{code}
-module _ where
+module Desc where
+ open import Data.Unit
+ open import Data.Sum
+ open import Data.Product
  private
 \end{code}}
 
@@ -158,6 +166,75 @@ module _ where
     `κ : Set → Desc
 \end{code}
 
+Finally, note that we establish another convention of ``quoting''
+description constructors with a backtick (e.g. \AgdaCon{`X} for $X$).
+This emphasizes that they are the syntactification of polynomial set
+constructions. As we will see, quoting \AgdaData{Desc} constructors is
+natural as they also act as codes of a universe (\refsec{TODO}).
+
+\paragraph{Pattern Functors}
+
+The next part of our algebraic model is the reification of pattern functors
+($F : \set \arr \set$) as \textit{type families} (\refsec{tfam})
+with \AgdaData{Set} as their domain
+(\AgdaFun{F} : \AgdaData{Set} \arr~\AgdaData{Set}).
+We define a
+\textit{computational type family}
+(\AgdaFun{⟦}\_\AgdaFun{⟧} : \AgdaData{Desc} \arr~\AgdaData{Set} \arr~\AgdaData{Set})
+to interpret a
+\AgdaData{Desc} (the language of polynomial expressions) as a
+pattern functor.
+
+\begin{code}
+  ⟦_⟧ : Desc → Set → Set
+  ⟦ `1 ⟧ X = ⊤
+  ⟦ `X ⟧ X = X
+  ⟦ A `+ B ⟧ X = ⟦ A ⟧ X ⊎ ⟦ B ⟧ X
+  ⟦ A `∙ B ⟧ X = ⟦ A ⟧ X × ⟦ B ⟧ X
+  ⟦ `κ A ⟧ X = A
+\end{code}
+
+By partially applying the interpretation function to
+a description, we get a model of a \textit{pattern} functor
+\AgdaFun{F} (rather than an arbitrary non-pattern functor).
+$$
+\forall \AgdaVar{D}.~ \AgdaFun{F} \triangleq \AgdaFun{⟦}~\AgdaVar{D}~\AgdaFun{⟧}
+$$
+
+Recall that the input to the pattern functor
+(\AgdaFun{F} : \AgdaData{Set} \arr~\AgdaData{Set})
+represents the inductive occurrences of the datatype being modeled.
+A sound model must rule out pattern functors representing
+datatypes that are not consistent in type theory, such as
+\textit{negative} datatypes like \AgdaData{Neg} of \refsec{inft}.
+We could \textit{directly} define the functor for \AgdaData{Neg} to be
+(\AgdaFun{F} \AgdaVar{X} = \AgdaVar{X} \arr~\AgdaVar{X}), modeling the
+negative inductive occurrence of \AgdaData{Neg} in the argument to
+\AgdaCon{neg} by using \AgdaVar{X} in the domain
+of the function type.
+
+Instead, we choose to define functors
+\textit{indirectly} by partially applying a description
+to the interpretation function (rather than defining functors
+\textit{directly} like the one for \AgdaData{Neg} above).
+In other words, the output \AgdaData{Set} of \AgdaFun{F} is
+only composed of type theory equivalents of polynomial set
+constructions. For example, the output \AgdaData{Set} may use
+(\AgdaData{⊎}), modeling (+), by interpreting the
+(\AgdaCon{`+}) description. It may not use other arbitrary
+types lacking a polynomial set construction equivalent (because their
+is no \AgdaData{Desc} for them), like ($\arr$)
+with negative occurrences of \AgdaVar{X}.
+
+Finally, note that it may appear that \AgdaCon{`κ} could be used to
+inject many non-polynomial types. While this is true, it is not
+problematic because the type (\AgdaVar{A}) that \AgdaCon{`κ} injects
+must be \textit{non-inductive}. The non-inductivity of \AgdaVar{A} is
+enforced because \AgdaVar{A} must be a type defined independently of
+\AgdaVar{X} (i.e. the interpretation of \AgdaCon{`κ} does not, for
+example, pass \AgdaVar{X} to \AgdaVar{A}).
+
+\subsection{Models of Types}
 
 \section{Infinitary Types}
 \section{Dependent Types}
