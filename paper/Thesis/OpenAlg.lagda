@@ -42,7 +42,7 @@ $$
 $$
 
 The plus operator (+) represents a choice between constructors (analogous to
-the disjoint union type \AgdaData{\_⊎\_}). Thus, above the left
+the disjoint union type \AgdaData{⊎}). Thus, above the left
 subexpression ($1$) represents the \AgdaCon{zero} constructor and the
 right subexpression ($X$) represents the \AgdaCon{suc}
 constructor. A subexpression represents a constructor by representing
@@ -80,6 +80,7 @@ module _ where
 \end{code}}
 
 \paragraph{Binary Trees}
+
 As another example, consider the type of
 binary trees (parameterized by \AgdaVar{A} and \AgdaVar{B}) containing
 \AgdaVar{A}'s in node positions and \AgdaVar{B}'s in branch positions
@@ -105,7 +106,7 @@ arguments are represented by $X$ (bound by $\mu$) and its
 non-inductive argument is represented by
 $B$ (bound by another $\lambda$). The multiplication operator ($\cdot$)
 represents multiple arguments of a constructor as a
-conjunction (analogous to the pair type \AgdaData{\_×\_}).
+conjunction (analogous to the pair type \AgdaData{×}).
 
 %% TODO maybe mention similarity to param universe ParStar
 \subsection{Algebraic Model}
@@ -125,6 +126,37 @@ the pattern functor \textit{restrictions} as a datatype, the
 pattern \textit{functor} as a function, and the \textit{fixpoint}
 operator as a datatype.
 
+\paragraph{Descriptions}
+
+The first part of our algebraic model is the type of descriptions
+(\AgdaData{Desc}). A \AgdaData{Desc} is the syntactic reification of
+the polynomial expression language that must be used for a functor to
+qualify as a \textit{pattern} functor. Rather than defining a pattern
+functor directly, it is first represented as a \AgdaData{Desc} such
+that any well typed description can be converted into a functor
+meeting all pattern restrictions.
+
+Below, the \AgdaData{Desc} constructors
+\AgdaCon{`1}, \AgdaCon{`X},
+\AgdaCon{`+}, and \AgdaCon{`∙} respectively reify
+the 1, $X$, (+), and ($\cdot$) polynomial set constructions.
+Of special note is the \AgdaCon{`κ} \textit{constant} constructor.
+The \textit{constant} constructor reifies the injection of
+non-inductive constructor arguments (such as \AgdaVar{A} in the
+\AgdaCon{leaf} constructor of \AgdaData{Tree}). 
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data Desc : Set₁ where
+    `1 `X : Desc
+    _`+_  _`∙_ : Desc → Desc → Desc
+    `κ : Set → Desc
+\end{code}
 
 
 \section{Infinitary Types}
