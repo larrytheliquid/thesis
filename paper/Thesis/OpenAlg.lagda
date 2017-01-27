@@ -1,6 +1,9 @@
 \AgdaHide{
 \begin{code}
 module _ where
+open import Data.Unit
+open import Data.Sum
+open import Data.Product
 \end{code}}
 
 \section{Non-Dependent Types}\label{sec:nondepalg}
@@ -21,11 +24,19 @@ represented as a \textit{pattern functor}.
 The input of the pattern functor represents the inductive set being
 defined ($X$), and its output must be a set formed by
 \textit{polynomial} set
-constructions (namely 1, +, $\cdot$, and $X$, representing the
+constructions. The polynomial set constructions are denoted
+1, (+), ($\cdot$),
+and $X$, and represent the
 unit set, the sum of two sets, the product of two sets, and
-inductive occurrences of the set).
+inductive occurrences of the set.
 
 \paragraph{Natural Numbers}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
 
 For example, consider the datatype declaration for the natural numbers.
 
@@ -41,8 +52,9 @@ $$
 \nat \triangleq \mu X.~1 + X
 $$
 
-The plus operator (+) represents a choice between constructors (analogous to
-the disjoint union type \AgdaData{⊎}). Thus, above the left
+The plus operator (+) represents a choice between constructors, and is
+analogous to
+the disjoint union type (\AgdaData{⊎}). Thus, above the left
 subexpression ($1$) represents the \AgdaCon{zero} constructor and the
 right subexpression ($X$) represents the \AgdaCon{suc}
 constructor. A subexpression represents a constructor by representing
@@ -106,7 +118,7 @@ arguments are represented by $X$ (bound by $\mu$) and its
 non-inductive argument is represented by
 $B$ (bound by another $\lambda$). The multiplication operator ($\cdot$)
 represents multiple arguments of a constructor as a
-conjunction (analogous to the pair type \AgdaData{×}).
+conjunction, and is analogous to the pair type (\AgdaData{×}).
 
 %% TODO maybe mention similarity to param universe ParStar
 \subsection{Algebraic Model}
@@ -153,10 +165,6 @@ The \textit{constant} constructor reifies a syntax for injecting
 \AgdaHide{
 \begin{code}
 module Desc where
- open import Data.Unit
- open import Data.Sum
- open import Data.Product
- private
 \end{code}}
 
 \begin{code}
@@ -166,6 +174,21 @@ module Desc where
     `κ : Set → Desc
 \end{code}
 
+For example, below is the description for the natural numbers
+datatype.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ private
+\end{code}}
+
+\begin{code}
+  NatD : Desc
+  NatD = `1 `+ `X
+\end{code}
+
 Finally, note that we establish another convention of ``quoting''
 description constructors with a backtick (e.g. \AgdaCon{`X} for $X$).
 This emphasizes that they are the syntactification of polynomial set
@@ -173,6 +196,12 @@ constructions. As we will see, quoting \AgdaData{Desc} constructors is
 natural as they also act as codes of a universe (\refsec{TODO}).
 
 \paragraph{Pattern Functors}
+
+\AgdaHide{
+\begin{code}
+module El where
+  open Desc
+\end{code}}
 
 The next part of our algebraic model is the reification of pattern functors
 ($F : \set \arr \set$) as \textit{type families} (\refsec{tfam})
@@ -200,6 +229,31 @@ a description, we get a model of a \textit{pattern} functor
 $$
 \forall \AgdaVar{D}.~ \AgdaFun{F} \triangleq \AgdaFun{⟦}~\AgdaVar{D}~\AgdaFun{⟧}
 $$
+
+For example, below we instantiate \AgdaVar{D} to be the description of
+natural numbers (\AgdaFun{NatD}), and demonstrate the functor produced
+by partially applying the interpretation function to \AgdaFun{NatD}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open import Relation.Binary.PropositionalEquality
+ private
+  NatD : Desc
+  NatD = `1 `+ `X
+  eg :
+\end{code}}
+
+\begin{code}
+   (λ X → ⊤ ⊎ X) ≡ ⟦ NatD ⟧
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  eg = refl
+\end{code}}
 
 Recall that the input to the pattern functor
 (\AgdaFun{F} : \AgdaData{Set} \arr~\AgdaData{Set})
