@@ -13,11 +13,17 @@ mathematical constructs to concrete datatypes (analogous to how we model
 the abstract notion of a universe as concrete code and meaning
 function types in \refsec{umodel}).
 
-\subsection{Algebraic Semantics}
+\subsection{Algebraic Semantics}\label{sec:nondepalgsem}
 
 The algebraic semantics for an inductive datatype is the
 \textit{least fixed point} of a polynomial equation
 represented as a \textit{pattern functor}.
+The input of the pattern functor represents the inductive set being
+defined ($X$), and its output must be a set formed by
+\textit{polynomial} set
+constructions (namely 1, +, $\cdot$, and $X$, representing the
+unit set, the sum of two sets, the product of two sets, and
+inductive occurrences of the set).
 
 \paragraph{Natural Numbers}
 
@@ -101,7 +107,25 @@ $B$ (bound by another $\lambda$). The multiplication operator ($\cdot$)
 represents multiple arguments of a constructor as a
 conjunction (analogous to the pair type \AgdaData{\_×\_}).
 
+%% TODO maybe mention similarity to param universe ParStar
 \subsection{Algebraic Model}
+
+To take advantage of algebraic semantics within type theory, we must
+\textit{model} its abstract notions using concrete datatypes and
+functions. Recall that $\mu$ semantically defines a datatype by taking
+the fixpoint (using $\mu$) of a pattern functor $F : \set \arr
+\set$. It is called a \textit{pattern} functor because its ``pattern''
+must be restricted to using the polynomial set constructions covered in
+\refsec{nondepalgsem}.
+
+Informally we can check that a functor is defined under these
+restrictions, but in type theory we must formally capture these
+restrictions. We model algebraic semantics in type theory by reifying
+the pattern functor \textit{restrictions} as a datatype, the
+pattern \textit{functor} as a function, and the \textit{fixpoint}
+operator as a datatype.
+
+
 
 \section{Infinitary Types}
 \section{Dependent Types}
