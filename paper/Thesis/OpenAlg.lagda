@@ -94,8 +94,9 @@ $$
 The \AgdaCon{leaf} constructor takes a single argument of type
 \AgdaVar{A}, so the constructor is represented by $A$ (which is bound
 by a $\lambda$). The \AgdaCon{branch} constructor has two inductive
-arguments and an argument of type \AgdaVar{B}. Thus, its inductive
-arguments are represented by $X$ (bound by $\mu$) and its other argument is represented by
+arguments and a non-inductive argument of type \AgdaVar{B}. Thus, its inductive
+arguments are represented by $X$ (bound by $\mu$) and its
+non-inductive argument is represented by
 $B$ (bound by another $\lambda$). The multiplication operator ($\cdot$)
 represents multiple arguments of a constructor as a
 conjunction (analogous to the pair type \AgdaData{\_×\_}).
