@@ -288,13 +288,113 @@ enforced because \AgdaVar{A} must be a type defined independently of
 \AgdaVar{X} (i.e. the interpretation of \AgdaCon{`κ} does not, for
 example, pass \AgdaVar{X} to \AgdaVar{A}).
 
-\subsection{Models of Types}
+\paragraph{Fixpoints}
+
+The final part of our algebraic model is the reification of the least
+fixed point operator ($\mu : (\set \arr \set) \arr \set$)
+for pattern functors. We reify the
+least fixed point operator (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
+as a datatype parameterized by a description.
+While algebraic semantics applies the least fixpoint
+operator directly to a pattern functor ($\mu~F$), our model instead
+applies it to a description (\AgdaData{μ} \AgdaVar{D}). Below is the
+datatype declaration for the fixpoint operator (\AgdaData{μ}), and
+its constructor (\AgdaCon{init}) is declared shortly thereafter.
+
+\AgdaHide{
+\begin{code}
+module Fix where
+  open Desc
+  open El
+\end{code}}
+
+\begin{code}
+  data μ (D : Desc) : Set where
+\end{code}
+
+In algebraic semantics the initial algebra
+($\alpha_i$) is used to construct values of the fixpoint of a
+functor $F$.
+$$
+\alpha_i : F~(\mu~F) \arr \mu~F
+$$
+
+Applying $F$ to its least fixed fixpoint ($\mu~F$)
+results in a type isomorphic to its fixpoint. In other words, the $\set$ (or
+\AgdaData{Set} in the model case) resulting from $F~(\mu~F)$
+represents the types of constructors (and the types of their arguments)
+of $\mu~F$.
+Therefore, we declare \AgdaData{μ} to have a single constructor named
+\AgdaCon{init} (for \textit{initial algebra}) that models
+$\alpha_i$.
+
+\begin{code}
+    init : ⟦ D ⟧ (μ D) → μ D
+\end{code}
+
+Recall that we model the pattern functor ($F$) by partially
+applying (\AgdaFun{⟦}~\AgdaVar{D}~\AgdaFun{⟧})
+the interpretation function
+to the description
+of the pattern functor. Additionally, our model of the fixpoint operator
+applies (\AgdaData{μ} \AgdaVar{D}) it to a the description, rather
+than a pattern functor directly. Therefore, the type of the argument
+to \AgdaCon{init} represents the types of the constructors (and the
+types of their arguments) for \AgdaData{μ} \AgdaVar{D}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Relation.Binary.PropositionalEquality
+ private
+  NatD : Desc
+  NatD = `1 `+ `X
+\end{code}}
+
+For example, we can define the type of natural numbers as follows.
+
+\begin{code}
+  ℕ : Set
+  ℕ = μ NatD
+\end{code}
+
+Natural numbers are constructed by applying
+\AgdaCon{init} to values of the following type.
+
+\AgdaHide{
+\begin{code}
+  eg :
+\end{code}}
+
+\begin{code}
+   (⊤ ⊎ ℕ) ≡ ⟦ NatD ⟧ ℕ
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  eg = refl
+\end{code}}
+
+
+%% TODO mention type check failure if El D were negative?
+
+Finally, notice that descriptions and fixpoints
+can also be
+interpreted as a universe (i.e. the universe of open algebraic types)
+by considering them to be
+codes (\AgdaData{Desc} : \AgdaData{Set}) and a
+meaning function (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
+respectfully.
+
+\subsection{Model of Types}
 
 \section{Infinitary Types}
 \section{Dependent Types}
 \section{Indexed Types}
 \section{Inductive-Recursive Types}
 \section{Indexed Inductive-Recursive Types}
-
 
 
