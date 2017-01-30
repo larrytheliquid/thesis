@@ -232,7 +232,7 @@ By partially applying the interpretation function to
 a description, we get a model of a \textit{pattern} functor
 \AgdaFun{F} (rather than an arbitrary non-pattern functor).
 $$
-\forall \AgdaVar{D}.~ \AgdaFun{F} \triangleq \AgdaFun{⟦}~\AgdaVar{D}~\AgdaFun{⟧}
+\forall \AgdaVar{D}.~  \AgdaFun{⟦}~\AgdaVar{D}~\AgdaFun{⟧} \triangleq \AgdaFun{F}
 $$
 
 For example, below we instantiate \AgdaVar{D} to be the description of
@@ -252,7 +252,7 @@ module _ where
 \end{code}}
 
 \begin{code}
-   (λ X → ⊤ ⊎ X) ≡ ⟦ NatD ⟧
+   ⟦ NatD ⟧ ≡ (λ X → ⊤ ⊎ X)
 \end{code}
 
 \AgdaHide{
@@ -375,7 +375,7 @@ Natural numbers are constructed by applying
 \end{code}}
 
 \begin{code}
-   (⊤ ⊎ ℕ) ≡ ⟦ NatD ⟧ ℕ
+   ⟦ NatD ⟧ ℕ ≡ (⊤ ⊎ ℕ)
 \end{code}
 
 \AgdaHide{
@@ -435,7 +435,7 @@ constructor. For the natural numbers, this type specializes as follows.
 \end{code}}
 
 \begin{code}
-   (⊤ ⊎ ℕ) ≡ ⟦ NatD ⟧ ℕ
+   ⟦ NatD ⟧ ℕ ≡ (⊤ ⊎ ℕ)
 \end{code}
 
 \AgdaHide{
@@ -548,13 +548,14 @@ syntactic conveniences afforded by Agda.
 
 \paragraph{Binary Trees}
 
-The type of binary trees is modeled by a function taking its
+The type of binary trees (\refsec{nondepalgsem})
+is modeled by a function taking its
 parameters (\AgdaVar{A} and \AgdaVar{B}), and returning the
 description of the disjoint union of \AgdaVar{A} (encoding the
 \AgdaCon{leaf} constructor),
 and the triple (ternary product) of two inductive
 occurrences and \AgdaVar{B}
-(encoding the \AgdaCon{leaf} constructor).
+(encoding the \AgdaCon{branch} constructor).
 
 \AgdaHide{
 \begin{code}
@@ -580,13 +581,35 @@ module _ where
 \end{code}}
 
 \begin{code}
-   (A ⊎ (Tree A B × (B × Tree A B))) ≡ ⟦ TreeD A B ⟧ (Tree A B)
+   ⟦ TreeD A B ⟧ (Tree A B) ≡ (A ⊎ (Tree A B × (B × Tree A B)))
 \end{code}
 
 \AgdaHide{
 \begin{code}
   eg _ _ = refl
 \end{code}}
+
+To model the \AgdaCon{leaf} constructor, we apply the left disjoint
+union injection to the function argument of type
+\AgdaVar{A} (i.e. the node value for the leaf).
+
+\begin{code}
+  leaf : {A B : Set} → A → Tree A B
+  leaf a = init (inj₁ a)
+\end{code}
+
+To model the \AgdaCon{branch} constructor, we apply the right disjoint
+union injection to a triple (two nested pairs). The triple consists of
+the first inductive function argument (i.e. the left branch),
+the function argument of
+type \AgdaVar{B} (i.e. the node value for the branch), and the second
+inductive function argument (i.e. the right branch).
+
+\begin{code}
+  branch : {A B : Set} → Tree A B → B → Tree A B → Tree A B
+  branch t₁ b t₂ = init (inj₂ (t₁ , (b , t₂)))
+\end{code}
+
 
 \section{Infinitary Types}
 \section{Dependent Types}
