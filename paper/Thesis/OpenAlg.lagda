@@ -539,12 +539,54 @@ expands in the body of the function, such as the
   plus' (init (inj₂ n)) m = init (inj₂ (plus' n m))
 \end{code}
 
-In future examples, we will omit examples of values and function
+In future examples we omit examples of values and functions
 defined over modeled types. As explained, once we have derived the
 type former and constructors of a type using the primitives of our
 algebraic model, using the types to define values and function
 definitions is indistinguishable from using declared types thanks to
 syntactic conveniences afforded by Agda.
+
+\paragraph{Binary Trees}
+
+The type of binary trees is modeled by a function taking its
+parameters (\AgdaVar{A} and \AgdaVar{B}), and returning the
+description of the disjoint union of \AgdaVar{A} (encoding the
+\AgdaCon{leaf} constructor),
+and the triple (ternary product) of two inductive
+occurrences and \AgdaVar{B}
+(encoding the \AgdaCon{leaf} constructor).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+\begin{code}
+  TreeD : Set → Set → Desc
+  TreeD A B = `κ A `+ (`X `∙ (`κ B `∙ `X))
+
+  Tree : Set → Set → Set
+  Tree A B = μ (TreeD A B)
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  eg : (A B : Set) →
+\end{code}}
+
+\begin{code}
+   (A ⊎ (Tree A B × (B × Tree A B))) ≡ ⟦ TreeD A B ⟧ (Tree A B)
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  eg _ _ = refl
+\end{code}}
 
 \section{Infinitary Types}
 \section{Dependent Types}
