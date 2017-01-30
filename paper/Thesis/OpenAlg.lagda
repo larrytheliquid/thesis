@@ -655,6 +655,16 @@ As a \AgdaData{Term}, we write the deBruijn-encoded numeral \textbf{one} as
 follows. Note the applications of the variable constructor
 (\AgdaCon{var}) to natural numbers (\AgdaData{ℕ}) to refer to
 variables by their deBruijn index.
+\footnote{
+  Our \AgdaData{Term} type is not scope safe in the sense that their
+  could be natural numbers that are out of bounds with respect to
+  the number of \AgdaCon{lam} occurrences. We could index
+  \AgdaData{Term} by the natural numbers to enforce scope safety, but
+  this additional complexity only makes later examples (of the
+  semantics for \AgdaData{Term}, already defined using indexed types)
+  harder to read
+  without introducing new concepts.
+}
 
 \begin{code}
   one : Term
