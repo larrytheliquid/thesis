@@ -15,6 +15,11 @@ In this section we review the algebraic semantics for
 mathematical constructs to concrete datatypes (analogous to how we model
 the abstract notion of a universe as concrete code and meaning
 function types in \refsec{umodel}).
+\footnote{
+  Here the words ``abstract'' and ``concrete'' have their general
+  meanings, not the technical meanings we defined in
+  \refsec{abscon}.
+}
 
 \subsection{Algebraic Semantics}\label{sec:nondepalgsem}
 
@@ -337,7 +342,7 @@ applying (\AgdaFun{⟦}~\AgdaVar{D}~\AgdaFun{⟧})
 the interpretation function
 to the description
 of the pattern functor. Additionally, our model of the fixpoint operator
-applies (\AgdaData{μ} \AgdaVar{D}) it to a the description, rather
+applies (\AgdaData{μ} \AgdaVar{D}) it to a description, rather
 than a pattern functor directly. Therefore, the type of the argument
 to \AgdaCon{init} represents the types of the constructors (and the
 types of their arguments) for \AgdaData{μ} \AgdaVar{D}.
@@ -389,7 +394,157 @@ codes (\AgdaData{Desc} : \AgdaData{Set}) and a
 meaning function (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
 respectfully.
 
-\subsection{Model of Types}
+\subsection{Type Model}
+
+Having modeled \textit{algebraic semantics} by refifying its concepts into
+datatypes of type theory (i.e. our \textit{algebraic model}), we now
+show how to encode specific types (both their type formers and values)
+using our algebraic model.
+
+\paragraph{Natural Numbers}
+
+We have already seen how to encode the type of natural numbers as the
+disjunction of the unit type and an inductive occurrence.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+\begin{code}
+  NatD : Desc
+  NatD = `1 `+ `X
+
+  ℕ : Set
+  ℕ = μ NatD
+\end{code}
+
+Recall that the type of the argument to the \AgdaCon{init} constructor
+represents a choice of which
+constructor to use, and the types of the arguments for the chosen
+constructor. For the natural numbers, this type specializes as follows.
+
+\AgdaHide{
+\begin{code}
+  eg :
+\end{code}}
+
+\begin{code}
+   (⊤ ⊎ ℕ) ≡ ⟦ NatD ⟧ ℕ
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  eg = refl
+\end{code}}
+
+To model the \AgdaCon{zero} constructor, we choose the left injection
+of the disjoint union type (defined in \refsec{param}), and apply it
+to the trivial unit constructor. 
+
+\begin{code}
+  zeroArgs : ⊤ ⊎ ℕ
+  zeroArgs = inj₁ tt
+\end{code}
+
+To construct a value of type \AgdaData{μ}, rather than the meaning
+function applied to its fixpoint, we must apply the the initial
+algebra (\AgdaCon{init}). We leave out describing this
+step explicitly in future exposition.
+
+\begin{code}
+  zero : ℕ
+  zero = init zeroArgs
+\end{code}
+
+To model the \AgdaData{suc} constructor, we apply the right injection
+of disjoint union to the previous natural number (\AgdaVar{n}), given
+as a function argument.
+
+\begin{code}
+  suc : ℕ → ℕ
+  suc n = init (inj₂ n)
+\end{code}
+
+There is no need to provide examples of using natural
+numbers encoded using our algebraic model. Once we
+define the type former and constructors according to their standard
+interface (i.e. their standard type signatures), their usage is
+indistinguishable from using type formers and constructors defined using
+datatype declarations (rather than \AgdaData{μ}).
+
+\begin{code}
+  two : ℕ
+  two = suc (suc zero)
+\end{code}
+
+The example above expands to the encoded term below, but by using the
+standard interface of type formers and constructors we never need to
+manually construct it.
+
+\begin{code}
+  two' : μ (`1 `+ `X)
+  two' = init (inj₂ (init (inj₂ (init (inj₁ tt)))))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Relation.Binary.PropositionalEquality
+ private
+  NatD : Desc
+  NatD = `1 `+ `X
+
+  ℕ : Set
+  ℕ = μ NatD
+\end{code}}
+
+Similarly, any function defined by pattern matching
+can retain its standard appearance of pattern matching on declared
+constructors by using \textit{pattern synonyms}. Pattern synonyms are
+a notational feature of Agda that expands the left hand syntax to the
+term on the right hand side. It has the special property that such
+expandable text can be used in the pattern matching fragment of the
+language. Thus, by defining pattern synonyms for
+\AgdaCon{zero} and \AgdaCon{suc} to expand into their \AgdaCon{init}
+encodings, we can write functions like \AgdaFun{plus} in a way that is
+oblivious to the underlying encoding.
+
+\begin{code}
+  pattern zero = init (inj₁ tt)
+  pattern suc n = init (inj₂ n)
+
+  plus : ℕ → ℕ → ℕ
+  plus zero m = m
+  plus (suc n) m = suc (plus n m)
+\end{code}
+
+The addition function above expands to the version below, defined by
+pattern matching on constructors of our encoding
+(\AgdaCon{init} et al.). The encoding also
+expands in the body of the function, such as the
+\AgdaCon{suc}cessor case of the addition function.
+
+\begin{code}
+  plus' : μ (`1 `+ `X) → μ (`1 `+ `X) → μ (`1 `+ `X)
+  plus' (init (inj₁ tt)) m = m
+  plus' (init (inj₂ n)) m = init (inj₂ (plus' n m))
+\end{code}
+
+In future examples, we will omit examples of values and function
+defined over modeled types. As explained, once we have derived the
+type former and constructors of a type using the primitives of our
+algebraic model, using the types to define values and function
+definitions is indistinguishable from using declared types thanks to
+syntactic conveniences afforded by Agda.
 
 \section{Infinitary Types}
 \section{Dependent Types}
