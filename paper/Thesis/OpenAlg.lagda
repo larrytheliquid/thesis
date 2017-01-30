@@ -161,8 +161,9 @@ the 1, $X$, (+), and ($\cdot$) polynomial set constructions.
 Of special note is the \AgdaCon{`κ} \textit{constant} constructor.
 The \textit{constant} constructor reifies a syntax for injecting
 \footnote{
-  As is often the case with injections, its syntax is implicit when
-  defining pattern functors using polynomial set constructions.
+  As is often the case with injections, its syntax is implicit
+  (i.e. invisible) when defining pattern functors using polynomial set
+  constructions.
   }
 \textit{non-inductive} constructor arguments (such as \AgdaVar{A} in the
 \AgdaCon{leaf} constructor of \AgdaData{Tree}). 
@@ -553,7 +554,8 @@ is modeled by a function taking its
 parameters (\AgdaVar{A} and \AgdaVar{B}), and returning the
 description of the disjoint union of \AgdaVar{A} (encoding the
 \AgdaCon{leaf} constructor),
-and the triple (ternary product) of two inductive
+and the triple (as 2 right-nested pairs)
+consisting of two inductive
 occurrences and \AgdaVar{B}
 (encoding the \AgdaCon{branch} constructor).
 
@@ -599,7 +601,7 @@ union injection to the function argument of type
 \end{code}
 
 To model the \AgdaCon{branch} constructor, we apply the right disjoint
-union injection to a triple (two nested pairs). The triple consists of
+union injection to a triple (2 right-nested pairs). The triple consists of
 the first inductive function argument (i.e. the left branch),
 the function argument of
 type \AgdaVar{B} (i.e. the node value for the branch), and the second
@@ -608,6 +610,122 @@ inductive function argument (i.e. the right branch).
 \begin{code}
   branch : {A B : Set} → Tree A B → B → Tree A B → Tree A B
   branch t₁ b t₂ = init (inj₂ (t₁ , (b , t₂)))
+\end{code}
+
+\paragraph{$\lambda$-Calculus Terms}
+
+We introduce the type of
+\textit{untyped $\lambda$-calculus terms} (\AgdaData{Term}) as a final
+and slightly more complex example
+(i.e. modeling a type with more than 2 constructors). We also
+define semantics for the untyped lambda calculus in subsequent
+sections (using different datatype features), using
+\AgdaData{Term} as a running example.
+Below we declare the \AgdaData{Term} type, consisting of
+variable references (\AgdaCon{var}), lambda abstractions
+(\AgdaCon{lam}), and applications (\AgdaCon{app}). 
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  data Term : Set where
+    var : (n : ℕ) → Term
+    lam : (b : Term) → Term
+    app : (f : Term) (a : Term) → Term
+\end{code}
+
+Our untyped lambda calculus terms use a deBruijn~\cite{TODO}
+encoding for variables. A deBruijn-encoded term references variables
+by a natural number index, where 0 refers to the variable bound by the
+most recent $\lambda$ (and 1 refers to the next most recent, and so on). For
+example, below is a high-level syntax for the
+Church-encoded~\cite{TODO} numeral \textbf{one}, and its deBruijn-encoded
+equivalent.
+
+$$
+\dfn{one} \lambda f.~ \lambda x.~ f~x \triangleq \lambda~ (\lambda~ 1~0)
+$$
+
+As a \AgdaData{Term}, we write the deBruijn-encoded numeral \textbf{one} as
+follows. Note the applications of the variable constructor
+(\AgdaCon{var}) to natural numbers (\AgdaData{ℕ}) to refer to
+variables by their deBruijn index.
+
+\begin{code}
+  one : Term
+  one = lam (lam (app (var 1) (var 0)))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Data.Nat
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+To model \AgdaData{Term}, we describe the disjoint union of the
+natural numbers (encoding \AgdaCon{var})
+with the disjoint union of an
+inductive occurrence (encoding \AgdaCon{lam})
+and a pair of inductive occurrences (encoding \AgdaCon{app}). This
+models 3 constructors using 2 right-nested
+disjoint unions.
+
+\begin{code}
+  TermD : Desc
+  TermD = `κ ℕ `+ (`X `+ (`X `∙ `X))
+
+  Term : Set
+  Term = μ TermD
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  eg :
+\end{code}}
+
+\begin{code}
+   ⟦ TermD ⟧ Term ≡ (ℕ ⊎ (Term ⊎ (Term × Term)))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  eg = refl
+\end{code}}
+
+To model the \AgdaCon{var} constructor, we apply the left disjoint
+union injection to the natural number argument.
+
+\begin{code}
+  var : ℕ → Term
+  var n = init (inj₁ n)
+\end{code}
+
+To model the \AgdaCon{lam} constructor, we apply the left disjoint
+union injection to: the right disjoint union injection applied to the
+inductive argument.
+
+\begin{code}
+  lam : Term → Term
+  lam b = init (inj₂ (inj₁ b))
+\end{code}
+
+To model the \AgdaCon{app} constructor, we apply the left disjoint
+union injection to: another left disjoint union injection but applied
+to a pair of inductive arguments.
+
+\begin{code}
+  app : Term → Term → Term
+  app f a = init (inj₂ (inj₂ (f , a)))
 \end{code}
 
 
