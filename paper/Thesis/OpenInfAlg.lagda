@@ -338,6 +338,74 @@ infinitary type, as the codomain ends with an inductive occurrence
   _ = refl
 \end{code}}
 
+\subsection{Type Model}
+
+Now we repeat the examples of models of non-infinitary types
+(\refsec{nondepalgmod}), but we convert the example types (and their
+constructors) to infinitary versions.
+
+\paragraph{Natural Numbers}
+
+As we have seen, the type of natural numbers is modeled as the
+disjoint union of the unit type and a trivial infinitary occurrence.
+Additionally, the \AgdaCon{zero} constructor remains unchanged.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+\begin{code}
+  NatD : Desc
+  NatD = `1 `+ `X^ ⊤
+
+  ℕ : Set
+  ℕ = μ NatD
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   ⟦ NatD ⟧ ℕ ≡ (⊤ ⊎ (⊤ → ℕ))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\begin{code}
+  zero : ℕ
+  zero = init (inj₁ tt)
+\end{code}
+
+We do not change the type of the \AgdaCon{suc} constructor.
+We hide its implementation as an \textit{infinitary} algebraic model
+by ignoring the trivial argument \AgdaVar{u} when constructing the
+predecessor as an infinitary function using the inductive input
+\AgdaVar{n}.
+
+\begin{code}
+  suc : ℕ → ℕ
+  suc n = init (inj₂ (λ u → n))
+\end{code}
+
+Note that we could have exposed the implementation of \AgdaCon{suc}
+as an infinitary type by changing the argument type to be infinitary.
+
+\begin{code}
+  suc' : (⊤ → ℕ) → ℕ
+  suc' f = init (inj₂ f)
+\end{code}
+
 
 \section{Dependent Types}
 \section{Indexed Types}
