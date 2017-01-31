@@ -3,7 +3,7 @@
 open import Data.Bool
 open import Data.Product hiding ( map )
 module _ where
- open import Data.List hiding ( concat ; all ) renaming ( [] to nil ; _∷_ to cons )
+open import Data.List hiding ( concat ; all ) renaming ( [] to nil ; _∷_ to cons )
 \end{code}}
 
 \section{Universes}\label{sec:universes}

@@ -5,9 +5,9 @@ open import Data.Unit
 open import Data.Bool
 open import Data.Product
 module _ where
- data List {ℓ} (A : Set ℓ) : Set ℓ where
-   nil : List A
-   cons : A → List A → List A
+data List {ℓ} (A : Set ℓ) : Set ℓ where
+  nil : List A
+  cons : A → List A → List A
 \end{code}}
 
 \section{Parametric Polymorphism}
