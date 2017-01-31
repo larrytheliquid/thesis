@@ -159,6 +159,57 @@ $$
 \dfn{Tree} \lambda A.~ \lambda B.~ \mu X.~ A + B \cdot X^2
 $$
 
+\subsection{Algebraic Model}
+
+To model the alegbraic semantics of \textit{infinitary} types in type
+theory, we make minor changes to our previous non-infinitary model
+(\refsec{nondepalgmod}). In all aspects of our model, we change from
+modeling merely inductive occurrences of types ($X$) to infinitary
+occurrences ($X^A$).
+
+\paragraph{Descriptions}
+
+Our model of descriptions stays the same, except that we replace the
+syntax for inductive occurrences (\AgdaCon{`X}) with a syntax for
+infinitary occurrences (\AgdaCon{`X\carot}).
+While inductive occurrences (\AgdaCon{`X}) have no arguments,
+infinitary occurrences (\AgdaCon{`X\carot}) have a
+\AgdaData{Set} argument
+representing the domain of the infinitary function type.
+
+\AgdaHide{
+\begin{code}
+module Desc where
+\end{code}}
+
+\begin{code}
+  data Desc : Set₁ where
+    `1 : Desc
+    _`+_  _`∙_ : Desc → Desc → Desc
+    `κ `X^ : Set → Desc
+\end{code}
+
+For example, below we convert the \AgdaCon{suc} constructor
+in the description of natural numbers to take
+an infinitary argument with a trivial domain.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ private
+\end{code}}
+
+\begin{code}
+  NatD : Desc
+  NatD = `1 `+ `X^ ⊤
+\end{code}
+
+
+Finally, note that the ``carot'' in the syntax of
+infinitary occurrences (\AgdaCon{`X\carot}) connotes raising an
+inductive occurrence to some power (the power being
+the cardinality of the domain argument of type \AgdaData{Set}).
 
 
 \section{Dependent Types}

@@ -129,7 +129,7 @@ represents multiple arguments of a constructor as a
 conjunction, and is analogous to the pair type (\AgdaData{×}).
 
 %% TODO maybe mention similarity to param universe ParStar
-\subsection{Algebraic Model}
+\subsection{Algebraic Model}\label{sec:nondepalgmod}
 
 To take advantage of algebraic semantics within type theory, we must
 \textit{model} its abstract notions using concrete datatypes and
@@ -405,7 +405,7 @@ respectfully.
 
 \subsection{Type Model}
 
-Having modeled \textit{algebraic semantics} by refifying its concepts into
+Having modeled \textit{algebraic semantics} by reifying its concepts into
 datatypes of type theory (i.e. our \textit{algebraic model}), we now
 show how to encode specific types (both their type formers and values)
 using our algebraic model.
