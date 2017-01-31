@@ -48,7 +48,6 @@ $$
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Unit
  private
 \end{code}}
 
@@ -86,7 +85,6 @@ ones by using the unit type as the domain.
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Unit
  private
 \end{code}}
 
@@ -346,9 +344,47 @@ constructors) to infinitary versions.
 
 \paragraph{Natural Numbers}
 
-As we have seen, the type of natural numbers is modeled as the
-disjoint union of the unit type and a trivial infinitary occurrence.
-Additionally, the \AgdaCon{zero} constructor remains unchanged.
+Type theoretically, we model the pattern functor
+(described by \AgdaFun{NatD} below)
+corresponding to the
+infinitary (due to the \AgdaVar{f} argument) definition of natural
+numbers below.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ private
+\end{code}}
+
+\begin{code}
+  data ℕ : Set where
+    zero : ℕ
+    suc : (f : ⊤ → ℕ) → ℕ
+
+  NatD : Desc
+  NatD = `1 `+ `X^ ⊤
+\end{code}
+
+
+However, we chose to model the non-infinitary (standard) definition of
+nutural numbers.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data ℕ : Set where
+    zero : ℕ
+    suc : ℕ → ℕ
+\end{code}
+
+The type former \AgdaData{ℕ} and \AgdaCon{zero} constructor are the
+same in both the non-infinitary and infinitary version of the natural
+numbers, so their definitions remain unchanged.
 
 \AgdaHide{
 \begin{code}
@@ -358,52 +394,54 @@ module _ where
  open Fix
  open import Relation.Binary.PropositionalEquality
  private
-\end{code}}
-
-\begin{code}
   NatD : Desc
   NatD = `1 `+ `X^ ⊤
+\end{code}}
 
+\begin{code}
   ℕ : Set
   ℕ = μ NatD
-\end{code}
 
-\AgdaHide{
-\begin{code}
-  _ :
-\end{code}}
-
-\begin{code}
-   ⟦ NatD ⟧ ℕ ≡ (⊤ ⊎ (⊤ → ℕ))
-\end{code}
-
-\AgdaHide{
-\begin{code}
-  _ = refl
-\end{code}}
-
-\begin{code}
   zero : ℕ
   zero = init (inj₁ tt)
 \end{code}
 
-We do not change the type of the \AgdaCon{suc} constructor.
-We hide its implementation as an \textit{infinitary} algebraic model
-by ignoring the trivial argument \AgdaVar{u} when constructing the
-predecessor as an infinitary function using the inductive input
-\AgdaVar{n}.
+However, we choose to model the non-infinitary definition of natural
+numbers by exposing the non-infinitary type signature interface for
+\AgdaCon{suc}. The implementation of the \textit{infinitary}
+pattern functor of the algebraic model is hidden by this interface.
 
 \begin{code}
   suc : ℕ → ℕ
   suc n = init (inj₂ (λ u → n))
 \end{code}
 
-Note that we could have exposed the implementation of \AgdaCon{suc}
-as an infinitary type by changing the argument type to be infinitary.
+The implementation ignores the trivial argument \AgdaVar{u} when
+constructing the
+predecessor as an infinitary function using the inductive input
+\AgdaVar{n}.
+Note that we could have instead modeled the infinitary definition of
+natural numbers by using the type signature for \AgdaCon{suc} that
+takes an infinitary argument type.
 
 \begin{code}
   suc' : (⊤ → ℕ) → ℕ
   suc' f = init (inj₂ f)
+\end{code}
+
+\paragraph{Binary Trees}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Bool
+ private
+\end{code}}
+
+\begin{code}
+  data Tree (A B : Set) : Set where
+    leaf : A → Tree A B
+    branch : (b : B) (f : Bool → Tree A B) → Tree A B
 \end{code}
 
 
