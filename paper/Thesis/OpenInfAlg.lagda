@@ -77,6 +77,81 @@ function ignoring a \AgdaData{⊤} argument, and destructing
 \AgdaCon{tt} to access the inductive value in the body of
 \AgdaVar{f}.
 
+\paragraph{Binary Trees}
+
+Below is a straightforward infinitary encoding of binary trees,
+replacing both inductive arguments of \AgdaCon{branch} with infinitary
+ones by using the unit type as the domain.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Unit
+ private
+\end{code}}
+
+\begin{code}
+  data Tree (A B : Set) : Set where
+    leaf : A → Tree A B
+    branch : (f : ⊤ → Tree A B) (b : B) (g : ⊤ → Tree A B) → Tree A B
+\end{code}
+
+This translates to the the algebraic semantics for infinitary binary
+trees below without any surprises.
+$$
+\dfn{Tree} \lambda A.~ \lambda B.~ \mu X.~ A + X^1 \cdot B \cdot X^1
+$$
+
+However, recall our series of isomorphic translations of the binary
+tree declaration used to model \AgdaData{Tree} via \AgdaData{W}
+types (\refsec{wtypes}). We can borrow two of those isomorphisms to
+reorder the \AgdaVar{B} argument to the front via symmetry
+(\texttt{A × B ≅ B × A}), causing both inductive arguments to appear
+at the end of \AgdaCon{branch}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Bool
+ private
+\end{code}}
+
+\begin{code}
+  data Tree (A B : Set) : Set where
+    leaf : A → Tree A B
+    branch : (b : B) (t₁ : Tree A B) (t₂ : Tree A B) → Tree A B
+\end{code}
+
+Then, we can appeal to the isomorphism that defines a non-dependent
+pair as a dependent function from \AgdaData{Bool} to each component of
+the pair (\texttt{A × B ≅ Π Bool (λ b → if b then A else B)}).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Bool
+ private
+\end{code}}
+
+\begin{code}
+  data Tree (A B : Set) : Set where
+    leaf : A → Tree A B
+    branch : (b : B) (f : Bool → Tree A B) → Tree A B
+\end{code}
+
+This translates both inductive arguments into a \textit{single}
+infinitary argument, where the domain is now \AgdaData{Bool} instead
+of \AgdaData{⊤}. It makes sense for the domain (i.e. branching factor)
+to be \AgdaData{Bool}, as we are defining \textit{binary} trees.
+Given that the cardinality of \AgdaData{Bool} is 2, we use
+algebraic semantics to define infinitary binary
+trees by raising $X$ to the power of 2 in the encoding of the
+\AgdaCon{branch} constructor.
+$$
+\dfn{Tree} \lambda A.~ \lambda B.~ \mu X.~ A + B \cdot X^2
+$$
+
+
 \section{Dependent Types}
 \section{Indexed Types}
 \section{Inductive-Recursive Types}
