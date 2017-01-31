@@ -104,9 +104,16 @@ $$
 
 However, recall our series of isomorphic translations of the binary
 tree declaration used to model \AgdaData{Tree} via \AgdaData{W}
-types (\refsec{wtypes}). We can borrow two of those isomorphisms to
-reorder the \AgdaVar{B} argument to the front via symmetry
-(\texttt{A × B ≅ B × A}), causing both inductive arguments to appear
+types (\refsec{wtypes}). We can borrow two of those isomorphisms
+to transform \AgdaData{Tree} into a less trivial instance of an
+infinitary type (i.e. one whose infinitary domains are types
+other than unit).
+
+First, we reorder the \AgdaVar{b} argument (of type \AgdaVar{B}) to the front via symmetry
+(\texttt{A × B ≅ B × A}), swapping \AgdaVar{b} and the inductive
+argument \AgdaVar{t₁} so that both inductive arguments
+(\AgdaVar{t₁} and \AgdaVar{t₂})
+to appear
 at the end of \AgdaCon{branch}.
 
 \AgdaHide{
@@ -122,8 +129,9 @@ module _ where
     branch : (b : B) (t₁ : Tree A B) (t₂ : Tree A B) → Tree A B
 \end{code}
 
-Then, we can appeal to the isomorphism that defines a non-dependent
-pair as a dependent function from \AgdaData{Bool} to each component of
+Second, we appeal to the isomorphism that defines a non-dependent
+pair (the two arguments \AgdaVar{t₁} and \AgdaVar{t₂} above)
+as a dependent function (\AgdaVar{f} below) from \AgdaData{Bool} to each component of
 the pair (\texttt{A × B ≅ Π Bool (λ b → if b then A else B)}).
 
 \AgdaHide{
