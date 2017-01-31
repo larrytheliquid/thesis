@@ -25,9 +25,12 @@ function types in \refsec{umodel}).
 
 The algebraic semantics for an inductive datatype is the
 \textit{least fixed point} of a polynomial equation
-represented as a \textit{pattern functor}.
-The input of the pattern functor represents the inductive set being
-defined ($X$), and its output must be a set formed by
+represented as a \textit{pattern functor}
+($F : \set \arr \set$).
+The input of the pattern functor
+(conventionally named $X$)
+represents the inductive set being
+defined, and its output must be a set formed by
 \textit{polynomial} set
 constructions. The polynomial set constructions are denoted
 1, (+), ($\cdot$),
@@ -112,7 +115,7 @@ binary trees (parameterized by \AgdaVar{A} and \AgdaVar{B}) containing
 The algebraic semantics of the \AgdaData{Tree} type is the following
 fixpoint equation.
 $$
-\mathrm{Tree} \triangleq \lambda A.~ \lambda B.~ \mu X.~ A + X \cdot B \cdot X
+\dfn{Tree} \lambda A.~ \lambda B.~ \mu X.~ A + X \cdot B \cdot X
 $$
 
 The \AgdaCon{leaf} constructor takes a single argument of type
@@ -139,19 +142,23 @@ must be restricted to using the polynomial set constructions covered in
 Informally we can check that a functor is defined under these
 restrictions, but in type theory we must formally capture these
 restrictions. We model algebraic semantics in type theory by reifying
-the pattern functor \textit{restrictions} as a datatype, the
+the \textit{pattern} fragment (enforcing restrictions)
+of functors as a datatype (\AgdaData{Desc} below), the actual
 pattern \textit{functor}
-as a computational type family (\refsec{compu}), and the \textit{fixpoint}
-operator as a datatype.
+as a computational type family (\AgdaFun{⟦\_⟧} below),
+and the \textit{fixpoint} operator as a datatype (\AgdaData{μ} below).
 
 \paragraph{Descriptions}
 
 The first part of our algebraic model is the type of descriptions
-(\AgdaData{Desc}). A \AgdaData{Desc} is the syntactic reification of
+(\AgdaData{Desc}), a syntax for the \textit{pattern} fragment of functors.
+A \AgdaData{Desc} is the syntactic reification of
 the polynomial expression language that must be used for a functor to
-qualify as a \textit{pattern} functor. Rather than defining a pattern
-functor directly, we first represent it as a \AgdaData{Desc} such
-that any well typed description can be converted into a functor
+qualify as a \textit{pattern} functor (i.e. a \AgdaData{Desc}
+``describes'' a valid, or pattern, functor).
+Rather than defining a pattern
+\textit{functor} directly, we first \textit{represent} it as a \AgdaData{Desc} such
+that any well typed description can be \textit{converted} into a functor
 meeting all pattern restrictions.
 
 Below, the \AgdaData{Desc} constructors
@@ -213,12 +220,13 @@ The next part of our algebraic model is the reification of pattern functors
 ($F : \set \arr \set$) as \textit{type families} (\refsec{tfam})
 with \AgdaData{Set} as their domain
 (\AgdaFun{F} : \AgdaData{Set} \arr~\AgdaData{Set}).
-We define a
-\textit{computational type family}
-(\AgdaFun{⟦}\_\AgdaFun{⟧} : \AgdaData{Desc} \arr~\AgdaData{Set} \arr~\AgdaData{Set})
-to interpret a
-\AgdaData{Desc} (the language of polynomial expressions) as a
-pattern functor.
+But first, we define a
+\textit{computational type family} (\refsec{compu})
+to interpret
+(\AgdaFun{⟦}\_\AgdaFun{⟧} : \AgdaData{Desc} \arr~\AgdaData{Set}
+\arr~\AgdaData{Set})
+the language of polynomial set constructions
+(\AgdaData{Desc}) as a pattern functor.
 
 \begin{code}
   ⟦_⟧ : Desc → Set → Set
@@ -280,10 +288,10 @@ to the interpretation function (rather than defining functors
 In other words, the output \AgdaData{Set} of \AgdaFun{F} is
 only composed of type theory equivalents of polynomial set
 constructions. For example, the output \AgdaData{Set} may use
-(\AgdaData{⊎}), modeling (+), by interpreting the
+disjoint unions (\AgdaData{⊎}), modeling (+), by interpreting the
 (\AgdaCon{`+}) description. It may not use other arbitrary
 types lacking a polynomial set construction equivalent (because their
-is no \AgdaData{Desc} for them), like ($\arr$)
+is no \AgdaData{Desc} for them), like functions ($\arr$)
 with negative occurrences of \AgdaVar{X}.
 
 Finally, note that it may appear that \AgdaCon{`κ} could be used to
