@@ -205,11 +205,46 @@ module _ where
   NatD = `1 `+ `X^ ⊤
 \end{code}
 
-
 Finally, note that the ``carot'' in the syntax of
 infinitary occurrences (\AgdaCon{`X\carot}) connotes raising an
 inductive occurrence to some power (the power being
 the cardinality of the domain argument of type \AgdaData{Set}).
+
+
+\paragraph{Pattern Functors}
+
+Again, pattern functors ($F : \set \arr \set$) are not modeled
+directly. Instead, the model
+of a pattern functor (\AgdaFun{F} : \AgdaData{Set}
+\arr~\AgdaData{Set})
+is the result of partially applying a
+description to the interpretation function
+(\AgdaFun{⟦}\_\AgdaFun{⟧} : \AgdaData{Desc} \arr~\AgdaData{Set}
+\arr~\AgdaData{Set}).
+
+The infinitary pattern \AgdaCon{`X\carot} \AgdaVar{A} is interpreted
+as a function with domain \AgdaVar{A} and codomain \AgdaVar{X}. It is
+crucial that \AgdaVar{X} (representing an inductive occurrence)
+appears in the codomain (rather than domain)
+of the function. Otherwise, our subsequent fixpoint construction
+(\AgdaData{μ}) would support negative datatypes (the
+Agda positivity checker prevents us from defining \AgdaData{μ}
+with \AgdaVar{X} in the interpreted function domain even if we tried).
+
+\AgdaHide{
+\begin{code}
+module El where
+  open Desc
+\end{code}}
+
+\begin{code}
+  ⟦_⟧ : Desc → Set → Set
+  ⟦ `1 ⟧ X = ⊤
+  ⟦ A `+ B ⟧ X = ⟦ A ⟧ X ⊎ ⟦ B ⟧ X
+  ⟦ A `∙ B ⟧ X = ⟦ A ⟧ X × ⟦ B ⟧ X
+  ⟦ `κ A ⟧ X = A
+  ⟦ `X^ A ⟧ X = A → X
+\end{code}
 
 
 \section{Dependent Types}

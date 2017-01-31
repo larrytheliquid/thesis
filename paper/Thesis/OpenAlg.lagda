@@ -220,7 +220,7 @@ The next part of our algebraic model is the reification of pattern functors
 ($F : \set \arr \set$) as \textit{type families} (\refsec{tfam})
 with \AgdaData{Set} as their domain
 (\AgdaFun{F} : \AgdaData{Set} \arr~\AgdaData{Set}).
-But first, we define a
+Rather than defining \AgdaFun{F} directly, we define a
 \textit{computational type family} (\refsec{compu})
 to interpret
 (\AgdaFun{⟦}\_\AgdaFun{⟧} : \AgdaData{Desc} \arr~\AgdaData{Set}
