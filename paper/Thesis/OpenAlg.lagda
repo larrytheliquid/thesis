@@ -249,7 +249,7 @@ module _ where
  private
   NatD : Desc
   NatD = `1 `+ `X
-  eg :
+  _ :
 \end{code}}
 
 \begin{code}
@@ -258,7 +258,7 @@ module _ where
 
 \AgdaHide{
 \begin{code}
-  eg = refl
+  _ = refl
 \end{code}}
 
 Recall that the input to the pattern functor
@@ -372,7 +372,7 @@ Natural numbers are constructed by applying
 
 \AgdaHide{
 \begin{code}
-  eg :
+  _ :
 \end{code}}
 
 \begin{code}
@@ -381,7 +381,7 @@ Natural numbers are constructed by applying
 
 \AgdaHide{
 \begin{code}
-  eg = refl
+  _ = refl
 \end{code}}
 
 
@@ -432,7 +432,7 @@ constructor. For the natural numbers, this type specializes as follows.
 
 \AgdaHide{
 \begin{code}
-  eg :
+  _ :
 \end{code}}
 
 \begin{code}
@@ -441,7 +441,7 @@ constructor. For the natural numbers, this type specializes as follows.
 
 \AgdaHide{
 \begin{code}
-  eg = refl
+  _ = refl
 \end{code}}
 
 To model the \AgdaCon{zero} constructor, we choose the left injection
@@ -579,7 +579,7 @@ module _ where
 
 \AgdaHide{
 \begin{code}
-  eg : (A B : Set) →
+  _ : {A B : Set} →
 \end{code}}
 
 \begin{code}
@@ -588,7 +588,7 @@ module _ where
 
 \AgdaHide{
 \begin{code}
-  eg _ _ = refl
+  _ = refl
 \end{code}}
 
 To model the \AgdaCon{leaf} constructor, we apply the left disjoint
@@ -700,7 +700,7 @@ disjoint unions.
 
 \AgdaHide{
 \begin{code}
-  eg :
+  _ :
 \end{code}}
 
 \begin{code}
@@ -709,7 +709,7 @@ disjoint unions.
 
 \AgdaHide{
 \begin{code}
-  eg = refl
+  _ = refl
 \end{code}}
 
 To model the \AgdaCon{var} constructor, we apply the left disjoint

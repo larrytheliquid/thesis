@@ -1,6 +1,5 @@
 \AgdaHide{
 \begin{code}
-{-# OPTIONS --no-positivity-check #-}
 module _ where
 \end{code}}
 
@@ -563,6 +562,7 @@ theory inconsistent. For example, the datatype below is inconsistent
 with type theory.
 
 \begin{code}
+  {-# NO_POSITIVITY_CHECK #-}
   data Neg : Set where
     neg : (Neg → Neg) → Neg
 \end{code}
