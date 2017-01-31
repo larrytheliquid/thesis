@@ -1,6 +1,7 @@
 \AgdaHide{
 \begin{code}
 module _ where
+open import Data.Bool
 open import Data.Unit
 open import Data.Sum
 open import Data.Product
@@ -117,7 +118,6 @@ at the end of \AgdaCon{branch}.
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Bool
  private
 \end{code}}
 
@@ -135,7 +135,6 @@ the pair (\texttt{A × B ≅ Π Bool (λ b → if b then A else B)}).
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Bool
  private
 \end{code}}
 
@@ -431,10 +430,13 @@ takes an infinitary argument type.
 
 \paragraph{Binary Trees}
 
+The pattern functor we define
+models the pattern functor for the following infinitary definition of
+binary trees.
+
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Bool
  private
 \end{code}}
 
@@ -443,6 +445,42 @@ module _ where
     leaf : A → Tree A B
     branch : (b : B) (f : Bool → Tree A B) → Tree A B
 \end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+\begin{code}
+  TreeD : Set → Set → Desc
+  TreeD A B = `κ A `+ (`κ B `∙ `X^ Bool)
+
+  Tree : Set → Set → Set
+  Tree A B = μ (TreeD A B)
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ : {A B : Set} →
+\end{code}}
+
+\begin{code}
+   ⟦ TreeD A B ⟧ (Tree A B) ≡ (A ⊎ (B × (Bool → Tree A B)))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+However, our model of binary trees
+will be non-infinitary because we will only expose non-infinitary type
+signatures for the binary tree type former and constructors.
 
 
 \section{Dependent Types}
