@@ -246,6 +246,98 @@ module El where
   ⟦ `X^ A ⟧ X = A → X
 \end{code}
 
+Partially applying \AgdaFun{NatD} to the interpretation function
+results in the following pattern functor for an infinitary encoding of
+natural numbers.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open import Relation.Binary.PropositionalEquality
+ private
+  NatD : Desc
+  NatD = `1 `+ `X^ ⊤
+  _ :
+\end{code}}
+
+\begin{code}
+   ⟦ NatD ⟧ ≡ (λ X → ⊤ ⊎ (⊤ → X))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+Notice how the argument of the \AgdaCon{suc} constructor, which is the
+type to the right of the disjoint union, is an function
+from the unit type to the inductive \AgdaVar{X} occurrence.
+
+\paragraph{Fixpoints}
+
+The algebraic semantics for least fixed points
+($\mu : (\set \arr \set) \arr \set$) of infnitary types
+is modeled (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
+the same way as the non-infinitary version. The initial
+algebra constructor \AgdaCon{init} of the fixed point operator
+datatype is also unchanged.
+
+\AgdaHide{
+\begin{code}
+module Fix where
+  open Desc
+  open El
+\end{code}}
+
+\begin{code}
+  data μ (D : Desc) : Set where
+    init : ⟦ D ⟧ (μ D) → μ D
+\end{code}
+
+
+The natural numbers can be defined as a fixpoint of their description,
+as before. 
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Relation.Binary.PropositionalEquality
+ private
+  NatD : Desc
+  NatD = `1 `+ `X^ ⊤
+\end{code}}
+
+\begin{code}
+  ℕ : Set
+  ℕ = μ NatD
+\end{code}
+
+The type of the argument to the \AgdaCon{init}ial algebra
+of natural numbers is like the type of the natural number pattern
+functor, except with \AgdaVar{X} replaced by the type of natural
+numbers. This makes the argument to the \AgdaCon{suc} constructor an
+infinitary type, as the codomain ends with an inductive occurrence
+(the \AgdaData{ℕ}) type.
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   ⟦ NatD ⟧ ℕ ≡ (⊤ ⊎ (⊤ → ℕ))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
 
 \section{Dependent Types}
 \section{Indexed Types}
