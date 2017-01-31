@@ -552,7 +552,12 @@ module _ where
 
 An \textit{infinitary} type is an inductive type where at least one
 constructor has one function argument whose codomain is the type being
-defined. The domain can never be the
+defined.
+\footnote{
+  \textit{Infinitary types} are also referred to as
+  \textit{generalized inductive definitions}~\cite{TODO}.
+  }
+The domain can never be the
 type being defined, because negative datatypes~\ref{TODO} make type
 theory inconsistent. For example, the datatype below is inconsistent
 with type theory.
