@@ -338,21 +338,31 @@ infinitary type, as the codomain ends with an inductive occurrence
 \subsection{Type Model}
 
 Now we repeat the examples of models of non-infinitary types
-(\refsec{nondepalgmod}), but we convert the example types (and their
-constructors) to infinitary versions.
+(\refsec{nondepalgmod}), converting models to their infinitary
+counterparts.
+A straightforward translation from the non-infinitary to the
+infinitary translates both the models for pattern functors and
+datatypes to infinitary versions.
+
+Alternatively, we can model non-infinitary datatypes that are defined
+in terms of infinitary pattern functors. In this scenario type formers
+do not require special treatment (i.e. their definitions can be
+equivalent to their non-infinitary counterparts).
+However, we must
+take special care when modeling constructors by exposing a
+non-infinitary type signature (i.e. interface) that is defined in
+terms of an infinitary (hidden) implementation.
 
 \paragraph{Natural Numbers}
 
-Type theoretically, we model the pattern functor
-(described by \AgdaFun{NatD} below)
-corresponding to the
-infinitary (due to the \AgdaVar{f} argument) definition of natural
-numbers below.
+Let's begin with the straightforward model of infinitary natural
+numbers, defined with a model of an infinitary pattern functor. The infinitary
+(due to the \AgdaVar{f} argument)
+definition of natural numbers is below.
 
 \AgdaHide{
 \begin{code}
 module _ where
- open Desc
  private
 \end{code}}
 
@@ -360,14 +370,64 @@ module _ where
   data ℕ : Set where
     zero : ℕ
     suc : (f : ⊤ → ℕ) → ℕ
-
-  NatD : Desc
-  NatD = `1 `+ `X^ ⊤
 \end{code}
 
+The infinitary pattern functor for this type is described by
+\AgdaFun{NatD}. Its type former \AgdaData{ℕ}
+appears below, and is modeled the same way
+as its non-infinitary coutnerpart in \refsec{nondepalgmod}.
 
-However, we chose to model the non-infinitary (standard) definition of
-nutural numbers.
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+\begin{code}
+  NatD : Desc
+  NatD = `1 `+ `X^ ⊤
+
+  ℕ : Set
+  ℕ = μ NatD
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   ⟦ NatD ⟧ ℕ ≡ (⊤ ⊎ (⊤ → ℕ))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+The model of the \AgdaCon{zero} constructor is also the same as its
+non-infinitary counterpart.
+
+\begin{code}
+  zero : ℕ
+  zero = init (inj₁ tt)
+\end{code}
+
+The model of the \AgdaCon{suc} constructor is different, because
+it takes an infinitary argument (\AgdaVar{f}).
+
+\begin{code}
+  suc : (⊤ → ℕ) → ℕ
+  suc f = init (inj₂ f)
+\end{code}
+
+But what if we wanted to model the non-infinitary definition of
+natural numbers below, even though we can only
+\AgdaData{Descr}ibe infinitary pattern functors?
 
 \AgdaHide{
 \begin{code}
@@ -381,9 +441,19 @@ module _ where
     suc : ℕ → ℕ
 \end{code}
 
-The type former \AgdaData{ℕ} and \AgdaCon{zero} constructor are the
-same in both the non-infinitary and infinitary version of the natural
-numbers, so their definitions remain unchanged.
+To model a non-infinitary type with an infinitary pattern functor, we
+never need to change the type former (so our definition of
+\AgdaData{ℕ} above suffices). Because \AgdaCon{zero} was never
+infinitary to begin with, its previous definition can also be
+reused.
+
+However, we take special care to model a non-infinitary
+\AgdaCon{suc} constructor in terms of its underlying infinitary
+pattern functor \AgdaFun{NatD}.
+We expose the non-infinitary type signature of
+\AgdaCon{suc}, acting as an interface.
+The implementation of the \textit{infinitary}
+pattern functor of the algebraic model is hidden by this interface.
 
 \AgdaHide{
 \begin{code}
@@ -395,20 +465,9 @@ module _ where
  private
   NatD : Desc
   NatD = `1 `+ `X^ ⊤
-\end{code}}
-
-\begin{code}
   ℕ : Set
   ℕ = μ NatD
-
-  zero : ℕ
-  zero = init (inj₁ tt)
-\end{code}
-
-However, we choose to model the non-infinitary definition of natural
-numbers by exposing the non-infinitary type signature interface for
-\AgdaCon{suc}. The implementation of the \textit{infinitary}
-pattern functor of the algebraic model is hidden by this interface.
+\end{code}}
 
 \begin{code}
   suc : ℕ → ℕ
@@ -419,14 +478,7 @@ The implementation ignores the trivial argument \AgdaVar{u} when
 constructing the
 predecessor as an infinitary function using the inductive input
 \AgdaVar{n}.
-Note that we could have instead modeled the infinitary definition of
-natural numbers by using the type signature for \AgdaCon{suc} that
-takes an infinitary argument type.
 
-\begin{code}
-  suc' : (⊤ → ℕ) → ℕ
-  suc' f = init (inj₂ f)
-\end{code}
 
 \paragraph{Binary Trees}
 
