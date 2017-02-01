@@ -482,9 +482,8 @@ predecessor as an infinitary function using the inductive input
 
 \paragraph{Binary Trees}
 
-The pattern functor we define
-models the pattern functor for the following infinitary definition of
-binary trees.
+Our pattern functor for binary trees models the the infinitary
+definition of binary trees below.
 
 \AgdaHide{
 \begin{code}
@@ -497,6 +496,9 @@ module _ where
     leaf : A → Tree A B
     branch : (b : B) (f : Bool → Tree A B) → Tree A B
 \end{code}
+
+The description of the binary tree pattern functor, and its type
+former, are given below.
 
 \AgdaHide{
 \begin{code}
@@ -530,9 +532,35 @@ module _ where
   _ = refl
 \end{code}}
 
-However, our model of binary trees
-will be non-infinitary because we will only expose non-infinitary type
-signatures for the binary tree type former and constructors.
+The model of the \AgdaCon{leaf} constructor is straightforward, as it
+is not infinitary.
+
+\begin{code}
+  leaf : {A B : Set} → A → Tree A B
+  leaf a = init (inj₁ a)
+\end{code}
+
+However, we model a non-infinitary \AgdaCon{branch} constructor in
+terms of its underlying infinitary pattern functor. Below the model of
+the \AgdaCon{branch} constructor is non-infinitary because its type
+signature does not contain any infinitary arguments (despite the fact
+that its implementation supplies infinitary values to the
+\AgdaCon{init}ial algebra, defined in terms of an infinitary pattern
+functor).
+
+\begin{code}
+  branch : {A B : Set} → Tree A B → B → Tree A B → Tree A B
+  branch t₁ b t₂ = init (inj₂ (b , (λ x → if x then t₁ else t₂)))
+\end{code}
+
+The second
+component of the pair (in the right disjoint union injection) is an
+infinitary function from \AgdaData{Bool} to
+\AgdaFun{Tree} \AgdaVar{A} \AgdaVar{B}. Therefore, we simulate a
+non-infinitary \AgdaCon{branch} by applying a conditional to the
+boolean argument of the function, returning the inductive
+\AgdaVar{t₁} argument in the true case and the inductive
+\AgdaVar{t₂} argument in the false case.
 
 
 \section{Dependent Types}
