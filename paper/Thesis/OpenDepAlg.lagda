@@ -89,3 +89,37 @@ F \triangleq
 (b : 2) \cdot
 \key{if}~b~\key{then}~1~\key{else}~1
 $$
+
+\paragraph{Natural Numbers}
+
+We reuse the infinitary definition of the natural numbers from
+\refsec{infalgsem}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data ℕ : Set where
+    zero : ℕ
+    suc : (f : ⊤ → ℕ) → ℕ
+\end{code}
+
+Compared to the infinitary and non-dependent (\refsec{idxalg})
+natural numbers fixpoint, the only difference in our dependent setting is
+that the \AgdaCon{suc} constructor ends by multiplying by 1 (obeying
+our constraint).
+$$
+\nat \triangleq \mu X.~1 + X^1 \cdot 1
+$$
+
+Technically, the (+) is just notation so the true fixpoint is the
+expanded definition below.
+$$
+\nat \triangleq \mu X.~
+(b : 2) \cdot
+\key{if}~b~\key{then}~1~\key{else}~X^1 \cdot 1
+$$
+
