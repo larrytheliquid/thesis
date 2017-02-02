@@ -156,7 +156,7 @@ $$
 \dfn{Tree} \lambda A.~ \lambda B.~ \mu X.~ A + B \cdot X^2
 $$
 
-\subsection{Algebraic Model}
+\subsection{Algebraic Model}\label{sec:infalgmod}
 
 To model the alegbraic semantics of \textit{infinitary} types in type
 theory, we make minor changes to our previous non-infinitary model
@@ -563,9 +563,5 @@ boolean argument of the function, returning the inductive
 \AgdaVar{t₂} argument in the false case.
 
 
-\section{Dependent Types}
-\section{Indexed Types}
-\section{Inductive-Recursive Types}
-\section{Indexed Inductive-Recursive Types}
 
 
