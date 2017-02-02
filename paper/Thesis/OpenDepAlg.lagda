@@ -75,7 +75,7 @@ F \triangleq \lambda X.~
 $$
 
 In general, the pattern functor is a (possibly dependent) product of $n$ (possibly
-0) sets, ending in a multiplication by the unite set 1. Each
+0) sets, ending in a multiplication by the unit set 1. Each
 of the $n$ sets (i.e. each $A_i$ below) may dependent on the values of
 previous sets (i.e. each $x_i$ below). Additionally, each $A_i$ may
 be non-inductive (not using $X$) or infinitary (using $X$).
@@ -183,8 +183,8 @@ descriptions.
 
 \paragraph{Descriptions}
 
-Recall from \refsec{depalgsem} that we constraint dependent pattern
-functors to a sequence of products ending in 1. Recall also that
+Recall from \refsec{depalgsem} that we constrained dependent pattern
+functors to be a sequence of products ending in 1. Recall also that
 descriptions are the reification (or model) of the language used to
 create legal pattern functors.
 Hence, we change the type of descriptions to enforce that pattern
@@ -192,18 +192,18 @@ functors (representing definitions of datatypes) are sequences of
 dependent pairs (\AgdaData{Σ}) ending in the unit type
 (\AgdaData{⊤}).
 
-Below, we model the pattern of ending (with the unit type) a functor
-with the \AgdaCon{`ι} constructor. For now this is simply a renaming
+Below, the \AgdaCon{`ι} constructor models the pattern of ending a
+functor with the unit type. For now this is simply a renaming
 of the former \AgdaCon{`1} constructor.
 \footnote{
   However, in future extensions
   supporting indexed types (\refsec{idxalg}) and inductive-recursive
   types (\refsec{iralg})) \AgdaCon{`ι} gains additional arguments.
 }
-A \textit{dependent} (but non-infinitary)
-argument is modeled by the \AgdaCon{`σ} constructor. An
-\textit{infinitary} (but non-dependent) argument is modeled by the
-\AgdaCon{`δ} constructor.
+The \AgdaCon{`σ} constructor models a
+\textit{dependent} (but non-infinitary) argument.
+The \AgdaCon{`δ} constructor models an
+\textit{infinitary} (but non-dependent) argument.
 \footnote{
   At this point it does not make sense for an infinitary argument
   (\AgdaCon{`δ}) to be dependent.
@@ -215,9 +215,10 @@ argument is modeled by the \AgdaCon{`σ} constructor. An
   we will need to add a notion of dependency to \AgdaCon{`δ}.
   }
 Thus, while the pattern functor of algebraic semantics uses
-a single product ($\cdot$) for both dependent and infinitary
-arguments, our new description syntax distinguishes between
-dependent (\AgdaCon{`σ}) and infinitary (\AgdaCon{`δ}) arguments. 
+a single product ($\cdot$) for any
+argument, our new description syntax distinguishes between
+dependent (\AgdaCon{`σ}) and
+infinitary non-dependent (\AgdaCon{`δ}) arguments. 
 
 \AgdaHide{
 \begin{code}
@@ -234,23 +235,14 @@ module Desc where
 Hence, the non-dependent product (\AgdaCon{`∙}) of the non-dependent
 description datatype (\refsec{infalgmod}) is replaced by the
 (no longer infix) dependent pair \AgdaCon{`σ} and infinitary
-non-dependent pair \AgdaCon{`δ}. When \AgdaCon{`σ} is used to request
-an argument \AgdaVar{A}, the rest of the description \AgdaVar{D} may
-depend on a value of \AgdaVar{A}. This is modeled by the infinitary
-type of \AgdaVar{D}, namely \AgdaVar{A} \arr~
-\AgdaData{Desc}. Notice that the left component of (\AgdaCon{`∙}) is
-a description (\AgdaData{Desc}), but the left component of
-\AgdaCon{`σ} is a type (\AgdaData{Set}). If \AgdaVar{A} were a
-description, and \AgdaVar{D} could depend on a value of the inductive
-type being defined, then our type of descriptions (\AgdaData{Desc})
-would be \textit{negative} (and we could subsequently use it to
-model pattern functors of negative types).
-Hence, the first component of a dependent pair (\AgdaVar{A})
-must be restricted to a type (guaranteed to be non-inductive)
-so that the infinitary type \AgdaVar{D}
-(representing subsequent arguments in the description) remains
-\textit{positive}.
-
+non-dependent pair \AgdaCon{`δ}. As an example,
+below (\AgdaFun{RoseD}) is the
+description for \AgdaData{Rose} trees.
+\AgdaFun{RoseD} uses \AgdaCon{`σ} to request a dependent
+natural number argument (\AgdaVar{n}), then uses
+\AgdaCon{`δ} to request a non-dependent but infinitary argument
+(whose domain is \AgdaData{Fin} \AgdaVar{n}),
+and finally ends with \AgdaCon{`ι}.
 
 \AgdaHide{
 \begin{code}
@@ -262,18 +254,80 @@ module _ where
 \end{code}}
 
 \begin{code}
+  RoseD : Set → Desc
+  RoseD A = `σ ℕ (λ n → `δ (Fin n) `ι)
+\end{code}
+
+When \AgdaCon{`σ} is used to request
+an argument of type \AgdaVar{A}, the rest of the description \AgdaVar{D} may
+depend on a value of \AgdaVar{A}. This is modeled by the infinitary
+type of \AgdaVar{D}, namely \AgdaVar{A} \arr~\AgdaData{Desc}.
+Notice that the first argument of (\AgdaCon{`∙}) is
+a description (\AgdaData{Desc}), but the first argument of
+\AgdaCon{`σ} is a type (\AgdaData{Set}). Imagine that
+\AgdaVar{A} was a
+description, and that \AgdaVar{D} could depend on a value of the inductive
+type being defined
+(as the argument to the infinitary domain of \AgdaVar{D}).
+Then, our type of descriptions (\AgdaData{Desc})
+would be \textit{negative} (and we could subsequently use it to
+model pattern functors of negative types).
+Hence, the first component of a dependent pair (\AgdaVar{A})
+must be restricted to a type (guaranteed to be non-inductive)
+so that the infinitary type \AgdaVar{D}
+(representing subsequent arguments in the description) remains
+\textit{positive}.
+
+The infinitary pair constructor \AgdaCon{`δ} is like a specialized
+combination of the former infinitary constructor \AgdaCon{`X\carot}
+and the non-dependent product (or pair) constructor \AgdaCon{`∙}.
+The \AgdaVar{A} argument represents the domain of the infinitary
+function (like the argument to \AgdaCon{`X\carot}), and the
+non-dependent \AgdaVar{D} argument represents the rest of the
+description (which cannot depend on the inductive occurrence
+because the inductive type has not been defined yet).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Bool
+ open Desc
+ private
+\end{code}}
+
+We can use \AgdaCon{`σ} to derive (\AgdaCon{`+}) as a dependent pair
+of a boolean and a choice of branches, similar to how we
+derived sums (+)
+from dependent products ($\cdot$) for
+pattern functors (\refsec{depalgsem}).
+
+\begin{code}
   _`+_ : Desc → Desc → Desc
   D `+ E = `σ Bool (λ b → if b then D else E)
+\end{code}
 
+Additionally, we can derive \AgdaCon{`κ} and \AgdaCon{`X\carot} using
+\AgdaCon{`σ} and \AgdaCon{`δ} respectfully, then immediately ending
+with \AgdaCon{`ι} (as these derived constructors do not require
+additional arguments).
+
+\begin{code}
   `κ : Set → Desc
   `κ A  = `σ A (λ a → `ι)
 
   `X^ : Set → Desc
   `X^ A  = `δ A `ι
-
-  postulate _`∙_ : Desc → Desc → Desc
 \end{code}
 
+Finally, we emphasize that (\AgdaCon{`∙}) \textit{cannot} be derived from
+\AgdaCon{`σ} and \AgdaCon{`δ}. It is not clear whether the first
+argument (a \AgdaData{Desc}) to (\AgdaCon{`∙}) contains an infinitary
+(hence inductive) occurrence, so cannot decide whether to proceed
+by using \AgdaCon{`σ} (disallowing inductiveness) or
+\AgdaCon{`δ} (allowing inductiveness). Additionally, we would somehow
+need to convert the first argument of (\AgdaCon{`∙}),
+a \AgdaData{Desc}, to the first argument of \AgdaCon{`σ} or
+\AgdaCon{`δ}, a \AgdaData{Set}.
 
 \AgdaHide{
 \begin{code}
