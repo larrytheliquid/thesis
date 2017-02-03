@@ -462,3 +462,70 @@ module _ where
 \end{code}}
 
 
+\subsection{Type Model}
+
+Now we model the type formers and constructors of (possibly) dependent
+datatypes. The descriptions of these datatypes are interpreted as
+models of pattern functors constrained to be
+sequences of dependent and non-dependent infinitary pairs, ending
+in the unit type.
+
+\paragraph{Rose Trees}
+
+We begin by modeling rose trees, because they demonstrate
+dependencies between argument types while also being simple because
+they only have a single constructor. First, we repeat the definition
+of the rose tree description, its pattern functor, and its type former
+as a fixpoint.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Data.Nat
+ open import Data.Fin
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+\begin{code}
+  RoseD : Set → Desc
+  RoseD A = `σ A (λ a → `σ ℕ (λ n → `δ (Fin n) `ι))
+
+  Rose : Set → Set
+  Rose A = μ (RoseD A)
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ : {A : Set} →
+\end{code}}
+
+\begin{code}
+   ⟦ RoseD A ⟧ (Rose A) ≡ Σ A (λ a → Σ ℕ (λ n → (Fin n → Rose A) × ⊤))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+Now we model the single constructor (\AgdaCon{rose}) of
+\AgdaData{Rose} trees. Note that we are modeling the infinitary
+rose constructor, rather than its \AgdaData{List} of roses variant, as
+indicated by the type signature of our derived \AgdaCon{rose}
+constructor. 
+
+\begin{code}
+  rose : {A : Set} (a : A) (n : ℕ) (f : Fin n → Rose A) → Rose A
+  rose a n f = init (a , (n , (f , tt)))
+\end{code}
+
+Because our dependent types are modeled as least fixed points of
+functors constrained to be sequences of pair types, values
+(e.g. like the \AgdaData{rose} constructor) are simply the
+\AgdaCon{init}ial algebra of a tuple encoded as a sequence of
+right-nested pairs (ending in the trivial unit value \AgdaCon{tt}).
+
