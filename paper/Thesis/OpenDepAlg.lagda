@@ -532,5 +532,243 @@ right-nested pairs (ending in the trivial unit value \AgdaCon{tt}).
 
 \paragraph{Natural Numbers}
 
+Let's encode a model of natural numbers using descriptions for
+dependent types. We begin with the pattern functor for a dependent and
+infinitary encoding of the natural numbers.
+The \AgdaCon{zero} constructor immediately ends with \AgdaCon{`ι}.
+The \AgdaCon{suc}
+constructor uses \AgdaCon{`δ} to demand a trivial (i.e. where the
+domain is the unit type) infinitary argument (similar to
+\refsec{infalgtps}), then ends with \AgdaCon{`ι}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ private
+  _`+_ : Desc → Desc → Desc
+  D `+ E = `σ Bool (λ b → if b then D else E)
+\end{code}}
+
+\begin{code}
+  NatD : Desc
+  NatD = `ι `+ `δ ⊤ `ι
+\end{code}
+
+Recall from \refsec{depalgmod} that a choice of constructors
+(\AgdaCon{`+}) is derived as a dependent pair with a boolean domain
+and a choice between descriptions, so the \AgdaFun{NatD} above expands
+to the version below.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+\begin{code}
+  NatD : Desc
+  NatD = `σ Bool (λ b → if b then `ι else `δ ⊤ `ι)
+\end{code}
+
+For legibility (especially when types with many different constructors
+are involved), we often create a specialized enumeration type in place
+of the \AgdaData{Bool}, and define the second argument to \AgdaCon{`σ}
+as a pattern matching $\lambda$ rather than an \AgdaFun{if}-like
+elimination principle. For example, we can encode the description of
+natural numbers by matching on ``tags'' of the enumeration type
+\AgdaData{NatT}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+\begin{code}
+  data NatT : Set where
+    zeroT sucT : NatT
+
+  NatD : Desc
+  NatD = `σ NatT λ where
+    zeroT → `ι
+    sucT → `δ ⊤ `ι
+\end{code}
+
+By convention, names of tags are suffixed with "\AgdaCon{T}". Tags are merely
+enumerations and do not have arguments themselves. Rather, we match on
+tags in descriptions to declare the descriptions of arguments for each
+constructor (where each constructor is represented by a tag
+case).
+
+Now let's finish by modeling the type of natural numbers as a
+fixpoint, and its constructors as initial algebras of that fixpoint.
+
+\begin{code}
+  ℕ : Set
+  ℕ = μ NatD
+
+  zero : ℕ
+  zero = init (zeroT , tt)
+
+  suc : ℕ → ℕ
+  suc n = init (sucT , ((λ u → n) , tt))
+\end{code}
+
+Now we are encoding constructor choices as the initial algebra applied
+to a dependent pairs whose domain is an enumeration of tags and
+codomain is the description of arguments for each constructor
+tag. Hence, the first component (e.g. \AgdaCon{zeroT} or
+\AgdaCon{sucT}) in the tuple that the initial algebra
+is applied to is always the tag name.
 
 
+\paragraph{$\lambda$-Calculus Terms}
+
+As a final example we model the untyped $\lambda$-calculus terms
+introduced in \refsec{nondepalgtps} using descriptions of dependent
+types. Compared to the model of natural numbers, no new concepts are
+required to encode \AgdaData{Term}s.
+The reason for this example is that \AgdaData{Term} has 3
+constructors, so we can gain a greater appreciation of the legibility
+afforded by constructor tags compared to choice-encoded using
+boolans.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  data Term : Set where
+    var : (n : ℕ) → Term
+    lam : (b : Term) → Term
+    app : (f : Term) (a : Term) → Term
+\end{code}
+
+First, let's describe the 3 constructors as a right-nested tuple of 3
+choices using (\AgdaCon{`+}).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Data.Nat
+ private
+  _`+_ : Desc → Desc → Desc
+  D `+ E = `σ Bool (λ b → if b then D else E)
+\end{code}}
+
+\begin{code}
+  TermD : Desc
+  TermD = `σ ℕ (λ n → `ι) `+ (`δ ⊤ `ι `+ `δ Bool `ι)
+\end{code}
+
+Let's expand the definition of (\AgdaCon{`+}) to see the nested
+choices.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Data.Nat
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+\begin{code}
+  TermD : Desc
+  TermD = `σ Bool λ b → if b
+    then `σ ℕ (λ n → `ι)
+    else `σ Bool λ b → if b
+      then `δ ⊤ `ι
+      else `δ Bool `ι
+\end{code}
+
+The \AgdaCon{var} constructor is is encoded in the \AgdaCon{true}
+branch of the first choice, and the \AgdaCon{lam} and \AgdaCon{app}
+constructors are encoded in a nested choice within the \AgdaCon{false}
+branch. Below we model the type former and constructors of
+\AgdaData{Term}.
+
+\begin{code}
+  Term : Set
+  Term = μ TermD
+
+  var : ℕ → Term
+  var n = init (true , n , tt)
+
+  lam : Term → Term
+  lam b = init (false , true , (λ u → b) , tt)
+
+  app : Term → Term → Term
+  app f a = init (false , false , (λ b → if b then f else a) , tt)
+\end{code}
+
+Notice how the 2nd and 3rd constructors (\AgdaCon{lam} and
+\AgdaCon{app}) are both defined as two nested choices, using
+\AgdaCon{false} as the their first pair component, and then another
+choice (\AgdaCon{true} and \AgdaCon{false} respectively) as their
+second component. Additionally, we expose an inductive
+(non-infinitary) model
+of \AgdaCon{app} (having two non-infinitary \AgdaData{Term} arguments)
+using an \AgdaFun{if} to branch on the infinitary
+\AgdaData{Bool} domain (as we did for \AgdaData{Tree} in
+\refsec{infalgtps}).
+
+Below we repeat the entire \AgdaData{Term} model, but using
+constructor tags instead of nested boolean choices.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Data.Nat
+ open import Relation.Binary.PropositionalEquality
+ private
+\end{code}}
+
+\begin{code}
+  data TermT : Set where
+    varT lamT appT : TermT
+
+  TermD : Desc
+  TermD = `σ TermT λ where
+    varT → `σ ℕ (λ n → `ι)
+    lamT → `δ ⊤ `ι
+    appT → `δ Bool `ι
+
+  Term : Set
+  Term = μ TermD
+
+  var : ℕ → Term
+  var n = init (varT , n , tt)
+
+  lam : Term → Term
+  lam b = init (lamT , (λ u → b) , tt)
+
+  app : Term → Term → Term
+  app f a = init (appT , (λ b → if b then f else a) , tt)
+\end{code}
+
+Note how in the tagged construction the first componet of the pair is
+always a single tag, hence \AgdaCon{lam} and \AgdaCon{app} are not
+defined with nested choices.

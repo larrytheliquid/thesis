@@ -338,7 +338,7 @@ infinitary type, as the codomain ends with an inductive occurrence
   _ = refl
 \end{code}}
 
-\subsection{Type Model}
+\subsection{Type Model}\label{sec:infalgtps}
 
 Now we repeat the examples of models of non-infinitary types
 (\refsec{nondepalgmod}), converting models to their infinitary

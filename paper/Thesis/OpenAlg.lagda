@@ -403,7 +403,7 @@ codes (\AgdaData{Desc} : \AgdaData{Set}) and a
 meaning function (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
 respectfully.
 
-\subsection{Type Model}
+\subsection{Type Model}\label{sec:nondepalgtps}
 
 Having modeled \textit{algebraic semantics} by reifying its concepts into
 datatypes of type theory (i.e. our \textit{algebraic model}), we now
