@@ -514,7 +514,8 @@ module _ where
 
 Now we model the single constructor (\AgdaCon{rose}) of
 \AgdaData{Rose} trees. Note that we are modeling the infinitary
-rose constructor, rather than its \AgdaData{List} of roses variant, as
+rose constructor (\refsec{inft}),
+rather than its \AgdaData{List} of roses variant, as
 indicated by the type signature of our derived \AgdaCon{rose}
 constructor. 
 
@@ -525,7 +526,11 @@ constructor.
 
 Because our dependent types are modeled as least fixed points of
 functors constrained to be sequences of pair types, values
-(e.g. like the \AgdaData{rose} constructor) are simply the
+(e.g. like the \AgdaCon{rose} constructor) are simply the
 \AgdaCon{init}ial algebra of a tuple encoded as a sequence of
 right-nested pairs (ending in the trivial unit value \AgdaCon{tt}).
+
+\paragraph{Natural Numbers}
+
+
 
