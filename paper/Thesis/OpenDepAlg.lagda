@@ -659,7 +659,9 @@ module _ where
 \end{code}
 
 First, let's describe the 3 constructors as a right-nested tuple of 3
-choices using (\AgdaCon{`+}).
+choices using (\AgdaCon{`+}). The 1st choice describes
+\AgdaCon{var}, the 2nd choice describes \AgdaCon{lam}, and the
+3rd choice describes \AgdaCon{app}.
 
 \AgdaHide{
 \begin{code}
