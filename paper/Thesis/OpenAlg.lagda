@@ -327,10 +327,10 @@ module Fix where
 \end{code}
 
 In algebraic semantics the initial algebra
-($\alpha_i$) is used to construct values of the fixpoint of a
+($\anit$) is used to construct values of the fixpoint of a
 functor $F$.
 $$
-\alpha_i : F~(\mu~F) \arr \mu~F
+\anit : F~(\mu~F) \arr \mu~F
 $$
 
 Applying $F$ to its least fixed fixpoint ($\mu~F$)
@@ -340,7 +340,7 @@ represents the types of constructors (and the types of their arguments)
 of $\mu~F$.
 Therefore, we declare \AgdaData{μ} to have a single constructor named
 \AgdaCon{init} (for \textit{initial algebra}) that models
-$\alpha_i$.
+$\anit$.
 
 \begin{code}
     init : ⟦ D ⟧ (μ D) → μ D

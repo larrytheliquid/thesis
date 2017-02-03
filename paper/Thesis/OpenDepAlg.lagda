@@ -337,9 +337,11 @@ a \AgdaData{Desc}, to the first argument of \AgdaCon{`σ} or
 Now we define the interpretation function
 (\AgdaFun{⟦\_⟧} : \AgdaData{Desc} \arr~\AgdaData{Set}
 \arr~\AgdaData{Set}) that can be partially applied to descriptions of
-dependent types to produce models the pattern functors
-(\AgdaFun{F} : \AgdaData{Set}
-\arr~\AgdaData{Set}) for dependent types. The type signatures of these
+dependent types to produce models
+(\AgdaFun{F} : \AgdaData{Set} \arr~\AgdaData{Set})
+of pattern functors
+($F : \set \arr \set$)
+for dependent types. The type signatures of these
 constructions (\AgdaFun{⟦\_⟧} and \AgdaFun{F}) remains the same when
 adding dependent arguments, but the implementations change
 (because the constructors of \AgdaData{Desc} changed).
@@ -403,7 +405,60 @@ interpreted using dependent pairs (\AgdaData{Σ}),
 and how the infinitary argument is interpreted using a
 non-dependent pair (\AgdaData{×}).
 
+\paragraph{Fixpoints}
 
+The model (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set}) of
+the algebraic semantics for least fixed points
+($\mu : (\set \arr \set) \arr \set$) of \textit{dependent} types
+is unchanged, as is the model (\AgdaCon{init}) of the initial
+algebra ($\anit$).
 
+\AgdaHide{
+\begin{code}
+module Fix where
+  open Desc
+  open El
+\end{code}}
+
+\begin{code}
+  data μ (D : Desc) : Set where
+    init : ⟦ D ⟧ (μ D) → μ D
+\end{code}
+
+As an example, below is the datatype of rose trees defined as a
+fixpoint.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ open El
+ open Fix
+ open import Data.Nat
+ open import Data.Fin
+ open import Relation.Binary.PropositionalEquality
+ private
+  RoseD : Set → Desc
+  RoseD A = `σ A (λ a → `σ ℕ (λ n → `δ (Fin n) `ι))
+\end{code}}
+
+\begin{code}
+  Rose : Set → Set
+  Rose A = μ (RoseD A)
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ : {A : Set} →
+\end{code}}
+
+\begin{code}
+   ⟦ RoseD A ⟧ (Rose A) ≡ Σ A (λ a → Σ ℕ (λ n → (Fin n → Rose A) × ⊤))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
 
 

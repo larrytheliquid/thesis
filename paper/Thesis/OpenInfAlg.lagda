@@ -277,11 +277,12 @@ from the unit type to the inductive \AgdaVar{X} occurrence.
 \paragraph{Fixpoints}
 
 The algebraic semantics for least fixed points
-($\mu : (\set \arr \set) \arr \set$) of infnitary types
+($\mu : (\set \arr \set) \arr \set$) of \textit{infinitary} types
 is modeled (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
-the same way as the non-infinitary version. The initial
-algebra constructor \AgdaCon{init} of the fixed point operator
-datatype is also unchanged.
+the same way as the non-infinitary version. The
+\AgdaCon{init} constructor of \AgdaData{μ},
+modeling the initial algebra ($\anit$), is also
+unchanged.
 
 \AgdaHide{
 \begin{code}
