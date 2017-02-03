@@ -237,8 +237,11 @@ description datatype (\refsec{infalgmod}) is replaced by the
 (no longer infix) dependent pair \AgdaCon{`σ} and infinitary
 non-dependent pair \AgdaCon{`δ}. As an example,
 below (\AgdaFun{RoseD}) is the
-description for \AgdaData{Rose} trees.
+description of
+\AgdaData{Rose} trees.
 \AgdaFun{RoseD} uses \AgdaCon{`σ} to request a dependent
+\AgdaVar{A} argument (although the dependency \AgdaVar{a} is not
+used), then uses \AgdaCon{`σ} to request a dependent
 natural number argument (\AgdaVar{n}), then uses
 \AgdaCon{`δ} to request a non-dependent but infinitary argument
 (whose domain is \AgdaData{Fin} \AgdaVar{n}),
@@ -255,7 +258,7 @@ module _ where
 
 \begin{code}
   RoseD : Set → Desc
-  RoseD A = `σ ℕ (λ n → `δ (Fin n) `ι)
+  RoseD A = `σ A (λ a → `σ ℕ (λ n → `δ (Fin n) `ι))
 \end{code}
 
 When \AgdaCon{`σ} is used to request
@@ -329,21 +332,78 @@ need to convert the first argument of (\AgdaCon{`∙}),
 a \AgdaData{Desc}, to the first argument of \AgdaCon{`σ} or
 \AgdaCon{`δ}, a \AgdaData{Set}.
 
+\paragraph{Pattern Functors}
+
+Now we define the interpretation function
+(\AgdaFun{⟦\_⟧} : \AgdaData{Desc} \arr~\AgdaData{Set}
+\arr~\AgdaData{Set}) that can be partially applied to descriptions of
+dependent types to produce models the pattern functors
+(\AgdaFun{F} : \AgdaData{Set}
+\arr~\AgdaData{Set}) for dependent types. The type signatures of these
+constructions (\AgdaFun{⟦\_⟧} and \AgdaFun{F}) remains the same when
+adding dependent arguments, but the implementations change
+(because the constructors of \AgdaData{Desc} changed).
+
+\AgdaHide{
+\begin{code}
+module El where
+  open Desc
+\end{code}}
+
+\begin{code}
+  ⟦_⟧ : Desc → Set → Set
+  ⟦ `ι ⟧ X = ⊤
+  ⟦ `σ A D ⟧ X = Σ A (λ a → ⟦ D a ⟧ X)
+  ⟦ `δ A D ⟧ X = (A → X) × ⟦ D ⟧ X
+\end{code}
+
+We interpret the \AgdaCon{`ι} constructor as the unit type
+(\AgdaData{⊤}).
+We interpret the \AgdaCon{`σ} constructor as a
+dependent pair (\AgdaData{Σ}) whose first component is an
+\AgdaVar{A}, and whose second component is the interpretation of the
+rest of the description (which \textit{may depend} on the first component).
+We interpret the \AgdaCon{`δ} constructor as a
+non-dependent pair (\AgdaData{×}) whose first component is an
+infinitary function from \AgdaVar{A} to \AgdaVar{X} (representing
+an inductive occurrence), and whose
+second component is the interpretation of the
+rest of the description (which \textit{may not depend} on the first
+component).
+
+Partially applying \AgdaFun{RoseD} (along with its parameter \AgdaVar{A})
+to the interpretation function
+results in the following pattern functor for rose trees.
+
 \AgdaHide{
 \begin{code}
 module _ where
  open import Data.Nat
  open import Data.Fin
  open Desc
+ open El
+ open import Relation.Binary.PropositionalEquality
  private
+  RoseD : Set → Desc
+  RoseD A = `σ A (λ a → `σ ℕ (λ n → `δ (Fin n) `ι))
+  _ : {A : Set} →
 \end{code}}
 
 \begin{code}
-  RoseD : Desc
-  RoseD = `σ ℕ (λ n → `δ (Fin n) `ι)
-
-  NatD : Desc
-  NatD = `σ Bool (λ b → if b then `ι else `δ ⊤ `ι)
+   ⟦ RoseD A ⟧ ≡ (λ X → Σ A (λ a → Σ ℕ (λ n → (Fin n → X) × ⊤)))
 \end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+Notice how the \AgdaVar{A} and natural number arguments are
+interpreted using dependent pairs (\AgdaData{Σ}),
+and how the infinitary argument is interpreted using a
+non-dependent pair (\AgdaData{×}).
+
+
+
 
 

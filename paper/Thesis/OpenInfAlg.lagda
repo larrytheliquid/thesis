@@ -219,6 +219,8 @@ description to the interpretation function
 (\AgdaFun{⟦}\_\AgdaFun{⟧} : \AgdaData{Desc} \arr~\AgdaData{Set}
 \arr~\AgdaData{Set}).
 
+The interpretation of all patterns besides the infinitary pattern
+\AgdaCon{`X\carot} remains the same.
 The infinitary pattern \AgdaCon{`X\carot} \AgdaVar{A} is interpreted
 as a function with domain \AgdaVar{A} and codomain \AgdaVar{X}. It is
 crucial that \AgdaVar{X} (representing an inductive occurrence)
