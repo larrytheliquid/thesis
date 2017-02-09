@@ -26,7 +26,7 @@ of the category of sets. That is, each functor
 mapped each set to another set.
 Consequently, the fixpoint
 ($\mu : (\set \arr \set) \arr \set$)
-of such a functor gave us back a set ($\mu F : \set$).
+of such a functor gave us back a set ($\mu~F : \set$).
 Hence, previously each type could be semantically modeled as
 a set ($\set$).
 
@@ -52,7 +52,8 @@ Pattern functors for inductive-recursive types are endofunctors
 of the slice category $\set/O$
 \footnote{
   Objects of the slice category $\set/O$ are functions
-  $f : X \arr O$ (where $X$ is some set). Its morphisms are
+  $f : X \arr O$ (where $X$ is some object-specific set
+  and $O$ is a set fixed for the category). Its morphisms are
   functions $h : X \arr Y$ between objects
   $f : X \arr O$ and $g : Y \arr O$ such that
   $f = g \circ h$.
@@ -62,5 +63,44 @@ and the fixpoint
 ($\mu : (\set/O \arr \set/O) \arr \set/O$)
 of such a pattern functor returns a slice
 ($\mu F : \set/O$).
+It is convenient to separate the definition of $F$ into 2 parts, where
+we denote the part by a subscript (i.e. $F_1$ and $F_2$).
+$$
+F_1 : \set/O \arr \set
+$$
+$$
+F_2 : (R : \set/O) \arr F_1~R \arr O
+$$
+
+The first part ($F_1$) maps a slice to a
+set (modeling a \textit{type}), similar to the functors
+of previous sections. The second part ($F_2$) maps a slice and a
+member of the set mapped by $F_1$, to a member of
+$O$ (modeling a \textit{decoding} function).
+By convention we use the letter $R$ to refer to the \textit{slice}
+argument to distinguish it from the contained set $X$ and decoding
+function $d$.
+We can use put these two components of the functor together as a
+dependent pair
+to form the actual endofunctor over slices.
+$$
+F : \set/O \arr \set/O ~\triangleq~ \lambda R.~ (F_1~R ,~ F_2~R)
+$$
+
+We can separate the definition of least fixed points to similarly be
+defined in terms of a fixed point operator ($\mu_1$, returning a set),
+and its decoding function ($\mu_2$, taking an $\mu_1~F$ and returning
+an $O$).
+$$
+\mu_1 : (\set/O \arr \set/O) \arr \set
+$$
+$$
+\mu_2 : (F : \set/O \arr \set/O) \arr \mu_1~F \arr O
+$$
+$$
+\mu : (\set/O \arr \set/O) \arr \set/O ~\triangleq~
+\lambda F.~ (\mu_1~F ,~ \mu_2~F)
+$$
+
 
 %% Compared to the semantics of dependent types
