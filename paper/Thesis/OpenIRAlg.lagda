@@ -102,5 +102,171 @@ $$
 \lambda F.~ (\mu_1~F ,~ \mu_2~F)
 $$
 
+Recall our restriction of pattern functors as a sequence of dependent
+products of non-inductive or infinitary arguments, terminating in 1.
+$$
+F_1 \triangleq \lambda (X, d).~
+(x_0 : A_0) \cdot
+(x_1 : A_1~x_0) \cdot
+(x_2 : A_2~x_1~x_2) \cdot ...
+\cdot (x_n : A_n ~ x_0 ~...~ x_{n-1}) \cdot 1
+$$
 
-%% Compared to the semantics of dependent types
+Before, it only make sense for non-inductive arguments to be
+dependent. For example, we could have a functor like the following
+(where $A : \set$ and $B : A \arr \set$).
+$$
+F_1 \triangleq \lambda (X, d).~ (x_1 : A) \cdot (x_2 : B~a) \cdot 1
+$$
+
+With the introduction of inductive-recursive types, it is now actually
+possible to use an inductive dependent argument by applying the
+decoding function ($d$). For example, now we can have a functor like
+the following (where $A : \set$ and $B : O \arr \set$).
+$$
+F_1 \triangleq \lambda (X, d).~ (x_1 : X) \cdot (x_2 : B~(d~x_1)) \cdot 1
+$$
+
+Any decoder ($F_2$) of $F_1$ has a tuple of arguments
+similar to the dependencies in the sequence of products defined
+in $F_1$ (the only difference is that the tuple ends in the unit
+argument $\bullet$, corresponding to the unit set 1 that
+terminates the product).
+For example, below the arguments $x_1$
+and $x_2$ in $F_2$ correspond to the dependencies $x_1$ and $x_2$ in
+$F_1$ (where $f : (x : X) \arr B~(d~x) \arr O$).
+$$
+F_2 \triangleq \lambda (X, d).~
+\lambda (x_1, x_2, \bullet).~ f~x_1~x_2
+$$
+
+
+Now we finally introduce a new notation that takes advantage of our
+structure of pattern functors as a sequence of dependent products
+terminating in 1. The new notation gives us a succinct way to
+simultaneously define the $F_1$ and $F_2$ parts of the pattern functor
+$F$ by exploiting the shared structure between the dependencies in
+$F_1$ and arguments in $F_2$. Now we define $F$ by terminating the
+sequence of prodcts with $\iota$ (replacing 1) applied to an element
+of $O$. Because $\iota$ appears at the end of the sequence, it can be
+defined with access to all of the dependencies of the product that
+came before it. For example, below we define $F$ directly
+(where $f : (x : X) \arr B~(d~x) \arr O$).
+$$
+F \triangleq
+\lambda (X, d).~ (x_1 : X)
+\cdot (x_2 : B~(d~x_1))
+\cdot \iota~(f~x_1~x_2)
+$$
+
+Once again, this is merely notation for directly defining $F$ as a
+dependent pair (a member of the slice $\set/O$). Hence, $\iota$ is
+also just notation rather than being a primitive set construction.
+For example, the notation above expands to the $F$ below.
+$$
+F ~\triangleq~
+\lambda R.~ (F_1~R ,~ F_2~R) ~\triangleq~
+\lambda (X, d).~ ((x_1 : X)
+\cdot (x_2 : B~(d~x_1)
+\cdot 1 ,~ \lambda (x_1, x_2, \bullet).~ f~x_1~x_2))
+$$
+
+In general, our new notation for inductive-recursive pattern functors
+is a sequence of dependent
+products of non-inductive or infinitary arguments,
+terminating in $\iota$ applied to an element of $O$,
+with dependencies $x_0$ through $x_n$ in scope
+(where $n$ is the number of products).
+$$
+F \triangleq \lambda (X, d).~
+(x_0 : A_0) \cdot
+(x_1 : A_1~x_0) \cdot ...
+\cdot (x_n : A_n ~ x_0 ~...~ x_{n-1}) \cdot
+\iota ~(f ~ x_0 ~...~ x_{n})
+$$
+
+
+
+%% $$
+%% \nat \triangleq \mu (X, d).~ (\iota \bullet + X^1 \cdot \iota \bullet)
+%% $$
+
+
+\paragraph{Natural Numbers}
+
+Any ordinary inductive type can instead be modeled as a trivial
+inductive-recursive type by combining the inductive type with a
+trivial decoding function from its values to unit.
+The inductive type can thus be defined as normally, without referring
+to its trivial function.
+For example, below we define the
+type of natural numbers along with the trivial function
+(\AgdaFun{point}) from natural numbers to unit.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data ℕ : Set where
+    zero : ℕ
+    suc : (⊤ → ℕ) → ℕ
+
+  point : ℕ → ⊤
+  point _ = tt
+\end{code}
+
+Borrowing from our previous subscript notation for functors and
+fixpoints, we can rename the inductive definition of
+\AgdaData{ℕ} to \AgdaData{ℕ₁} and its trivial decoding function
+\AgdaFun{point} to \AgdaFun{ℕ₂}. Then we can isomorphically model the
+natural numbers as an inductive-recursive type by combining the type
+and its decoding function using a pair.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data ℕ₁ : Set where
+    zero : ℕ₁
+    suc : (⊤ → ℕ₁) → ℕ₁
+
+  ℕ₂ : ℕ₁ → ⊤
+  ℕ₂ n = tt
+
+  ℕ : Σ Set (λ A → A → ⊤)
+  ℕ = ℕ₁ , ℕ₂
+\end{code}
+
+First we define the algebraic semantics for this trivially
+inductive-recursive type using the componentized definition of $\mu$
+in terms of its set ($\mu_1$) and decoding function ($\mu_2$). Below,
+1 (similar to \AgdaData{⊤})
+is the name of the unit set and $\bullet$ (similar to \AgdaCon{tt})
+is the name of its single inhabitant.
+
+$$
+\nat_1 \triangleq \mu_1 (X , d).~ 1 + X^1 \cdot 1
+$$
+$$
+\nat_2 \triangleq \mu_2 (X , d).~ \lambda n.~ \bullet
+$$
+$$
+\nat \triangleq \mu R.~ (\mu_1~R , ~\mu_2~R)
+$$
+
+Alternatively, we can define $\nat$ directly as a dependent pair where
+we inline the definition of $\nat_1$ into the first component, and
+inline the definition of $\nat_2$ into the second component.
+
+$$
+\nat \triangleq \mu (X, d).~ ((1 + X^1 \cdot 1), (\lambda n.~ \bullet))
+$$
+
+
+
