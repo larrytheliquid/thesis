@@ -185,13 +185,6 @@ F \triangleq \lambda (X, d).~
 \iota ~(f ~ x_0 ~...~ x_{n})
 $$
 
-
-
-%% $$
-%% \nat \triangleq \mu (X, d).~ (\iota \bullet + X^1 \cdot \iota \bullet)
-%% $$
-
-
 \paragraph{Natural Numbers}
 
 Any ordinary inductive type can instead be modeled as a trivial
@@ -268,5 +261,30 @@ $$
 \nat \triangleq \mu (X, d).~ ((1 + X^1 \cdot 1), (\lambda n.~ \bullet))
 $$
 
+Finally, we can define it most succinctly with our $\iota$ notation as
+follows. 
 
+$$
+\nat \triangleq \mu (X, d).~ \iota \bullet + X^1 \cdot \iota~\bullet
+$$
 
+Note that because $\iota~\bullet$ appears twice, once on either side of (+),
+technically the $\iota$-based $\nat$ models the decoding function
+\AgdaFun{ℕ₂} below that 
+matches against \AgdaCon{zero} and \AgdaCon{suc} but returns
+\AgdaCon{tt} in either case.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  data ℕ₁ : Set where
+    zero : ℕ₁
+    suc : (⊤ → ℕ₁) → ℕ₁
+\end{code}}
+
+\begin{code}
+  ℕ₂ : ℕ₁ → ⊤
+  ℕ₂ zero = tt
+  ℕ₂ (suc n) = tt
+\end{code}
