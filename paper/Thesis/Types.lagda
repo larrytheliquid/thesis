@@ -632,6 +632,8 @@ module _ where
 
 An \textit{inductive-recursive} type is a collection of values
 mutually defined with a function parameterized by said type.
+The mutually defined function is called the \textit{decoding}
+function.
 An example of an inductive-recursive type is the type of arithmetic
 expressions \AgdaData{Arith}.
 Values of type \AgdaData{Arith} encode ``Big Pi''
@@ -642,7 +644,8 @@ $$
 $$
 
 The intuition is that this expression should evaluate to something
-(the number 6 in this case). The mutually defined function is
+(the number 6 in this case). The mutually defined
+(\textit{decoding}) function is
 exactly the evaluation function.
 The type is defined as follows.
 

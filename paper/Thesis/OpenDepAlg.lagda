@@ -7,7 +7,7 @@ open import Data.Sum
 open import Data.Product
 \end{code}}
 
-\section{Dependent Types}
+\section{Dependent Types}\label{sec:depalg}
 
 In this section we review the algebraic semantics for
 \textit{dependent} types.
@@ -35,7 +35,8 @@ We mostly keep the syntax of the non-dependent polynomial set constsructions
 sets ($\cdot$) is actually the \textit{dependent} product, and its
 syntax is reminiscent of dependent functions except ($\cdot$) takes
 the place of ($\arr$). Specifically, the syntax of a dependent product
-uses type ascription (e.g. $(x : A) \cdot B~x$), while a non-dependent
+uses type ascription to refer to a dependent argument
+(e.g. $(x : A) \cdot B~x$), while a non-dependent
 product does not (e.g. $A \cdot B$).
 For example, dependent product can be used to express the set of pairs of
 natural numbers and finite sets (whose size is dependent on the
