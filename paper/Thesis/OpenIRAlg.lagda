@@ -368,10 +368,10 @@ infinitary (hence \textit{inductive}) argument
 \AgdaVar{D}. However, subsequent arguments in \AgdaVar{D} do not
 depend directly on an infinitary argument
 (i.e. \AgdaVar{A} \arr~\AgdaVar{X}). Instead, \AgdaVar{D} depends on
-a function where the decoding function is implicitly applied to
-the inductive result of the infinitary function
-(i.e. \AgdaVar{A} \arr~\AgdaVar{O}). This implicit application of the
-decoding function prevents inductive arguments (\AgdaVar{X}) from
+a function (i.e. \AgdaVar{A} \arr~\AgdaVar{O}) that is an implicit
+composition of the decoding function and the infinitary function.
+This implicit composition hides the underlying infinitary argument,
+preventing an inductive argument (\AgdaVar{X}) from
 appearing negatively in the domain of the infinitary argument
 \AgdaVar{D} (instead, \AgdaVar{O} appears).
 Below is an example of the natural numbers encoded as a
@@ -395,8 +395,8 @@ module _ where
 
 In the example above \AgdaCon{`ι} \AgdaCon{tt} is returned in the
 \AgdaCon{zero} branch. The \AgdaCon{suc} branch returns
-the result of applying the decoding function to the (implicit)
-application of the infinitary function to \AgdaCon{tt}. This describes
+the result of applying the composition of the decoding function
+and the infinitary function to \AgdaCon{tt}. This describes
 the definition of natural numbers below.
 
 \AgdaHide{
@@ -418,8 +418,9 @@ module _ where
   ℕ = ℕ₁ , ℕ₂
 \end{code}
 
-Another way to understand the implicit application of the decoding
-function to the infinitary result is to say that in successor case of
+To understand where the implicit composition of the decoding
+function and the infinitary function is happening,
+recognize that in successor case of
 the definitions of \AgdaFun{NatD} and \AgdaFun{ℕ₂} above,
 \AgdaVar{f} $=$ \AgdaFun{ℕ₂} \AgdaFun{∘} \AgdaVar{n}.
 
