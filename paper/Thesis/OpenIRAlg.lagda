@@ -313,7 +313,8 @@ to define pattern functors for inductive-recursive types.
 \end{enumerate}
 
 Our descriptions model the syntax of the 3rd ($\iota$) version of
-legal pattern functors. Hence, we had an argument \AgdaVar{o} of type
+legal pattern functors. Recall that $\iota$ is applied to an $O$,
+hence we had an argument \AgdaVar{o} of type
 \AgdaVar{O} to the
 \AgdaCon{`ι} constructor. However, we also change \AgdaCon{`δ} in
 a more subtle way.
@@ -329,6 +330,8 @@ module De where
     `σ : (A : Set) (D : A → Desc O) → Desc O
     `δ : (A : Set) (D : (A → O) → Desc O) → Desc O
 \end{code}
+
+
 
 Recall that \AgdaCon{`σ} denotes a dependent
 \textit{non-inductive} argument, whose type
