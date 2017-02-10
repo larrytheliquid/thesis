@@ -198,8 +198,10 @@ functor with the unit type. For now this is simply a renaming
 of the former \AgdaCon{`1} constructor.
 \footnote{
   However, in future extensions
-  supporting indexed types (\refsec{idxalg}) and inductive-recursive
-  types (\refsec{iralg})) \AgdaCon{`ι} gains additional arguments.
+  supporting inductive-recursive
+  types (\refsec{iralg}))
+  and indexed types (\refsec{idxalg})
+  \AgdaCon{`ι} gains additional arguments.
 }
 The \AgdaCon{`σ} constructor models a
 \textit{dependent} (but non-infinitary) argument.

@@ -288,3 +288,128 @@ module _ where
   ℕ₂ zero = tt
   ℕ₂ (suc n) = tt
 \end{code}
+
+
+\subsection{Algebraic Model}\label{sec:iralgmod}
+
+In this section we extend the model of algebraic semantics of
+dependent types (\refsec{depalgmod}) to support inductive-recursive
+types. The previous description type (\AgdaData{Desc}), interpretation
+function (\AgdaFun{⟦\_⟧}) and least fixed point operator \AgdaData{μ}
+are all modfied to be parameterized over an output type
+(\AgdaVar{O} : \AgdaData{Set}), the codomain of the decoding function.
+
+\paragraph{Descriptions}
+
+Descriptions (of \refsec{depalgmod}) must be modified to be
+parameterized over an output type \AgdaVar{O}.
+Recall that descriptions are the syntactic reification of legal
+pattern functors. In \refsec{iralgsem} we presented 3 different ways
+to define pattern functors for inductive-recursive types.
+\begin{enumerate}
+  \item Single pattern functors ($F$) as a dependent pair.
+  \item Two-part pattern functors ($F_1$) and $F_2$.
+  \item Single pattern functors ($F$) using $\iota$.
+\end{enumerate}
+
+Our descriptions model the syntax of the 3rd ($\iota$) version of
+legal pattern functors. Hence, we had an argument \AgdaVar{o} of type
+\AgdaVar{O} to the
+\AgdaCon{`ι} constructor. However, we also change \AgdaCon{`δ} in
+a more subtle way.
+
+\AgdaHide{
+\begin{code}
+module De where
+\end{code}}
+
+\begin{code}
+  data Desc (O : Set) : Set₁ where
+    `ι : (o : O) → Desc O
+    `σ : (A : Set) (D : A → Desc O) → Desc O
+    `δ : (A : Set) (D : (A → O) → Desc O) → Desc O
+\end{code}
+
+Recall that \AgdaCon{`σ} denotes a dependent
+\textit{non-inductive} argument, whose type
+is \AgdaVar{A} and whose subsequent arguments are described by the
+infinitary \AgdaVar{D}. The domain of the infinitary \AgdaVar{D} is
+\AgdaVar{A}, denoting that subsequent arguments may depend on a value
+of type \AgdaVar{A}. Inductive-recursive types allow constructor
+argument types to \textit{depend} on previous \textit{infinitary}
+(hence \textit{inductive}) arguments. Therefore, \AgdaCon{`δ} must be
+altered to support dependency in the description of subsequent
+arguments (\AgdaVar{D}), similar to how \AgdaCon{`σ} does.
+To understand how dependency on inductive arguments is consistently
+modeled, let's first consider a first-order version of \AgdaCon{`δ}
+below that models an inductive but not infinitary argument.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  data Desc (O : Set) : Set₁ where
+\end{code}}
+
+\begin{code}
+    `δ₁ : (D : O → Desc O) → Desc O
+\end{code}
+
+The \AgdaCon{`δ₁} constructor \textit{implicitly} denotes an inductive
+argument, and \textit{explicitly} denotes subsequent arguments by \AgdaData{D}.
+Because the inductive argument is implicit, the domain of the
+infinitary argument \AgdaVar{D} cannot be \AgdaData{μ} applied to a
+description, because the description we want is implicit. Instead, the
+domain of \AgdaVar{D} is \AgdaVar{O}, denoting the \textit{result} of
+applying the \textit{decoding function} to the implicit inductive
+argument. Thus, the inductive-recursive application of the decoding
+function to the implicit inductive argument is also denoted
+implicitly, allowing subsequent arguments to depend on the resulting
+\AgdaVar{O} value rather than directly depending on an inductive
+value. Now let's return to our infinitary argument constructor
+\AgdaCon{`δ}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  data Desc (O : Set) : Set₁ where
+\end{code}}
+
+\begin{code}
+    `δ : (A : Set) (D : (A → O) → Desc O) → Desc O
+\end{code}
+
+The \AgdaCon{`δ} constructor denotes an infinitary argument, whose
+domain is \AgdaVar{A}, and whose subsequent arguments are
+\AgdaVar{D}. Hence, the implicit inductive argument of \AgdaCon{`δ₁}
+is instead an implicit infinitary argument in the context of
+\AgdaCon{`δ}. Therefore, subsequent arguments in \AgdaVar{D} must
+depend on a function from the domain (\AgdaVar{A}) of the infinitary
+argument to the codomain (\AgdaVar{O}) of the decoding function. Thus,
+the \AgdaCon{`δ} constructor denotes implicitly applying
+the decoding function,
+underneath a $\lambda$ taking an \AgdaVar{A},
+to the inductive type resulting from applying the implicit infinitary
+argument to the \AgdaVar{A} from the $\lambda$ abstraction.
+
+
+
+%% The \AgdaCon{`δ₁} constructor denotes an inductive argument
+%% of type \AgdaData{μ}~\AgdaVar{D}, and subsequent arguments
+%% denoted by \AgdaData{D}. However, if the domain of the infinitary
+%% argument \AgdaData{D} were \AgdaData{μ} \AgdaVar{D} then our modele
+%% would result in a negative datatype.
+%% \footnote{
+%%   First, we would need to alter the definition of \AgdaData{Desc},
+%%   \AgdaFun{⟦\_⟧}, and \AgdaData{μ} to be mutually defined as an
+%%   inductive-recursive datatype. Then, \AgdaData{μ} \AgdaVar{D} would
+%%   contain \AgdaData{Desc} arguments
+%%   }
+
+
+\paragraph{Pattern Functors}
+
+%% , they must also be
+%% modified to model the new legal pattern functors over
+%% \textit{slices}. Rather than modeling the 
