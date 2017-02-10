@@ -242,7 +242,6 @@ in terms of its set ($\mu_1$) and decoding function ($\mu_2$). Below,
 1 (similar to \AgdaData{⊤})
 is the name of the unit set and $\bullet$ (similar to \AgdaCon{tt})
 is the name of its single inhabitant.
-
 $$
 \nat_1 \triangleq \mu_1 (X , d).~ 1 + X^1 \cdot 1
 $$
@@ -256,14 +255,12 @@ $$
 Alternatively, we can define $\nat$ directly as a dependent pair where
 we inline the definition of $\nat_1$ into the first component, and
 inline the definition of $\nat_2$ into the second component.
-
 $$
 \nat \triangleq \mu (X, d).~ ((1 + X^1 \cdot 1), (\lambda n.~ \bullet))
 $$
 
 Finally, we can define it most succinctly with our $\iota$ notation as
 follows. 
-
 $$
 \nat \triangleq \mu (X, d).~ \iota \bullet + X^1 \cdot \iota~\bullet
 $$
@@ -286,7 +283,38 @@ module _ where
 \begin{code}
   ℕ₂ : ℕ₁ → ⊤
   ℕ₂ zero = tt
-  ℕ₂ (suc n) = tt
+  ℕ₂ (suc f) = tt
+\end{code}
+
+As a final example, consider a pattern functor of the natural numbers
+that takes advantage of the decoding function.
+$$
+\nat \triangleq \mu (X, d).~ \iota \bullet + (f : X^1) \cdot
+\iota~(f~\bullet)
+$$
+
+Above the result of appliyng the decoding function to a successor of a
+natural number is specified
+to be a \textit{recursive call} of the decoding function applied to:
+the infinitary predecessor $f$
+applied to the unit value $\bullet$. Hence, the pattern above is the
+algebraic semantics for the decoding function below
+(notice the recursive call of decoding function
+\AgdaFun{ℕ₂} in the \AgdaCon{suc} case).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  data ℕ₁ : Set where
+    zero : ℕ₁
+    suc : (⊤ → ℕ₁) → ℕ₁
+\end{code}}
+
+\begin{code}
+  ℕ₂ : ℕ₁ → ⊤
+  ℕ₂ zero = tt
+  ℕ₂ (suc f) = ℕ₂ (f tt)
 \end{code}
 
 
@@ -331,84 +359,69 @@ module De where
     `δ : (A : Set) (D : (A → O) → Desc O) → Desc O
 \end{code}
 
-
-
 Recall that \AgdaCon{`σ} denotes a dependent
-\textit{non-inductive} argument, whose type
-is \AgdaVar{A} and whose subsequent arguments are described by the
-infinitary \AgdaVar{D}. The domain of the infinitary \AgdaVar{D} is
-\AgdaVar{A}, denoting that subsequent arguments may depend on a value
-of type \AgdaVar{A}. Inductive-recursive types allow constructor
-argument types to \textit{depend} on previous \textit{infinitary}
-(hence \textit{inductive}) arguments. Therefore, \AgdaCon{`δ} must be
-altered to support dependency in the description of subsequent
-arguments (\AgdaVar{D}), similar to how \AgdaCon{`σ} does.
-To understand how dependency on inductive arguments is consistently
-modeled, let's first consider a first-order version of \AgdaCon{`δ}
-below that models an inductive but not infinitary argument.
+\textit{non-inductive} argument (of type \AgdaVar{A})
+that subsequent arguments may depend on in \AgdaVar{D}.
+With inductive-recursion, \AgdaCon{`δ} denotes an
+infinitary (hence \textit{inductive}) argument
+(whose domain is \AgdaVar{A}) that subsequent arguments may depend on in
+\AgdaVar{D}. However, subsequent arguments in \AgdaVar{D} do not
+depend directly on an infinitary argument
+(i.e. \AgdaVar{A} \arr~\AgdaVar{X}). Instead, \AgdaVar{D} depends on
+a function where the decoding function is implicitly applied to
+the inductive result of the infinitary function
+(i.e. \AgdaVar{A} \arr~\AgdaVar{O}). This implicit application of the
+decoding function prevents inductive arguments (\AgdaVar{X}) from
+appearing negatively in the domain of the infinitary argument
+\AgdaVar{D} (instead, \AgdaVar{O} appears).
+Below is an example of the natural numbers encoded as a
+trivial (i.e. where the codomain of the decoding function
+\AgdaVar{O} is the unit type \AgdaData{⊤})
+inductive-recursive description.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Unit
+ open import Data.Bool
+ open De
+ private
+\end{code}}
+
+\begin{code}
+  NatD : Desc ⊤
+  NatD = `σ Bool (λ b → if b then `ι tt else `δ ⊤ (λ f → `ι (f tt)))
+\end{code}
+
+In the example above \AgdaCon{`ι} \AgdaCon{tt} is returned in the
+\AgdaCon{zero} branch. The \AgdaCon{suc} branch returns
+the result of applying the decoding function to the (implicit)
+application of the infinitary function to \AgdaCon{tt}. This describes
+the definition of natural numbers below.
 
 \AgdaHide{
 \begin{code}
 module _ where
  private
-  data Desc (O : Set) : Set₁ where
 \end{code}}
 
 \begin{code}
-    `δ₁ : (D : O → Desc O) → Desc O
+  data ℕ₁ : Set where
+    zero : ℕ₁
+    suc : (⊤ → ℕ₁) → ℕ₁
+
+  ℕ₂ : ℕ₁ → ⊤
+  ℕ₂ zero = tt
+  ℕ₂ (suc n) = ℕ₂ (n tt)
+
+  ℕ : Σ Set (λ A → A → ⊤)
+  ℕ = ℕ₁ , ℕ₂
 \end{code}
 
-The \AgdaCon{`δ₁} constructor \textit{implicitly} denotes an inductive
-argument, and \textit{explicitly} denotes subsequent arguments by \AgdaData{D}.
-Because the inductive argument is implicit, the domain of the
-infinitary argument \AgdaVar{D} cannot be \AgdaData{μ} applied to a
-description, because the description we want is implicit. Instead, the
-domain of \AgdaVar{D} is \AgdaVar{O}, denoting the \textit{result} of
-applying the \textit{decoding function} to the implicit inductive
-argument. Thus, the inductive-recursive application of the decoding
-function to the implicit inductive argument is also denoted
-implicitly, allowing subsequent arguments to depend on the resulting
-\AgdaVar{O} value rather than directly depending on an inductive
-value. Now let's return to our infinitary argument constructor
-\AgdaCon{`δ}.
-
-\AgdaHide{
-\begin{code}
-module _ where
- private
-  data Desc (O : Set) : Set₁ where
-\end{code}}
-
-\begin{code}
-    `δ : (A : Set) (D : (A → O) → Desc O) → Desc O
-\end{code}
-
-The \AgdaCon{`δ} constructor denotes an infinitary argument, whose
-domain is \AgdaVar{A}, and whose subsequent arguments are
-\AgdaVar{D}. Hence, the implicit inductive argument of \AgdaCon{`δ₁}
-is instead an implicit infinitary argument in the context of
-\AgdaCon{`δ}. Therefore, subsequent arguments in \AgdaVar{D} must
-depend on a function from the domain (\AgdaVar{A}) of the infinitary
-argument to the codomain (\AgdaVar{O}) of the decoding function. Thus,
-the \AgdaCon{`δ} constructor denotes implicitly applying
-the decoding function,
-underneath a $\lambda$ taking an \AgdaVar{A},
-to the inductive type resulting from applying the implicit infinitary
-argument to the \AgdaVar{A} from the $\lambda$ abstraction.
-
-
-
-%% The \AgdaCon{`δ₁} constructor denotes an inductive argument
-%% of type \AgdaData{μ}~\AgdaVar{D}, and subsequent arguments
-%% denoted by \AgdaData{D}. However, if the domain of the infinitary
-%% argument \AgdaData{D} were \AgdaData{μ} \AgdaVar{D} then our modele
-%% would result in a negative datatype.
-%% \footnote{
-%%   First, we would need to alter the definition of \AgdaData{Desc},
-%%   \AgdaFun{⟦\_⟧}, and \AgdaData{μ} to be mutually defined as an
-%%   inductive-recursive datatype. Then, \AgdaData{μ} \AgdaVar{D} would
-%%   contain \AgdaData{Desc} arguments
-%%   }
+Another way to understand the implicit application of the decoding
+function to the infinitary result is to say that in successor case of
+the definitions of \AgdaFun{NatD} and \AgdaFun{ℕ₂} above,
+\AgdaVar{f} $=$ \AgdaFun{ℕ₂} \AgdaFun{∘} \AgdaVar{n}.
 
 
 \paragraph{Pattern Functors}
