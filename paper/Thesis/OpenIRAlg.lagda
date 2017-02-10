@@ -287,7 +287,8 @@ module _ where
 \end{code}
 
 As a final example, consider a pattern functor of the natural numbers
-that takes advantage of the decoding function.
+that takes advantage of the decoding function and dependency on
+an infinitary argument.
 $$
 \nat \triangleq \mu (X, d).~ \iota \bullet + (f : X^1) \cdot
 \iota~(f~\bullet)
