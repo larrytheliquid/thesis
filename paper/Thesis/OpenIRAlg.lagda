@@ -147,7 +147,7 @@ terminating in 1. The new notation gives us a succinct way to
 simultaneously define the $F_1$ and $F_2$ parts of the pattern functor
 $F$ by exploiting the shared structure between the dependencies in
 $F_1$ and arguments in $F_2$. Now we define $F$ by terminating the
-sequence of prodcts with $\iota$ (replacing 1) applied to an element
+sequence of products with $\iota$ (replacing 1) applied to an element
 of $O$. Because $\iota$ appears at the end of the sequence, it can be
 defined with access to all of the dependencies of the product that
 came before it. For example, below we define $F$ directly
@@ -287,16 +287,16 @@ module _ where
 \end{code}
 
 As a final example, consider a pattern functor of the natural numbers
-that takes advantage of the decoding function and dependency on
-an infinitary argument.
+that takes advantage of the decoding function ($d$ below)
+and dependency on an infinitary argument ($f$ below).
 $$
 \nat \triangleq \mu (X, d).~ \iota \bullet + (f : X^1) \cdot
-\iota~(f~\bullet)
+\iota~(d~(f~\bullet))
 $$
 
 Above the result of appliyng the decoding function to a successor of a
 natural number is specified
-to be a \textit{recursive call} of the decoding function applied to:
+to be a \textit{recursive call} of the decoding function $d$ applied to:
 the infinitary predecessor $f$
 applied to the unit value $\bullet$. Hence, the pattern above is the
 algebraic semantics for the decoding function below
@@ -317,6 +317,12 @@ module _ where
   ℕ₂ zero = tt
   ℕ₂ (suc f) = ℕ₂ (f tt)
 \end{code}
+
+Now we understand the essence of \textit{induction-recursion}:
+While the $X$ parameter of the fixpoint operator $\mu$
+allows us to construct \textit{inductive} arguments,
+the $d$ parameter allows us to perform
+\textit{recursive} calls of the decoding function. 
 
 
 \subsection{Algebraic Model}\label{sec:iralgmod}
