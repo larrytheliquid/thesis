@@ -434,6 +434,56 @@ the definitions of \AgdaFun{NatD} and \AgdaFun{ℕ₂} above,
 
 \paragraph{Pattern Functors}
 
+Now we turn to the task of modeling pattern functors
+($F : \set/O \arr \set/O$) of
+inductive-recursive sets in type theory.
+Before we can even consider doing so, we must model the
+concept of a slice $\set/O$.
+A slice is modeled as a dependent pair
+type (\AgdaData{Σ})
+parameterized by an output type (\AgdaVar{O}).
+The first component of the pair is a type and the second
+component is its decoding function.
+
+\begin{code}
+Set/ : Set → Set₁
+Set/ O = Σ Set (λ A → (A → O))
+\end{code}
+
+We model pattern functors
+($F : \set/O \arr \set/O$) as the functor
+(\AgdaFun{F} : \AgdaFun{Set/} \AgdaVar{O} \arr~\AgdaFun{Set/} \AgdaVar{O})
+resulting from the partial application of a description
+to the interpretation function
+(\AgdaFun{⟦\_⟧} : \{\AgdaVar{O} : \AgdaData{Set}\}
+\arr~\AgdaData{Desc} \AgdaVar{O} \arr~\AgdaFun{Set/} \AgdaVar{O} \arr~\AgdaFun{Set/} \AgdaVar{O}).
+In \refsec{iralgsem}
+we showed how to define $F$ in terms of a component mapping slices to types
+($F_1$) and a component mapping slices to a decoding function ($F_2$). Our
+type theoretic model similarly defines the interpretation function
+(\AgdaFun{⟦\_⟧}) in terms of a type component (\AgdaFun{⟦\_⟧₁})
+and a decoding function component (\AgdaFun{⟦\_⟧₂}),
+which also result in the pattern functor components
+($F_1$ and $F_2$) when partially applied to a description.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open De
+ private
+  postulate
+   ⟦_⟧₁ : {O : Set} (D : Desc O) (R : Set/ O) → Set
+   ⟦_⟧₂ : {O : Set} (D : Desc O) (R : Set/ O) (xs : ⟦ D ⟧₁ R) → O
+\end{code}}
+
+\begin{code}
+  ⟦_⟧ : {O : Set} → Desc O → Set/ O → Set/ O
+  ⟦ D ⟧ R = ⟦ D ⟧₁ R , ⟦ D ⟧₂ R
+\end{code}
+
+
+
+
 %% , they must also be
 %% modified to model the new legal pattern functors over
 %% \textit{slices}. Rather than modeling the 
