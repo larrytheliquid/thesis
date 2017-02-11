@@ -484,7 +484,7 @@ module _ where
 
 \AgdaHide{
 \begin{code}
-module El where
+module El1 where
   open De
 \end{code}}
 
@@ -506,8 +506,59 @@ infinitary argument
 (\AgdaVar{f} : \AgdaVar{A} \arr~\AgdaVar{X}).
 The right component is the interpretation of the description
 \AgdaVar{D} applied to the \textit{composition} of the decoding
-function (\AgdaVar{d}) and the infinitary argument (\AgdaVar{f}).
+function (\AgdaVar{d}) and the \textit{dependent}
+infinitary argument (\AgdaVar{f}).
 Thus the subsequent argument types contained in \AgdaVar{D} can
 depend on the the composed function (returning an \AgdaVar{O}), but
 cannot directly depend the infinitary function
 (returning an inductive \AgdaVar{X}).
+
+Before providing an example, we redefine the description of natural
+numbers by extracting the ``if-statement'' component into a separate
+definition. This separate definition (\AgdaFun{NatDs}) returns the
+description of a particular constructor when applied to the
+appropriate boolean branch.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Unit
+ open import Data.Bool
+ open import Relation.Binary.PropositionalEquality
+ open De
+ open El1
+ private
+\end{code}}
+
+\begin{code}
+  NatDs : Bool → Desc ⊤
+  NatDs b = if b then `ι tt else `δ ⊤ (λ f → `ι (f tt))
+
+  NatD : Desc ⊤
+  NatD = `σ Bool NatDs
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+To keep the example simple, we look at the result of applying the type
+component of the interpretation function to the description of the
+successor constructor (rather than the entire natural numbers
+description).
+
+\begin{code}
+   ⟦ NatDs false ⟧₁ ≡ λ { (X , d) → Σ (⊤ → X) (λ f → ⊤) }
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+The left component of the pair type is the infinitary argument of
+\AgdaCon{suc}. The right component is just the unit type that
+terminates every sequence of dependent arguments,
+ignoring \AgdaVar{f} (the composition of the decoding function and
+infinitary argument).
