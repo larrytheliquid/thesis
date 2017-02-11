@@ -1,6 +1,7 @@
 \AgdaHide{
 \begin{code}
 module _ where
+open import Function
 open import Data.Bool
 open import Data.Unit
 open import Data.Sum
@@ -481,9 +482,32 @@ module _ where
   ⟦ D ⟧ R = ⟦ D ⟧₁ R , ⟦ D ⟧₂ R
 \end{code}
 
+\AgdaHide{
+\begin{code}
+module El where
+  open De
+\end{code}}
 
+First consider the interpretation function component (\AgdaFun{⟦\_⟧₁})
+mapping slices to types. The \AgdaCon{`ι} and \AgdaCon{`σ} cases are
+much like they were for the interpretation function of dependent types
+in \refsec{depalgmod}.
 
+\begin{code}
+  ⟦_⟧₁ : {O : Set} (D : Desc O) (R : Set/ O) → Set
+  ⟦ `ι o ⟧₁ R = ⊤
+  ⟦ `σ A D ⟧₁ R = Σ A (λ a → ⟦ D a ⟧₁ R)
+  ⟦ `δ A D ⟧₁ R@(X , d) = Σ (A → X) λ f → ⟦ D (d ∘ f) ⟧₁ R
+\end{code}
 
-%% , they must also be
-%% modified to model the new legal pattern functors over
-%% \textit{slices}. Rather than modeling the 
+The infinitary \AgdaCon{`δ} case now needs to be interpreted as a
+\textit{dependent} pair type. The left component of the pair is the
+infinitary argument
+(\AgdaVar{f} : \AgdaVar{A} \arr~\AgdaVar{X}).
+The right component is the interpretation of the description
+\AgdaVar{D} applied to the \textit{composition} of the decoding
+function (\AgdaVar{d}) and the infinitary argument (\AgdaVar{f}).
+Thus the subsequent argument types contained in \AgdaVar{D} can
+depend on the the composed function (returning an \AgdaVar{O}), but
+cannot directly depend the infinitary function
+(returning an inductive \AgdaVar{X}).
