@@ -40,7 +40,7 @@ type to values of some output type ($O : \set$). For example,
 ($d \triangleq~$\AgdaFun{eval} : \AgdaData{Arith} \arr~ \AgdaData{ℕ})
 that evaluates an
 expression to its natural number ($O \triangleq~$\AgdaData{ℕ}) result.
-Thus, algebraic semantics models inductive-recursive types
+Thus, algebraic semantics models inductive-recursive sets
 as the dependent product of a set and its decoding function. Such a
 dependent product is called a \textit{slice}, notated as
 $\set/O$ (where $O$ is the output set).
@@ -344,7 +344,7 @@ pattern functors. In \refsec{iralgsem} we presented 3 different ways
 to define pattern functors for inductive-recursive types.
 \begin{enumerate}
   \item Single pattern functors ($F$) as a dependent pair.
-  \item Two-part pattern functors ($F_1$) and $F_2$.
+  \item Two-part pattern functors ($F_1$ and $F_2$).
   \item Single pattern functors ($F$) using $\iota$.
 \end{enumerate}
 
@@ -377,7 +377,7 @@ infinitary (hence \textit{inductive}) argument
 depend directly on an infinitary argument
 (i.e. \AgdaVar{A} \arr~\AgdaVar{X}). Instead, \AgdaVar{D} depends on
 a function (i.e. \AgdaVar{A} \arr~\AgdaVar{O}) that is an implicit
-composition of the decoding function and the infinitary function.
+\textit{composition} of the decoding function and the infinitary function.
 This implicit composition hides the underlying infinitary argument,
 preventing an inductive argument (\AgdaVar{X}) from
 appearing negatively in the domain of the infinitary argument
@@ -403,7 +403,7 @@ module _ where
 
 In the example above \AgdaCon{`ι} \AgdaCon{tt} is returned in the
 \AgdaCon{zero} branch. The \AgdaCon{suc} branch returns
-the result of applying the composition of the decoding function
+the result of applying the composition (\AgdaVar{f}) of the decoding function
 and the infinitary function to \AgdaCon{tt}. This describes
 the definition of natural numbers below.
 
@@ -459,13 +459,13 @@ to the interpretation function
 (\AgdaFun{⟦\_⟧} : \{\AgdaVar{O} : \AgdaData{Set}\}
 \arr~\AgdaData{Desc} \AgdaVar{O} \arr~\AgdaFun{Set/} \AgdaVar{O} \arr~\AgdaFun{Set/} \AgdaVar{O}).
 In \refsec{iralgsem}
-we showed how to define $F$ in terms of a component mapping slices to types
+we showed how to define $F$ in terms of a component mapping slices to sets
 ($F_1$) and a component mapping slices to a decoding function ($F_2$). Our
 type theoretic model similarly defines the interpretation function
 (\AgdaFun{⟦\_⟧}) in terms of a type component (\AgdaFun{⟦\_⟧₁})
 and a decoding function component (\AgdaFun{⟦\_⟧₂}),
 which also result in the pattern functor components
-($F_1$ and $F_2$) when partially applied to a description.
+(\AgdaFun{F₁} and \AgdaFun{F₂}) when partially applied to a description.
 
 \AgdaHide{
 \begin{code}
@@ -494,7 +494,7 @@ much like they were for the interpretation function of dependent types
 in \refsec{depalgmod}.
 
 \begin{code}
-  ⟦_⟧₁ : {O : Set} (D : Desc O) (R : Set/ O) → Set
+  ⟦_⟧₁ : {O : Set} → Desc O → Set/ O → Set
   ⟦ `ι o ⟧₁ R = ⊤
   ⟦ `σ A D ⟧₁ R = Σ A (λ a → ⟦ D a ⟧₁ R)
   ⟦ `δ A D ⟧₁ R@(X , d) = Σ (A → X) λ f → ⟦ D (d ∘ f) ⟧₁ R
@@ -549,7 +549,7 @@ successor constructor (rather than the entire natural numbers
 description).
 
 \begin{code}
-   ⟦ NatDs false ⟧₁ ≡ λ { (X , d) → Σ (⊤ → X) (λ f → ⊤) }
+   ⟦ NatDs false ⟧₁ ≡ λ where (X , d) → Σ (⊤ → X) (λ f → ⊤)
 \end{code}
 
 \AgdaHide{
@@ -562,3 +562,38 @@ The left component of the pair type is the infinitary argument of
 terminates every sequence of dependent arguments,
 ignoring \AgdaVar{f} (the composition of the decoding function and
 infinitary argument).
+
+
+\AgdaHide{
+\begin{code}
+module El2 where
+  open De
+  open El1
+\end{code}}
+
+Second consider the interpretation function component (\AgdaFun{⟦\_⟧₂})
+mapping slices to decoding functions. The decoding
+function works by consuming the arguments
+(of type \AgdaFun{⟦} \AgdaVar{D} \AgdaFun{⟧₁} \AgdaVar{R}) while
+recursing down to the \AgdaCon{`ι} base case and returning
+the \AgdaVar{o} it contains.
+
+\begin{code}
+  ⟦_⟧₂ : {O : Set} (D : Desc O) (R : Set/ O) → ⟦ D ⟧₁ R → O
+  ⟦ `ι o ⟧₂ R tt = o
+  ⟦ `σ A D ⟧₂ R (a , xs) = ⟦ D a ⟧₂ R xs
+  ⟦ `δ A D ⟧₂ R@(X , d) (f , xs) = ⟦ D (d ∘ f) ⟧₂ R xs
+\end{code}
+
+The arguments are consumed by applying
+dependent descriptions (\AgdaVar{D}) to the head argument
+(a non-inductive \AgdaVar{a} or infinitary \AgdaVar{f}), and
+recursively consuming the tail (\AgdaVar{xs}).
+The \AgdaCon{`σ} case recursively searches the subsequent arguments
+\AgdaVar{xs}, which are described by the dependent description
+(\AgdaVar{D}) applied to the non-inductive first component
+(\AgdaVar{a}). The \AgdaCon{`δ} case also searches the subsequent
+arguments (\AgdaVar{xs}), but they are described by the dependent
+description (\AgdaVar{D}) applied to the \textit{composition} of the
+decoding function (\AgdaVar{d}) and the infinitary argument
+\AgdaVar{f}.
