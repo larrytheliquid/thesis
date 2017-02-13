@@ -625,12 +625,11 @@ component (\AgdaFun{μ₂}).
 
 \AgdaHide{
 \begin{code}
-module Fix where
-  open De
-  open El1
-  open El2
+module _ where
+ open De
+ private
+  data μ₁ : {O : Set} → Desc O → Set where
   postulate
-   μ₁ : {O : Set} → Desc O → Set
    μ₂ : {O : Set} (D : Desc O) → μ₁ D → O
 \end{code}}
 
@@ -638,3 +637,33 @@ module Fix where
   μ : {O : Set} → Desc O → Set/ O
   μ D = μ₁ D , μ₂ D
 \end{code}
+
+Foo
+
+\AgdaHide{
+\begin{code}
+module Fix where
+  open De
+  open El1
+  open El2
+  {-# TERMINATING #-}
+  {-# NO_POSITIVITY_CHECK #-}
+\end{code}}
+
+\begin{code}
+  mutual
+    data μ₁ {O : Set} (D : Desc O) : Set where
+      init : ⟦ D ⟧₁ (μ D) → μ₁ D
+\end{code}
+
+\AgdaHide{
+\begin{code}
+    μ : {O : Set} → Desc O → Set/ O
+    μ D = μ₁ D , μ₂ D
+\end{code}}
+
+\begin{code}
+    μ₂ : {O : Set} (D : Desc O) → μ₁ D → O
+    μ₂ D (init xs) = ⟦ D ⟧₂ (μ D) xs
+\end{code}
+
