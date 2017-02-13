@@ -308,10 +308,17 @@ The final part of our algebraic model is the reification of the least
 fixed point operator ($\mu : (\set \arr \set) \arr \set$)
 for pattern functors. We reify the
 least fixed point operator (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
-as a datatype parameterized by a description.
+as a datatype parameterized by a \textit{description},
+rather than a pattern functor ($\set \arr \set$).
+
 While algebraic semantics applies the least fixpoint
 operator directly to a pattern functor ($\mu~F$), our model instead
-applies it to a description (\AgdaData{μ} \AgdaVar{D}). Below is the
+applies it to a description (\AgdaData{μ} \AgdaVar{D}).
+The pattern functor ($\set \arr \set$) argument of $\mu$ can
+be derived by the model \AgdaData{μ} by partially applying the
+interpretation function to the description argument
+(\AgdaFun{⟦}~\AgdaVar{D}~\AgdaFun{⟧} : \AgdaData{Set} \arr~\AgdaData{Set}).
+Below is the
 datatype declaration for the fixpoint operator (\AgdaData{μ}), and
 its constructor (\AgdaCon{init}) is declared shortly thereafter.
 

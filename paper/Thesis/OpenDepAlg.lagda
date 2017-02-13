@@ -235,8 +235,9 @@ module Desc where
     `δ : (A : Set) (D : Desc) → Desc
 \end{code}
 
-Hence, the non-dependent product (\AgdaCon{`∙}) of the non-dependent
-description datatype (\refsec{infalgmod}) is replaced by the
+Let's compare this with the non-dependent
+description datatype (\refsec{infalgmod}).
+The non-dependent product (\AgdaCon{`∙}) there is replaced by the
 (no longer infix) dependent pair \AgdaCon{`σ} and infinitary
 non-dependent pair \AgdaCon{`δ}. As an example,
 below (\AgdaFun{RoseD}) is the

@@ -549,7 +549,7 @@ successor constructor (rather than the entire natural numbers
 description).
 
 \begin{code}
-   ⟦ NatDs false ⟧₁ ≡ λ where (X , d) → Σ (⊤ → X) (λ f → ⊤)
+   ⟦ NatDs false ⟧₁ ≡ λ { (X , d) → Σ (⊤ → X) (λ f → ⊤) }
 \end{code}
 
 \AgdaHide{
@@ -597,3 +597,44 @@ arguments (\AgdaVar{xs}), but they are described by the dependent
 description (\AgdaVar{D}) applied to the \textit{composition} of the
 decoding function (\AgdaVar{d}) and the infinitary argument
 \AgdaVar{f}.
+
+\paragraph{Fixpoints}
+
+The fixpoint operator ($\mu : (\set/O \arr \set/O) \arr \set/O$)
+of inductive-recursive types is reified as
+a \textit{derived} function
+(\AgdaFun{μ} : \{\AgdaVar{O} : \AgdaData{Set}\}
+\arr~\AgdaData{Desc} \AgdaVar{O}
+\arr~\AgdaFun{Set/} \AgdaVar{O}),
+parameterized by the output type \AgdaVar{O} and producing slices from
+descriptions.
+The pattern functor argument ($\set/O \arr \set/O$) of $\mu$ can be
+derived by the model \AgdaFun{μ} by partially applying the
+interpretation function to the
+description argument
+(\AgdaFun{⟦}~\AgdaVar{D}~\AgdaFun{⟧} :
+\AgdaFun{Set/} \AgdaVar{O} \arr~\AgdaFun{Set/} \AgdaVar{O}).
+
+In \refsec{iralgsem} we showed how the fixpoint
+operator $\mu$ of algebraic semantics can be defined in terms of a
+set component ($\mu_1$) and a decoding function component
+($\mu_2$). Our type theoretic model similarly \textit{derives}
+the fixpoint (\AgdaFun{μ}) as a dependent pair consisting of a
+type component (\AgdaData{μ₁}) and a decoding function
+component (\AgdaFun{μ₂}).
+
+\AgdaHide{
+\begin{code}
+module Fix where
+  open De
+  open El1
+  open El2
+  postulate
+   μ₁ : {O : Set} → Desc O → Set
+   μ₂ : {O : Set} (D : Desc O) → μ₁ D → O
+\end{code}}
+
+\begin{code}
+  μ : {O : Set} → Desc O → Set/ O
+  μ D = μ₁ D , μ₂ D
+\end{code}
