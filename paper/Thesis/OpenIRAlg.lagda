@@ -621,24 +621,9 @@ set component ($\mu_1$) and a decoding function component
 ($\mu_2$). Our type theoretic model similarly \textit{derives}
 the fixpoint (\AgdaFun{μ}) as a dependent pair consisting of a
 type component (\AgdaData{μ₁}) and a decoding function
-component (\AgdaFun{μ₂}).
-
-\AgdaHide{
-\begin{code}
-module _ where
- open De
- private
-  data μ₁ : {O : Set} → Desc O → Set where
-  postulate
-   μ₂ : {O : Set} (D : Desc O) → μ₁ D → O
-\end{code}}
-
-\begin{code}
-  μ : {O : Set} → Desc O → Set/ O
-  μ D = μ₁ D , μ₂ D
-\end{code}
-
-Foo
+component (\AgdaFun{μ₂}). We define these 3 constructions
+(a type synonym \AgdaFun{μ}, a datatype \AgdaData{μ₁}, and
+a function \AgdaFun{μ₂}) mutually below. 
 
 \AgdaHide{
 \begin{code}
@@ -652,18 +637,25 @@ module Fix where
 
 \begin{code}
   mutual
-    data μ₁ {O : Set} (D : Desc O) : Set where
-      init : ⟦ D ⟧₁ (μ D) → μ₁ D
-\end{code}
-
-\AgdaHide{
-\begin{code}
     μ : {O : Set} → Desc O → Set/ O
     μ D = μ₁ D , μ₂ D
-\end{code}}
 
-\begin{code}
+    data μ₁ {O : Set} (D : Desc O) : Set where
+      init : ⟦ D ⟧₁ (μ D) → μ₁ D
+
     μ₂ : {O : Set} (D : Desc O) → μ₁ D → O
     μ₂ D (init xs) = ⟦ D ⟧₂ (μ D) xs
 \end{code}
 
+The argument to the \AgdaCon{init}ial algebra needs to be a type
+representing constructors (of \AgdaData{μ₁}, and their arguments).
+This type is computed by applying the first component
+(\AgdaFun{⟦\_⟧₁}) of the interpretation function to the
+descripiton (\AgdaVar{D}) and its fixpoint (\AgdaData{μ} \AgdaVar{D}).
+The output of the
+decoding function (\AgdaFun{μ₂}) is
+computed by applying the description (\AgdaVar{D}),
+its fixpoint (\AgdaData{μ} \AgdaVar{D}),
+and the argument of
+the initial algebra (\AgdaVar{xs}) to the
+second component (\AgdaFun{⟦\_⟧₂}) of the interpretation function.
