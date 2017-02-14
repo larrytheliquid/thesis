@@ -466,7 +466,7 @@ module _ where
 \end{code}}
 
 
-\subsection{Type Model}
+\subsection{Type Model}\label{sec:depalgtps}
 
 Now we model the type formers and constructors of (possibly) dependent
 datatypes. The descriptions of these datatypes are interpreted as

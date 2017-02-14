@@ -659,3 +659,198 @@ its fixpoint (\AgdaData{μ} \AgdaVar{D}),
 and the argument of
 the initial algebra (\AgdaVar{xs}) to the
 second component (\AgdaFun{⟦\_⟧₂}) of the interpretation function.
+
+
+\subsection{Type Model}\label{sec:iralgtps}
+
+Now we model the type formers and constructors of
+\textit{inductive-recursive} datatypes.
+Typically inductive-recursive datatypes are defined mutually
+in terms of a type and its decoding function. In our model, a single
+description catpures definition of \textit{both} the type and its
+decoding function.
+
+\paragraph{Natural Numbers}
+
+Let's refamiliarize ourselves with the definition of natural
+numbers as an infinitary and trivially inductive-recursive datatype.
+We use the variant of the inductive-recursive natural numbers where
+the \AgdaCon{suc} case of decoding function (\AgdaFun{point}) is defined
+recursively (rather than constantly returning \AgdaCon{tt}).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Unit
+ open import Data.Bool
+ private
+\end{code}}
+
+\begin{code}
+  data ℕ : Set where
+    zero : ℕ
+    suc : ℕ → ℕ
+
+  point : ℕ → ⊤
+  point zero = tt
+  point (suc n) = point n
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Unit
+ open import Data.Bool
+ private
+\end{code}}
+
+\begin{code}
+  data ℕ₁ : Set where
+    zero : ℕ₁
+    suc : (⊤ → ℕ₁) → ℕ₁
+
+  ℕ₂ : ℕ₁ → ⊤
+  ℕ₂ zero = tt
+  ℕ₂ (suc n) = ℕ₂ (n tt)
+
+  ℕ : Set/ ⊤
+  ℕ = ℕ₁ , ℕ₂
+\end{code}
+
+First, we describe the datatype using an inductive-recursive
+description. We use a datatype of tags (\AgdaData{NatT}), representing
+each constructor (as in \refsec{depalgmod}). We also explicitly define
+the function (\AgdaFun{NatDs}) taking tags to the description of
+arguments for the constructor that each tag represents.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Unit
+ open import Data.Bool
+ open import Relation.Binary.PropositionalEquality
+ open De
+ open El1
+ open El2
+ open Fix
+ private
+\end{code}}
+
+\begin{code}
+  data NatT : Set where
+    zeroT sucT : NatT
+
+  NatDs : NatT → Desc ⊤
+  NatDs zeroT = `ι tt
+  NatDs sucT = `δ ⊤ (λ f → `ι (f tt))
+
+  NatD : Desc ⊤
+  NatD = `σ NatT NatDs
+\end{code}
+
+\begin{code}
+  ℕ : Set
+  ℕ = μ₁ NatD
+
+  point : ℕ → ⊤
+  point = μ₂ NatD
+\end{code}
+
+\begin{code}
+  zero : ℕ
+  zero = init (zeroT , tt)
+
+  suc : ℕ → ℕ
+  suc n = init (sucT , (λ u → n) , tt)
+\end{code}
+
+\paragraph{Arithmetic Expressions}
+
+foo
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Unit
+ open import Data.Nat
+ open import Data.Fin
+ private
+  postulate prod : (n : ℕ) (f : Fin n → ℕ) → ℕ
+\end{code}}
+
+\begin{code}
+  mutual
+    data Arith : Set where
+      Num : ℕ → Arith
+      Prod : (a : Arith) (f : Fin (eval a) → Arith) → Arith
+  
+    eval : Arith → ℕ
+    eval (Num n) = n
+    eval (Prod a f) = prod (eval a) (λ a → eval (f a))
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Unit
+ open import Data.Nat
+ open import Data.Fin
+ private
+  postulate prod : (n : ℕ) (f : Fin n → ℕ) → ℕ
+\end{code}}
+
+\begin{code}
+  mutual
+    data Arith₁ : Set where
+      Num : ℕ → Arith₁
+      Prod : (a : ⊤ → Arith₁) (f : Fin (Arith₂ (a tt)) → Arith₁) → Arith₁
+  
+    Arith₂ : Arith₁ → ℕ
+    Arith₂ (Num n) = n
+    Arith₂ (Prod a f) = prod (Arith₂ (a tt)) (λ a → Arith₂ (f a))
+
+  Arith : Set/ ℕ
+  Arith = Arith₁ , Arith₂
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open import Data.Fin
+ open De
+ open El1
+ open El2
+ open Fix
+ private
+  postulate prod : (n : ℕ) (f : Fin n → ℕ) → ℕ
+\end{code}}
+
+\begin{code}
+  data ArithT : Set where
+    NumT ProdT : ArithT
+
+  ArithDs : ArithT → Desc ℕ
+  ArithDs NumT = `σ ℕ λ n → `ι n
+  ArithDs ProdT =
+    `δ ⊤ λ a →
+    `δ (Fin (a tt)) λ f →
+    `ι (prod (a tt) f)
+
+  ArithD : Desc ℕ
+  ArithD = `σ ArithT ArithDs
+\end{code}
+
+\begin{code}
+  Arith : Set
+  Arith = μ₁ ArithD
+
+  eval : Arith → ℕ
+  eval = μ₂ ArithD
+
+  Num : ℕ → Arith
+  Num n = init (NumT , n , tt)
+
+  Prod : (a : Arith) (f : Fin (eval a) → Arith) → Arith
+  Prod a f = init (ProdT , (λ u → a) , f , tt)
+\end{code}
