@@ -700,7 +700,7 @@ The \textit{non-infinitary} natural numbers presented above is the model that
 we will expose. Like in \refsec{depalgtps}, this means our type former
 and constructors will have the \textit{names} and \textit{types}
 corresponding to the ones above. However, our underlying pattern
-functor models the \textit{infinitary} and \textit{slice}-based
+functor models the \textit{infinitary} and \textit{slice-based}
 definition of natural numbers below.
 
 The non-infinitary type \AgdaData{ℕ} above corresponds to infinitary
@@ -763,7 +763,8 @@ module _ where
   NatD = `σ NatT NatDs
 \end{code}
 
-We model the type and decoding function by applying the
+We model the type (\AgdaData{ℕ})
+and decoding function (\AgdaFun{point}) by applying the
 type component (\AgdaData{μ₁}) and decoding function component
 (\AgdaFun{μ₂}) of the fixpoint operator to the description
 (\AgdaFun{NatD}).
@@ -795,7 +796,12 @@ the non-infinitary predecessor (\AgdaVar{n}).
 
 \paragraph{Arithmetic Expressions}
 
-foo
+Now we model a non-trivially inductive-recursive and
+non-trivially infinitary type, namely the
+type of arithmetic expressions (\AgdaData{Arith}) from
+\refsec{irtypes}. An \AgdaData{Arith} can be evaluated to the natural
+number that the arithmetic expression represents, using the
+\AgdaFun{eval} decoding function.
 
 \AgdaHide{
 \begin{code}
@@ -817,6 +823,9 @@ module _ where
     eval (Num n) = n
     eval (Prod a f) = prod (eval a) (λ a → eval (f a))
 \end{code}
+
+Our pattern functor models the \textit{slice-based} and
+\textit{infinitary} version of the arithmetic expressions below.
 
 \AgdaHide{
 \begin{code}
@@ -841,6 +850,18 @@ module _ where
   Arith : Set/ ℕ
   Arith = Arith₁ , Arith₂
 \end{code}
+
+The description of the \textit{slice-based} pattern functor is defined
+in terms of a function (\AgdaFun{ArithDs}) taking arithmetic
+expression constructor tags (\AgdaData{ArithT}) to descriptions of the
+arguments for the constructor that each tag represents.
+
+Compare the index that \AgdaData{Fin} is applied to in the type
+\AgdaData{Arith₁} above and description \AgdaFun{ArithDs} below.
+Notice that
+the dependent infinitary \AgdaVar{a} in the description below
+represents the composition of the decoding function \AgdaFun{Arith₂}
+and the infinitary \AgdaVar{a} above.
 
 \AgdaHide{
 \begin{code}
@@ -870,13 +891,37 @@ module _ where
   ArithD = `σ ArithT ArithDs
 \end{code}
 
+Also notice how each description, in the \AgdaCon{NumT} and
+\AgdaCon{ProdT} cases of \AgdaFun{ArithDs}, ends in
+\AgdaCon{`ι}. The description prior to
+\AgdaCon{`ι} represents the type \AgdaData{Arith₁} above, and the
+natural number contained in \AgdaCon{`ι} represents the
+output of the decoding function \AgdaFun{Arith₂} above.
+Finally, the arguments
+of the decoding function cases are represented by the
+non-inductive (\AgdaCon{`σ}) and infinitary (\AgdaCon{`δ})
+dependencies of the description prior to \AgdaCon{`ι}.
+
+We model the type (\AgdaFun{Arith})
+and decoding function (\AgdaFun{eval}) by applying the
+type component (\AgdaData{μ₁}) and decoding function component
+(\AgdaFun{μ₂}) of the fixpoint operator to the description
+(\AgdaFun{ArithD}).
+
 \begin{code}
   Arith : Set
   Arith = μ₁ ArithD
 
   eval : Arith → ℕ
   eval = μ₂ ArithD
+\end{code}
 
+The same techniques used to model the
+\textit{non-infinitary} and \textit{slice-less} 
+constructors of the \AgdaData{ℕ} type are used to model the
+constructors of the \AgdaData{Arith} type.
+
+\begin{code}
   Num : ℕ → Arith
   Num n = init (NumT , n , tt)
 
