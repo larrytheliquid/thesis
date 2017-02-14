@@ -673,7 +673,7 @@ decoding function.
 \paragraph{Natural Numbers}
 
 Let's refamiliarize ourselves with the definition of natural
-numbers as an infinitary and trivially inductive-recursive datatype.
+numbers as a trivially inductive-recursive datatype.
 We use the variant of the inductive-recursive natural numbers where
 the \AgdaCon{suc} case of decoding function (\AgdaFun{point}) is defined
 recursively (rather than constantly returning \AgdaCon{tt}).
@@ -696,6 +696,21 @@ module _ where
   point (suc n) = point n
 \end{code}
 
+The \textit{non-infinitary} natural numbers presented above is the model that
+we will expose. Like in \refsec{depalgtps}, this means our type former
+and constructors will have the \textit{names} and \textit{types}
+corresponding to the ones above. However, our underlying pattern
+functor models the \textit{infinitary} and \textit{slice}-based
+definition of natural numbers below.
+
+The non-infinitary type \AgdaData{ℕ} above corresponds to infinitary
+type \AgdaData{ℕ₁} below. The
+decoding function \AgdaFun{point} above corresponds to \AgdaFun{ℕ₂}
+below. Finally, the slice \AgdaFun{ℕ} below does not correspond to
+anything above. While slices are commonly used to describe the
+semantics of inductive-recursive types, they are used rarely in
+conventional programming with inductive-recursive types.
+
 \AgdaHide{
 \begin{code}
 module _ where
@@ -717,7 +732,7 @@ module _ where
   ℕ = ℕ₁ , ℕ₂
 \end{code}
 
-First, we describe the datatype using an inductive-recursive
+Now we specify the pattern functor of the datatype as an inductive-recursive
 description. We use a datatype of tags (\AgdaData{NatT}), representing
 each constructor (as in \refsec{depalgmod}). We also explicitly define
 the function (\AgdaFun{NatDs}) taking tags to the description of
@@ -748,6 +763,15 @@ module _ where
   NatD = `σ NatT NatDs
 \end{code}
 
+We model the type and decoding function by applying the
+type component (\AgdaData{μ₁}) and decoding function component
+(\AgdaFun{μ₂}) of the fixpoint operator to the description
+(\AgdaFun{NatD}).
+Once again, we are modeling
+the \textit{non-infinitary} and \textit{slice-less} type of natural
+numbers in terms of its underlying
+\textit{infinitary} and \textit{slice-based} pattern functor.
+
 \begin{code}
   ℕ : Set
   ℕ = μ₁ NatD
@@ -755,6 +779,11 @@ module _ where
   point : ℕ → ⊤
   point = μ₂ NatD
 \end{code}
+
+Finally, we model the constructors. As done previously, the
+\AgdaCon{suc} constructor creates an infinitary argument as a function
+ignoring the infinitary domain value (\AgdaVar{u}), and constantly returning
+the non-infinitary predecessor (\AgdaVar{n}).
 
 \begin{code}
   zero : ℕ
