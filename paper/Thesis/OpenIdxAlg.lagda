@@ -57,12 +57,27 @@ $$
 $$
 
 Another consequence is that $\set^I$ arguments, like the first
-argument of $F$, is actually a \textit{function} from $I$ to $\set$
-(rather than just a $\set$).
+argument of $F$, are actually
+\textit{functions} (i.e. $I$-indexed families of types, or
+\textit{type families} for short)
+from $I$ to $\set$
+(rather than mere $\set$s).
 $$
 F : (I \arr \set) \arr \set^I
 $$
 
+So if we expand everything out, we get the type signatures
+below. Notice in particular that the first argument of $\mu$ takes 2
+arguments, an $I$-indexed family of types and an $I$, and
+returns a $\set$. Of course, the type of the first argument of $\mu$
+is the same as the type of $F$, the functor whose least fixed point is
+being calculated.
+$$
+F : (I \arr \set) \arr I \arr \set
+$$
+$$
+\mu : ((I \arr \set) \arr I \arr \set) \arr I \arr \set
+$$
 
 \subsection{Algebraic Model}\label{sec:idxalgmod}
 
