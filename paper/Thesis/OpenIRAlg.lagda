@@ -928,3 +928,4 @@ constructors of the \AgdaData{Arith} type.
   Prod : (a : Arith) (f : Fin (eval a) → Arith) → Arith
   Prod a f = init (ProdT , (λ u → a) , f , tt)
 \end{code}
+

@@ -19,7 +19,7 @@ constructor arguments.
 \subsection{Algebraic Semantics}\label{sec:infalgsem}
 
 The algebraic semantics for \textit{infinitary} inductive datatypes
-reuses the 1, (+) and ($\cdot$) polynomial set construtions. However,
+reuses the 1, (+) and ($\cdot$) polynomial set constructions. However,
 the inductive occurrences construction $X$ is subsumed by the
 \textit{infinitary} occurrences construction $X^A$. Functions are the
 type theoretic equivalent of exponential terms, where $X$ raised to
