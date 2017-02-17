@@ -226,17 +226,21 @@ module _ where
 
 The decoding function (\AgdaFun{Vec₂}) returns the left
 component of the equality constraint argument
-(e.g. \AgdaCon{zero} for \AgdaCon{nil})
+(\AgdaCon{zero} for \AgdaCon{nil}
+and \AgdaCon{suc} for \AgdaCon{cons})
 in the original indexed type.
-Additionally, original indices of inductive arguments (e.g. \AgdaVar{m})
-are replaced by recursive calls of the decoding function
-(e.g. \AgdaFun{Vec₂} \AgdaVar{xs}).
+Original indices of inductive arguments (\AgdaVar{m}) within left
+components are replaced by recursive calls of the decoding function
+( \AgdaFun{Vec₂} \AgdaVar{xs}).
+
 The type (\AgdaData{Vec₁}) removes equality constraints at base
-cases (e.g. \AgdaCon{nil}), but keeps them in inductive cases
-(e.g. \AgdaCon{cons}). However, the constraint argument for each
-inductive inductive argument has its left component replaced by the
-decoding function applied to the inductive argument
-(e.g. \AgdaFun{Vec₂} \AgdaVar{xs}).
+cases (\AgdaCon{nil}), but replaces old \textit{index} constraints by new
+\textit{decoding function} constraints in the inductive cases
+(\AgdaCon{cons}). The replacement constraint for each inductive
+argument requires the decoding function (\AgdaFun{Vec₂})
+applied to the inductive
+argument (\AgdaVar{xs}) to equal the index of the
+original inductive argument (\AgdaVar{m}).
 
 At this point we have an inductive-recursive type corresponding to the
 first and second components of a slice (i.e. a dependent pair). To
@@ -277,16 +281,16 @@ whose first component is the inductive-recursive type
 and whose second component is a proof that constrains
 the input index (\AgdaVar{n}) to be equal to the decoding function
 applied to the first component (\AgdaFun{Vec₂} \AgdaVar{xs}).
-The reason why we could remove equality constraints from the
-base cases of the inductive-recursive type's constructors is because
-each type family represented as a dependent pair already contains the
-constraint in its second component. In other words, it is only when we
-induct over the first component that we must find an inductive
-argument along with its equality constraint
-(i.e. to faithfully represent an inductive family \AgdaFun{Vec}, which
-includes an equality constraint, rather
-than just the underlying inductive-recursive type component
-\AgdaData{Vec₁}).
+
+The reason why we could remove (rather than replace) equality constraints from the
+base cases of the inductive-recursive type's (\AgdaData{Vec₁}'s) constructors is because
+each type family (\AgdaFun{Vec}, represented as a dependent pair) already contains the
+constraint in its second component. To faithfully represent
+\textit{inductive} occurrences of the
+family \AgdaFun{Vec} (appearing within arguments of its first component
+\AgdaData{Vec₁}), we must include the underlying
+inductive-recursive type \AgdaData{Vec₁} \textit{and} its decoding
+function constraint.
 
 
 %% To a first approximation, we may think of the indexed vectors above as
