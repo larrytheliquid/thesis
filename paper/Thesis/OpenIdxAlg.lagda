@@ -187,7 +187,7 @@ module _ where
 \end{code}
 
 We may define the algebraic semantics for the restricted vector type
-in terms of the (parameterized) type family endofunctor
+in terms of the (parameterized) \textit{type family} endofunctor
 ($\Fi : \set \arr \set^\nat \arr \set^\nat$) below.
 $$
 \Fi \defeq \lambda A.~ \lambda X.~ \lambda n.~
@@ -201,7 +201,8 @@ by applying $X$ to $m$.
 Now consider representing this indexed vector type as an
 inductive-recursive type. We do this by defining a non-indexed type,
 along with a decoding function whose codomain is the type that
-originally was the index (i.e. \AgdaData{ℕ}).
+originally was the index (i.e. \AgdaData{ℕ}). We transform the indexed
+type into an inductive-recursive type in 3 steps:
 
 \AgdaHide{
 \begin{code}
@@ -224,16 +225,19 @@ module _ where
     Vec₂ (cons m x xs q) = suc (Vec₂ xs)
 \end{code}
 
-The decoding function (\AgdaFun{Vec₂}) returns the left
-component of the equality constraint argument
+\begin{enumerate}
+\item The decoding function is defined by (\AgdaFun{Vec₂}) returning the
+left component of the equality constraint argument
 (\AgdaCon{zero} for \AgdaCon{nil}
 and \AgdaCon{suc} for \AgdaCon{cons})
-in the original indexed type.
+in the original indexed type (\AgdaData{Vec}).
 Original indices of inductive arguments (\AgdaVar{m}) within left
 components are replaced by recursive calls of the decoding function
 ( \AgdaFun{Vec₂} \AgdaVar{xs}).
 
-The type (\AgdaData{Vec₁}) removes equality constraints at base
+\item The inductive-recursive type (\AgdaData{Vec₁}) removes
+(from the original indexed type \AgdaData{Vec})
+equality constraints at base
 cases (\AgdaCon{nil}), but replaces old \textit{index} constraints by new
 \textit{decoding function} constraints in the inductive cases
 (\AgdaCon{cons}). The replacement constraint for each inductive
@@ -242,12 +246,13 @@ applied to the inductive
 argument (\AgdaVar{xs}) to equal the index of the
 original inductive argument (\AgdaVar{m}).
 
-At this point we have an inductive-recursive type corresponding to the
+\item At this point we have an inductive-recursive type corresponding to the
 first and second components of a slice (i.e. a dependent pair). To
 derive an actual indexed type (\AgdaFun{Vec} below),
 we must formalize type families
 (\AgdaFun{Set}), the inverse functor (\AgdaFun{Inv}), and then apply
 the inverse functor to the slice.
+\end{enumerate}
 
 \begin{code}
   Set^ : Set → Set₁
@@ -285,20 +290,77 @@ applied to the first component (\AgdaFun{Vec₂} \AgdaVar{xs}).
 The reason why we could remove (rather than replace) equality constraints from the
 base cases of the inductive-recursive type's (\AgdaData{Vec₁}'s) constructors is because
 each type family (\AgdaFun{Vec}, represented as a dependent pair) already contains the
-constraint in its second component. To faithfully represent
+constraint (\AgdaData{≡}) in its second component. To faithfully represent
 \textit{inductive} occurrences of the
 family \AgdaFun{Vec} (appearing within arguments of its first component
 \AgdaData{Vec₁}), we must include the underlying
 inductive-recursive type \AgdaData{Vec₁} \textit{and} its decoding
 function constraint.
 
+We could emphasize that the inductive-recursive type \AgdaData{Vec₁}
+contains inductive arguments of the derived indexed type \AgdaFun{Vec}
+by defining them mutually. In the mutual definition, we replace the
+inductive \AgdaData{Vec₁} argument and the decoding
+constraint (\AgdaData{≡})
+argument with a single \AgdaFun{Vec} argument.
 
-%% To a first approximation, we may think of the indexed vectors above as
-%% the vectors we model in the category of families ($\set^\nat$). There
-%% is a well known equivalence between vectors and lists constrained by
-%% their length. Deriving vectors from the \AgdaData{List} type, the
-%% \AgdaFun{length} function, and an equality constraint (\AgdaData{≡})
-%% allows us to model vectors in the category of slices ($\set/\nat$).
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open import Relation.Binary.PropositionalEquality
+ private
+  Set/ : Set → Set₁
+  Set/ O = Σ Set (λ A → (A → O))
+
+  Set^ : Set → Set₁
+  Set^ I = I → Set
+
+  Inv : {I : Set} → Set/ I → Set^ I
+  Inv (X , d) i = Σ X (λ x → d x ≡ i)
+\end{code}}
+
+\begin{code}
+  mutual
+    Vec : Set → ℕ → Set
+    Vec A n = Inv (Vec₁ A , Vec₂) n
+
+    data Vec₁ (A : Set) : Set where
+      nil : Vec₁ A
+      cons : (m : ℕ) → A → (xs : Vec A m) → Vec₁ A
+
+    Vec₂ : {A : Set} → Vec₁ A → ℕ
+    Vec₂ nil = zero
+    Vec₂ (cons m x (xs , q)) = suc (Vec₂ xs)
+\end{code}
+
+Finally, let's define the algebraic semantics for the derived vector
+type family in terms of the (parameterized) \textit{slice} endofunctor
+($\Fo : \set \arr \set/\nat \arr \set/\nat$) and
+\textit{inverse} functor ($(\inv) : \set/I \arr \set^I$) below.
+Note that it is easier to see the resemblance between the functor $G$
+and the version of the \AgdaData{Vec₁} and \AgdaFun{Vec₂} \textit{not}
+mutually defined with \AgdaFun{Vec}.
+$$
+\Fo \defeq \lambda A.~ \lambda (X, d).~
+\iota~\zero +
+(m : \nat) \cdot A \cdot (x : X) \cdot (d~x = m) \cdot
+\iota~(\suc(d~x))
+$$
+
+Now that we have the endofunctor $\Fo$ between slices
+($\set/\nat$), we can apply
+the inverse functor to $\Fo$ and get a pattern functor that behaves
+isomorphically (i.e. among objects resulting from applying each
+functor to any type family $X$) to our previously defined endofunctor $\Fi$ between type
+families ($\set^\nat$).
+$$
+\forall X.~ \Fi~X \simeq \Fo\inv~X
+$$
+
+For one additional insight, consider the popular derivation of the
+vector type from the \AgdaData{List} type, the \AgdaFun{length}
+function, and an equality constraint (\AgdaData{≡}). 
 
 \AgdaHide{
 \begin{code}
@@ -321,8 +383,20 @@ module _ where
 
   Vec : Set → ℕ → Set
   Vec A n = Σ (List A) (λ xs → length xs ≡ n)
-
 \end{code}
+
+Above, \AgdaData{List} is similar to \AgdaData{Vec₁}
+and \AgdaFun{length} is similar to \AgdaFun{Vec₂}. The main difference
+is that the \AgdaCon{cons} constructor of \AgdaData{List} does not
+have a natural number \AgdaVar{m} argument, or an equality
+constraint (and because it does not have an equality constraint, it also
+does not need to be defined inductive-recursively). Previously
+we explained that we want inductive occurrences of \AgdaData{Vec₁}
+to be the derived type family \AgdaFun{Vec}, which is not the case
+with \AgdaData{List}. Nevertheless, the derivation of vectors
+from a relationship between lists and their length serves as good
+intuition for how type families ($\set^I$) are derived from inductive-recursive
+slices ($\set/I$) and the inverse functor ($\inv$).
 
 \subsection{Algebraic Model}\label{sec:idxalgmod}
 
