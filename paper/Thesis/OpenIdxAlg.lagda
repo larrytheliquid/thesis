@@ -135,7 +135,7 @@ in the category of slices ($\set/I$).
 
 \paragraph{Vectors}
 
-We will show how to define two different pattern functors for vectors,
+We show how to define two different pattern functors for vectors,
 first as an endofunctor between type family categories ($\set^\nat$), and
 second as an endofunctor between slice categories ($\set/\nat$).
 Let's refamiliarize ourselves with the standard type family
@@ -186,7 +186,16 @@ module _ where
     cons : (m : ℕ) → A → Vec A m → suc m ≡ n → Vec A n
 \end{code}
 
-We may define the algebraic semantics for the restricted vector type
+The algebraic semantics that we use for indexed types models the
+restricted version of indexed types.
+\footnote{It is adequate to only model restricted indexed types
+  because restricted and general indexed types are isomorphic. This is
+  adequate because our algebraic semantics for
+  types with various properties identifies isomorphic types
+  (e.g. inductive arguments and trivially infinitary
+  arguments are isomorphic).
+}
+We define the algebraic semantics for the restricted vector type
 in terms of the (parameterized) \textit{type family} endofunctor
 ($\Fi : \set \arr \set^\nat \arr \set^\nat$) below.
 $$
@@ -226,14 +235,14 @@ module _ where
 \end{code}
 
 \begin{enumerate}
-\item The decoding function is defined by (\AgdaFun{Vec₂}) returning the
+\item The decoding function (\AgdaFun{Vec₂}) is defined by returning the
 left component of the equality constraint argument
 (\AgdaCon{zero} for \AgdaCon{nil}
 and \AgdaCon{suc} for \AgdaCon{cons})
 in the original indexed type (\AgdaData{Vec}).
 Original indices of inductive arguments (\AgdaVar{m}) within left
 components are replaced by recursive calls of the decoding function
-( \AgdaFun{Vec₂} \AgdaVar{xs}).
+(\AgdaFun{Vec₂} \AgdaVar{xs}).
 
 \item The inductive-recursive type (\AgdaData{Vec₁}) removes
 (from the original indexed type \AgdaData{Vec})
@@ -241,9 +250,9 @@ equality constraints at base
 cases (\AgdaCon{nil}), but replaces old \textit{index} constraints by new
 \textit{decoding function} constraints in the inductive cases
 (\AgdaCon{cons}). The replacement constraint for each inductive
-argument requires the decoding function (\AgdaFun{Vec₂})
+argument constrains the decoding function (\AgdaFun{Vec₂})
 applied to the inductive
-argument (\AgdaVar{xs}) to equal the index of the
+argument (\AgdaVar{xs}) to be equal to the index of the
 original inductive argument (\AgdaVar{m}).
 
 \item At this point we have an inductive-recursive type corresponding to the
