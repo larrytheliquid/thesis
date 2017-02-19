@@ -407,6 +407,62 @@ from a relationship between lists and their length serves as good
 intuition for how type families ($\set^I$) are derived from inductive-recursive
 slices ($\set/I$) and the inverse functor ($\inv$).
 
+\paragraph{Natural Numbers}
+
+We use the natural numbers as an example of a non-indexed type.
+First, we model the natural numbers as a \textit{trivially indexed}
+type using an endofunctor between type family categories
+($\set^1$). Second,
+we show how converting the type-family-based ($\set^1$) definition to
+a slice-based ($\set/1$) using our rules results in modeling a
+\textit{trivially inductive-recursive} type.
+
+Let's begin by defining the natural numbers as a trivially indexed
+type.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data ℕ : ⊤ → Set where
+    zero : ℕ tt
+    suc : {u : ⊤} → ℕ u → ℕ u
+\end{code}
+
+We use a version where the codomain of inductive constructors
+(\AgdaCon{suc}) reuses the the index (\AgdaVar{u}) of their inducive
+arguments, and the base cases (\AgdaCon{zero}) are indexed by the
+trivial value (\AgdaCon{tt}). Alternatively, we could have made
+inductive constructor codomains and inductive arguments be immediately
+indexed by \AgdaCon{tt}. Below is the restricted version of the
+trivially indexed type of natural numbers.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data ℕ (u : ⊤) : Set where
+    zero : tt ≡ u → ℕ u
+    suc : {v : ⊤} → ℕ v → v ≡ u → ℕ u
+\end{code}
+
+We define the algebraic semantics for the restricted trivially indexed
+natural number type
+in terms of the \textit{type family} endofunctor
+($\Fi : \set^1 \arr \set^1$) below.
+$$
+\Fi \defeq \lambda X.~ \lambda u.~
+\big( (\bullet = u) \cdot 1 \big) +
+\big( (v : 1) \cdot X~v \cdot (v = u) \cdot 1 \big)
+$$
+
+
 \subsection{Algebraic Model}\label{sec:idxalgmod}
 
 \subsection{Type Model}\label{sec:idxalgtps}
