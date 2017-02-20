@@ -501,6 +501,65 @@ $$
 
 \subsection{Algebraic Model}\label{sec:idxalgmod}
 
+In this section we model the algebraic semantics of
+indexed (but not inductive-recursive) types.
+Instead of \textit{extending} the
+model of algebraic semantics for dependent types (\refsec{depalgmod})
+to include indexed types,
+we \textit{derive} a model of indexed types from the model
+of inductive-recursive types (\refsec{iralgmod}).
+
+\paragraph{Descriptions}
+
+The parts of the model of indexed types that we will derive are the
+model of \textit{pattern functors} and \textit{least fixed points}.
+However, in order to
+show how to derive any indexed type from an inductive-recursive type,
+we need to be able to syntactically capture \textit{descriptions} of
+indexed types so that we may translate them to descriptions of
+inductive-recursive types.
+
+Below is the type of descriptions (\AgdaData{`Desc}) for indexed
+types. We prefix the name of the description type with a backtick
+(analogous to a code), because our intention is to
+translate (analogous to a meaning function) indexed
+type descriptions (\AgdaData{`Desc})
+to inductive-recursive type descriptions (\AgdaData{Desc}).
+
+\AgdaHide{
+\begin{code}
+module IDe where
+\end{code}}
+
+\begin{code}
+  data `Desc (I : Set) : Set₁ where
+    `ι : (i : I) → `Desc I
+    `σ : (A : Set) (D : A → `Desc I) → `Desc I
+    `δ : (A : Set) (i : A → I) (D : `Desc I) → `Desc I
+\end{code}
+
+Descriptions of indexed types are parameterized by the type of the
+index (\AgdaVar{I}). The \AgdaVar{i} argument of the \AgdaCon{`ι}
+constructor (ending the description) denotes the index of the codomain
+of the encoded constructor
+(e.g. \AgdaCon{zero} for \AgdaCon{nil}
+of \AgdaData{Vec} \AgdaVar{A} \AgdaCon{zero}). The \AgdaCon{`σ}
+constructor denotes a non-inductive argument and remains unchanged.
+
+The \AgdaCon{`δ} construtor denotes an infinitary constructor, whose
+infinitary domain is \AgdaVar{A}. Recall that an inductive argument is
+the codomain of an infinitary argument. The \AgdaVar{i} argument
+denotes the index of the inductive argument. Because the inductive
+argument appears in the infinitary codomain, it may \textit{depend} on
+values of the infinitary domain (\AgdaVar{A}). Hence, the type of
+\AgdaVar{i} is a \textit{function} from the domain (\AgdaVar{A}) to an
+index (\AgdaVar{I}) (for non-infinitary indexed descriptions, the type
+would merely be \AgdaVar{I}).
+Finally, because we are describing indexed types without
+induction-recursion, the subsequent arguments (\AgdaVar{D}) of
+\AgdaCon{`δ} are merely a \AgdaData{`Desc} (rather than a function)
+because they cannot depend on the infinitary argument.
+
 \subsection{Type Model}\label{sec:idxalgtps}
 
 
