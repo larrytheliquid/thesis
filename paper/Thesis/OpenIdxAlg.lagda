@@ -429,15 +429,12 @@ module _ where
 \begin{code}
   data ℕ : ⊤ → Set where
     zero : ℕ tt
-    suc : {u : ⊤} → ℕ u → ℕ u
+    suc : ℕ tt → ℕ tt
 \end{code}
 
-We use a version where the codomain of inductive constructors
-(\AgdaCon{suc}) reuses the the index (\AgdaVar{u}) of their inducive
-arguments, and the base cases (\AgdaCon{zero}) are indexed by the
-trivial value (\AgdaCon{tt}). Alternatively, we could have made
-inductive constructor codomains and inductive arguments be immediately
-indexed by \AgdaCon{tt}. Below is the restricted version of the
+We use a version where the codomains of all constructors, and all
+inductive occurrences, are indexed by the trivial value (\AgdaCon{tt}).
+Below is a restricted version of the
 trivially indexed type of natural numbers.
 
 \AgdaHide{
@@ -449,7 +446,7 @@ module _ where
 \begin{code}
   data ℕ (u : ⊤) : Set where
     zero : tt ≡ u → ℕ u
-    suc : {v : ⊤} → ℕ v → v ≡ u → ℕ u
+    suc : ℕ tt → tt ≡ u → ℕ u
 \end{code}
 
 We define the algebraic semantics for the restricted trivially indexed
@@ -459,9 +456,48 @@ in terms of the \textit{type family} endofunctor
 $$
 \Fi \defeq \lambda X.~ \lambda u.~
 \big( (\bullet = u) \cdot 1 \big) +
-\big( (v : 1) \cdot X~v \cdot (v = u) \cdot 1 \big)
+\big( X \bullet \cdot (\bullet = u) \cdot 1 \big)
 $$
 
+We can translate the trivially indexed type to a trivially
+inductive-recursive type using the same steps that we translated
+vectors with. Notice that the successor case of \AgdaFun{ℕ₂} below
+immediately returns \AgdaCon{tt}, because the inductive argument of
+\AgdaCon{suc} above is immediately indexed by \AgdaCon{tt}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  mutual
+    data ℕ₁ : Set where
+      zero : ℕ₁
+      suc : (n : ℕ₁) → ℕ₂ n ≡ tt → ℕ₁
+
+    ℕ₂ : ℕ₁ → ⊤
+    ℕ₂ zero = tt
+    ℕ₂ (suc n q) = tt
+\end{code}
+
+We define the algebraic semantics for the trivially
+inductive-recursive natural number type
+in terms of the \textit{slice} endofunctor
+($\Fo : \set/1 \arr \set/1$) below.
+$$
+\Fo \defeq \lambda (X, d).~
+\iota \bullet +
+(x : X) \cdot (d~x = \bullet) \cdot \iota~\bullet
+$$
+
+Once again, applying the inverse functor to the slice endofunctor
+$\Fo$ results in a functor whose operation on objects is isomorphic to
+the type family endofunctor $\Fi$.
+$$
+\forall X.~ \Fi~X \simeq \Fo\inv~X
+$$
 
 \subsection{Algebraic Model}\label{sec:idxalgmod}
 
