@@ -560,6 +560,40 @@ induction-recursion, the subsequent arguments (\AgdaVar{D}) of
 \AgdaCon{`δ} are merely a \AgdaData{`Desc} (rather than a function)
 because they cannot depend on the infinitary argument.
 
+\paragraph{Reduction}
+
+Recall that descriptions syntactically capture the language of legal
+\textit{pattern} functors. Thus a description is an \textit{ephemeral}
+artifact that only serves as the first argument to the interpretation
+function (\AgdaFun{⟦\_⟧}). The actual type theoretic model of a
+pattern functor is the result of partially applying the interpretation
+function to a description. Additionally, while the type theoretic
+model of fixpoints (\AgdaData{μ}) is parameterized by a description,
+this parameter is just converted to a pattern functor in the domain of
+the initial algebra constructor (\AgdaCon{init}).
+
+\AgdaHide{
+\begin{code}
+module El where
+  open IDe
+\end{code}}
+
+\begin{code}
+  data Desc (O : Set) : Set₁ where
+    `ι : (o : O) → Desc O
+    `σ : (A : Set) (D : A → Desc O) → Desc O
+    `δ : (A : Set) (D : (A → O) → Desc O) → Desc O
+\end{code}
+
+\begin{code}
+  ⟪_⟫ : ∀{I} → `Desc I → Desc I
+  ⟪ `ι i ⟫ = `ι i
+  ⟪ `σ A D ⟫ = `σ A (λ a → ⟪ D a ⟫)
+  ⟪ `δ A i D ⟫ = `δ A λ o →
+    `σ ((a : A) → o a ≡ i a) (λ q → ⟪ D ⟫)
+\end{code}
+
+
 \subsection{Type Model}\label{sec:idxalgtps}
 
 
