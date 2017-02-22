@@ -122,17 +122,6 @@ In the following examples we show how to define pattern functors for
 indexed types first in the category of families ($\set^I$), and second
 in the category of slices ($\set/I$).
 
-%% In \refsec{idxalgmod} we take advantage of the equivalence between
-%% family ($\set^I$) and slice ($\set/I$) categories, and reuse our type
-%% theoretic semantic model of inductive-recursive types.
-%% We \textit{derive} a
-%% type theoretic model of indexed types by reifying (a more
-%% intentionally precise
-%% version of) the inverse functor
-%% ($\inv$) as a function translating descriptions of indexed types to descriptions
-%% of inductive-recursive types, for which we have an existing algebraic
-%% model in type theory (\refsec{iralgmod}).
-
 \paragraph{Vectors}
 
 We show how to define two different pattern functors for vectors,
