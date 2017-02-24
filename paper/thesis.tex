@@ -127,7 +127,8 @@
 \numberwithin{remark}{section}
 
 
-\newcommand{\Title}{Generic Programming over Inductive-Recursive Types and Closed Universes}
+\newcommand{\Title}{Generic Programming over a Closed Universe of
+Inductive-Recursive Types}
 
 \begin{document}
 
@@ -164,6 +165,50 @@ Acknowledgments go here.
 \part{Prelude}\label{part:prelude}
 
 \chapter{Introduction}\label{ch:intro}
+
+In this dissertation we expand the class of functions that can be
+written generically for all types, in a type-safe manner,
+within a dependently typed language. Let's contrast
+typical generic programming with our new version, which we
+call \textit{fully generic programming}.
+
+\paragraph{Generic Programming}
+Typical generic programming captures the pattern of folding an
+algebra through the \textit{inductive} occurrences of an algebraic
+datatype.
+For example, we could write a generic \AgdaFun{nodes} function, that
+can be applied to \textit{any} datatype.
+The \AgdaFun{nodes} function returns the sum of:
+\begin{enumerate}
+\item The number of non-inductive nodes.
+\item The \textit{recursive} sum of the number of inductive nodes.
+\end{enumerate}
+Applying \AgdaFun{nodes}
+to a list of pairs of booleans
+results in the sum of the number of \AgdaCon{cons} constructors,
+the \AgdaCon{nil} constructor,
+and the number of pairs.
+
+\paragraph{Fully Generic Programming}
+Fully generic programming captures the pattern of folding an
+algebra through both the \textit{non-inductive} and \textit{inductive}
+occurrences of an algebraic datatype.
+For example, we could write a generic \AgdaFun{count} function that
+can also be applied to \textit{any} datatype.
+The \AgdaFun{count} function returns the sum of:
+\begin{enumerate}
+\item The \textit{recursive} sum of the number of non-inductive nodes.
+\item The \textit{recursive} sum of the number of inductive nodes.
+\end{enumerate}
+Applying \AgdaFun{count}
+to a list of pairs of booleans
+results in the sum of the number of \AgdaCon{cons} constructors,
+the \AgdaCon{nil} constructor, the number of pairs
+(\AgdaCon{,}), and the number of booleans.
+Notably, \AgdaFun{count} (unlike \AgdaFun{nodes}) additionally
+recurses through the components of the pair.
+
+
 \section{Dependently Typed Programming}
 \section{Motivation}
 \section{Thesis \& Contributions}
