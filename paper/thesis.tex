@@ -37,6 +37,8 @@
 \usepackage[subfigure]{tocloft}
 \usepackage[titletoc]{appendix}
 
+\renewcommand{\labelitemi}{$\diamond$}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \DeclareUnicodeCharacter{8759}{\ensuremath{::}}
@@ -179,10 +181,10 @@ datatype.
 For example, we could write a generic \AgdaFun{nodes} function, that
 can be applied to \textit{any} datatype.
 The \AgdaFun{nodes} function returns the sum of:
-\begin{enumerate}
+\begin{itemize}
 \item The number of non-inductive nodes.
 \item The \textit{recursive} sum of the number of inductive nodes.
-\end{enumerate}
+\end{itemize}
 Applying \AgdaFun{nodes}
 to a list of pairs of booleans
 results in the sum of the number of \AgdaCon{cons} constructors,
@@ -190,16 +192,16 @@ the \AgdaCon{nil} constructor,
 and the number of pairs.
 
 \paragraph{Fully Generic Programming}
-Fully generic programming captures the pattern of folding an
+Fully generic programming (\refsec{fullygeneric}) captures the pattern of folding an
 algebra through both the \textit{non-inductive} and \textit{inductive}
 occurrences of an algebraic datatype.
 For example, we could write a generic \AgdaFun{count} function that
 can also be applied to \textit{any} datatype.
 The \AgdaFun{count} function returns the sum of:
-\begin{enumerate}
+\begin{itemize}
 \item The \textit{recursive} sum of the number of non-inductive nodes.
 \item The \textit{recursive} sum of the number of inductive nodes.
-\end{enumerate}
+\end{itemize}
 Applying \AgdaFun{count}
 to a list of pairs of booleans
 results in the sum of the number of \AgdaCon{cons} constructors,
@@ -207,6 +209,15 @@ the \AgdaCon{nil} constructor, the number of pairs
 (\AgdaCon{,}), and the number of booleans.
 Notably, \AgdaFun{count} (unlike \AgdaFun{nodes}) additionally
 recurses through the components of the pair.
+
+In the remainder of this introduction we
+provide an overview of dependent types (\refsec{TODO}),
+give an example of fully generic programming over a limited collection
+of datatypes (\refsec{TODO}),
+describe the class of datatypes that we have been able to extend
+fully generic programming to (\refsec{TODO}),
+and finally cover our thesis statement \& contributions
+(\refsec{TODO}).
 
 
 \section{Dependently Typed Programming}
