@@ -178,14 +178,14 @@ call \textit{fully generic programming}.
 Typical generic programming captures the pattern of folding an
 algebra through the \textit{inductive} occurrences of an algebraic
 datatype.
-For example, we could write a generic \AgdaFun{nodes} function, that
+For example, we could write a generic \AgdaFun{nodes₁} function, that
 can be applied to \textit{any} datatype.
-The \AgdaFun{nodes} function returns the sum of:
+The \AgdaFun{nodes₁} function returns the sum of:
 \begin{itemize}
 \item The number of non-inductive nodes.
 \item The \textit{recursive} sum of the number of inductive nodes.
 \end{itemize}
-Applying \AgdaFun{nodes}
+Applying \AgdaFun{nodes₁}
 to a list of pairs of booleans
 results in the sum of the number of \AgdaCon{cons} constructors,
 the \AgdaCon{nil} constructor,
@@ -195,19 +195,19 @@ and the number of pairs.
 Fully generic programming (\refsec{fullygeneric}) captures the pattern of folding an
 algebra through both the \textit{non-inductive} and \textit{inductive}
 occurrences of an algebraic datatype.
-For example, we could write a fully generic \AgdaFun{count} function that
+For example, we could write a fully generic \AgdaFun{nodes₂} function that
 can also be applied to \textit{any} datatype.
-The \AgdaFun{count} function returns the sum of:
+The \AgdaFun{nodes₂} function returns the sum of:
 \begin{itemize}
 \item The \textit{recursive} sum of the number of non-inductive nodes.
 \item The \textit{recursive} sum of the number of inductive nodes.
 \end{itemize}
-Applying \AgdaFun{count}
+Applying \AgdaFun{nodes₂}
 to a list of pairs of booleans
 results in the sum of the number of \AgdaCon{cons} constructors,
 the \AgdaCon{nil} constructor, the number of pairs
 (\AgdaCon{,}), and the number of booleans.
-Notably, \AgdaFun{count} (unlike \AgdaFun{nodes}) additionally
+Notably, \AgdaFun{nodes₂} (unlike \AgdaFun{nodes₁}) additionally
 recurses through the components of the pair.
 
 In the remainder of this introduction we
