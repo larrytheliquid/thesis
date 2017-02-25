@@ -170,7 +170,7 @@ Acknowledgments go here.
 
 In this dissertation we expand the class of functions that can be
 written generically for all types, in a type-safe manner,
-within a dependently typed language. Let's contrast
+within a dependently typed language. Below, we contrast
 typical generic programming with our new version, which we
 call \textit{fully generic programming}.
 
@@ -195,7 +195,7 @@ and the number of pairs.
 Fully generic programming (\refsec{fullygeneric}) captures the pattern of folding an
 algebra through both the \textit{non-inductive} and \textit{inductive}
 occurrences of an algebraic datatype.
-For example, we could write a generic \AgdaFun{count} function that
+For example, we could write a fully generic \AgdaFun{count} function that
 can also be applied to \textit{any} datatype.
 The \AgdaFun{count} function returns the sum of:
 \begin{itemize}
@@ -211,19 +211,15 @@ Notably, \AgdaFun{count} (unlike \AgdaFun{nodes}) additionally
 recurses through the components of the pair.
 
 In the remainder of this introduction we
-provide an overview of dependent types (\refsec{TODO}),
+provide an overview of dependently typed languages (\refsec{deplang}),
 give an example of fully generic programming over a limited collection
-of datatypes (\refsec{TODO}),
+of datatypes (\refsec{fullyeg}),
 describe the class of datatypes that we have been able to extend
-fully generic programming to (\refsec{TODO}),
+fully generic programming to (\refsec{algclass}),
 and finally cover our thesis statement \& contributions
-(\refsec{TODO}).
+(\refsec{thesis}).
 
-
-\section{Dependently Typed Programming}
-\section{Motivation}
-\section{Thesis \& Contributions}
-\section{Agda Conventions}
+\include{Thesis/Intro}
 
 \chapter{Types \& Universes}\label{ch:univ}
 
