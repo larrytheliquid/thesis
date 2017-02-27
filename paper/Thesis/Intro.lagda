@@ -30,7 +30,7 @@ For example, below we compare universally quantified
 propositions to dependent function types, and existentially
 propositions to dependent pair types.
 $$
-\forall x.~ \mrm{P}(x) \approx (x : \Var{A}) \arr \Fun{P}~\Var{x}
+\forall x.~ \mrm{P}(x) \approx (\Var{x} : \Var{A}) \arr \Fun{P}~\Var{x}
 $$
 $$
 \exists x.~ \mrm{Q}(x) \approx \Data{Σ}~\Var{A}~(\lambda~\Var{x} \arr \Fun{Q}~\Var{x})
