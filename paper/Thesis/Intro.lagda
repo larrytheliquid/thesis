@@ -12,7 +12,7 @@ open import Relation.Binary.PropositionalEquality
 module _ where
 \end{code}}
 
-\section{Dependently Typed Languages}\label{sec:deplang}
+\section{Dependently Typed Languages \& Motivation}\label{sec:deplang}
 
 A standard dependently typed language is
 \textit{purely functional} (meaning the absence of side effects),
@@ -20,6 +20,8 @@ A standard dependently typed language is
 (meaning all inductively defined functions
 terminate and cover all possible inputs), and has a
 type system that captures the notion of \textit{dependency}.
+
+\paragraph{Curry-Howard Isomorphism}
 
 A single term language is used to write programs at the value and type
 levels. The combination of total programming at the type level and a
@@ -77,9 +79,81 @@ $$
 \forall xs, ys.~ \exists zs.~ \card{zs} = \card{xs} + \card{ys}
 $$
 
+\paragraph{Indexed Types}
+
+The less-than (\AgdaData{<}) precondition and equality
+(\AgdaData{≡}) postcondition in the examples above
+are \textit{relations} in the language of logic,
+and are called \textit{indexed types} in the language of dependent
+types.
+Rather than constraining a datatype like
+lists using relations after-the-fact, we can create
+more specific (i.e. \textit{indexed})
+variants of datatypes that encode certain
+properties before-the-fact.
+
+\AgdaHide{
+\begin{code}
+module _ {A : Set} where
+ private
+  postulate
+\end{code}}
+
+For example, the type of vectors (\Data{Vec} \Var{A} \Var{n})
+is like a length-indexed version of lists. Compared to lists, the type
+former of vectors gains an additional natural number parameter (\Var{n})
+constraining its length. Because the property of of lengths of vectors
+is encoded at the type level, we can write a variant of \Fun{append}
+where calls to \Fun{length} have been replaced by an index.
+
+\begin{code}
+   append : (m n : ℕ) (xs : Vec A m) (ys : Vec A n) → Vec A (m + n)
+\end{code}
+
+Additionally, the explicit equality proof
+(\Data{≡}) postcondition can be dropped in favor of expressing the
+postcondition directly in the index position of the output vector.
+In other words, the \textit{explicit} equality postcondition has been
+dropped in favor of an \textit{implicit} property about the codomain
+of \Fun{append}.
+
+Another example of an indexed type is the type of finite sets
+(\Data{Fin} \Var{n}), indexed by a natural number constraining
+the size of the finite set. A finite set
+is like a subset of the of the natural numbers from 0 to \Var{n} - 1. 
+This subset property
+(whose maximum value is \Var{n} - 1) is the perfect datatype to act as
+an \textit{implicit} version of the \textit{explicit} less-than
+(\Data{<}) precondition of \Fun{lookup}. Hence, we can rewrite an
+implicit-precondition version of \Fun{lookup} using vectors and finite sets
+as follows.
+
+\begin{code}
+   lookup : (n : ℕ) (xs : Vec A n) (i : Fin n) → A
+\end{code}
+
 \paragraph{Motivation}
-To extend fully generic programming over a limited collection of types
-to all possible types of a depdently typed language.
+
+Programmers of non-dependently typed languages already struggle with the
+issue of needing to define logically similar versions of functions
+(like \Fun{count}, \Fun{lookup}, \Fun{update}, etc.)
+for their various algebraic types
+(e.g. natural numbers, lists, binary trees, etc.).
+This problem is more pronounced in a dependently typed language, where
+programmers also define indexed variants of types
+(e.g. finite sets, vectors, balanced binary trees, etc.)
+to implicitly capture preconditions and postconditions.
+
+Rather than punishing programmers for creating new datatypes,
+our \textbf{motivation} is to reward them with
+\textit{fully generic functions}
+(like \Fun{count}, \Fun{lookup}, \Fun{update}, etc.).
+Fully generic functions are predefined once-and-for-all to work with
+any datatype of the language, whether it is defined now or will be
+defined in the future.
+Programmers defining new types should be able to \textit{apply} fully generic
+functions to them, and programmers should also be able to
+\textit{define} fully generic functions themselves.
 
 \section{A Taste of Fully Generic Programming}\label{sec:fullyeg}
 
@@ -87,44 +161,7 @@ to all possible types of a depdently typed language.
 
 \paragraph{Algebraic Types}
 
-Like \Data{List}
-
-\AgdaHide{
-\begin{code}
-module _ {A : Set} where
- private
-  postulate
-\end{code}}
-
-\begin{code}
-   lookup : (n : ℕ) (xs : List A) → n < length xs → A
-   append : (xs ys : List A) → Σ (List A) (λ zs → length zs ≡ length xs + length ys)
-\end{code}
-
 \paragraph{Indexed Types}
-
-The less-than (\AgdaData{<}) precondition and equality
-(\AgdaData{≡}) postcondition in the examples above are examples of the
-type-theory equivalents of the logical notion of \textit{relations},
-named \textit{indexed types}. Rather than constraining a datatype like
-lists using relations after-the-fact, we can create more specific
-variants of lists that encoded certain properties before-the-fact.
-For example, the type of vectors (\Data{Vec}) is like a length-indexed
-version of lists. Compared to lists, the type former of vectors gains
-an additional natural number parameter constraining its length.
-
-\AgdaHide{
-\begin{code}
-module _ {A : Set} where
- private
-  postulate
-\end{code}}
-
-\begin{code}
-   lookup : (n : ℕ) (xs : Vec A n) (i : Fin n) → A
-   append : (m n : ℕ) (xs : Vec A m) (ys : Vec A n) → Vec A (m + n)
-\end{code}
-
 
 \section{Thesis \& Contributions}\label{sec:thesis}
 
