@@ -66,11 +66,18 @@
 
 \newcommand{\refch}[1]{Chapter \ref{ch:#1}}
 \newcommand{\refsec}[1]{Section \ref{sec:#1}}
+
 \newcommand{\AgdaData}[1]{\AgdaDatatype{#1}}
 \newcommand{\AgdaCon}[1]{\AgdaInductiveConstructor{#1}}
 \newcommand{\AgdaFun}[1]{\AgdaFunction{#1}}
 \newcommand{\AgdaVar}[1]{\AgdaBound{#1}}
 \newcommand{\AgdaNum}[1]{\AgdaModule{#1}}
+
+\newcommand{\Data}[1]{\AgdaData{#1}}
+\newcommand{\Con}[1]{\AgdaCon{#1}}
+\newcommand{\Fun}[1]{\AgdaFun{#1}}
+\newcommand{\Var}[1]{\AgdaVar{#1}}
+\newcommand{\Num}[1]{\AgdaNum{#1}}
 
 \newcommand{\AgdaBind}{\renewcommand{\AgdaPostulate}[1]
   {\AgdaNoSpaceMath{\AgdaFontStyle{\textcolor{AgdaBound}{\AgdaLink{##1}}}}}
