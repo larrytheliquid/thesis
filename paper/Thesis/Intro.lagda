@@ -147,7 +147,8 @@ to implicitly capture preconditions and postconditions.
 Rather than punishing programmers for creating new datatypes,
 our \textbf{motivation} is to reward them with
 \textit{fully generic functions}
-(like \Fun{count}, \Fun{lookup}, \Fun{update}, etc.).
+(like \Fun{count}, \Fun{lookup}, \Fun{update}, etc.), which are new
+mechanisms for \textit{code reuse}.
 Fully generic functions are predefined once-and-for-all to work with
 any datatype of the language, whether it is defined now or will be
 defined in the future.
