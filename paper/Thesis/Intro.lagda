@@ -21,7 +21,7 @@ A standard dependently typed language is
 terminate and cover all possible inputs), and has a
 type system that captures the notion of \textit{dependency}.
 
-\paragraph{Curry-Howard Isomorphism}
+\subsection{Curry-Howard Isomorphism}
 
 A single term language is used to write programs at the value and type
 levels. The combination of total programming at the type level and a
@@ -79,7 +79,7 @@ $$
 \forall xs, ys.~ \exists zs.~ \card{zs} = \card{xs} + \card{ys}
 $$
 
-\paragraph{Indexed Types}
+\subsection{Indexed Types}
 
 The less-than (\AgdaData{<}) precondition and equality
 (\AgdaData{≡}) postcondition in the examples above
@@ -132,7 +132,7 @@ as follows.
    lookup : (n : ℕ) (xs : Vec A n) (i : Fin n) → A
 \end{code}
 
-\paragraph{Motivation}
+\subsection{Motivation}
 
 Programmers of non-dependently typed languages already struggle with the
 issue of needing to define logically similar versions of functions
@@ -159,9 +159,9 @@ functions to them, and programmers should also be able to
 
 \section{Class of Supported Datatypes}\label{sec:algclass}
 
-\paragraph{Algebraic Types}
+\subsection{Algebraic Types}
 
-\paragraph{Indexed Types}
+\subsection{Indexed Types}
 
 \section{Thesis \& Contributions}\label{sec:thesis}
 
