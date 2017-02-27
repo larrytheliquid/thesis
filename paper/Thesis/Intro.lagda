@@ -3,8 +3,11 @@
 open import Data.Empty
 open import Data.Unit
 open import Data.Product
+open import Data.Bool
 open import Data.Nat
 open import Data.List
+open import Data.Fin hiding ( _+_ ; _<_ )
+open import Data.Vec hiding ( lookup )
 open import Relation.Binary.PropositionalEquality
 module _ where
 \end{code}}
@@ -19,7 +22,7 @@ terminate and cover all possible inputs), and has a
 type system that captures the notion of \textit{dependency}.
 
 A single term language is used to write programs at the value and type
-level. The combination of total programming at the type level and a
+levels. The combination of total programming at the type level and a
 notion of dependency betweeen types allows any proposition of
 intuitionistic logic to be expressed as a type.
 A value (or equivalently, a total program) inhabiting a
@@ -36,6 +39,13 @@ $$
 \exists x.~ \mrm{Q}(x) \approx \Data{Σ}~\Var{A}~(\lambda~\Var{x} \arr \Fun{Q}~\Var{x})
 $$
 
+  \AgdaHide{
+\begin{code}
+module _ {A : Set} where
+ private
+  postulate
+\end{code}}
+
 Thanks to the Curry-Howard Isomorphism, we can encode logical
 \textit{preconditions} and \textit{postconditions} at the type level.
 For example, below
@@ -45,15 +55,8 @@ to be less than the length of the list (\Var{xs}) being looked
 up. This allows an otherwise partial lookup function to be defined
 totally by preventing out-of-bounds indexing.
 
-\AgdaHide{
 \begin{code}
-module _ where
- private
-  postulate
-\end{code}}
-
-\begin{code}
-   lookup : {A : Set} (xs : List A) (n : ℕ) → n < length xs → A
+   lookup : (n : ℕ) (xs : List A) → n < length xs → A
 \end{code}
 
 As another example, we give the type for an \Fun{append} function over lists with
@@ -62,18 +65,17 @@ a \textit{postcondition} constraining the length of the output list
 (\Var{xs} and \Var{ys}).
 
 \begin{code}
-   append : {A : Set} (xs ys : List A) →
-     Σ (List A) (λ zs → length zs ≡ length xs + length ys)
+   append : (xs ys : List A) → Σ (List A) (λ zs → length zs ≡ length xs + length ys)
 \end{code}
 
-logic
+The types of \Fun{append} and \Fun{lookup} correspond to the following
+two logical propositions respectively.
 $$
-\forall xs, n.~ n < \card{xs} \imp \exists x
+\forall n, xs.~ n < \card{xs} \imp \exists x
 $$
 $$
 \forall xs, ys.~ \exists zs.~ \card{zs} = \card{xs} + \card{ys}
 $$
-
 
 \paragraph{Motivation}
 To extend fully generic programming over a limited collection of types
@@ -82,6 +84,47 @@ to all possible types of a depdently typed language.
 \section{A Taste of Fully Generic Programming}\label{sec:fullyeg}
 
 \section{Class of Supported Datatypes}\label{sec:algclass}
+
+\paragraph{Algebraic Types}
+
+Like \Data{List}
+
+\AgdaHide{
+\begin{code}
+module _ {A : Set} where
+ private
+  postulate
+\end{code}}
+
+\begin{code}
+   lookup : (n : ℕ) (xs : List A) → n < length xs → A
+   append : (xs ys : List A) → Σ (List A) (λ zs → length zs ≡ length xs + length ys)
+\end{code}
+
+\paragraph{Indexed Types}
+
+The less-than (\AgdaData{<}) precondition and equality
+(\AgdaData{≡}) postcondition in the examples above are examples of the
+type-theory equivalents of the logical notion of \textit{relations},
+named \textit{indexed types}. Rather than constraining a datatype like
+lists using relations after-the-fact, we can create more specific
+variants of lists that encoded certain properties before-the-fact.
+For example, the type of vectors (\Data{Vec}) is like a length-indexed
+version of lists. Compared to lists, the type former of vectors gains
+an additional natural number parameter constraining its length.
+
+\AgdaHide{
+\begin{code}
+module _ {A : Set} where
+ private
+  postulate
+\end{code}}
+
+\begin{code}
+   lookup : (n : ℕ) (xs : Vec A n) (i : Fin n) → A
+   append : (m n : ℕ) (xs : Vec A m) (ys : Vec A n) → Vec A (m + n)
+\end{code}
+
 
 \section{Thesis \& Contributions}\label{sec:thesis}
 
