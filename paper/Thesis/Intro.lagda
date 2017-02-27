@@ -2,8 +2,10 @@
 \begin{code}
 open import Data.Empty
 open import Data.Unit
-open import Data.Bool hiding ( not )
 open import Data.Product
+open import Data.Nat
+open import Data.List
+open import Relation.Binary.PropositionalEquality
 module _ where
 \end{code}}
 
@@ -33,6 +35,45 @@ $$
 $$
 \exists x.~ \mrm{Q}(x) \approx \Data{Σ}~\Var{A}~(\lambda~\Var{x} \arr \Fun{Q}~\Var{x})
 $$
+
+Thanks to the Curry-Howard Isomorphism, we can encode logical
+\textit{preconditions} and \textit{postconditions} at the type level.
+For example, below
+we give the type for a \Fun{lookup} function for lists with a
+\textit{precondition} constraining the natural number (\Var{n}) index
+to be less than the length of the list (\Var{xs}) being looked
+up. This allows an otherwise partial lookup function to be defined
+totally by preventing out-of-bounds indexing.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  postulate
+\end{code}}
+
+\begin{code}
+   lookup : {A : Set} (xs : List A) (n : ℕ) → n < length xs → A
+\end{code}
+
+As another example, we give the type for an \Fun{append} function over lists with
+a \textit{postcondition} constraining the length of the output list
+(\Var{zs}) to be equal to the sum of the lengths of the input lists
+(\Var{xs} and \Var{ys}).
+
+\begin{code}
+   append : {A : Set} (xs ys : List A) →
+     Σ (List A) (λ zs → length zs ≡ length xs + length ys)
+\end{code}
+
+logic
+$$
+\forall xs, n.~ n < \card{xs} \imp \exists x
+$$
+$$
+\forall xs, ys.~ \exists zs.~ \card{zs} = \card{xs} + \card{ys}
+$$
+
 
 \paragraph{Motivation}
 To extend fully generic programming over a limited collection of types
