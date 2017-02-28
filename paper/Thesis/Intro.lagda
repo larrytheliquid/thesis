@@ -462,7 +462,7 @@ built-in types that have been \textit{fixed} ahead of time.
 Alternatively, we may define a universe that models algebraic
 datatypes (as in \refsec{depalg}).
 We call the type of codes for this universe
-\Data{Desc}, as they \textit{describe} datatype declarations.
+\Data{Desc}, as they \textit{describe} algebraic datatype declarations.
 The meaning function for this universe, named \Data{μ}, interprets a
 declaration as the declared type.
 \footnote{As we see in the next section, another way to think about
@@ -484,7 +484,7 @@ Actually, dependently typed languages can only contain the
 \textit{strictly positive} (\refsec{inft}) subset of algebraic
 datatypes (this restriction keeps the language total, hence consistent
 as a logic under the Curry-Howard Isomorphism).
-A technical consequence of typing the type declaration codes
+A consequence of defining
 \Data{Desc} as a strictly positive datatype is that generic
 programming over it corresponds to
 \textit{ordinary generic programming}
@@ -493,7 +493,52 @@ in which recursion is restricted to \textit{inductive} arguments.
 
 \paragraph{Fixed Types closed under Algebraic Extension Universe}
 
+A primary contribution of this thesis is defining a universe that
+combines the fixed collection of built-in types universe
+(\Data{Type}) with the extensible collection of algebraic datatypes
+universe (\Data{Desc}), in a way that supports
+\textit{fully generic programming}.
 
+One important property of what makes fully generic programming possible
+in \Data{Count} is that the arguments to its codes
+(i.e. the arguments to \Con{`Pair} and \Con{`List}) are
+\textit{inductive}. This makes \Data{Count} a universe of booleans
+\textit{closed under} pair formation and list formation. Closure
+properties are an important defining feature of a universe.
+
+The key to defining our combined universe it to make the
+\Data{Type} universe not only closed under expected types
+(like dependent pairs and dependent functions),
+but also closed under
+\textit{algebraic datatype formation} (\Data{μ}) from
+datatype declarations (\Data{Desc}).
+The details of how to make this work are beyond the scope of this
+introduction (see \refsec{TODO} for the full construction). However,
+the central idea has to do with
+defining the \Data{Type} and \Data{Desc} universes \textit{mutually}.
+Thus, fully generic programming over this mutual universe
+corresponds to writing \textit{mutually} dependent functions over the
+following type signatures:
+$$
+(\Var{A} : \Data{Type})~
+(\Var{a} : \AgdaFun{⟦}~\AgdaVar{A}~\AgdaFun{⟧})
+→ ...
+$$
+$$
+(\Var{D} : \Data{Desc})~
+(\Var{x} : \AgdaData{μ}~\AgdaVar{D})
+→ ...
+$$
+
+Essentially, in our mutual universe \Data{Type}
+is closed under \Data{Type} formers (like \Con{`μ})
+that can have \Data{Desc} arguments,
+and \Data{Desc}
+is closed under \Data{Desc} formers that can have \Data{Type}
+arguments.
+The consequence of our \textit{closed} universe is that it
+models a dependently typed language supporting
+datatype declarations \textit{and} fully generic programming.
 
 \section{Class of Supported Datatypes}\label{sec:algclass}
 
