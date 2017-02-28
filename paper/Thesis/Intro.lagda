@@ -20,6 +20,8 @@ A standard dependently typed language is
 (meaning all inductively defined functions
 terminate and cover all possible inputs), and has a
 type system that captures the notion of \textit{dependency}.
+In this thesis we use the dependently typed language Agda~\cite{TODO}
+for all of our developments.
 
 \subsection{Curry-Howard Isomorphism}
 
@@ -164,9 +166,9 @@ accomplished using a construction known as a universe
 detail (which we do in \refsec{universes}) in this introduction,
 we develop our dependently typed Agda examples using
 universes in parallel with examples in Haskell using
-type classes~\ref{TODO}. Later we learn why our analogy with Haskell
-type classes makes sense, as
-\textit{ad hoc polymorphism} (\refsec{adhoc}) is a
+type classes~\ref{TODO}. Later we learn why our analogy with
+Haskell~\cite{TODO} type classes~\cite{TODO}
+makes sense, as \textit{ad hoc polymorphism} (\refsec{adhoc}) is a
 form of generic programming.
 
 Below we first develop the \Fun{size} function using generic

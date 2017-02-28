@@ -190,16 +190,19 @@ algebra through the \textit{inductive} occurrences of an algebraic
 datatype.
 For example, we could write a generic \AgdaFun{size} function, that
 can be applied to \textit{any} datatype.
-The \AgdaFun{size} function returns the sum of:
+For any constructor of any datatype, \AgdaFun{size}
+returns 1 plus the sum of:
 \begin{itemize}
-\item The number of non-inductive nodes.
-\item The \textit{recursive} sum of the number of inductive nodes.
+\item The number of non-inductive arguments.
+\item The \textit{recursive} sum of the number of inductive arguments.
 \end{itemize}
 Applying \AgdaFun{size}
-to a list of pairs of booleans
-results in the sum of the number of \AgdaCon{cons} constructors,
-the \AgdaCon{nil} constructor,
-and the number of pairs.
+to a single-element list containing a pair of booleans
+results in 3: the sum of
+the \AgdaCon{cons} constructor,
+the pair,
+and the \AgdaCon{nil} constructor. Because the pair is a non-inductive
+argument from the perspective of the list, its size is counted atomically as 1.
 
 \paragraph{Fully Generic Programming}
 Fully generic programming (\refsec{fullygeneric}) captures the pattern of folding an
@@ -207,16 +210,19 @@ algebra through both the \textit{non-inductive} and \textit{inductive}
 occurrences of an algebraic datatype.
 For example, we could write a fully generic \AgdaFun{count} function that
 can also be applied to \textit{any} datatype.
-The \AgdaFun{count} function returns the sum of:
+For any constructor of any datatype, \AgdaFun{count}
+returns 1 plus the sum of:
 \begin{itemize}
-\item The \textit{recursive} sum of the number of non-inductive nodes.
-\item The \textit{recursive} sum of the number of inductive nodes.
+\item The \textit{recursive} sum of the number of non-inductive arguments.
+\item The \textit{recursive} sum of the number of inductive arguments.
 \end{itemize}
 Applying \AgdaFun{count}
-to a list of pairs of booleans
-results in the sum of the number of \AgdaCon{cons} constructors,
-the \AgdaCon{nil} constructor, the number of pairs
-(\AgdaCon{,}), and the number of booleans.
+to a single-element list containing a pair of booleans
+results in 5: the sum of
+the \AgdaCon{cons} constructor,
+the pair (\AgdaCon{,}) constructor,
+the two booleans constructors,
+and the \AgdaCon{nil} constructor.
 Notably, \AgdaFun{count} (unlike \AgdaFun{size}) additionally
 recurses through the components of the pair.
 
