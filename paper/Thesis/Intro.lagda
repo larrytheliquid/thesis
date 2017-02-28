@@ -420,17 +420,80 @@ accomplished using a \textit{universe} (\refsec{universes}). A
 universe is the combination of a type of \textit{codes} for types
 (e.g. \Data{Count}) and a \textit{meaning} function (e.g. \Fun{⟦\_⟧})
 mapping codes to actual types. Generic functions (over all types of
-the universe) are written by parameterizing over the type of codes and
-the interpretation of a code:
+the universe) are dependent function parameterized
+over all type codes and the meaning of the particular code
+supplied.
 $$
 (\AgdaVar{x} : \AgdaData{Code}) → \AgdaFun{Meaning}~\AgdaVar{x} → ...
 $$
 
-\paragraph{Closed Fixed Type Universe}
+\paragraph{Fixed Types Universe}
 
-\paragraph{Open Extensible Algebraic Type Universe}
+We have a seen how to perform a limited version of
+\textit{fully generic programming}, in
+which recursion into both \textit{non-inductive} and
+\textit{inductive} arguments is possible, in the \Fun{count} example
+using the \Data{Count} universe.
+The problem with the \Data{Count} universe is that it is
+\textit{fixed} to a particular collection of types, chosen ahead of
+time.
 
-\paragraph{Closed Extensible Algebraic Type Universe}
+We can add more types (as in \refsec{closedu})
+to this universe (like natural numbers,
+vectors, finite sets, dependent pairs, dependent functions, etc),
+naming the new type of codes \Data{Type}, until
+it contains enough types to model a dependently typed language with a
+primitive collection of built-in types. Fully generic programming over
+this universe then models fully generic programming over the entire
+language modeled by the universe:
+$$
+(\Var{A} : \Data{Type})~
+(\Var{a} : \AgdaFun{⟦}~\AgdaVar{A}~\AgdaFun{⟧})
+→ ...
+$$
+
+However, most modern dependently typed language allow users to declare
+new algebraic datatypes. The \Data{Type} universe does not model a
+language with datatype declarations, as users can only work with the
+built-in types that have been \textit{fixed} ahead of time.
+
+\paragraph{Extensible Algebraic Types Universe}
+
+Alternatively, we may define a universe that models algebraic
+datatypes (as in \refsec{depalg}).
+We call the type of codes for this universe
+\Data{Desc}, as they \textit{describe} datatype declarations.
+The meaning function for this universe, named \Data{μ}, interprets a
+declaration as the declared type.
+\footnote{As we see in the next section, another way to think about
+  \Data{Desc} is a reification of pattern functors from initial
+  algebra semantics, whose least fixed point is calculated by
+  \Data{μ}.
+  }
+The \Data{Desc} universe models an \textit{extensible} collection of
+algebraic datatypes.
+Generic programming over this universe allows users to write functions
+that can be applied to any algebraic datatype a user might declare:
+$$
+(\Var{D} : \Data{Desc})~
+(\Var{x} : \AgdaData{μ}~\AgdaVar{D})
+→ ...
+$$
+
+Actually, dependently typed languages can only contain the
+\textit{strictly positive} (\refsec{inft}) subset of algebraic
+datatypes (this restriction keeps the language total, hence consistent
+as a logic under the Curry-Howard Isomorphism).
+A technical consequence of typing the type declaration codes
+\Data{Desc} as a strictly positive datatype is that generic
+programming over it corresponds to
+\textit{ordinary generic programming}
+(like the \Fun{size} function),
+in which recursion is restricted to \textit{inductive} arguments.
+
+\paragraph{Fixed Types closed under Algebraic Extension Universe}
+
+
 
 \section{Class of Supported Datatypes}\label{sec:algclass}
 
