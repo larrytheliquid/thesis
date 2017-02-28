@@ -5,7 +5,7 @@ open import Data.Unit
 open import Data.Product
 open import Data.Bool
 open import Data.Nat
-open import Data.List
+open import Data.List renaming ( [] to nil ; _∷_ to cons )
 open import Data.Fin hiding ( _+_ ; _<_ )
 open import Data.Vec hiding ( lookup )
 open import Relation.Binary.PropositionalEquality
@@ -157,6 +157,83 @@ functions to them, and programmers should also be able to
 \textit{define} fully generic functions themselves.
 
 \section{A Taste of Fully Generic Programming}\label{sec:fullyeg}
+
+Ordinary generic programming in dependently typed languages is
+accomplished using a construction known as a universe
+(\refsec{universes}). Rather than explaining how universes work in
+detail (which we do in \refsec{universes}) in this introduction,
+we develop our dependently typed Agda examples using
+universes in parallel with examples in Haskell using
+type classes~\ref{TODO}. Later we learn why our analogy with Haskell
+type classes makes sense, as
+\textit{ad hoc polymorphism} (\refsec{adhoc}) is a
+form of generic programming.
+
+Below we first develop the \Fun{size} function using generic
+programming, and then develop the \Fun{count} function using
+\textit{fully} generic programming
+(albeit over a fixed and small language),
+both described in the introduction (\refsec{intro}).
+
+\subsection{Generic Programming}
+
+Recall that \Fun{size} should return the sum of
+\textit{all nodes traversed} by recursing into the \textit{inductive} ones.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data Size : Set₁ where
+    `Bool : Size
+    `Pair : (A B : Set) → Size
+    `List : (A : Set) → Size
+
+  ⟦_⟧ : Size → Set
+  ⟦ `Bool ⟧ = Bool
+  ⟦ `Pair A B ⟧ = A × B
+  ⟦ `List A ⟧ = List A
+
+  size : (A : Size) → ⟦ A ⟧ → ℕ
+  size `Bool b = 1
+  size (`Pair A B) (a , b) = 3
+  size (`List A) nil = 1
+  size (`List A) (cons x xs) = 2 + size (`List A) xs
+\end{code}
+
+\subsection{Fully Generic Programming}
+
+Recall that \Fun{count} should return the sum of
+\textit{all nodes} by
+recursing into the \textit{inductive} and
+\textit{non-inductive} ones.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data Count : Set where
+    `Bool : Count
+    `Pair : (A B : Count) → Count
+    `List : (A : Count) → Count
+
+  ⟦_⟧ : Count → Set
+  ⟦ `Bool ⟧ = Bool
+  ⟦ `Pair A B ⟧ = ⟦ A ⟧ × ⟦ B ⟧
+  ⟦ `List A ⟧ = List ⟦ A ⟧
+
+  count : (A : Count) → ⟦ A ⟧ → ℕ
+  count `Bool b = 1
+  count (`Pair A B) (a , b) = 1 + count A a + count B b
+  count (`List A) nil = 1
+  count (`List A) (cons x xs) = 1 + count A x + count (`List A) xs
+\end{code}
 
 \section{Class of Supported Datatypes}\label{sec:algclass}
 

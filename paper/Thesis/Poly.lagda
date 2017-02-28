@@ -64,7 +64,7 @@ module _ where
 Note that \AgdaFun{append} now behaves the same way for
 any type at any level that it is applied to.
 
-\section{Ad Hoc Polymorphism}
+\section{Ad Hoc Polymorphism}\label{sec:adhoc}
 
 An \textit{ad hoc polymorphic} function is defined non-uniformly
 over its codes or their meanings. That is, the function may inspect
