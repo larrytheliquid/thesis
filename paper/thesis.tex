@@ -202,7 +202,9 @@ results in 3: the sum of
 the \AgdaCon{cons} constructor,
 the pair,
 and the \AgdaCon{nil} constructor. Because the pair is a non-inductive
-argument from the perspective of the list, its size is counted atomically as 1.
+argument from the perspective of the list, its size is counted
+atomically as 1 (it would be counted as 1 even if it were a value of
+an \textit{inductive} datatype other than lists, like a tree).
 
 \paragraph{Fully Generic Programming}
 Fully generic programming (\refsec{fullygeneric}) captures the pattern of folding an
