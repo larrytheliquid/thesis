@@ -275,6 +275,15 @@ same logic as the instances in the Haskell version above.
   size (`List A) (cons x xs) = 2 + size (`List A) xs
 \end{code}
 
+A significant difference difference with the Haskell version is that
+we explicitly supply the encoded type in recursive calls
+(i.e. \Con{`List} \Var{A} in the \Con{cons} case).
+\footnote{It is possible to make this an implicit argument so the Agda
+  surface language also infers it. However, the argument would still
+  be explicit in the underlying core language that the surface
+  language elaborates to.
+  }
+
 \subsection{Fully Generic Programming}
 
 Recall (from \refch{intro}) that \Fun{count} returns the sum of all
@@ -377,11 +386,9 @@ parameters.
 This allows \texttt{count} to recurse into non-inductive arguments of
 the parameterized types.
 In Agda, \Fun{count} can recurse into non-inductive
-arguments because its parameterized types are
+arguments (in addition to the inductive arguments)
+because its parameterized types are
 encoded inductively in \Data{Count}.
-The logic of \Fun{count} closely follows that of the \texttt{count}
-instances, except encoded types are explicitly supplied in recursive
-calls.
 
 \begin{code}
   count : (A : Count) → ⟦ A ⟧ → ℕ
@@ -391,16 +398,27 @@ calls.
   count (`List A) (cons x xs) = 1 + count A x + count (`List A) xs
 \end{code}
 
+The logic of \Fun{count} closely follows that of the \texttt{count}
+instances, except encoded types are explicitly supplied in recursive
+calls. Significantly, \Fun{count} has access to \Data{Count} type
+encodings (\Var{A} and \Var{B})
+in the pair (\Con{,}) and \Con{cons} cases, and these type encodings
+are supplied to recursive calls of non-inductive arguments
+(\Var{a}, \Var{b}, and \Var{x}).
+Finally, \Fun{count} still recurses into the inductive argument
+\Var{xs} in the \Con{cons} case using the encoded type
+\Con{`List} \Var{A}.
+
+
 \subsection{Universes}
 
-\Data{Count} is \textit{inductively defined} (\refsec{indu}) and
-\textit{closed} (\refsec{closedu}).
+%% \Data{Count} is \textit{inductively defined} (\refsec{indu}) and
+%% \textit{closed} (\refsec{closedu}).
 
-
-In Agda, generic programming (like the \Fun{size} function) is
+In Agda, generic programming (like the \Fun{count} function) is
 accomplished using a \textit{universe} (\refsec{universes}). A
 universe is the combination of a type of \textit{codes} for types
-(e.g. \Data{Size}) and a \textit{meaning} function (e.g. \Fun{⟦\_⟧})
+(e.g. \Data{Count}) and a \textit{meaning} function (e.g. \Fun{⟦\_⟧})
 mapping codes to actual types. Generic functions (over all types of
 the universe) are written by parameterizing over the type of codes and
 the interpretation of a code:
