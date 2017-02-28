@@ -184,6 +184,50 @@ inductive constructors, inductive arguments, and non-inductive
 arguments. Notably, \Fun{size} \textit{only} recurses into
 inductive arguments.
 
+\paragraph{Haskell}
+
+In Haskell, we start by defining a type class for the \texttt{size}
+function.
+
+\begin{verbatim}
+class Size a where
+  size :: a -> Int
+\end{verbatim}
+
+The size of a boolean just 1. This is because it has no other
+non-inductive or inductive arguments to sum.
+
+\begin{verbatim}
+instance Size Bool where
+  size b = 1
+\end{verbatim}
+
+The size of a pair is 3, which is the sum of the pair constructor (1)
+and both of its non-inductive arguments (1 + 1).
+
+\begin{verbatim}
+instance Size (a, b) where
+  size (a, b) = 3
+\end{verbatim}
+
+The size of an empty list just 1, because it has no arguments. The
+size of a ``cons'' is the sum of the ``cons'' constructor (1), its
+single non-inductive argument (1), and the \textit{recursive} size of
+its single inductive argument.
+
+\begin{verbatim}
+instance Size [a] where
+  size [] = 1
+  size (x : xs) = 2 + size xs
+\end{verbatim}
+
+Note that the \texttt{Size} type class is just
+\textit{overloading} (\refsec{overloading}), as each of its instances
+can be defined independently because they only recurse into inductive
+arguments.
+
+\paragraph{Agda}
+
 \AgdaHide{
 \begin{code}
 module _ where
@@ -214,6 +258,10 @@ Recall (from \refch{intro}) that \Fun{count} returns the sum of all
 inductive constructors, non-inductive constructors, inductive
 arguments, and non-inductive arguments. Notably, \Fun{count} recurses
 into inductive \textit{and} non-inductive arguments.
+
+\paragraph{Haskell}
+
+\paragraph{Agda}
 
 \AgdaHide{
 \begin{code}

@@ -71,7 +71,7 @@ over its codes or their meanings. That is, the function may inspect
 codes and its interpretation (the values in the type returned by the
 meaning function applied to a code).
 
-\subsection{Ad Hoc by Overloading}
+\subsection{Ad Hoc by Overloading}\label{sec:overloading}
 
 If the type of \AgdaFun{Code}s for our universe is \textit{algebraic} and
 \textit{non-inductive}, then generic functions over the universe amount to a
