@@ -234,17 +234,40 @@ module _ where
  private
 \end{code}}
 
+In Agda, we start by declaring a new type (\Data{Size}),
+which is the syntactic reification of the types we
+wish to generically program \Fun{size} for. Unlike the Haskell
+version, we must choose the types for which we will provide
+``instances'' upfront.
+
 \begin{code}
   data Size : Set₁ where
     `Bool : Size
     `Pair : (A B : Set) → Size
     `List : (A : Set) → Size
+\end{code}
 
+Each constructor of \Data{Size} is not a type, but rather an
+encoding of a type. Next, we define a function (\Fun{⟦\_⟧}) that
+interprets each encoded \Data{Size} type as an actual
+Agda type (i.e. a \Data{Set}). 
+
+\begin{code}
   ⟦_⟧ : Size → Set
   ⟦ `Bool ⟧ = Bool
   ⟦ `Pair A B ⟧ = A × B
   ⟦ `List A ⟧ = List A
+\end{code}
 
+We can generically define \Fun{size} as a \textit{dependent} function from
+a code (\Var{A} : \Data{Size}), to a
+value of the encoded type (\Fun{⟦} \Var{A} \Fun{⟧}),
+to a number (\Data{ℕ}). We case-analyze the first (\Data{Size}) argument
+of \Fun{size} to distinguish each different
+``instance''. After that, each second argument and body follows the
+same logic as the instances in the Haskell version above.
+
+\begin{code}
   size : (A : Size) → ⟦ A ⟧ → ℕ
   size `Bool b = 1
   size (`Pair A B) (a , b) = 3
