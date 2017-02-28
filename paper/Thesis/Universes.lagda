@@ -229,7 +229,7 @@ Even though \AgdaData{HListStar} does not mention \AgdaData{Set}
 type \AgdaData{HList} (which mentions \AgdaData{Set}). Therefore,
 the \AgdaData{HListStar} universe is \textit{open}!
 
-\subsection{Inductive Universes}
+\subsection{Inductive Universes}\label{sec:indu}
 
 We call a universe \textit{inductive} if its type are closed over one
 or more type formers. For example, the \AgdaData{BoolStar},
