@@ -175,12 +175,14 @@ Below we first develop the \Fun{size} function using generic
 programming, and then develop the \Fun{count} function using
 \textit{fully} generic programming
 (albeit over a fixed and small language),
-both described in the introduction (\refsec{intro}).
+both described in the introduction (\refch{intro}).
 
 \subsection{Generic Programming}
 
-Recall that \Fun{size} should return the sum of
-\textit{all nodes traversed} by recursing into the \textit{inductive} ones.
+Recall (from \refch{intro}) that \Fun{size} returns the sum of all
+inductive constructors, inductive arguments, and non-inductive
+arguments. Notably, \Fun{size} \textit{only} recurses into
+inductive arguments.
 
 \AgdaHide{
 \begin{code}
@@ -208,10 +210,10 @@ module _ where
 
 \subsection{Fully Generic Programming}
 
-Recall that \Fun{count} should return the sum of
-\textit{all nodes} by
-recursing into the \textit{inductive} and
-\textit{non-inductive} ones.
+Recall (from \refch{intro}) that \Fun{count} returns the sum of all
+inductive constructors, non-inductive constructors, inductive
+arguments, and non-inductive arguments. Notably, \Fun{count} recurses
+into inductive \textit{and} non-inductive arguments.
 
 \AgdaHide{
 \begin{code}
