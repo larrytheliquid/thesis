@@ -1,4 +1,4 @@
-\AgdaHide{
+AgdaHide{
 \begin{code}
 open import Data.Empty
 open import Data.Unit
@@ -50,10 +50,10 @@ module _ {A : Set} where
   postulate
 \end{code}}
 
-Thanks to the Curry-Howard Isomorphism, we can encode logical
+Using the Curry-Howard Isomorphism, we can encode logical
 \textit{preconditions} and \textit{postconditions} at the type level.
 For example, below
-we give the type for a \Fun{lookup} function for lists with a
+we give the type of a \Fun{lookup} function over lists with a
 \textit{precondition} constraining the natural number (\Var{n}) index
 to be less than the length of the list (\Var{xs}) being looked
 up. This allows an otherwise partial lookup function to be defined
@@ -63,7 +63,7 @@ totally by preventing out-of-bounds indexing.
    lookup : (n : ℕ) (xs : List A) → n < length xs → A
 \end{code}
 
-As another example, we give the type for an \Fun{append} function over lists with
+As another example, we give the type of an \Fun{append} function over lists with
 a \textit{postcondition} constraining the length of the output list
 (\Var{zs}) to be equal to the sum of the lengths of the input lists
 (\Var{xs} and \Var{ys}).
@@ -115,9 +115,9 @@ where calls to \Fun{length} have been replaced by an index.
 Additionally, the explicit equality proof
 (\Data{≡}) postcondition can be dropped in favor of expressing the
 postcondition directly in the index position of the output vector.
-In other words, the \textit{explicit} equality postcondition has been
-dropped in favor of an \textit{implicit} property about the codomain
-of \Fun{append}.
+In other words, the \textit{extrinsic} equality postcondition has been
+dropped in favor of an \textit{intrinsic}~\cite{TODO}
+property about the codomain of \Fun{append}.
 
 Another example of an indexed type is the type of finite sets
 (\Data{Fin} \Var{n}), indexed by a natural number constraining
@@ -125,9 +125,9 @@ the size of the finite set. A finite set
 is like a subset of the of the natural numbers from 0 to \Var{n} - 1. 
 This subset property
 (whose maximum value is \Var{n} - 1) is the perfect datatype to act as
-an \textit{implicit} version of the \textit{explicit} less-than
+an \textit{intrinsic} version of the \textit{extrinsic} less-than
 (\Data{<}) precondition of \Fun{lookup}. Hence, we can rewrite an
-implicit-precondition version of \Fun{lookup} using vectors and finite sets
+intrinsic-precondition version of \Fun{lookup} using vectors and finite sets
 as follows.
 
 \begin{code}
@@ -144,7 +144,7 @@ for their various algebraic types
 This problem is more pronounced in a dependently typed language, where
 programmers also define indexed variants of types
 (e.g. finite sets, vectors, balanced binary trees, etc.)
-to implicitly capture preconditions and postconditions.
+to intrinsically capture preconditions and postconditions.
 
 Rather than punishing programmers for creating new datatypes,
 our \textbf{motivation} is to reward them with
@@ -275,7 +275,7 @@ same logic as the instances in the Haskell version above.
   size (`List A) (cons x xs) = 2 + size (`List A) xs
 \end{code}
 
-A significant difference difference with the Haskell version is that
+A significant difference with the Haskell version is that
 we explicitly supply the encoded type in recursive calls
 (i.e. \Con{`List} \Var{A} in the \Con{cons} case).
 \footnote{It is possible to make this an implicit argument so the Agda
@@ -491,7 +491,7 @@ programming over it corresponds to
 (like the \Fun{size} function),
 in which recursion is restricted to \textit{inductive} arguments.
 
-\paragraph{Fixed Types closed under Algebraic Extension Universe}
+\paragraph{Fixed Types \textit{Closed Under} Algebraic Extension Universe}
 
 A primary contribution of this thesis is defining a universe that
 combines the fixed collection of built-in types universe
