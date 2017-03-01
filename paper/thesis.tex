@@ -370,90 +370,40 @@ in \refsec{wuni} for \AgdaData{W} types).
 \input{Thesis/OpenDepAlg}
 \input{Thesis/OpenIRAlg}
 \input{Thesis/OpenIdxAlg}
-\section{Indexed Inductive-Recursive Types}\label{sec:iiralg}
-
-
-
-%% %% Inductive \& Recursive Type Families
-%% %% inductive introduces new inductiion principle, recursive derives
-%% %% from IP of index
-%% \chapter{Inductive \& Recursive Families}\label{ch:indrec}
-%% \section{Inductive \& Recursive Families}
-%% \section{Recursive Argument \& Return Families}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% %% Open Universe of Inductive Types
-%% \part{Open Type Theory}\label{part:open}
+\part{Closed Inductive-Recursive Universe}\label{part:closed}
 
-%% %% spectrum of open type theory
-%% %% get more closed by using `Desc
+\chapter{Closed Inductive-Recursive Types}\label{ch:closed}
 
-%% \chapter{Open Algebraic Datatypes}\label{ch:desc}
-%% \section{Dependent Types}
-%% %% start with Func, then specialize to mutual Args
-%% %% List, Rose, and Term
-%% \section{Indexed Types}
-%% %% Vec, BigStep, ScopedTerm
-%% %% show both constructor Vec and computational Vec
-%% %% Algebraic = Inductve, Computational = Recursive
-%% %% Algebraic Type Families vs Computational Type Families
-%% %% vs Computational-Algebraic Type Families
-%% %% PRE: Recursive-Inductive Families of Types
-%% %% FINAL: Recursive-Inductive Families of Inductive-Recursive Types
-%% \section{Inductive-Recursive Types}
-%% %% Arith, Type
-%% \section{Indexed Inductive-Recursive Types}
-%% %% Norm
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\part{Closed Algebraic Universes}\label{part:closed}
-
-%% closed universe TT as DSL
-
-%% maybe show how lookup/update cannot effectively work in open
-%% universe for certain types, and maybe show closed univ elim
-%% (extending elim to Type too)
-
-%% generalized universe
-%% not Uni (U : Set) (El : U -> Set)
-%% but Uni (A : Set a) (B : Set b) (U : A) (El : U -> B) : suc (max a b)
-
-\chapter{Closed Algebraic Types}\label{ch:closed}
-\section{Closure under indexed W Types}
-\section{Closure under indexed inductive-recursive $\mu$ Types}
-
-\chapter{Generic Lookup \& Update}\label{ch:gupdate}
-%% PropVecRose for needing inductive PathVec and update of type family
-%% ConstantVecRose for update of infinitary value
-\section{Generic Lookup}
-\section{Generic Update}
-
-%% combinator for congruence over restricted Desc (no Bool/Sum or
-%% kappa), doing congruence for Type cases (GP tactical)
+\chapter{Generic Count}
+\chapter{Generic AST}
+\chapter{Generic Lookup}
+\chapter{Generic Update}
+\chapter{Higher-Order Generic AST}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \part{Closed Hierarchy of Universes}\label{part:hier}
 
-\chapter{Closed Hierarchy of W Universes}\label{ch:hier}
-\chapter{Closed Hierarchy of $\mu$ Universes}\label{ch:hier}
-\chapter{Generic Datatype Arguments}\label{ch:gargs}
+\chapter{Closed Hierarchy of W Types}\label{ch:hierw}
+\chapter{Closed Hierarchy of Inductive-Recursive Types}\label{ch:hierir}
+\chapter{Higher-Order Generic AST}\label{ch:gasts}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%% \part{Large Datatype Constructions}\label{part:large}
-
-%% \chapter{Small Slice \& Family Equivalence}\label{ch:equiv}
-%% \chapter{Large Induction-Recursion}\label{ch:largeir}
-%% \chapter{Large Recursion-Induction}\label{ch:largeri}
+\part{Postlude}\label{part:postlude}
+\chapter{Inductive versus Recursive Families}\label{ch:ivsr}
+%% when to use one over the other
+\chapter{Related Work}\label{ch:related}
+%% comparison with other Desc representations
+%%   peter morris ``semantic'' vs ``syntatic''
+%%   irish pushes towards syntatic from semantic
+\chapter{Future Work}\label{ch:future}
+\chapter{Conclusion}\label{ch:conc}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% \part{Irish Encodings}\label{part:irish}
-%% \chapter{Irish Descriptions}\label{ch:irish}
-%% \chapter{Description-Only Closed Universes}\label{ch:desconly}
 
 %% Morris thesis distinguishes syntactic (concrete) prog from
 %% semantic (generic) prog. this is bc container/w types (semantics)
@@ -469,18 +419,6 @@ in \refsec{wuni} for \AgdaData{W} types).
 %% But Irish still does not handle List (Rose A) translation
 %% can always copy Desc of list into Rose, but then cant pass a List in
 %% However Exp (Maybe A) does work with large RI
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\part{Postlude}\label{part:postlude}
-\chapter{Inductive versus Recursive Families}\label{ch:ivsr}
-%% when to use one over the other
-\chapter{Related Work}\label{ch:related}
-%% comparison with other Desc representations
-%%   peter morris ``semantic'' vs ``syntatic''
-%%   irish pushes towards syntatic from semantic
-\chapter{Future Work}\label{ch:future}
-\chapter{Conclusion}\label{ch:conc}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
