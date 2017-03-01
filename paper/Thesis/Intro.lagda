@@ -624,9 +624,9 @@ capture intrinsic correctness properties:
   whose domain is the algebraic type and codomain is some type
   \AgdaVar{O}. For example,
   \Data{Arith}metic expressions (\refsec{irtypes}) of
-  ``Big Pi'' formulae, mututally defined with an \Fun{eval}uation
-  function to the number they encode. The upper bound of
-  ``Big Pi'' arithmetic expressions is calculated using the mututally
+  ``Big Pi'' formulae, mutually defined with an \Fun{eval}uation
+  function returning the number they encode. The upper bound of
+  ``Big Pi'' arithmetic expressions is calculated using the mutually
   defined evaluation function. 
 \end{itemize}
 
@@ -645,7 +645,7 @@ programming.
 \subsection{Smallness versus Largeness}
 
 There are 2 more significant reasons why picking
-inductive-recursive to showcase generic programming is important. The
+induction-recursion to showcase generic programming is important. The
 first is merely an issue of encoding, but the second emphasizes that
 the isomorphism between indexed and inductive-recursive does not scale
 to ``large'' cases, defined below:
