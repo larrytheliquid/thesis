@@ -8,7 +8,7 @@ open import Data.Sum
 open import Data.Product
 \end{code}}
 
-\section{Inductive-Recursive Types}\label{sec:iralg}
+\chapter{Open Inductive-Recursive Types}\label{sec:iralg}
 
 In this section we extend the algebraic semantics of
 \textit{infinitary} and \textit{dependent} types
@@ -18,7 +18,7 @@ to \textit{inductive-recursive} types
 with a \textit{decoding} function that may be used in the inductive
 definition of the type.
 
-\subsection{Algebraic Semantics}\label{sec:iralgsem}
+\section{Algebraic Semantics}\label{sec:iralgsem}
 
 In all of the previous algebraic semantics we have worked with,
 the pattern functors were \textit{endofunctors}
@@ -326,7 +326,7 @@ the $d$ parameter allows us to perform
 \textit{recursive} calls of the decoding function. 
 
 
-\subsection{Algebraic Model}\label{sec:iralgmod}
+\section{Algebraic Model}\label{sec:iralgmod}
 
 In this section we extend the model of algebraic semantics of
 dependent types (\refsec{depalgmod}) to support inductive-recursive
@@ -661,7 +661,7 @@ the initial algebra (\AgdaVar{xs}) to the
 second component (\AgdaFun{⟦\_⟧₂}) of the interpretation function.
 
 
-\subsection{Type Model}\label{sec:iralgtps}
+\section{Type Model}\label{sec:iralgtps}
 
 Now we model the type formers and constructors of
 \textit{inductive-recursive} datatypes.

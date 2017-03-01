@@ -6,7 +6,7 @@ open import Data.Sum
 open import Data.Product
 \end{code}}
 
-\section{Non-Dependent Types}\label{sec:nondepalg}
+\chapter{Open Non-Dependent Types}\label{sec:nondepalg}
 
 In this section we review the algebraic semantics for
 \textit{non-dependent} and potentially
@@ -21,7 +21,7 @@ function types in \refsec{umodel}).
   \refsec{abscon}.
 }
 
-\subsection{Algebraic Semantics}\label{sec:nondepalgsem}
+\section{Algebraic Semantics}\label{sec:nondepalgsem}
 
 The algebraic semantics for an inductive datatype is the
 \textit{least fixed point} of a polynomial equation
@@ -129,7 +129,7 @@ represents multiple arguments of a constructor as a
 conjunction, and is analogous to the pair type (\AgdaData{×}).
 
 %% TODO maybe mention similarity to param universe ParStar
-\subsection{Algebraic Model}\label{sec:nondepalgmod}
+\section{Algebraic Model}\label{sec:nondepalgmod}
 
 To take advantage of algebraic semantics within type theory, we must
 \textit{model} its abstract notions using concrete datatypes and
@@ -410,7 +410,7 @@ codes (\AgdaData{Desc} : \AgdaData{Set}) and a
 meaning function (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
 respectfully.
 
-\subsection{Type Model}\label{sec:nondepalgtps}
+\section{Type Model}\label{sec:nondepalgtps}
 
 Having modeled \textit{algebraic semantics} by reifying its concepts into
 datatypes of type theory (i.e. our \textit{algebraic model}), we now

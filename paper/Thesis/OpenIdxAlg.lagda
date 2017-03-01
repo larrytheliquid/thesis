@@ -8,7 +8,7 @@ open import Data.Product
 open import Relation.Binary.PropositionalEquality
 \end{code}}
 
-\section{Indexed Types}\label{sec:idxalg}
+\chapter{Open Indexed Types}\label{sec:idxalg}
 
 In this section we cover the algebraic semantics of
 \textit{indexed} and \textit{dependent} types. For pedagogical reasons,
@@ -17,7 +17,7 @@ subsequently reintroduce it in \refsec{iiralg}.
 An \textit{indexed} type (\refsec{indx}) is a collection of types
 indexed by some type $I$.
 
-\subsection{Algebraic Semantics}\label{sec:idxalgsem}
+\section{Algebraic Semantics}\label{sec:idxalgsem}
 
 Previously (in \refsec{irlalgsem}) we gave the algebraic semantics of
 inductive-recursive types in the category of \textit{slices}
@@ -488,7 +488,7 @@ $$
 \forall X.~ \Fi~X \simeq \Fo\inv~X
 $$
 
-\subsection{Algebraic Model}\label{sec:idxalgmod}
+\section{Algebraic Model}\label{sec:idxalgmod}
 
 In this section we model the algebraic semantics of
 indexed (but not inductive-recursive) types.
@@ -583,6 +583,6 @@ module El where
 \end{code}
 
 
-\subsection{Type Model}\label{sec:idxalgtps}
+\section{Type Model}\label{sec:idxalgtps}
 
 

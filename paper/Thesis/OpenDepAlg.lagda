@@ -7,7 +7,7 @@ open import Data.Sum
 open import Data.Product
 \end{code}}
 
-\section{Dependent Types}\label{sec:depalg}
+\chapter{Open Dependent Types}\label{sec:depalg}
 
 In this section we review the algebraic semantics for
 \textit{dependent} types.
@@ -18,7 +18,7 @@ and its model (\refsec{infalgsem}),
 to support constructor argument types that depend on previous
 constructor arguments.
 
-\subsection{Algebraic Semantics}\label{sec:depalgsem}
+\section{Algebraic Semantics}\label{sec:depalgsem}
 
 Compared to \textit{non-dependent} types, the type signatures of
 \textit{pattern functors} ($F : \set \arr \set$)
@@ -174,7 +174,7 @@ A \cdot (n : \nat) \cdot X^{\tp{Fin}~n} \cdot 1
 $$
 
 
-\subsection{Algebraic Model}\label{sec:depalgmod}
+\section{Algebraic Model}\label{sec:depalgmod}
 
 Our model of the algebraic semantics of least fixed points is
 similar to previous versions. However, modeling
@@ -466,7 +466,7 @@ module _ where
 \end{code}}
 
 
-\subsection{Type Model}\label{sec:depalgtps}
+\section{Type Model}\label{sec:depalgtps}
 
 Now we model the type formers and constructors of (possibly) dependent
 datatypes. The descriptions of these datatypes are interpreted as
