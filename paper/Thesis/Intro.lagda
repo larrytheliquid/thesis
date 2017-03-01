@@ -717,14 +717,14 @@ the universe, is possible over a universe that:
   in the universe of \refsec{closedw}).
 
 \item{(\refsec{fullygeneric})} Supports the
-  elimination of all (sub)values by:
+  elimination of all values by:
   \begin{itemize}
     \item{(\refsec{indu})} being \textbf{inductively defined},
       allowing types to be closed under other types.
     \item{(\refsec{closedu})} being \textbf{closed}, by not 
-      containing (sub)values defined using \Data{Set} or \Data{Level}.
+      containing values defined using \Data{Set} or \Data{Level}.
     \item{(\refsec{autonomous})} being \textbf{autonomous}, by only
-      containing (sub)values whose types are in the universe.
+      containing values whose types are in the universe.
     \item{(\refsec{concrete})} being \textbf{concrete}, by only
       containing types that have some elimination form.
   \end{itemize}
@@ -734,7 +734,7 @@ the universe, is possible over a universe that:
 \subsection{Contributions}
 
 We make the following 3 \textit{primary contributions} to the field of generic
-programming using dependently typed programming:
+programming using dependently typed languages:
 \begin{enumerate}
 
 \item{\textbf{Defining}} a \textit{closed universe}, as an adequate model of a
@@ -743,12 +743,13 @@ programming using dependently typed programming:
 
 \item{\textbf{Examples}} of writing \textit{fully generic functions} over all
   \textit{values} of our universe, including \Fun{count}, \Fun{lookup},
-  \Fun{update}, and \textit{marshalling} to an \Fun{ast}.
+  \Fun{update}, and \textit{marshalling} (\Fun{ast}) to an abstract
+  syntax tree.
 
 \item{\textbf{Extending}} our closed universe to a
   \textit{closed hierarchy of universes}, supporting fully generic
   functions over all \textit{types} in the universe hierarchy
-  (addition to values), via fully generic programming over all
+  (in addition to values), via fully generic programming over all
   universe \textit{levels}.
 
 \end{enumerate}
