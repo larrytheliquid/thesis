@@ -540,7 +540,7 @@ The consequence of our \textit{closed} universe is that it
 models a dependently typed language supporting
 datatype declarations \textit{and} fully generic programming.
 
-\subsection{Fully Generic Functions versus Deriving}
+\subsection{Fully Generic versus Deriving}
 
 Finally, we would like to make an analogy:
 Having access to fully generic functions (e.g \Fun{count}) defined for
