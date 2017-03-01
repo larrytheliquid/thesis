@@ -629,7 +629,65 @@ families can be encoded as special kinds of algebraic types.
   defined evaluation function. 
 \end{itemize}
 
+Somewhat surprisingly, indexed types and inductive-recursive types
+define isomorphic classes of datatypes. That is, any indexed type
+(like \Data{Vec}) can be defined as an inductive-recursive type, and
+any inductive-recursive type (like \Data{Arith}) can be defined as an
+indexed type.
 
+Thus, picking either indexed or inductive-recursive types is adequate
+to capture all of the algebraic types we would like to encode in our
+closed universe. We choose \textbf{inductive-recursive} types because
+they have been covered less in research on ordinary generic
+programming.
+
+\subsection{Largeness}
+
+There are 2 more significant reasons why picking
+inductive-recursive to showcase generic programming is important. The
+first is merely an issue of encoding, but the second emphasizes that
+the isomorphism between indexed and inductive-recursive does not scale
+to ``large'' cases, defined below.
+\begin{itemize}
+\item{\textbf{Intentionality}}
+  Even though indexed and inductive-recursive types are isomorphic,
+  encoding ``naturally'' inductive-recursive types
+  (like \Data{Arith}) as indexed types means reasoning about the
+  low-level encoding rather than the high-level intended type
+  definition. Similarly, writing generic functions over
+  inductive-recursive types produces more ``natural'' results when
+  applied to ``naturally'' inductive-recursive types, as opposed to
+  encoded indexed types.
+\item{\textbf{Largeness}}
+  In this thesis we only cover \textit{small} closed universe fully
+  generic programming, meaning the codomain of the inductive-recursive
+  decoding function is a type (like the natural numbers).
+  In contrast, \textit{large} inductive-recursive types may have
+  kinds (\Data{Set}) as the codomain of their decoding functions. The
+  isomorphism between indexed and inductive-recursive types no longer
+  applies in the large case. Therefore, fully
+  generic programming over small inductive-recursive types may serve
+  as a guide for how to do it in the large case (where one cannot
+  simply use indexed types and apply the isomorphism).
+\end{itemize}
+
+Our arguments (the intentionality of functions and the
+lack of an isomorphism in the large case) could also be used to
+justify choosing indexed types (where we consider ``naturally''
+indexed types and large type indices). Once again, we choose
+inductive-recursive because they are less studied in the generic
+programming literature.
+
+Finally, because the isomorphism fails in the large case, the best
+option would be to choose \textbf{indexed inductive-recursive}
+algebraic types (where both indexing and induction-recursion can be
+expressed naturally). While it is not \textit{technically} challenging to extend
+our work on fully generic programming over closed universes to indexed
+inductive-recursive types, we do not do this for \textit{pedagogical}
+reasons. The necessary background material to explain this combined
+approach, and the resulting complexity it introduces in generic
+functions and examples, would obscure our lessons on how
+to define closed universes and perform fully generic programming.
 
 \section{Thesis \& Contributions}\label{sec:thesis}
 
