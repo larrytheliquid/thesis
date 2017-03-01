@@ -13,13 +13,13 @@ postulate ??? : {A : Set} → A
 
 %% Extensional?
 
-\section{Closed Vector Universe}\label{sec:closedvecu}
+\section{Closed Vector Types}\label{sec:closedvecu}
 
 In this section we present one example of a closed type theory, which
-we call the \textit{Closed Vector Universe}. This universe contains
+we call the universe of \textit{Closed Vector Types}. This universe contains
 some standard types along with some types specifically for writing
 programs operating over vectors.
-The \textit{Closed Vector Universe} is an example of a simple closed
+The \textit{Closed Vector Types} universe is an example of a simple closed
 type theory (or programming language)
 with a fixed set of primitives that does \textit{not}
 support custom user-defined types.
@@ -30,15 +30,16 @@ module ClosedVec where
   mutual
 \end{code}}
 
-\subsection{Universe Model}
+\subsection{Formal Model}
 
-Below is the model of the \textit{Closed Vector Universe}. 
+Below is the formal model (that is, the model within type theory)
+of the \textit{Closed Vector Types} universe. 
 It has standard types like the empty type (\AgdaData{⊥}),
 the unit type (\AgdaData{⊤}), booleans (\AgdaData{Bool})
 and is closed under
 dependent pair formation (\AgdaData{Σ})
 and dependent function (\AgdaData{Π}) formation.
-However, we call it the \textit{Closed Vector Universe} because it
+However, we call it the \textit{Closed Vector Types} universe because it
 also includes types for writing vector-manipulating programs,
 namely the natural numbers (\AgdaData{ℕ})
 and finite sets (\AgdaData{Fin}), and is
@@ -85,7 +86,7 @@ similarly inductive-recursive, as the universe must have
 $\Pi$ types to qualify as a model for DTT.
 
 
-\subsection{Generic Programming}
+\subsection{Fully Generic Programming}
 
 Just like the fully closed \AgdaData{BoolStar} universe of
 \refsec{fullygeneric}, \AgdaData{`Set} also supports writing fully
@@ -104,7 +105,7 @@ theory, because we know ahead of time that the collection of types
 will never be extended (hence total functions over types never
 become partial).
 
-\subsubsection{Generic Sum without Function Body}
+\subsubsection{Fully Generic Sum without Function Body}
 
 \AgdaHide{
 \begin{code}
@@ -117,7 +118,11 @@ Our example fully generic function is \AgdaFun{sum}, summing up
 all natural numbers (and values that can be coerced
 into natural numbers) contained within a value of the
 closed vector universe.
-
+\footnote{The \Fun{sum} function is different from the \Fun{count} function
+  (from \refsec{introcount}, which sums the total number of
+  nodes). Instead, \Fun{sum} returns the sum of all values that have
+  been interpreted as natural numbers by coercion.
+  }
 
 \begin{code}
   sum : (A : `Set) (a : ⟦ A ⟧) → ℕ
@@ -199,7 +204,7 @@ In the next section we
 change our definitions to end up with an \AgdaVar{x} in the function
 case that we can pass to both \AgdaVar{B} and \AgdaVar{f}.
 
-\subsubsection{Generic Sum with Function Body}
+\subsubsection{Fully Generic Sum with Function Body}
 
 Step back for a moment and consider what the \AgdaFun{sum} of a function
 should mean. One interpretation is to consider the \AgdaFun{sum} of a
@@ -303,7 +308,7 @@ any of those.
 
 \subsection{Conclusion}
 
-The \textit{Closed Vector Universe} has enough types to write a lot of interesting
+The \textit{Closed Vector Types} universe has enough types to write a lot of interesting
 functions, but the specific collection of types that our closed
 type theory contains is arbitrarily chosen. What if we later decide we also want
 binary trees? By definition we cannot add custom types to a closed type
@@ -312,7 +317,7 @@ functions over the original universe).
 Next (in \refsec{closedw}) we see how to model a closed type theory that
 \textit{does} support custom user-defined types.
 
-\section{Closed Well-Order Universe}\label{sec:closedw}
+\section{Closed Well-Order Types}\label{sec:closedw}
 
 \AgdaHide{
 \begin{code}
@@ -334,15 +339,15 @@ families to simulate adding new datatypes to the language?
 That is, we want to support translating any ``new'' type
 declaration into an isomorphic type defined in terms of our
 closed collection of primitive types. In this section we present such
-a theory and call it the \textit{Closed Well-Order Universe}.
+a theory and call it the \textit{Closed Well-Order Types} universe.
 
-\subsection{Universe Model}\label{sec:wuni}
+\subsection{Formal Model}\label{sec:wuni}
 
 The type of \textit{well-orderings} (\AgdaData{W}) is used to define
 the semantics of inductive datatypes in type theory, and is the key to
 solving our problem. After pruning some derivable types from the previous
 universe and adding \AgdaData{W} types, we get a closed type theory
-(the \textit{Closed Well-Order Universe})
+(the \textit{Closed Well-Order Types} universe)
 that can
 internally represent any type that would normally extend the language
 in an open type theory. Before explaining what \AgdaData{W} types are
@@ -378,7 +383,7 @@ declarations by translating them into \AgdaData{W} types and other
 primitive types in \refsec{wtypes}. In \refsec{inad} we show that the
 universe of this section is sufficient for all such translations. 
 
-\subsection{Types as Well-Orders}\label{sec:wtypes}
+\subsection{Algebraic Types as Well-Orders}\label{sec:wtypes}
 
 The type of well-orderings~\cite{TODO} (\AgdaData{W}) can be used to model
 inductive datatype declarations as well-founded trees.
@@ -388,11 +393,11 @@ version of the classical notion of a well-order. A well-order
 interprets a set as an ordinal $\alpha$ and a relation specifying
 which ordinals are less than $\alpha$. However, in this thesis we
 focus on the more practical interpretation of \AgdaData{W} types as a
-means to define inductive datatypes.}
+means to define algebraic datatypes.}
 It is defined below, where the \AgdaVar{A} parameter
-encodes non-recursive arguments for each constructor of an
-inductive datatype, and the cardinality of \AgdaVar{B}~\AgdaVar{a}
-encodes the number of recursive arguments for each constructor.
+encodes non-inductive arguments for each constructor of an
+algebraic datatype, and the cardinality of \AgdaVar{B}~\AgdaVar{a}
+encodes the number of inductive arguments for each constructor.
 \footnote{Besides cardinailty, the content of the \AgdaVar{B} parameter
 also determines the domain of infinitary arguments, discussed in
 \ref{section-inf}.
@@ -451,7 +456,7 @@ module _ where
 \end{code}
 
 \paragraph{\texttt{A × B ≅ B × A}}
-By commutativity of pairs, rearrange recursive constructor arguments
+By commutativity of pairs, rearrange inductive constructor arguments
 to all appear at the end.
 
 \AgdaHide{
@@ -467,11 +472,11 @@ module _ where
 
 \paragraph{\texttt{A × B ≅ Π Bool (λ b → if b then A else B)}}
 A non-dependent pair can be defined as a dependent function from a
-boolean to each component of the pair. Replace all pairs of recursive
+boolean to each component of the pair. Replace all pairs of inductive
 constructor arguments with such a dependent function whose domain
-cardinality is equal to the number of recursive arguments for that
-constructor (i.e. \AgdaData{Bool} for 2 recursive arguments and
-\AgdaData{⊥} for 0 recursive arguments).
+cardinality is equal to the number of inductive arguments for that
+constructor (i.e. \AgdaData{Bool} for 2 inductive arguments and
+\AgdaData{⊥} for 0 inductive arguments).
 
 \AgdaHide{
 \begin{code}
@@ -503,10 +508,10 @@ module _ where
 \end{code}
 
 \paragraph{\texttt{(A × B) ⊎ (A' × B') ≅ Σ (A ⊎ A') (λ x → if isLeft x then B else B')}}
-Replace the disjoint union of pairs whose domain is non-recursive
-arguments and codomain is recursive arguments, with a single pair
-whose domain is the disjoint union of non-recursive arguments and
-codomain is the disjoint union of recursive arguments.
+Replace the disjoint union of pairs whose domain is non-inductive
+arguments and codomain is inductive arguments, with a single pair
+whose domain is the disjoint union of non-inductive arguments and
+codomain is the disjoint union of inductive arguments.
 \footnote{For datatypes with infinitary arguments,
 \AgdaVar{B} and \AgdaVar{B'} may depend on \AgdaVar{A} and
 \AgdaVar{A'} respectively, so the \texttt{if} conditional is replaced by
@@ -590,28 +595,28 @@ thesis could focus on writing fully generic functions over the
 We could write functions similar to
 \AgdaFun{sum} from \refsec{closedu}, except they would work for
 any custom user-defined type!
-However, there are two issues:
+\AgdaData{W} types can be extended to support definitions of indexed
+types (\refsec{indx}), which are isomorphic to
+inductive-recursive (\refsec{irtypes})
+types. However, there is one major issue:
 
-\begin{enumerate}
-\item Although \AgdaData{W} types can be extended to support
-  definitions of indexed types (\refsec{indx}),
-  they cannot be extended to support
-  definitions of inductive-recursive types
-  (\refsec{irtypes}).
+\paragraph{Inadequacy}
+The base cases of inductively defined datatypes using
+\AgdaData{W} have an infinite number of intentionally distinct
+values. Recall that the base case \AgdaCon{leaf} had
+\texttt{⊥ → Tree A B} as its inductive argument. Because the
+domain of the function is bottom, we can write it many different
+ways (i.e. \AgdaFun{elim⊥}, \AgdaFun{elim⊥ ∘ elim⊥}, etc). Even
+though all leaves containing such functions are extensionally
+equivalent, it is inadequate~\cite{TODO} to have an infinite number of
+intentionally distinct canonical forms for the model of
+\AgdaData{Tree} (whose initial declaration was first-order).
 
-\item The base cases of inductively defined datatypes using
-  \AgdaData{W} have an infinite number of intentionally distinct
-  values. Recall that the base case \AgdaCon{leaf} had
-   \texttt{⊥ → Tree A B} as its inductive argument. Because the
-   domain of the function is bottom, we can write it many different
-   ways (i.e. \AgdaFun{elim⊥}, \AgdaFun{elim⊥ ∘ elim⊥}, etc). Even
-   though all leaves containing such functions are extensionally
-   equivalent, it is inadequate~\cite{TODO} to have an infinite number of
-   intentionally distinct canonical forms for the model of
-   \AgdaData{Tree} (whose initial declaration was first-order).
-\end{enumerate}
-
-These two issues lead us to an alernative representation of inductive
-datatypes, from the induction-recursion literature.
+\Data{W} types are inadequate for our purposes because
+we are interested in dependently typed languages (like Agda)
+implementing intentional type theory, rather than extensional type
+theory. For this reason, we represent algebraic datatypes using
+initial algebra semantics (instead of \Data{W} types),
+as covered in \refpart{open}.
 
 

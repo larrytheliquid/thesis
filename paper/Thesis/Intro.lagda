@@ -284,7 +284,7 @@ we explicitly supply the encoded type in recursive calls
   language elaborates to.
   }
 
-\subsection{Fully Generic Programming}
+\subsection{Fully Generic Programming}\label{sec:introcount}
 
 Recall (from \refch{intro}) that \Fun{count} returns the sum of all
 inductive constructors, non-inductive constructors, inductive
