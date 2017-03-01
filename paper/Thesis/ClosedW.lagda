@@ -13,7 +13,7 @@ postulate ??? : {A : Set} → A
 
 %% Extensional?
 
-\section{Closed Vector Universe}\label{sec:closedu}
+\section{Closed Vector Universe}\label{sec:closedvecu}
 
 In this section we present one example of a closed type theory, which
 we call the \textit{Closed Vector Universe}. This universe contains

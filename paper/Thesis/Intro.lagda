@@ -696,17 +696,22 @@ approach, and the resulting complexity it introduces in generic
 functions and examples, would obscure our lessons on how
 to define closed universes and perform fully generic programming.
 
-\section{Thesis Statement}\label{sec:thesis}
+\section{Thesis}\label{sec:thesis}
 
-\textit{Fully generic programming},
+Now we cover our thesis statement, contributions, and outline the
+organization of the remaining chapters.
+
+\subsection{Thesis Statement}
+
+\textbf{Fully generic programming},
 supporting functions defined by recursion into
 all non-inductive and inductive constructor arguments of all types in
 the universe, is possible over a universe that:
 \begin{itemize}
 \item{(\refsec{closedu})} Models a
-  \textit{dependently typed language} (or type theory) with datatype declarations.
+  \textbf{dependently typed language} (or type theory) with datatype declarations.
 \item{(\refsec{iralg})} Adequately (in intentional types theory)
-  models \textit{small inductive-recursive algebraic types}
+  models \textbf{small inductive-recursive algebraic types}
   via initial algebra semantics
   (in contrast to the inadquate model of first-order types
   in the universe of \refsec{closedw}).
@@ -714,19 +719,20 @@ the universe, is possible over a universe that:
 \item{(\refsec{fullygeneric})} Supports the
   elimination of all (sub)values by:
   \begin{itemize}
-    \item{(\refsec{indu})} being \textit{inductively} defined,
+    \item{(\refsec{indu})} being \textbf{inductively defined},
       allowing types to be closed under other types.
-    \item{(\refsec{closedu})} being \textit{closed}, by not 
+    \item{(\refsec{closedu})} being \textbf{closed}, by not 
       containing (sub)values defined using \Data{Set} or \Data{Level}.
-    \item{(\refsec{autonomous})} being \textit{autonomous}, by only
+    \item{(\refsec{autonomous})} being \textbf{autonomous}, by only
       containing (sub)values whose types are in the universe.
-    \item{(\refsec{concrete})} being \textit{concrete}, by only
+    \item{(\refsec{concrete})} being \textbf{concrete}, by only
       containing types that have some elimination form.
   \end{itemize}
 
 \end{itemize}
 
+\subsection{Contributions}
 
-\section{Contributions}
+\subsection{Chapter Organization}
 
 
