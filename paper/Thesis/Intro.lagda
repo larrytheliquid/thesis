@@ -630,7 +630,7 @@ families can be encoded as special kinds of algebraic types.
 \end{itemize}
 
 Somewhat surprisingly, indexed types and inductive-recursive types
-define isomorphic classes of datatypes. That is, any indexed type
+define isomorphic classes of datatypes~\cite{TODO}. That is, any indexed type
 (like \Data{Vec}) can be defined as an inductive-recursive type, and
 any inductive-recursive type (like \Data{Arith}) can be defined as an
 indexed type.
@@ -641,7 +641,7 @@ closed universe. We choose \textbf{inductive-recursive} types because
 they have been covered less in research on ordinary generic
 programming.
 
-\subsection{Largeness}
+\subsection{Small versus Large}
 
 There are 2 more significant reasons why picking
 inductive-recursive to showcase generic programming is important. The
@@ -678,10 +678,15 @@ indexed types and large type indices). Once again, we choose
 inductive-recursive because they are less studied in the generic
 programming literature.
 
-Finally, because the isomorphism fails in the large case, the best
-option would be to choose \textbf{indexed inductive-recursive}
+Finally, because the isomorphism fails in the large case, the ideal
+choice would be to use \textbf{indexed inductive-recursive}
 algebraic types (where both indexing and induction-recursion can be
-expressed naturally). While it is not \textit{technically} challenging to extend
+expressed naturally).
+\footnote{Interestingly, even indexed inductive-recursive types are
+  isomorphic to indexed types and inductive-recursive types in the
+  small case~\cite{TODO}.
+}
+While it is \textit{not technically challenging} to extend
 our work on fully generic programming over closed universes to indexed
 inductive-recursive types, we do not do this for \textit{pedagogical}
 reasons. The necessary background material to explain this combined
