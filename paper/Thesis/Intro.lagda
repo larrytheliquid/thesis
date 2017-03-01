@@ -604,12 +604,13 @@ Intentional Type Theory~\cite{TODO} (which Agda implements).
 For this reason, we choose \textbf{dependent polynomials} to model
 dependent algebraic types.
 
-\subsection{Type Families}
+\subsection{Indexing versus Induction-Recursion}
 
 Besides supporting algebraic types with dependencies between
-arguments, Agda also supports families of algebraic types capturing
-\textit{intrinsic} correctness properties. There are 2 main ways type
-families can be encoded as special kinds of algebraic types.
+arguments, Agda also algebraic types capturing
+\textit{intrinsic} correctness properties.
+There are 2 main special kinds of algebraic types used to
+capture intrinsic correctness properties:
 \begin{itemize}
 \item{\textbf{Indexed Types} (\refsec{indx})}
   These are collections of algebraic types, indexed
@@ -641,13 +642,13 @@ closed universe. We choose \textbf{inductive-recursive} types because
 they have been covered less in research on ordinary generic
 programming.
 
-\subsection{Small versus Large}
+\subsection{Smallness versus Largeness}
 
 There are 2 more significant reasons why picking
 inductive-recursive to showcase generic programming is important. The
 first is merely an issue of encoding, but the second emphasizes that
 the isomorphism between indexed and inductive-recursive does not scale
-to ``large'' cases, defined below.
+to ``large'' cases, defined below:
 \begin{itemize}
 \item{\textbf{Intentionality}}
   Even though indexed and inductive-recursive types are isomorphic,
