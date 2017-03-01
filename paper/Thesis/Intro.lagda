@@ -681,8 +681,9 @@ programming literature.
 
 Finally, because the isomorphism fails in the large case, the ideal
 choice would be to use \textbf{indexed inductive-recursive}
-algebraic types (where both indexing and induction-recursion can be
-expressed naturally).
+algebraic types. These are a 3rd option for expressing intentional
+correctness properties of datatypes, where both indexing and
+induction-recursion are expressed naturally.
 \footnote{Interestingly, even indexed inductive-recursive types are
   isomorphic to indexed types and inductive-recursive types in the
   small case~\cite{TODO}.
