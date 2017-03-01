@@ -540,6 +540,24 @@ The consequence of our \textit{closed} universe is that it
 models a dependently typed language supporting
 datatype declarations \textit{and} fully generic programming.
 
+\subsection{Fully Generic Functions versus Deriving}
+
+Finally, we would like to make an analogy:
+Having access to fully generic functions (e.g \Fun{count}) defined for
+all possible types is like \texttt{deriving} a type class instance for a
+datatype in Haskell. In both cases, users get to declare a new
+datatype and have access to functions operating over it
+(i.e. fully generic \Fun{count} or derived \texttt{count}) for free.
+
+The big difference is that users of a closed but extensible
+dependently typed language (like a variant of Agda)
+may define fully generic functions
+themselves. Furthermore, because these are ordinary dependent
+functions defined within the language they are ensured to be type-safe.
+In contrast, users of
+a non-dependently typed language like Haskell must rely on compiler
+writers to provide them with derivable functions.
+
 \section{Class of Supported Datatypes}\label{sec:algclass}
 
 \subsection{Algebraic Types}
