@@ -560,7 +560,40 @@ writers to provide them with derivable functions.
 
 \section{Class of Supported Datatypes}\label{sec:algclass}
 
-\subsection{Algebraic Types}
+Previously (\refsec{fullyeg}) we introduced the idea of
+\textit{fully generic programming} over a mutually defined
+universe, encoding a fixed
+collection of primitive types \textit{and} an extensible collection of
+algebraic datatypes.
+This section addresses the following question: What properties of
+algebraic datatypes should we support to adequately describe all
+possible types definable in a dependently typed language like Agda?
+
+\subsection{Dependent Algebraic Types}
+
+We certainly want to support algebraic
+datatypes with \textit{dependencies} between their
+arguments. In a non-dependent language like Haskell the types of all
+arguments to constructors of an algebraic datatype can be defined
+independently. In Agda, the \textit{types}
+of subsequent constructor arguments can depend on the
+\textit{values} of previous constructor arguments.
+There are 2 primarily used encodings of dependent algebraic
+datatypes:
+\begin{itemize}
+\item{\textbf{Containers} (\refsec{wtypes})} These are datastructures that represent
+  types using an analogy of \textit{shapes} (capturing inductive
+  structure) and \textit{positions} (capturing contained values).
+  The least fixed points of containers  are \Data{W} types.
+\item{\textbf{Dependent Polynomials} (\refsec{depalg})} These are
+  \textit{pattern functors} from initial algebra semantics, whose
+  least fixed point is returned by the \Data{μ} operator. The
+  \Data{Desc} type of \refsec{fullyeg} is a syntatic reification of
+  dependent polynomial pattern functors, whose meaning function is
+  \Data{μ} when considered as a universe of dependent algebraic types.
+\end{itemize}
+
+
 
 \subsection{Type Families}
 
