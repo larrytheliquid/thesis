@@ -584,7 +584,8 @@ datatypes:
 \item{\textbf{Containers} (\refsec{wtypes})} These are datastructures that represent
   types using an analogy of \textit{shapes} (capturing inductive
   structure) and \textit{positions} (capturing contained values).
-  The least fixed points of containers  are \Data{W} types.
+  The least fixed points of containers are \textit{well-orderings},
+  or \Data{W} types.
 \item{\textbf{Dependent Polynomials} (\refsec{depalg})} These are
   \textit{pattern functors} from initial algebra semantics, whose
   least fixed point is returned by the \Data{μ} operator. The
@@ -593,7 +594,15 @@ datatypes:
   \Data{μ} when considered as a universe of dependent algebraic types.
 \end{itemize}
 
-
+A universe closed under \Data{W} types, supporting fully generic
+programming, is trivial to define (\refsec{wuni}). Unfortunately,
+while \Data{W} types adequately encode algebraic types in
+Extensional Type Theory~\cite{TODO},
+they inadequately (\refsec{inad}) encode
+first-order algebraic types in
+Intentional Type Theory~\cite{TODO} (which Agda implements).
+For this reason, we choose \textbf{dependent polynomials} to model
+dependent algebraic types.
 
 \subsection{Type Families}
 
