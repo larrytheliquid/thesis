@@ -733,6 +733,26 @@ the universe, is possible over a universe that:
 
 \subsection{Contributions}
 
+We make the following 3 \textit{primary contributions} to the field of generic
+programming using dependently typed programming:
+\begin{enumerate}
+
+\item{\textbf{Defining}} a \textit{closed universe}, as an adequate model of a
+  dependently typed language with datatype declarations for
+  inductive-recursive types, supporting fully generic programming.
+
+\item{\textbf{Examples}} of writing \textit{fully generic functions} over all
+  \textit{values} of our universe, including \Fun{count}, \Fun{lookup},
+  \Fun{update}, and \textit{marshalling} to an \Fun{ast}.
+
+\item{\textbf{Extending}} our closed universe to a
+  \textit{closed hierarchy of universes}, supporting fully generic
+  functions over all \textit{types} in the universe hierarchy
+  (addition to values), via fully generic programming over all
+  universe \textit{levels}.
+
+\end{enumerate}
+
 \subsection{Chapter Organization}
 
 
