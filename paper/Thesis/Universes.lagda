@@ -310,7 +310,7 @@ module _ where
 \end{code}
 
 
-\subsection{Autonomous Universes}
+\subsection{Autonomous Universes}\label{sec:autonomous}
 
 A universe is \textit{autonomous} if all nested types of its types
 are also types in the universe. Hence, the type of every argument to
