@@ -606,6 +606,31 @@ dependent algebraic types.
 
 \subsection{Type Families}
 
+Besides supporting algebraic types with dependencies between
+arguments, Agda also supports families of algebraic types capturing
+\textit{intrinsic} correctness properties. There are 2 main ways type
+families can be encoded as special kinds of algebraic types.
+\begin{itemize}
+\item{\textbf{Indexed Types} (\refsec{indx})}
+  These are collections of algebraic types, indexed
+  by some type \AgdaVar{I}, such that each type in the collection may
+  vary for any particular value of \AgdaVar{I}.
+  For example, \Data{Vec}tors of \Var{A} values are indexed by the natural
+  numbers and map to lists whose lengths are constrained to equal the
+  natural number index.
+\item{\textbf{Inductive-Recursive Types} (\refsec{irtypes})} These are
+  algebraic datatypes mutually defined with a \textit{decoding function}
+  whose domain is the algebraic type and codomain is some type
+  \AgdaVar{O}. For example,
+  \Data{Arith}metic expressions (\refsec{irtypes}) of
+  ``Big Pi'' formulae, mututally defined with an \Fun{eval}uation
+  function to the number they encode. The upper bound of
+  ``Big Pi'' arithmetic expressions is calculated using the mututally
+  defined evaluation function. 
+\end{itemize}
+
+
+
 \section{Thesis \& Contributions}\label{sec:thesis}
 
 
