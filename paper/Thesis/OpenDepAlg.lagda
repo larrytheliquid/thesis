@@ -9,7 +9,7 @@ open import Data.Product
 
 \chapter{Open Dependent Types}\label{sec:depalg}
 
-In this section we review the algebraic semantics for
+In this chapter we review the algebraic semantics for
 \textit{dependent} types.
 We extend our previous \textit{infinitary} and
 \textit{non-dependent}

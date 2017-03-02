@@ -9,7 +9,7 @@ open import Data.Product
 
 \chapter{Open Infinitary Types}
 
-In this section we review the algebraic semantics for
+In this chapter we review the algebraic semantics for
 \textit{infinitary} (\refsec{inft}) non-dependent types.
 We extend our previous algebraic semantics, algebraic model
 within type theory,

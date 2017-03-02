@@ -10,7 +10,7 @@ open import Data.Product
 
 \chapter{Open Inductive-Recursive Types}\label{sec:iralg}
 
-In this section we extend the algebraic semantics of
+In this chapter we extend the algebraic semantics of
 \textit{infinitary} and \textit{dependent} types
 (\refsec{depalg})
 to \textit{inductive-recursive} types

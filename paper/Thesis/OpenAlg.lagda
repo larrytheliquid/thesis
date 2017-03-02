@@ -8,7 +8,7 @@ open import Data.Product
 
 \chapter{Open Non-Dependent Types}\label{sec:nondepalg}
 
-In this section we review the algebraic semantics for
+In this chapter we review the algebraic semantics for
 \textit{non-dependent} and potentially
 \textit{inductive} (\refsec{ind}) types. Then, we show how to
 \textit{model} algebraic semantics within type theory by converting abstract

@@ -10,7 +10,7 @@ open import Relation.Binary.PropositionalEquality
 
 \chapter{Open Indexed Types}\label{sec:idxalg}
 
-In this section we cover the algebraic semantics of
+In this chapter we cover the algebraic semantics of
 \textit{indexed} and \textit{dependent} types. For pedagogical reasons,
 we temporarily remove \textit{induction-recursion} (\refsec{iralg}), and
 subsequently reintroduce it in \refsec{iiralg}.
