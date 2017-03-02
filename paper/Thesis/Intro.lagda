@@ -802,23 +802,26 @@ We make the following 3 \textit{primary contributions} to the field of generic
 programming using dependently typed languages:
 \begin{enumerate}
 
-\item{\textbf{Defining}} a \textit{closed universe}, as an adequate model of a
+\item{\textbf{Defining} (\refch{closed})}
+  a \textit{closed universe}, as an adequate model of a
   dependently typed language with datatype declarations for
   inductive-recursive types, supporting fully generic programming.
 
-\item{\textbf{Examples}} of writing \textit{fully generic functions} over all
+\item{\textbf{Examples} (\refch{fullyg})}
+  of writing \textit{fully generic functions} over all
   \textit{values} of our universe, including \Fun{count}, \Fun{lookup},
   \Fun{update}, and \textit{marshalling} (\Fun{ast}) to an abstract
   syntax tree.
 
-\item{\textbf{Extending}} our closed universe to a
+\item{\textbf{Extending} (\refch{hier} \& \refch{fulliesg})}
+  our closed universe to a
   \textit{closed hierarchy of universes}, supporting fully generic
-  functions over all \textit{types} in the universe hierarchy
+  functions (like an updated version of \Fun{ast})
+  over all \textit{types} in the universe hierarchy
   (in addition to values), via fully generic programming over all
   universe \textit{levels}.
 
 \end{enumerate}
 
 \subsection{Chapter Organization}
-
 
