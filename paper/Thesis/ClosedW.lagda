@@ -13,7 +13,7 @@ postulate ??? : {A : Set} → A
 
 %% Extensional?
 
-\section{Closed Vector Types}\label{sec:closedvecu}
+\section{Closed Vector Universe}\label{sec:closedvecu}
 
 In this section we present one example of a closed type theory, which
 we call the universe of \textit{Closed Vector Types}. This universe contains
@@ -30,7 +30,7 @@ module ClosedVec where
   mutual
 \end{code}}
 
-\subsection{Formal Model}
+\subsection{Closed Vector Types}
 
 Below is the formal model (that is, the model within type theory)
 of the \textit{Closed Vector Types} universe. 
@@ -86,7 +86,7 @@ similarly inductive-recursive, as the universe must have
 $\Pi$ types to qualify as a model for DTT.
 
 
-\subsection{Fully Generic Programming}
+\subsection{Fully Generic Functions}
 
 Just like the fully closed \AgdaData{BoolStar} universe of
 \refsec{fullygeneric}, \AgdaData{`Set} also supports writing fully
@@ -306,7 +306,7 @@ any of those.
 
 
 
-\subsection{Conclusion}
+\subsubsection{Conclusion}
 
 The \textit{Closed Vector Types} universe has enough types to write a lot of interesting
 functions, but the specific collection of types that our closed
@@ -317,7 +317,7 @@ functions over the original universe).
 Next (in \refsec{closedw}) we see how to model a closed type theory that
 \textit{does} support custom user-defined types.
 
-\section{Closed Well-Order Types}\label{sec:closedw}
+\section{Closed Algebraic Universe}\label{sec:closedw}
 
 \AgdaHide{
 \begin{code}
@@ -335,13 +335,13 @@ that may not be present in the closed collection of types we fixed
 ahead of time.
 
 What if our closed theory had enough primitive base types and type
-families to simulate adding new datatypes to the language?
+families to simulate adding new algebraic datatypes to the language?
 That is, we want to support translating any ``new'' type
 declaration into an isomorphic type defined in terms of our
 closed collection of primitive types. In this section we present such
 a theory and call it the \textit{Closed Well-Order Types} universe.
 
-\subsection{Formal Model}\label{sec:wuni}
+\subsection{Closed Well-Order Types}\label{sec:wuni}
 
 The type of \textit{well-orderings} (\AgdaData{W}) is used to define
 the semantics of inductive datatypes in type theory, and is the key to
@@ -383,7 +383,7 @@ declarations by translating them into \AgdaData{W} types and other
 primitive types in \refsec{wtypes}. In \refsec{inad} we show that the
 universe of this section is sufficient for all such translations. 
 
-\subsection{Algebraic Types as Well-Orders}\label{sec:wtypes}
+\subsection{Open Well-Order Types}\label{sec:wtypes}
 
 The type of well-orderings~\cite{TODO} (\AgdaData{W}) can be used to model
 inductive datatype declarations as well-founded trees.
@@ -402,6 +402,9 @@ encodes the number of inductive arguments for each constructor.
 also determines the domain of infinitary arguments, discussed in
 \ref{section-inf}.
 }
+The \Data{W} type of well-orderings is \textit{open} due to its two
+open type parameters, \Var{A} and \Var{B} (in contrast, the arguments
+of the closed \Con{`W} constructor are closed \Data{`Set} types.).
 
 \begin{code}
 data W (A : Set) (B : A → Set) : Set where
@@ -554,15 +557,20 @@ module _ where
 \subsection{Inadequacy of Well-Orders}\label{sec:inad}
 
 It would seem like \AgdaData{W} is a sufficient datatype to represent
-any inductive datatype a user would define. Our
-fully closed universe from \refsec{closedw} has enough
-primitives to represent types in terms of \AgdaData{W} as values of
-type \AgdaData{`Set}. For example, below we internalize (i.e. as universe
-codes) disjoint unions in terms of primitive
+any inductive datatype a user would define.
+Any \textit{Open Well-Order Type}
+(i.e. any \textit{open} algebraic type defined using \Data{W})
+can be translated to a \textit{Closed Well-Order Type},
+or a value of type \Data{`Set}, by
+using the sufficient collection of
+primitive \Data{`Set} constructors.
+
+For example, below we derive
+closed disjoint unions in terms of closed
 dependent pairs (\AgdaCon{`Σ}) and
 booleans (\AgdaCon{`Bool}),
-and then internalize the \AgdaData{Tree} type in terms of
-primitive well-orderings (\AgdaCon{`W}).
+and then translate the open \AgdaData{Tree} type to a closed version
+defined using the closed well-ordering (\AgdaCon{`W}) type former.
 
 \AgdaHide{
 \begin{code}
@@ -591,7 +599,7 @@ module _ where
 
 If \AgdaData{W} were adequate for our purposes, then this
 thesis could focus on writing fully generic functions over the
-\AgdaData{`Set} universe of \refsec{closedw}.
+\textit{Closed Well-Order Type} universe (\AgdaData{`Set}) of \refsec{closedw}.
 We could write functions similar to
 \AgdaFun{sum} from \refsec{closedu}, except they would work for
 any custom user-defined type!
@@ -617,7 +625,7 @@ we are interested in dependently typed languages (like Agda)
 implementing intentional type theory, rather than extensional type
 theory. For this reason, we represent algebraic datatypes using
 initial algebra semantics (instead of \Data{W} types),
-as covered in \refpart{open}.
+as covered in \refchap{open}.
 In \refchap{closed} we define a universe suitable for modeling closed
 type theory (i.e. a dependently typed language supporting fully
 generic programming), using closed initial algebra semantics, and
