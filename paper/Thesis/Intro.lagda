@@ -424,7 +424,9 @@ the universe) are dependent function parameterized
 over all type codes and the meaning of the particular code
 supplied.
 $$
-(\AgdaVar{x} : \AgdaData{Code}) → \AgdaFun{Meaning}~\AgdaVar{x} → ...
+(\AgdaVar{c} : \AgdaData{Code})~
+(\Var{m} : \AgdaFun{Meaning}~\AgdaVar{c})
+→ ...
 $$
 
 \paragraph{Fixed Types Universe}

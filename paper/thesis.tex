@@ -279,14 +279,16 @@ The type of the quantified variable can be seen as the codes of the
 universe, followed by the meaning function applied to a particular
 code, followed by the remainder of the type signature.
 $$
-(\AgdaVar{x} : \AgdaData{Code}) → \AgdaFun{Meaning}~\AgdaVar{x} → ...
+(\AgdaVar{c} : \AgdaData{Code})~
+(\Var{m} : \AgdaFun{Meaning}~\AgdaVar{c})
+→ ...
 $$
 
 We have already seen many generic functions fitting this pattern in
 \refsec{types} and \refsec{universes}. Below we reconsider some of
 them, while classifying them by different forms of polymorphism. In
 each of these examples, we emphasize the definition of
-\AgdaFun{Code} (i.e. what the function is polymorphic over).
+\AgdaData{Code} (i.e. what the function is polymorphic over).
 
 \input{Thesis/Poly}
 \input{Thesis/Fully}
