@@ -3,6 +3,26 @@
 module _ where
 \end{code}}
 
+\chapter{Types \& Universes}\label{ch:univ}
+
+A \textit{type} is a collection of values, and a \textit{universe} is
+a collection of types (possibly closed under certain type formers).
+In this section we review different classes of types (e.g. indexed
+types, infinitary types, etc).
+This allows us to be clear about what each class adds
+to the express power of a language (i.e. what sorts of new values we
+can construct.)
+
+We also review properties of both types and universes
+(e.g. inductiveness, openness, etc). These properties determine how we
+can use values (i.e. what elimination principles are valid for them).
+With a thorough understanding of classifications and
+properties of types and universes, we can precisely describe which
+classifications and properties we need to perform the main goal of
+this thesis, \textit{generic programming} (\refch{generic}) within
+\textit{closed type theory} (\refch{closedtt}).
+
+
 \section{Types}\label{sec:types}
 
 In programming languages, a \textit{type} is a construct used to capture the

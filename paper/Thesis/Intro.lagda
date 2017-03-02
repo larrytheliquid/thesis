@@ -12,6 +12,69 @@ open import Relation.Binary.PropositionalEquality
 module _ where
 \end{code}}
 
+\chapter{Introduction}\label{ch:intro}
+
+In this dissertation we expand the class of functions that can be
+written generically for all types, in a type-safe manner,
+within a dependently typed language. Below, we contrast
+typical generic programming with our new version, which we
+call \textit{fully generic programming}.
+
+\paragraph{Generic Programming}
+Typical generic programming captures the pattern of folding an
+algebra through the \textit{inductive} occurrences of an algebraic
+datatype.
+For example, we could write a generic \AgdaFun{size} function, that
+can be applied to \textit{any} datatype.
+For any constructor of any datatype, \AgdaFun{size}
+returns 1 plus the sum of:
+\begin{itemize}
+\item The number of non-inductive arguments.
+\item The \textit{recursive} sum of the number of inductive arguments.
+\end{itemize}
+Applying \AgdaFun{size}
+to a single-element list containing a pair of booleans
+results in 3: the sum of
+the \AgdaCon{cons} constructor,
+the pair,
+and the \AgdaCon{nil} constructor. Because the pair is a non-inductive
+argument from the perspective of the list, its size is counted
+atomically as 1 (it would be counted as 1 even if it were a value of
+an \textit{inductive} datatype other than lists, like a tree).
+
+\paragraph{Fully Generic Programming}
+Fully generic programming (\refsec{fullygeneric}) captures the pattern of folding an
+algebra through both the \textit{non-inductive} and \textit{inductive}
+occurrences of an algebraic datatype.
+For example, we could write a fully generic \AgdaFun{count} function that
+can also be applied to \textit{any} datatype.
+For any constructor of any datatype, \AgdaFun{count}
+returns 1 plus the sum of:
+\begin{itemize}
+\item The \textit{recursive} sum of the number of non-inductive arguments.
+\item The \textit{recursive} sum of the number of inductive arguments.
+\end{itemize}
+Applying \AgdaFun{count}
+to a single-element list containing a pair of booleans
+results in 5: the sum of
+the \AgdaCon{cons} constructor,
+the pair (\AgdaCon{,}) constructor,
+the two booleans constructors,
+and the \AgdaCon{nil} constructor.
+Notably, \AgdaFun{count} (unlike \AgdaFun{size}) additionally
+recurses through the components of the pair.
+
+In the remainder of this introduction we
+provide an overview of dependently typed languages
+\& motivate our work (\refsec{deplang}),
+give an example of fully generic programming over a limited collection
+of datatypes (\refsec{fullyeg}),
+describe the class of datatypes that we have been able to extend
+fully generic programming to (\refsec{algclass}),
+and finally cover our thesis statement \& contributions
+(\refsec{thesis}).
+
+
 \section{Dependently Typed Languages \& Motivation}\label{sec:deplang}
 
 A standard dependently typed language is

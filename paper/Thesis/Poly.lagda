@@ -10,6 +10,33 @@ data List {ℓ} (A : Set ℓ) : Set ℓ where
   cons : A → List A → List A
 \end{code}}
 
+\chapter{Generic Programming}\label{ch:generic}
+
+\textit{Generic programming} is the act of writing
+functions that can be applied to values of a collection of types
+(a \textit{universe}).
+Given a collection of types, a \textit{generic function} can be
+applied to values of any type in the collection. A
+\textit{polymorphic function} universally
+quantifies over some collection of values, and references an arbitrary
+member of that collection in its type signature. Thefore, generic
+functions are merely polymorphic functions.
+The type of the quantified variable can be seen as the codes of the
+universe, followed by the meaning function applied to a particular
+code, followed by the remainder of the type signature.
+$$
+(\AgdaVar{c} : \AgdaData{Code})~
+(\Var{m} : \AgdaFun{Meaning}~\AgdaVar{c})
+→ ...
+$$
+
+We have already seen many generic functions fitting this pattern in
+\refsec{types} and \refsec{universes}. Below we reconsider some of
+them, while classifying them by different forms of polymorphism. In
+each of these examples, we emphasize the definition of
+\AgdaData{Code} (i.e. what the function is polymorphic over).
+
+
 \section{Parametric Polymorphism}
 
 A \textit{parametrically polymorphic} function is defined uniformly

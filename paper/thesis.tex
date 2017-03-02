@@ -175,218 +175,23 @@ Acknowledgments go here.
 \body
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \part{Prelude}\label{part:prelude}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\chapter{Introduction}\label{ch:intro}
-
-In this dissertation we expand the class of functions that can be
-written generically for all types, in a type-safe manner,
-within a dependently typed language. Below, we contrast
-typical generic programming with our new version, which we
-call \textit{fully generic programming}.
-
-\paragraph{Generic Programming}
-Typical generic programming captures the pattern of folding an
-algebra through the \textit{inductive} occurrences of an algebraic
-datatype.
-For example, we could write a generic \AgdaFun{size} function, that
-can be applied to \textit{any} datatype.
-For any constructor of any datatype, \AgdaFun{size}
-returns 1 plus the sum of:
-\begin{itemize}
-\item The number of non-inductive arguments.
-\item The \textit{recursive} sum of the number of inductive arguments.
-\end{itemize}
-Applying \AgdaFun{size}
-to a single-element list containing a pair of booleans
-results in 3: the sum of
-the \AgdaCon{cons} constructor,
-the pair,
-and the \AgdaCon{nil} constructor. Because the pair is a non-inductive
-argument from the perspective of the list, its size is counted
-atomically as 1 (it would be counted as 1 even if it were a value of
-an \textit{inductive} datatype other than lists, like a tree).
-
-\paragraph{Fully Generic Programming}
-Fully generic programming (\refsec{fullygeneric}) captures the pattern of folding an
-algebra through both the \textit{non-inductive} and \textit{inductive}
-occurrences of an algebraic datatype.
-For example, we could write a fully generic \AgdaFun{count} function that
-can also be applied to \textit{any} datatype.
-For any constructor of any datatype, \AgdaFun{count}
-returns 1 plus the sum of:
-\begin{itemize}
-\item The \textit{recursive} sum of the number of non-inductive arguments.
-\item The \textit{recursive} sum of the number of inductive arguments.
-\end{itemize}
-Applying \AgdaFun{count}
-to a single-element list containing a pair of booleans
-results in 5: the sum of
-the \AgdaCon{cons} constructor,
-the pair (\AgdaCon{,}) constructor,
-the two booleans constructors,
-and the \AgdaCon{nil} constructor.
-Notably, \AgdaFun{count} (unlike \AgdaFun{size}) additionally
-recurses through the components of the pair.
-
-In the remainder of this introduction we
-provide an overview of dependently typed languages
-\& motivate our work (\refsec{deplang}),
-give an example of fully generic programming over a limited collection
-of datatypes (\refsec{fullyeg}),
-describe the class of datatypes that we have been able to extend
-fully generic programming to (\refsec{algclass}),
-and finally cover our thesis statement \& contributions
-(\refsec{thesis}).
 
 \input{Thesis/Intro}
 
-\chapter{Types \& Universes}\label{ch:univ}
-
-A \textit{type} is a collection of values, and a \textit{universe} is
-a collection of types (possibly closed under certain type formers).
-In this section we review different classes of types (e.g. indexed
-types, infinitary types, etc).
-This allows us to be clear about what each class adds
-to the express power of a language (i.e. what sorts of new values we
-can construct.)
-
-We also review properties of both types and universes
-(e.g. inductiveness, openness, etc). These properties determine how we
-can use values (i.e. what elimination principles are valid for them).
-With a thorough understanding of classifications and
-properties of types and universes, we can precisely describe which
-classifications and properties we need to perform the main goal of
-this thesis, \textit{generic programming} (\refch{generic}) within
-\textit{closed type theory} (\refch{closedtt}).
-
 \input{Thesis/Types}
 \input{Thesis/Universes}
-
-\chapter{Generic Programming}\label{ch:generic}
-
-\textit{Generic programming} is the act of writing
-functions that can be applied to values of a collection of types
-(a \textit{universe}).
-Given a collection of types, a \textit{generic function} can be
-applied to values of any type in the collection. A
-\textit{polymorphic function} universally
-quantifies over some collection of values, and references an arbitrary
-member of that collection in its type signature. Thefore, generic
-functions are merely polymorphic functions.
-The type of the quantified variable can be seen as the codes of the
-universe, followed by the meaning function applied to a particular
-code, followed by the remainder of the type signature.
-$$
-(\AgdaVar{c} : \AgdaData{Code})~
-(\Var{m} : \AgdaFun{Meaning}~\AgdaVar{c})
-→ ...
-$$
-
-We have already seen many generic functions fitting this pattern in
-\refsec{types} and \refsec{universes}. Below we reconsider some of
-them, while classifying them by different forms of polymorphism. In
-each of these examples, we emphasize the definition of
-\AgdaData{Code} (i.e. what the function is polymorphic over).
 
 \input{Thesis/Poly}
 \input{Thesis/Fully}
 \input{Thesis/Total}
 
-
-\chapter{Closed Type Theory}\label{ch:closedtt}
-
-A \textit{closed type theory} is a dependently typed language with a
-built-in collection of types
-(i.e. \textit{primitives}) that will never be extended.
-Such a type
-theory can be modeled as a \textit{fully closed universe}. To qualify
-as a closed type theory, we require that its collection of types is at
-least closed under dependent function ($\Pi$) formation.
-
-It is reasonable to assume that programming in a closed type theory
-would be limiting, as programmers can only work with the types that
-are built into the theory (compared to an \textit{open} theory where
-users may \textit{extend} the language with custom types).
-However, it turns out that a closed theory with an appropriate
-collection of primitives can be used to \textit{model} any custom type
-using only the primitives. Hence, instead of extending an open theory
-with custom types using datatype declarations,
-isomorphic versions of custom types
-may be formed in a closed theory from its primitives.
-
-Therefore, a closed type theory can model a dependently typed
-programming language supporting custom types. Assume that we make
-the universe model of such a theory algebraic, inductive, autonomous,
-and concrete. This language supports
-\textit{fully generic programming} (\refsec{fullygeneric}), allowing
-programmers to write functions over all types of the
-language, including custom types!
-\footnote{By analogy, consider generic functions
-  (like equality via \texttt{Eq} or comparison via \texttt{Ord})
-  that a language like
-  Haskell can derive for any appropriate type using the
-  \texttt{deriving} keyword. While users of Haskell are limited to
-  deriving the generic functions built into the compiler, users of
-  such a closed type theory may write their own generic functions
-  operating over any appropriate type.
-}
-
 \input{Thesis/ClosedW}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \part{Open Type Theory}\label{part:open}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\chapter{Open Algebraic Universes}\label{ch:open}
-
-In \refsec{wtypes} we derived custom user-defined types as
-\textit{well-founded trees}, or
-\textit{well-orderings} (\AgdaData{W} types). \AgdaData{W} types
-can be used to model
-datatype declarations
-in a \textit{closed type theory} (\refsec{wuni}),
-without actually extending the metalanguage as done in
-\textit{open type theory}. Unfortunately, \AgdaData{W} types are
-inadequate (\refsec{inad}) models of first-order canonical terms.
-
-In this section we present an adequate alternative to modeling
-datatype declarations, using \textit{initial algebra semantics}. In
-initial algebra semantics a datatype is modeled as the
-\textit{least fixed point} (or \textit{fixpoint} for short)
-of a \textit{pattern functor}.
-First, we define an initial algebra semantics for datatypes in the
-language of category theory, denoting types by their
-\textit{categorical model}. Then, we show the equivalent initial
-algebra semantics in the language of
-type theory (as implemeneted by Agda), denoting types by
-their \textit{formal model}.
-We do not fully define the constructions
-in the categorical model, but rather appeal to widely known
-concepts to inspire and elucidate
-the equivalent constructions in the formal model.
-For example, the syntax of \textit{pattern functors} from the
-categorical model becomes the type of
-descriptions (\Data{Desc}) in the formal model, and
-the \textit{fixpoint} operator from the categorical model becomes
-the \AgdaData{μ} type (parameterized by \Data{Desc})
-in the formal model.
-
-This section defines the initial algebra semantics for a series
-of progressively more expressive classes of datatypes. All formal
-models in the series are expressed as an \textit{open} universe.
-The series ends with a formal model for \textit{inductive-recursive}
-types, which can also be used to model \textit{indexed} types.
-In \refchap{closed} we adapt the formal model of
-inductive-recursive types as an \textit{open} universe
-(\refsec{iralg})
-to a \textit{closed} universe (\refsec{closed}),
-suitable for fully generic programming.
 
 \input{Thesis/OpenAlg}
 \input{Thesis/OpenInfAlg}
@@ -395,9 +200,7 @@ suitable for fully generic programming.
 \input{Thesis/OpenIdxAlg}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \part{Closed Type Theory}\label{part:closed}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Closed Algebraic Universe}\label{ch:closed}
@@ -449,9 +252,7 @@ to fit the presentation and terminology used in this thesis.
 \section{Leveled Higher-Order Fully Generic AST}\label{ch:gasts}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \part{Postlude}\label{part:postlude}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Related Work}\label{ch:related}

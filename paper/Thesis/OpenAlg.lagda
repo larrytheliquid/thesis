@@ -6,6 +6,52 @@ open import Data.Sum
 open import Data.Product
 \end{code}}
 
+\chapter{Open Algebraic Universes}\label{ch:open}
+
+In \refsec{wtypes} we derived custom user-defined types as
+\textit{well-founded trees}, or
+\textit{well-orderings} (\AgdaData{W} types). \AgdaData{W} types
+can be used to model
+datatype declarations
+in a \textit{closed type theory} (\refsec{wuni}),
+without actually extending the metalanguage as done in
+\textit{open type theory}. Unfortunately, \AgdaData{W} types are
+inadequate (\refsec{inad}) models of first-order canonical terms.
+
+In this section we present an adequate alternative to modeling
+datatype declarations, using \textit{initial algebra semantics}. In
+initial algebra semantics a datatype is modeled as the
+\textit{least fixed point} (or \textit{fixpoint} for short)
+of a \textit{pattern functor}.
+First, we define an initial algebra semantics for datatypes in the
+language of category theory, denoting types by their
+\textit{categorical model}. Then, we show the equivalent initial
+algebra semantics in the language of
+type theory (as implemeneted by Agda), denoting types by
+their \textit{formal model}.
+We do not fully define the constructions
+in the categorical model, but rather appeal to widely known
+concepts to inspire and elucidate
+the equivalent constructions in the formal model.
+For example, the syntax of \textit{pattern functors} from the
+categorical model becomes the type of
+descriptions (\Data{Desc}) in the formal model, and
+the \textit{fixpoint} operator from the categorical model becomes
+the \AgdaData{μ} type (parameterized by \Data{Desc})
+in the formal model.
+
+This section defines the initial algebra semantics for a series
+of progressively more expressive classes of datatypes. All formal
+models in the series are expressed as an \textit{open} universe.
+The series ends with a formal model for \textit{inductive-recursive}
+types, which can also be used to model \textit{indexed} types.
+In \refchap{closed} we adapt the formal model of
+inductive-recursive types as an \textit{open} universe
+(\refsec{iralg})
+to a \textit{closed} universe (\refsec{closed}),
+suitable for fully generic programming.
+
+
 \section{Open Non-Dependent Types}\label{sec:nondepalg}
 
 In this section we review the algebraic semantics for
