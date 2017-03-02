@@ -352,21 +352,34 @@ In this \textbf{part} we present an adequate alternative to modeling
 datatype declarations, using \textit{initial algebra semantics}. In
 initial algebra semantics a datatype is modeled as the
 \textit{least fixed point} (or \textit{fixpoint} for short)
-of a \textit{pattern functor}. We reify these two concepts as
-datatypes to model them in type theory, where the type of fixpoints is
-\AgdaData{μ} and the type of pattern functors is \AgdaData{Desc}.
+of a \textit{pattern functor}.
+First, we define an initial algebra semantics for datatypes in the
+language of category theory, denoting types by their
+\textit{categorical model}. Then, we show the equivalent initial
+algebra semantics in the language of
+type theory (as implemeneted by Agda), denoting types by
+their \textit{formal model}.
+We do not fully define the constructions
+in the categorical model, but rather appeal to widely known
+concepts to inspire and elucidate
+the equivalent constructions in the formal model.
+For example, the syntax of \textit{pattern functors} from the
+categorical model becomes the type of
+descriptions (\Data{Desc}) in the formal model, and
+the \textit{fixpoint} operator from the categorical model becomes
+the \AgdaData{μ} type (parameterized by \Data{Desc})
+in the formal model.
 
-This \textbf{part} begins with type-theoretic models of algebraic
-non-dependent types, and progresses through a series of
-extensions to model all the classes of types reviewed in
-\refsec{types}. Finally, we restrict ourselves to deriving
-user-defined types using algebraic semantics in
-\textit{open type theory} (as is done in \refsec{wtypes} for
-\AgdaData{W} types).
-\refch{closed} covers how to use the
-algebraic semantics presented in this \textbf{part} to instead derive
-user-defined types in \textit{closed type theory} (as is done
-in \refsec{wuni} for \AgdaData{W} types).
+This \textbf{part} defines the initial algebra semantics for a series
+of progressively more expressive classes of datatypes. All formal
+models in the series are expressed as an \textit{open} universe.
+The series ends with a formal model for \textit{inductive-recursive}
+types, which can also be used to model \textit{indexed} types.
+\refpart{closed} adapts the formal model of
+inductive-recursive types as an \textit{open} universe
+(\refchap{iralg})
+to a \textit{closed} universe (\refpart{closed}),
+suitable for fully generic programming.
 
 \input{Thesis/OpenAlg}
 \input{Thesis/OpenInfAlg}
