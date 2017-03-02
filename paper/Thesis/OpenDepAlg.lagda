@@ -18,7 +18,7 @@ and its model (\refsec{infalgsem}),
 to support constructor argument types that depend on previous
 constructor arguments.
 
-\section{Algebraic Semantics}\label{sec:depalgsem}
+\section{Categorical Model}\label{sec:depalgsem}
 
 Compared to \textit{non-dependent} types, the type signatures of
 \textit{pattern functors} ($F : \set \arr \set$)
@@ -174,7 +174,7 @@ A \cdot (n : \nat) \cdot X^{\tp{Fin}~n} \cdot 1
 $$
 
 
-\section{Algebraic Model}\label{sec:depalgmod}
+\section{Formal Model}\label{sec:depalgmod}
 
 Our model of the algebraic semantics of least fixed points is
 similar to previous versions. However, modeling
@@ -466,7 +466,7 @@ module _ where
 \end{code}}
 
 
-\section{Type Model}\label{sec:depalgtps}
+\section{Examples}\label{sec:depalgtps}
 
 Now we model the type formers and constructors of (possibly) dependent
 datatypes. The descriptions of these datatypes are interpreted as

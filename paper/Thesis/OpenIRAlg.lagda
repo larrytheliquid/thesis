@@ -18,7 +18,7 @@ to \textit{inductive-recursive} types
 with a \textit{decoding} function that may be used in the inductive
 definition of the type.
 
-\section{Algebraic Semantics}\label{sec:iralgsem}
+\section{Categorical Model}\label{sec:iralgsem}
 
 In all of the previous algebraic semantics we have worked with,
 the pattern functors were \textit{endofunctors}
@@ -326,7 +326,7 @@ the $d$ parameter allows us to perform
 \textit{recursive} calls of the decoding function. 
 
 
-\section{Algebraic Model}\label{sec:iralgmod}
+\section{Formal Model}\label{sec:iralgmod}
 
 In this section we extend the model of algebraic semantics of
 dependent types (\refsec{depalgmod}) to support inductive-recursive
@@ -661,7 +661,7 @@ the initial algebra (\AgdaVar{xs}) to the
 second component (\AgdaFun{⟦\_⟧₂}) of the interpretation function.
 
 
-\section{Type Model}\label{sec:iralgtps}
+\section{Examples}\label{sec:iralgtps}
 
 Now we model the type formers and constructors of
 \textit{inductive-recursive} datatypes.

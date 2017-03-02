@@ -618,5 +618,9 @@ implementing intentional type theory, rather than extensional type
 theory. For this reason, we represent algebraic datatypes using
 initial algebra semantics (instead of \Data{W} types),
 as covered in \refpart{open}.
-
+In \refchap{closed} we define a universe suitable for modeling closed
+type theory (i.e. a dependently typed language supporting fully
+generic programming), using closed initial algebra semantics, and
+analogous to the \textit{Closed Well-Order Types} universe
+of \refsec{closedw}.
 

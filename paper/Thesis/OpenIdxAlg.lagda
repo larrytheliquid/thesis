@@ -17,7 +17,7 @@ subsequently reintroduce it in \refsec{iiralg}.
 An \textit{indexed} type (\refsec{indx}) is a collection of types
 indexed by some type $I$.
 
-\section{Algebraic Semantics}\label{sec:idxalgsem}
+\section{Categorical Model}\label{sec:idxalgsem}
 
 Previously (in \refsec{irlalgsem}) we gave the algebraic semantics of
 inductive-recursive types in the category of \textit{slices}
@@ -488,7 +488,7 @@ $$
 \forall X.~ \Fi~X \simeq \Fo\inv~X
 $$
 
-\section{Algebraic Model}\label{sec:idxalgmod}
+\section{Formal Model}\label{sec:idxalgmod}
 
 In this section we model the algebraic semantics of
 indexed (but not inductive-recursive) types.
@@ -583,6 +583,6 @@ module El where
 \end{code}
 
 
-\section{Type Model}\label{sec:idxalgtps}
+\section{Examples}\label{sec:idxalgtps}
 
 

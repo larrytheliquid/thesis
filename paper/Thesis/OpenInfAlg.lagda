@@ -16,7 +16,7 @@ within type theory,
 and examples of modeled types to support \textit{infinitary}
 constructor arguments.
 
-\section{Algebraic Semantics}\label{sec:infalgsem}
+\section{Categorical Model}\label{sec:infalgsem}
 
 The algebraic semantics for \textit{infinitary} inductive datatypes
 reuses the 1, (+) and ($\cdot$) polynomial set constructions. However,
@@ -156,7 +156,7 @@ $$
 \dfn{Tree} \lambda A.~ \lambda B.~ \mu X.~ A + B \cdot X^2
 $$
 
-\section{Algebraic Model}\label{sec:infalgmod}
+\section{Formal Model}\label{sec:infalgmod}
 
 To model the alegbraic semantics of \textit{infinitary} types in type
 theory, we make minor changes to our previous non-infinitary model
@@ -338,7 +338,7 @@ infinitary type, as the codomain ends with an inductive occurrence
   _ = refl
 \end{code}}
 
-\section{Type Model}\label{sec:infalgtps}
+\section{Examples}\label{sec:infalgtps}
 
 Now we repeat the examples of models of non-infinitary types
 (\refsec{nondepalgmod}), converting models to their infinitary
