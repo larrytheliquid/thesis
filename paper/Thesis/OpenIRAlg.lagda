@@ -8,9 +8,9 @@ open import Data.Sum
 open import Data.Product
 \end{code}}
 
-\chapter{Open Inductive-Recursive Types}\label{sec:iralg}
+\section{Open Inductive-Recursive Types}\label{sec:iralg}
 
-In this chapter we extend the algebraic semantics of
+In this section we extend the algebraic semantics of
 \textit{infinitary} and \textit{dependent} types
 (\refsec{depalg})
 to \textit{inductive-recursive} types
@@ -18,7 +18,7 @@ to \textit{inductive-recursive} types
 with a \textit{decoding} function that may be used in the inductive
 definition of the type.
 
-\section{Categorical Model}\label{sec:iralgsem}
+\subsection{Categorical Model}\label{sec:iralgsem}
 
 In all of the previous algebraic semantics we have worked with,
 the pattern functors were \textit{endofunctors}
@@ -75,7 +75,7 @@ $$
 
 The first part ($F_1$) maps a slice to a
 set (modeling a \textit{type}), similar to the functors
-of previous sections. The second part ($F_2$) maps a slice and a
+of previous subsections. The second part ($F_2$) maps a slice and a
 member of the set mapped by $F_1$, to a member of
 $O$ (modeling a \textit{decoding} function).
 By convention we use the letter $R$ to refer to the \textit{slice}
@@ -326,7 +326,7 @@ the $d$ parameter allows us to perform
 \textit{recursive} calls of the decoding function. 
 
 
-\section{Formal Model}\label{sec:iralgmod}
+\subsection{Formal Model}\label{sec:iralgmod}
 
 In this section we extend the model of algebraic semantics of
 dependent types (\refsec{depalgmod}) to support inductive-recursive
@@ -661,7 +661,7 @@ the initial algebra (\AgdaVar{xs}) to the
 second component (\AgdaFun{⟦\_⟧₂}) of the interpretation function.
 
 
-\section{Examples}\label{sec:iralgtps}
+\subsection{Examples}\label{sec:iralgtps}
 
 Now we model the type formers and constructors of
 \textit{inductive-recursive} datatypes.

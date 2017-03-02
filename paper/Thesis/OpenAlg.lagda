@@ -6,9 +6,9 @@ open import Data.Sum
 open import Data.Product
 \end{code}}
 
-\chapter{Open Non-Dependent Types}\label{sec:nondepalg}
+\section{Open Non-Dependent Types}\label{sec:nondepalg}
 
-In this chapter we review the algebraic semantics for
+In this section we review the algebraic semantics for
 \textit{non-dependent} and potentially
 \textit{inductive} (\refsec{ind}) types. Then, we show how to
 \textit{model} algebraic semantics within type theory by converting abstract
@@ -21,7 +21,7 @@ function types in \refsec{umodel}).
   \refsec{abscon}.
 }
 
-\section{Categorical Model}\label{sec:nondepalgsem}
+\subsection{Categorical Model}\label{sec:nondepalgsem}
 
 The algebraic semantics for an inductive datatype is the
 \textit{least fixed point} of a polynomial equation
@@ -129,7 +129,7 @@ represents multiple arguments of a constructor as a
 conjunction, and is analogous to the pair type (\AgdaData{×}).
 
 %% TODO maybe mention similarity to param universe ParStar
-\section{Formal Model}\label{sec:nondepalgmod}
+\subsection{Formal Model}\label{sec:nondepalgmod}
 
 To take advantage of algebraic semantics within type theory, we must
 \textit{model} its abstract notions using concrete datatypes and
@@ -410,7 +410,7 @@ codes (\AgdaData{Desc} : \AgdaData{Set}) and a
 meaning function (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
 respectfully.
 
-\section{Examples}\label{sec:nondepalgtps}
+\subsection{Examples}\label{sec:nondepalgtps}
 
 Having modeled \textit{algebraic semantics} by reifying its concepts into
 datatypes of type theory (i.e. our \textit{algebraic model}), we now

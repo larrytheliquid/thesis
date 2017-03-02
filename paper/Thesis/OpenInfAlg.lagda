@@ -7,16 +7,16 @@ open import Data.Sum
 open import Data.Product
 \end{code}}
 
-\chapter{Open Infinitary Types}
+\section{Open Infinitary Types}\label{sec:infalg}
 
-In this chapter we review the algebraic semantics for
+In this section we review the algebraic semantics for
 \textit{infinitary} (\refsec{inft}) non-dependent types.
 We extend our previous algebraic semantics, algebraic model
 within type theory,
 and examples of modeled types to support \textit{infinitary}
 constructor arguments.
 
-\section{Categorical Model}\label{sec:infalgsem}
+\subsection{Categorical Model}\label{sec:infalgsem}
 
 The algebraic semantics for \textit{infinitary} inductive datatypes
 reuses the 1, (+) and ($\cdot$) polynomial set constructions. However,
@@ -156,7 +156,7 @@ $$
 \dfn{Tree} \lambda A.~ \lambda B.~ \mu X.~ A + B \cdot X^2
 $$
 
-\section{Formal Model}\label{sec:infalgmod}
+\subsection{Formal Model}\label{sec:infalgmod}
 
 To model the alegbraic semantics of \textit{infinitary} types in type
 theory, we make minor changes to our previous non-infinitary model
@@ -338,7 +338,7 @@ infinitary type, as the codomain ends with an inductive occurrence
   _ = refl
 \end{code}}
 
-\section{Examples}\label{sec:infalgtps}
+\subsection{Examples}\label{sec:infalgtps}
 
 Now we repeat the examples of models of non-infinitary types
 (\refsec{nondepalgmod}), converting models to their infinitary
