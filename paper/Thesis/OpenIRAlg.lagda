@@ -710,8 +710,9 @@ The non-infinitary type \AgdaData{ℕ} above corresponds to infinitary
 type \AgdaData{ℕ₁} below. The
 decoding function \AgdaFun{point} above corresponds to \AgdaFun{ℕ₂}
 below. Finally, the slice \AgdaFun{ℕ} below does not correspond to
-anything above. While slices are commonly used to describe the
-semantics of inductive-recursive types, they are used rarely in
+anything above.
+While slices are commonly used to describe the
+semantics of inductive-recursive types, they are rarely used in
 conventional programming with inductive-recursive types.
 
 \AgdaHide{
