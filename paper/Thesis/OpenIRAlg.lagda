@@ -10,7 +10,7 @@ open import Data.Product
 
 \section{Open Inductive-Recursive Types}\label{sec:iralg}
 
-In this section we extend the algebraic semantics of
+In this section we extend the initial algebra semantics of
 \textit{infinitary} and \textit{dependent} types
 (\refsec{depalg})
 to \textit{inductive-recursive} types
@@ -20,7 +20,7 @@ definition of the type.
 
 \subsection{Categorical Model}\label{sec:iralgsem}
 
-In all of the previous algebraic semantics we have worked with,
+In all of the previous categorical models we have worked with,
 the pattern functors were \textit{endofunctors}
 between the category of sets. That is, each functor
 ($F : \set \arr \set$)
@@ -31,7 +31,8 @@ of such a functor gave us back a set ($\mu~F : \set$).
 Hence, previously each type could be semantically modeled as
 a set ($\set$).
 
-In order to model \textit{inductive-recursive} types, we need to model
+In order to define a categorical model of
+\textit{inductive-recursive} types, we need to model
 a type ($X : \set$) along with its mutually defined
 \textit{decoding} function ($d : X \arr O$), mapping values of the
 type to values of some output type ($O : \set$). For example,
@@ -40,8 +41,8 @@ type to values of some output type ($O : \set$). For example,
 ($d \triangleq~$\AgdaFun{eval} : \AgdaData{Arith} \arr~ \AgdaData{ℕ})
 that evaluates an
 expression to its natural number ($O \triangleq~$\AgdaData{ℕ}) result.
-Thus, algebraic semantics models inductive-recursive sets
-as the dependent product of a set and its decoding function. Such a
+Thus, the categorical model of inductive-recursive sets
+involves the dependent product of a set and its decoding function. Such a
 dependent product is called a \textit{slice}, notated as
 $\set/O$ (where $O$ is the output set).
 $$
@@ -237,7 +238,7 @@ module _ where
   ℕ = ℕ₁ , ℕ₂
 \end{code}
 
-First we define the algebraic semantics for this trivially
+First we define the categorical model for this trivially
 inductive-recursive type using the componentized definition of $\mu$
 in terms of its set ($\mu_1$) and decoding function ($\mu_2$). Below,
 1 (similar to \AgdaData{⊤})
@@ -300,7 +301,7 @@ natural number is specified
 to be a \textit{recursive call} of the decoding function $d$ applied to:
 the infinitary predecessor $f$
 applied to the unit value $\bullet$. Hence, the pattern above is the
-algebraic semantics for the decoding function below
+categorical model of the decoding function below
 (notice the recursive call of decoding function
 \AgdaFun{ℕ₂} in the \AgdaCon{suc} case).
 
@@ -328,7 +329,7 @@ the $d$ parameter allows us to perform
 
 \subsection{Formal Model}\label{sec:iralgmod}
 
-In this section we extend the model of algebraic semantics of
+In this section we extend the formal model of
 dependent types (\refsec{depalgmod}) to support inductive-recursive
 types. The previous description type (\AgdaData{Desc}), interpretation
 function (\AgdaFun{⟦\_⟧}) and least fixed point operator \AgdaData{μ}
@@ -348,7 +349,7 @@ to define pattern functors for inductive-recursive types.
   \item Single pattern functors ($F$) using $\iota$.
 \end{enumerate}
 
-Our descriptions model the syntax of the 3rd ($\iota$) version of
+Our descriptions formally model the syntax of the 3rd ($\iota$) version of
 legal pattern functors. Recall that $\iota$ is applied to an $O$,
 hence we had an argument \AgdaVar{o} of type
 \AgdaVar{O} to the
@@ -435,12 +436,12 @@ the definitions of \AgdaFun{NatD} and \AgdaFun{ℕ₂} above,
 
 \paragraph{Pattern Functors}
 
-Now we turn to the task of modeling pattern functors
+Now we turn to the task of formally modeling pattern functors
 ($F : \set/O \arr \set/O$) of
-inductive-recursive sets in type theory.
-Before we can even consider doing so, we must model the
+inductive-recursive types.
+Before we can even consider doing so, we must formally model the
 concept of a slice $\set/O$.
-A slice is modeled as a dependent pair
+A slice is formally modeled as a dependent pair
 type (\AgdaData{Σ})
 parameterized by an output type (\AgdaVar{O}).
 The first component of the pair is a type and the second
@@ -451,7 +452,7 @@ Set/ : Set → Set₁
 Set/ O = Σ Set (λ A → (A → O))
 \end{code}
 
-We model pattern functors
+We formally model pattern functors
 ($F : \set/O \arr \set/O$) as the functor
 (\AgdaFun{F} : \AgdaFun{Set/} \AgdaVar{O} \arr~\AgdaFun{Set/} \AgdaVar{O})
 resulting from the partial application of a description
@@ -459,9 +460,9 @@ to the interpretation function
 (\AgdaFun{⟦\_⟧} : \{\AgdaVar{O} : \AgdaData{Set}\}
 \arr~\AgdaData{Desc} \AgdaVar{O} \arr~\AgdaFun{Set/} \AgdaVar{O} \arr~\AgdaFun{Set/} \AgdaVar{O}).
 In \refsec{iralgsem}
-we showed how to define $F$ in terms of a component mapping slices to sets
+we showed the categorical model of $F$ in terms of a component mapping slices to sets
 ($F_1$) and a component mapping slices to a decoding function ($F_2$). Our
-type theoretic model similarly defines the interpretation function
+formal model similarly defines the interpretation function
 (\AgdaFun{⟦\_⟧}) in terms of a type component (\AgdaFun{⟦\_⟧₁})
 and a decoding function component (\AgdaFun{⟦\_⟧₂}),
 which also result in the pattern functor components
@@ -609,16 +610,16 @@ a \textit{derived} function
 parameterized by the output type \AgdaVar{O} and producing slices from
 descriptions.
 The pattern functor argument ($\set/O \arr \set/O$) of $\mu$ can be
-derived by the model \AgdaFun{μ} by partially applying the
+derived by the formal model of \AgdaFun{μ} by partially applying the
 interpretation function to the
 description argument
 (\AgdaFun{⟦}~\AgdaVar{D}~\AgdaFun{⟧} :
 \AgdaFun{Set/} \AgdaVar{O} \arr~\AgdaFun{Set/} \AgdaVar{O}).
 
-In \refsec{iralgsem} we showed how the fixpoint
-operator $\mu$ of algebraic semantics can be defined in terms of a
+In \refsec{iralgsem} we showed the categorical model of the fixpoint
+operator $\mu$, defining it in terms of a
 set component ($\mu_1$) and a decoding function component
-($\mu_2$). Our type theoretic model similarly \textit{derives}
+($\mu_2$). Our formal model similarly \textit{derives}
 the fixpoint (\AgdaFun{μ}) as a dependent pair consisting of a
 type component (\AgdaData{μ₁}) and a decoding function
 component (\AgdaFun{μ₂}). We define these 3 constructions
@@ -663,10 +664,11 @@ second component (\AgdaFun{⟦\_⟧₂}) of the interpretation function.
 
 \subsection{Examples}\label{sec:iralgtps}
 
-Now we model the type formers and constructors of
+Now we formally model the type formers and constructors of
 \textit{inductive-recursive} datatypes.
 Typically inductive-recursive datatypes are defined mutually
-in terms of a type and its decoding function. In our model, a single
+in terms of a type and its decoding function.
+In our formal model, a single
 description catpures definition of \textit{both} the type and its
 decoding function.
 
@@ -696,11 +698,12 @@ module _ where
   point (suc n) = point n
 \end{code}
 
-The \textit{non-infinitary} natural numbers presented above is the model that
-we will expose. Like in \refsec{depalgtps}, this means our type former
+We expose the formal model of the \textit{non-infinitary} natural
+numbers presented above.
+Like in \refsec{depalgtps}, this means our type former
 and constructors will have the \textit{names} and \textit{types}
 corresponding to the ones above. However, our underlying pattern
-functor models the \textit{infinitary} and \textit{slice-based}
+functor formally models the \textit{infinitary} and \textit{slice-based}
 definition of natural numbers below.
 
 The non-infinitary type \AgdaData{ℕ} above corresponds to infinitary

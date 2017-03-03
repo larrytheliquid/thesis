@@ -9,24 +9,27 @@ open import Data.Product
 
 \section{Open Dependent Types}\label{sec:depalg}
 
-In this section we review the algebraic semantics for
+In this section we review the initial algebra semantics for
 \textit{dependent} types.
 We extend our previous \textit{infinitary} and
 \textit{non-dependent}
-algebraic semantics (\refsec{infalgsem}),
-and its model (\refsec{infalgsem}),
+categorical model (\refsec{infalgsem}),
+and formal model (\refsec{infalgsem}),
 to support constructor argument types that depend on previous
 constructor arguments.
 
 \subsection{Categorical Model}\label{sec:depalgsem}
 
-Compared to \textit{non-dependent} types, the type signatures of
+Compared to \textit{non-dependent} types,
+the categorical model's
+``type signatures'' for
 \textit{pattern functors} ($F : \set \arr \set$)
 and
 \textit{least fixed points}
 ($\mu : (\set \arr \set) \arr \set$)
-remain unchanged in the setting of \textit{dependent} algebraic
-semantics. However, we change the language of
+remain unchanged in the setting of
+\textit{dependent} initial algebra semantics.
+However, we change the language of
 \textit{polynomial set constructions} to be able to describe pattern
 functors of types involving dependencies.
 
@@ -88,12 +91,10 @@ F \triangleq \lambda X.~
 \cdot (x_n : A_n ~ x_0 ~...~ x_{n-1}) \cdot 1
 $$
 
-The purpose of these additional constraints should \textit{not} be readily
+The purpose of these additional constraints \textit{may not} be readily
 apparent now. However, they allow us to extend
-the algebraic semantics of dependent types to include
-indices (\refsec{idxalg}) and
-induction-recursion (\refsec{iralg})
-in the future.
+the categorical model of dependent types to include
+induction-recursion (\refsec{iralg}) in the future.
 
 Finally, note that any use of sums (+) obeys our constraint
 as long as the
@@ -125,7 +126,7 @@ module _ where
     suc : (f : ⊤ → ℕ) → ℕ
 \end{code}
 
-Compared to the infinitary and non-dependent (\refsec{idxalg})
+Compared to the infinitary and non-dependent (\refsec{infalgsem})
 natural numbers fixpoint, the only difference in our dependent setting is
 that the \AgdaCon{suc} constructor ends by multiplying by 1 (obeying
 our constraint).
@@ -162,7 +163,7 @@ module _ where
     rose : A → (n : ℕ) (f : Fin n → Rose A) → Rose A
 \end{code}
 
-The algebraic semantics for infinitary rose trees must be defined in
+The categorical model of infinitary rose trees must be defined in
 terms of \textit{dependent} product, as the
 finite set (\AgdaData{Fin}~\AgdaVar{n})
 infinitary domain
@@ -176,8 +177,8 @@ $$
 
 \subsection{Formal Model}\label{sec:depalgmod}
 
-Our model of the algebraic semantics of least fixed points is
-similar to previous versions. However, modeling
+Our formal model of least fixed points is
+similar to previous versions. However, formally modeling
 \textit{dependencies} in pattern functors requires significant
 changes, especially changes to the structure of pattern functor
 descriptions.
@@ -197,10 +198,9 @@ Below, the \AgdaCon{`ι} constructor models the pattern of ending a
 functor with the unit type. For now this is simply a renaming
 of the former \AgdaCon{`1} constructor.
 \footnote{
-  However, in future extensions
+  However, in our subsequent extension
   supporting inductive-recursive
-  types (\refsec{iralg}))
-  and indexed types (\refsec{idxalg})
+  types (\refsec{iralg})),
   \AgdaCon{`ι} gains additional arguments.
 }
 The \AgdaCon{`σ} constructor models a
@@ -217,7 +217,7 @@ The \AgdaCon{`δ} constructor models an
   inductive-recursive types (\refsec{iralg})
   we will need to add a notion of dependency to \AgdaCon{`δ}.
   }
-Thus, while the pattern functor of algebraic semantics uses
+Thus, while the pattern functor of the categorical model uses
 a single product ($\cdot$) for any
 argument, our new description syntax distinguishes between
 dependent (\AgdaCon{`σ}) and
@@ -267,7 +267,7 @@ module _ where
 
 When \AgdaCon{`σ} is used to request
 an argument of type \AgdaVar{A}, the rest of the description \AgdaVar{D} may
-depend on a value of \AgdaVar{A}. This is modeled by the infinitary
+depend on a value of \AgdaVar{A}. This is formally modeled by the infinitary
 type of \AgdaVar{D}, namely \AgdaVar{A} \arr~\AgdaData{Desc}.
 Notice that the first argument of (\AgdaCon{`∙}) is
 a description (\AgdaData{Desc}), but the first argument of
@@ -341,7 +341,7 @@ a \AgdaData{Desc}, to the first argument of \AgdaCon{`σ} or
 Now we define the interpretation function
 (\AgdaFun{⟦\_⟧} : \AgdaData{Desc} \arr~\AgdaData{Set}
 \arr~\AgdaData{Set}) that can be partially applied to descriptions of
-dependent types to produce models
+dependent types to produce formal models
 (\AgdaFun{F} : \AgdaData{Set} \arr~\AgdaData{Set})
 of pattern functors
 ($F : \set \arr \set$)
@@ -411,10 +411,10 @@ non-dependent pair (\AgdaData{×}).
 
 \paragraph{Fixpoints}
 
-The model (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set}) of
-the algebraic semantics for least fixed points
+The formal model (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set}) of
+least fixed points
 ($\mu : (\set \arr \set) \arr \set$) of \textit{dependent} types
-is unchanged, as is the model (\AgdaCon{init}) of the initial
+is unchanged, as is the formal model (\AgdaCon{init}) of the initial
 algebra ($\anit$).
 
 \AgdaHide{
