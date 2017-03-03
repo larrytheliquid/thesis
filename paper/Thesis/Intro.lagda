@@ -764,7 +764,7 @@ to define closed universes and perform fully generic programming.
 \section{Thesis}\label{sec:thesis}
 
 Now we cover our thesis statement, contributions, and outline the
-organization of the remaining chapters.
+remainder of the dissertation.
 
 \subsection{Thesis Statement}
 
@@ -823,5 +823,67 @@ programming using dependently typed languages:
 
 \end{enumerate}
 
-\subsection{Chapter Organization}
+\subsection{Outline}
 
+The dissertation is broken up into 4 parts,
+the \textbf{Prelude},
+a part on \textbf{Open Type Theory},
+a part on \textbf{Closed Type Theory},
+and the \textbf{Postlude}:
+
+\subsubsection{\parttitle{prelude}}
+
+The prelude reviews background information on dependently typed
+programming, and serves
+as a mini-version of our dissertation, in a simplified but
+unfortunately inadequate setting.
+
+\paragraph{\chaptitle{intro}}
+This section concludes the introduction.
+We already reviewed dependently typed languages, and how code reuse
+serves as our motivation (\refsec{deplang}). We also demonstrated what
+fully generic programming looks like in a limiting setting, and
+compared how it works in Agda with how it works in Haskell
+(\refsec{fullyeg}). Finally, we explained why we chose
+inductive-recursive types as the class of algebraic types we wish to
+write fully generic functions over (\refsec{algclass}).
+
+\paragraph{\chaptitle{univ}}
+We review the concept of types (\refsec{types}) and universes
+(\refsec{universes}) in type theory. In particular, we classify both
+types and universes according to a detailed account of various
+properties they can have.
+
+\paragraph{\chaptitle{generic}}
+We clarify what we mean by \textit{generic programming}
+(i.e. programming over many types, using various forms of
+polymorphism), because the meaning of this term is overloaded.
+We compare and contrast generic
+programming as parametric polymorphism (\refsec{parapoly}) and
+ad hoc polymorphism (\refsec{adhoc}). Additionally, we introduce the
+idea of \textit{concreteness} (\refsec{abscon}) to help clarify what
+we mean by \textit{fully} generic programming. Programming
+total functions in type theory can be non-trivial, especially as the
+class of types we program over expands during generic programming, so
+review techniques to make total programming possible (\refsec{total}).
+
+\paragraph{\chaptitle{closedtt}}
+This section serves as a mini-version of our thesis, giving examples
+of closed type theories supporting fully generic programming.
+We present (\refsec{closedvecu})
+the closed type theory of \textit{Closed Vector Types}, modeling a
+language with a built-in collection of types related to vector
+operations. We show how to write a fully generic \Fun{sum} function
+over the language of \textit{Closed Vector Types}.
+Then we present (\refsec{closedw}) the closed type theory of
+\textit{Closed Well-Order Types}, modeling a language with
+algebraic datatype declarations. Unfortunately, while this closed
+universe model is easy to define and supports fully generic
+programming, the \Data{W} type it
+uses to model algebraic types is inadequate for our purposes.
+
+\subsubsection{\parttitle{open}}
+
+\subsubsection{\parttitle{closed}}
+
+\subsubsection{\parttitle{postlude}}

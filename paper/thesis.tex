@@ -13,6 +13,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\usepackage{nameref}
+
 \usepackage{amsthm}
 \usepackage{lmodern}
 \usepackage[sort&compress,square,comma,numbers,longnamesfirst]{natbib}
@@ -66,6 +68,9 @@
 \newcommand{\dfn}[1]{\mathrm{\mathbf{#1}} \triangleq}
 \newcommand{\tp}[1]{\mathrm{\mathbf{#1}}}
 \newcommand{\stm}[1]{\mathrm{\mathbf{#1}}}
+
+\newcommand{\parttitle}[1]{\refpart{#1}: \nameref{part:#1}}
+\newcommand{\chaptitle}[1]{\refchap{#1}: \nameref{ch:#1}}
 
 \newcommand{\refpart}[1]{Part \ref{part:#1}}
 \newcommand{\refch}[1]{Chapter \ref{ch:#1}}

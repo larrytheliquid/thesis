@@ -37,7 +37,7 @@ each of these examples, we emphasize the definition of
 \AgdaData{Code} (i.e. what the function is polymorphic over).
 
 
-\section{Parametric Polymorphism}
+\section{Parametric Polymorphism}\label{sec:parapoly}
 
 A \textit{parametrically polymorphic} function is defined uniformly
 over its codes and their meanings. That is, the function does not inspect the
