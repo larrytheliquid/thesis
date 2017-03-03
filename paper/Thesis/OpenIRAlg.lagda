@@ -6,6 +6,7 @@ open import Data.Bool
 open import Data.Unit
 open import Data.Sum
 open import Data.Product
+open import Relation.Binary.PropositionalEquality
 \end{code}}
 
 \section{Open Inductive-Recursive Types}\label{sec:iralg}
@@ -932,4 +933,91 @@ constructors of the \AgdaData{Arith} type.
   Prod : (a : Arith) (f : Fin (eval a) → Arith) → Arith
   Prod a f = init (ProdT , (λ u → a) , f , tt)
 \end{code}
+
+
+\paragraph{Vectors}
+
+Now we show how to \textit{derive} an \textit{indexed} type, like
+vectors, from a non-trivially \textit{inductive-recursive} type.
+But first, let's refamiliarize ourselves with the high-level indexed
+vector definition we wish to derive.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  data Vec (A : Set) : ℕ → Set where
+    nil : Vec A zero
+    cons : (n : ℕ) (a : A) (xs : Vec A n) → Vec A (suc n)
+\end{code}
+
+Before describing the transformation to turn this indexed type into an
+isomorphic type using induction-recursion, we describe the intuition
+behind the transformation. A well-known alternative (isomorphic)
+representation of vectors is as the dependent pair (\Data{Σ})
+of a \Data{List} and a constraint on its \Fun{length}, using the
+equality type (\Data{≡}).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  data List (A : Set) : Set where
+    nil : List A
+    cons : (a : A) (xs : List A) → List A
+
+  length : {A : Set} → List A → ℕ
+  length nil = zero
+  length (cons a xs) = suc (length xs)
+
+  Vec : Set → ℕ → Set
+  Vec A n = Σ (List A) (λ xs → length xs ≡ n)
+\end{code}
+
+While this is a nice and simple translation, it doesn't capture the
+notion of a vector as intentionally as we would like. Specifically,
+the \Con{cons} constructor of \Data{List} does not a contain the
+non-inductive natural number argument (\Var{n}). Additionally, while
+the outermost derived \Fun{Vec} contains
+the index constraint (\Data{≡}), the inductive \Data{List} argument
+(\Var{xs}) of \Con{cons} does not.
+
+Instead of deriving \Fun{Vec} from \Data{List} and \Fun{length} like
+above, we can use induction-recursion to mutually define these 3
+components. In particular, this let's us end up with an inductive
+datatype with the same collection of non-inductive constructor
+arguments as our high-level indexed \Data{Vec}, and adds index
+constraints to go along with every inductive-argument.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  mutual
+    Vec : Set → ℕ → Set
+    Vec A n = Σ (Vec₁ A) (λ xs → Vec₂ xs ≡ n)
+
+    data Vec₁ (A : Set) : Set where
+      nil : Vec₁ A
+      cons : (m : ℕ) (a : A) (xsq : Vec A m) → Vec₁ A
+
+    Vec₂ : {A : Set} → Vec₁ A → ℕ
+    Vec₂ nil = zero
+    Vec₂ (cons m x (xs , q)) = suc (Vec₂ xs)
+\end{code}
+
+
+
 
