@@ -839,7 +839,7 @@ as a mini-version of our dissertation, in a simplified but
 unfortunately inadequate setting.
 
 \paragraph{\chaptitle{intro}}
-This section concludes the introduction.
+This chapter concludes the introduction.
 We already reviewed dependently typed languages, and how code reuse
 serves as our motivation (\refsec{deplang}). We also demonstrated what
 fully generic programming looks like in a limiting setting, and
@@ -868,7 +868,7 @@ class of types we program over expands during generic programming, so
 review techniques to make total programming possible (\refsec{total}).
 
 \paragraph{\chaptitle{closedtt}}
-This section serves as a mini-version of our thesis, giving examples
+This chapter serves as a mini-version of our thesis, giving examples
 of closed type theories supporting fully generic programming.
 We present (\refsec{closedvecu})
 the closed type theory of \textit{Closed Vector Types}, modeling a
@@ -883,6 +883,24 @@ programming, the \Data{W} type it
 uses to model algebraic types is inadequate for our purposes.
 
 \subsubsection{\parttitle{open}}
+
+In this part we focus on modeling algebraic datatypes in
+\textit{open type theory}, whose collection of types grows as more
+types are declared. While algebraic types defined using \Data{W} are
+inadequate (in open type theory and closed type theory), types defined
+using \textit{initial algebra semantics} are not.
+This part explains how to model initial algebra semantics in type
+theory (by defining the \Data{Desc} and \Data{μ} types),
+which is much more involved than defining the \Data{W} type.
+
+\paragraph{\chaptitle{open}}
+In this chapter we progress through a series of initial algebra
+semantics for incrementally more expressive classes of datatypes,
+starting with non-dependent algebraic types and ending with
+inductive-recursive types.
+We motivate the (formal) type theory models with
+their category theory equivalents. We also give examples of modeling
+values, not just types, using initial algebra semantics.
 
 \subsubsection{\parttitle{closed}}
 
