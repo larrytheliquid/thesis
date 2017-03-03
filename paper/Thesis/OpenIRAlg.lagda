@@ -991,7 +991,7 @@ the index constraint (\Data{≡}), the inductive \Data{List} argument
 (\Var{xs}) of \Con{cons} does not.
 
 Instead of deriving \Fun{Vec} from \Data{List} and \Fun{length} like
-above, we can use induction-recursion to mutually define these 3
+above, we can use induction-recursion to \textit{mutually} define these 3
 components. In particular, this let's us end up with an inductive
 datatype with the same collection of non-inductive constructor
 arguments as our high-level indexed \Data{Vec}, and adds index
@@ -1011,13 +1011,24 @@ module _ where
 
     data Vec₁ (A : Set) : Set where
       nil : Vec₁ A
-      cons : (m : ℕ) (a : A) (xsq : Vec A m) → Vec₁ A
+      cons : (n : ℕ) (a : A) (xsq : Vec A n) → Vec₁ A
 
     Vec₂ : {A : Set} → Vec₁ A → ℕ
     Vec₂ nil = zero
-    Vec₂ (cons m x (xs , q)) = suc (Vec₂ xs)
+    Vec₂ (cons n x (xs , q)) = suc (Vec₂ xs)
 \end{code}
 
+Above, we have moved the derived indexed type \Fun{Vec} to the top of
+the mutual block. Next, \Data{List} has become the inductive-recursive
+type \Data{Vec₁}, and \Fun{length}
+has become its decoding function \Fun{Vec₂}.
+The inductive-recursive \Data{Vec₁} type now contains the
+non-inductive \Var{n} argument of \Con{cons}
+(just like our high-level indexed \Data{Vec} type).
+The type of the inductive argument (\Var{xsq}) of \Con{cons} is
+the derived \Fun{Vec}. This means it contains a dependent pair of an
+inductive-recursive \Data{Vec₁} (like \Data{List}), and its
+\Fun{Vec₂} (like \Fun{length}) constraint.
 
 
 
