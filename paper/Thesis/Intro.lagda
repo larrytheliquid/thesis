@@ -869,7 +869,8 @@ review techniques to make total programming possible (\refsec{total}).
 
 \paragraph{\chaptitle{closedtt}}
 This chapter serves as a mini-version of our thesis, giving examples
-of closed type theories supporting fully generic programming.
+of closed type theories (i.e. those that do not contain \Data{Set})
+supporting fully generic programming.
 We present (\refsec{closedvecu})
 the closed type theory of \textit{Closed Vector Types}, modeling a
 language with a built-in collection of types related to vector
@@ -903,5 +904,52 @@ their category theory equivalents. We also give examples of modeling
 values, not just types, using initial algebra semantics.
 
 \subsubsection{\parttitle{closed}}
+
+In this part we switch back to closed type theory, returning back to
+the setting from which we diverged in \refsec{wuni},
+but this time using an adequate equivalent of the language of
+\textit{Closed Well-Order Types}. We also go one step further,
+defining a closed \textit{hierarchy} of closed types.
+
+\paragraph{\chaptitle{closed}}
+In this chapter we define the closed type theory
+of \textit{Closed Inductive-Recursive Types}. This adapts the previous
+initial algebra semantics from an open type theory setting to a closed
+type theory setting. We define the
+\textit{Closed Inductive-Recursive Types} in Agda, serving as a
+formal model of a closed dependently typed language supporting
+datatype declarations. 
+
+\paragraph{\chaptitle{fullyg}}
+In this chapter we provide examples of writing fully generic functions over
+\textit{Closed Inductive-Recursive Types}. These functions can be
+applied to values of any type in our model, can recurse into
+non-inductive and inductive arguments, and can eliminate any value in
+our model. Significantly, our generic functions are examples of how to
+deal with dependencies among \textit{inductive} arguments, as such
+dependencies only exist for inductive-recursive types.
+
+\paragraph{\chaptitle{hier}}
+Up to this point we have worked with a closed type theory modeling the
+first universe of a hierarchy, which contains values but not types.
+In this chapter we show how to extend a closed type theory to a
+hierarchy of universes, which contains types (in addition to values)
+at every level of the hierarchy beyond the first.
+The chapter reviews how to model a hierarchy of
+\textit{Closed Well-Order Types}, and then defines a model of the
+hierarchy of \textit{Closed Inductive-Recursive Types}. We
+highlight the subtleties necessary to adquately define a hierarchy
+containing algebraic types modeled using initial algebra semantics.
+
+\paragraph{\chaptitle{fulliesg}}
+In this chapter we show how to extend \textit{fully generic functions}
+to also be \textit{universe-level generic}. We call such functions
+\textit{leveled fully generic functions}, and they can be applied to
+any type at any level of the universe hierarchy . Importantly, leveled
+fully generic programming is possible because our universe hierarchy
+model is closed (i.e. the hierarchy still does not contain \Data{Set},
+but additionally does not contain \Data{Level}).
+
+
 
 \subsubsection{\parttitle{postlude}}
