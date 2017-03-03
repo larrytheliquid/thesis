@@ -472,11 +472,8 @@ respectfully.
 Having formally modeled \textit{initial algebra semantics},
 by reifying parts of the categorical model as
 datatypes of type theory, now we
-show how to model (or encode) specific types
-(both their type formers and values).
-Henceforth, when we say ``encode'', we refer to
-\textit{modeling types or values}
-using our formal model of initial algebra semantics.
+provide examples of modeling specific type formers and values
+(using the formal model).
 
 \paragraph{Natural Numbers}
 
