@@ -22,7 +22,7 @@ definition of the type.
 
 In all of the previous algebraic semantics we have worked with,
 the pattern functors were \textit{endofunctors}
-of the category of sets. That is, each functor
+between the category of sets. That is, each functor
 ($F : \set \arr \set$)
 mapped each set to another set.
 Consequently, the fixpoint

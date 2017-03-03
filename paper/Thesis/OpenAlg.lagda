@@ -54,10 +54,11 @@ suitable for fully generic programming.
 
 \section{Open Non-Dependent Types}\label{sec:nondepalg}
 
-In this section we review the algebraic semantics for
+In this section we review the initial algebra semantics for
 \textit{non-dependent} and potentially
-\textit{inductive} (\refsec{ind}) types. Then, we show how to
-\textit{model} algebraic semantics within type theory by converting abstract
+\textit{inductive} (\refsec{ind}) types. We begin with the categorical
+model, and then transition to the formal model
+(i.e. within type theory) by converting abstract
 mathematical constructs to concrete datatypes (analogous to how we model
 the abstract notion of a universe as concrete code and meaning
 function types in \refsec{umodel}).
@@ -66,13 +67,20 @@ function types in \refsec{umodel}).
   meanings, not the technical meanings we defined in
   \refsec{abscon}.
 }
+Henceforth, when we say ``categorical model'' or ``formal model'',
+we omit clarifying that these models are used as an
+\textit{initial algebra semantics} of types.
 
 \subsection{Categorical Model}\label{sec:nondepalgsem}
 
-The algebraic semantics for an inductive datatype is the
+The categorical model of an inductive datatype is the
 \textit{least fixed point} of a polynomial equation
 represented as a \textit{pattern functor}
-($F : \set \arr \set$).
+($F : \set \arr \set$). The pattern functor is an endofunctor from the
+category of sets to itself. We are only concerned with the
+object map of the pattern functor,
+which maps a $\set$ (representing a type) to another $\set$.
+
 The input of the pattern functor
 (conventionally named $X$)
 represents the inductive set being
@@ -100,7 +108,7 @@ For example, consider the datatype declaration for the natural numbers.
     suc : ℕ → ℕ
 \end{code}
 
-The algebraic semantics of the \AgdaData{ℕ} type is the following
+The categorical model of the \AgdaData{ℕ} type is the following
 fixpoint equation.
 $$
 \nat \triangleq \mu X.~1 + X
@@ -158,7 +166,7 @@ binary trees (parameterized by \AgdaVar{A} and \AgdaVar{B}) containing
     branch : Tree A B → B → Tree A B → Tree A B
 \end{code}
 
-The algebraic semantics of the \AgdaData{Tree} type is the following
+The categorical model of the \AgdaData{Tree} type is the following
 fixpoint equation.
 $$
 \dfn{Tree} \lambda A.~ \lambda B.~ \mu X.~ A + X \cdot B \cdot X
@@ -177,17 +185,20 @@ conjunction, and is analogous to the pair type (\AgdaData{×}).
 %% TODO maybe mention similarity to param universe ParStar
 \subsection{Formal Model}\label{sec:nondepalgmod}
 
-To take advantage of algebraic semantics within type theory, we must
-\textit{model} its abstract notions using concrete datatypes and
+To take advantage of a categorical model of initial algebra semantics
+within type theory, we create a formal model by translating
+abstract definitions to concrete datatypes and
 functions. Recall that $\mu$ semantically defines a datatype by taking
 the fixpoint (using $\mu$) of a pattern functor $F : \set \arr
 \set$. It is called a \textit{pattern} functor because its ``pattern''
 must be restricted to using the polynomial set constructions covered in
 \refsec{nondepalgsem}.
 
-Informally we can check that a functor is defined under these
-restrictions, but in type theory we must formally capture these
-restrictions. We model algebraic semantics in type theory by reifying
+Informally (in the categorical model),
+we can check that a functor is defined under these
+restrictions, but in type theory (in the formal model)
+we must formally capture these
+restrictions. We define the formal model by reifying
 the \textit{pattern} fragment (enforcing restrictions)
 of functors as a datatype (\AgdaData{Desc} below), the actual
 pattern \textit{functor}
@@ -196,7 +207,7 @@ and the \textit{fixpoint} operator as a datatype (\AgdaData{μ} below).
 
 \paragraph{Descriptions}
 
-The first part of our algebraic model is the type of descriptions
+The first part of our formal model is the type of descriptions
 (\AgdaData{Desc}), a syntax for the \textit{pattern} fragment of functors.
 A \AgdaData{Desc} is the syntactic reification of
 the polynomial expression language that must be used for a functor to
@@ -262,7 +273,7 @@ module El where
   open Desc
 \end{code}}
 
-The next part of our algebraic model is the reification of pattern functors
+The next part of our formal model is the reification of pattern functors
 ($F : \set \arr \set$) as \textit{type families} (\refsec{tfam})
 with \AgdaData{Set} as their domain
 (\AgdaFun{F} : \AgdaData{Set} \arr~\AgdaData{Set}).
@@ -350,14 +361,14 @@ example, pass \AgdaVar{X} to \AgdaVar{A}).
 
 \paragraph{Fixpoints}
 
-The final part of our algebraic model is the reification of the least
+The final part of our formal model is the reification of the least
 fixed point operator ($\mu : (\set \arr \set) \arr \set$)
 for pattern functors. We reify the
 least fixed point operator (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
 as a datatype parameterized by a \textit{description},
 rather than a pattern functor ($\set \arr \set$).
 
-While algebraic semantics applies the least fixpoint
+While categorical model applies the least fixpoint
 operator directly to a pattern functor ($\mu~F$), our model instead
 applies it to a description (\AgdaData{μ} \AgdaVar{D}).
 The pattern functor ($\set \arr \set$) argument of $\mu$ can
@@ -379,7 +390,7 @@ module Fix where
   data μ (D : Desc) : Set where
 \end{code}
 
-In algebraic semantics the initial algebra
+In the categorical model the initial algebra
 ($\anit$) is used to construct values of the fixpoint of a
 functor $F$.
 $$
@@ -458,10 +469,14 @@ respectfully.
 
 \subsection{Examples}\label{sec:nondepalgtps}
 
-Having modeled \textit{algebraic semantics} by reifying its concepts into
-datatypes of type theory (i.e. our \textit{algebraic model}), we now
-show how to encode specific types (both their type formers and values)
-using our algebraic model.
+Having formally modeled \textit{initial algebra semantics},
+by reifying parts of the categorical model as
+datatypes of type theory, now we
+show how to model (or encode) specific types
+(both their type formers and values).
+Henceforth, when we say ``encode'', we refer to
+\textit{modeling types or values}
+using our formal model of initial algebra semantics.
 
 \paragraph{Natural Numbers}
 
@@ -534,8 +549,8 @@ as a function argument.
 \end{code}
 
 There is no need to provide examples of using natural
-numbers encoded using our algebraic model. Once we
-define the type former and constructors according to their standard
+numbers encoded using our formal model. Once we
+model the type former and constructors according to their standard
 interface (i.e. their standard type signatures), their usage is
 indistinguishable from using type formers and constructors defined using
 datatype declarations (rather than \AgdaData{μ}).
@@ -604,7 +619,7 @@ expands in the body of the function, such as the
 In future examples we omit examples of values and functions
 defined over modeled types. As explained, once we have derived the
 type former and constructors of a type using the primitives of our
-algebraic model, using the types to define values and function
+formal model, using the types to define values and function
 definitions is indistinguishable from using declared types thanks to
 syntactic conveniences afforded by Agda.
 
