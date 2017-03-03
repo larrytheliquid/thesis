@@ -9,16 +9,15 @@ open import Data.Product
 
 \section{Open Infinitary Types}\label{sec:infalg}
 
-In this section we review the algebraic semantics for
+In this section we review the initial algebra semantics for
 \textit{infinitary} (\refsec{inft}) non-dependent types.
-We extend our previous algebraic semantics, algebraic model
-within type theory,
-and examples of modeled types to support \textit{infinitary}
+We extend our previous categorical model, formal model,
+and examples to support \textit{infinitary}
 constructor arguments.
 
 \subsection{Categorical Model}\label{sec:infalgsem}
 
-The algebraic semantics for \textit{infinitary} inductive datatypes
+The categorical model of \textit{infinitary} inductive datatypes
 reuses the 1, (+) and ($\cdot$) polynomial set constructions. However,
 the inductive occurrences construction $X$ is subsumed by the
 \textit{infinitary} occurrences construction $X^A$. Functions are the
@@ -64,8 +63,8 @@ domain.
     suc : (f : ⊤ → ℕ) → ℕ
 \end{code}
 
-The algebraic semantics for infinitary \AgdaData{ℕ} is the fixpoint
-equation below.
+The categorical model of the infinitary \AgdaData{ℕ} type
+is the fixpoint equation below.
 $$
 \nat \triangleq \mu X.~1 + X^1
 $$
@@ -95,8 +94,8 @@ module _ where
     branch : (f : ⊤ → Tree A B) (b : B) (g : ⊤ → Tree A B) → Tree A B
 \end{code}
 
-This translates to the the algebraic semantics for infinitary binary
-trees below without any surprises.
+This translates to the the categorical model of infinitary binary
+trees below, without any surprises.
 $$
 \dfn{Tree} \lambda A.~ \lambda B.~ \mu X.~ A + X^1 \cdot B \cdot X^1
 $$
@@ -149,7 +148,8 @@ infinitary argument, where the domain is now \AgdaData{Bool} instead
 of \AgdaData{⊤}. It makes sense for the domain (i.e. branching factor)
 to be \AgdaData{Bool}, as we are defining \textit{binary} trees.
 Given that the cardinality of \AgdaData{Bool} is 2, we use
-algebraic semantics to define infinitary binary
+initial algebra semantics to define a categorical model of
+infinitary binary
 trees by raising $X$ to the power of 2 in the encoding of the
 \AgdaCon{branch} constructor.
 $$
@@ -158,15 +158,15 @@ $$
 
 \subsection{Formal Model}\label{sec:infalgmod}
 
-To model the alegbraic semantics of \textit{infinitary} types in type
-theory, we make minor changes to our previous non-infinitary model
-(\refsec{nondepalgmod}). In all aspects of our model, we change from
-modeling merely inductive occurrences of types ($X$) to infinitary
-occurrences ($X^A$).
+To formally model \textit{infinitary} types,
+we make minor changes to our previous non-infinitary formal model
+(\refsec{nondepalgmod}). In all aspects of our formal model,
+we change from modeling merely inductive occurrences of types ($X$) to
+infinitary occurrences ($X^A$).
 
 \paragraph{Descriptions}
 
-Our model of descriptions stays the same, except that we replace the
+Our formal model of descriptions stays the same, except that we replace the
 syntax for inductive occurrences (\AgdaCon{`X}) with a syntax for
 infinitary occurrences (\AgdaCon{`X\carot}).
 While inductive occurrences (\AgdaCon{`X}) have no arguments,
@@ -210,8 +210,9 @@ the cardinality of the domain argument of type \AgdaData{Set}).
 
 \paragraph{Pattern Functors}
 
-Again, pattern functors ($F : \set \arr \set$) are not modeled
-directly. Instead, the model
+Again, pattern functors ($F : \set \arr \set$)
+are not formally modeled
+directly. Instead, the formal model
 of a pattern functor (\AgdaFun{F} : \AgdaData{Set}
 \arr~\AgdaData{Set})
 is the result of partially applying a
@@ -276,9 +277,9 @@ from the unit type to the inductive \AgdaVar{X} occurrence.
 
 \paragraph{Fixpoints}
 
-The algebraic semantics for least fixed points
+The initial algebra semantics for least fixed points
 ($\mu : (\set \arr \set) \arr \set$) of \textit{infinitary} types
-is modeled (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
+is formally modeled (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
 the same way as the non-infinitary version. The
 \AgdaCon{init} constructor of \AgdaData{μ},
 modeling the initial algebra ($\anit$), is also
@@ -340,7 +341,7 @@ infinitary type, as the codomain ends with an inductive occurrence
 
 \subsection{Examples}\label{sec:infalgtps}
 
-Now we repeat the examples of models of non-infinitary types
+Now we repeat the examples of formal models of non-infinitary types
 (\refsec{nondepalgmod}), converting models to their infinitary
 counterparts.
 A straightforward translation from the non-infinitary to the
@@ -456,7 +457,7 @@ pattern functor \AgdaFun{NatD}.
 We expose the non-infinitary type signature of
 \AgdaCon{suc}, acting as an interface.
 The implementation of the \textit{infinitary}
-pattern functor of the algebraic model is hidden by this interface.
+pattern functor of the formal model is hidden by this interface.
 
 \AgdaHide{
 \begin{code}
