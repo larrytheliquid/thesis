@@ -957,7 +957,7 @@ module _ where
 
 Before describing the transformation to turn this indexed type into an
 isomorphic type using induction-recursion, we describe the intuition
-behind the transformation. A well-known alternative (isomorphic)
+behind the transformation. A well-known derived (isomorphic)
 representation of vectors is as the dependent pair (\Data{Σ})
 of a \Data{List} and a constraint on its \Fun{length}, using the
 equality type (\Data{≡}).
@@ -992,8 +992,9 @@ the index constraint (\Data{≡}), the inductive \Data{List} argument
 
 Instead of deriving \Fun{Vec} from \Data{List} and \Fun{length} like
 above, we can use induction-recursion to \textit{mutually} define these 3
-components. In particular, this let's us end up with an inductive
-datatype with the same collection of non-inductive constructor
+components. Induction-recursion allows us to derive an inductive
+datatype (\Data{Vec₁}, analogous to \Data{List})
+with the same collection of non-inductive constructor
 arguments as our high-level indexed \Data{Vec}, and adds index
 constraints to go along with every inductive-argument.
 
@@ -1026,9 +1027,15 @@ The inductive-recursive \Data{Vec₁} type now contains the
 non-inductive \Var{n} argument of \Con{cons}
 (just like our high-level indexed \Data{Vec} type).
 The type of the inductive argument (\Var{xsq}) of \Con{cons} is
-the derived \Fun{Vec}. This means it contains a dependent pair of an
+the derived \Fun{Vec} definition.
+Hence, \Var{xsq} contains a dependent pair of an
 inductive-recursive \Data{Vec₁} (like \Data{List}), and its
 \Fun{Vec₂} (like \Fun{length}) constraint.
+
+The decoding function (appropr\Fun{Vec₂}) is defined by matching on
+the constructors of the inductive-recursive type (\Data{Vec₁}), and
+returning what the original high-level indexed type (\Data{Vec}) had
+in the index position for the corresponding constructor. 
 
 
 
