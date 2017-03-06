@@ -955,10 +955,10 @@ module _ where
     cons : (n : ℕ) (a : A) (xs : Vec A n) → Vec A (suc n)
 \end{code}
 
-Before describing the transformation to turn this indexed type into an
+Before describing the transformation~\cite{TODO} to turn this indexed type into an
 isomorphic type using induction-recursion, we describe the intuition
 behind the transformation. A well-known derived (isomorphic)
-representation of vectors is as the dependent pair (\Data{Σ})
+representation of vectors is the dependent pair (\Data{Σ})
 of a \Data{List} and a constraint on its \Fun{length}, using the
 equality type (\Data{≡}).
 
@@ -1007,35 +1007,77 @@ module _ where
 
 \begin{code}
   mutual
-    Vec : Set → ℕ → Set
-    Vec A n = Σ (Vec₁ A) (λ xs → Vec₂ xs ≡ n)
-
     data Vec₁ (A : Set) : Set where
       nil : Vec₁ A
       cons : (n : ℕ) (a : A) (xsq : Vec A n) → Vec₁ A
 
     Vec₂ : {A : Set} → Vec₁ A → ℕ
     Vec₂ nil = zero
-    Vec₂ (cons n x (xs , q)) = suc (Vec₂ xs)
+    Vec₂ (cons n x xsq) = suc n
+
+    Vec : Set → ℕ → Set
+    Vec A n = Σ (Vec₁ A) (λ xs → Vec₂ xs ≡ n)
 \end{code}
 
-Above, we have moved the derived indexed type \Fun{Vec} to the top of
-the mutual block. Next, \Data{List} has become the inductive-recursive
-type \Data{Vec₁}, and \Fun{length}
-has become its decoding function \Fun{Vec₂}.
-The inductive-recursive \Data{Vec₁} type now contains the
-non-inductive \Var{n} argument of \Con{cons}
-(just like our high-level indexed \Data{Vec} type).
-The type of the inductive argument (\Var{xsq}) of \Con{cons} is
-the derived \Fun{Vec} definition.
-Hence, \Var{xsq} contains a dependent pair of an
-inductive-recursive \Data{Vec₁} (like \Data{List}), and its
-\Fun{Vec₂} (like \Fun{length}) constraint.
+We transform (as above) a high-level indexed type
+(like \Data{Vec}) into a derived
+version (like \Fun{Vec}), using induction-recursion, by changing 3 things:
 
-The decoding function (appropr\Fun{Vec₂}) is defined by matching on
-the constructors of the inductive-recursive type (\Data{Vec₁}), and
-returning what the original high-level indexed type (\Data{Vec}) had
-in the index position for the corresponding constructor. 
+\begin{enumerate}
+\item
+  The original indexed type (\Data{Vec}) becomes an inductive-recursive
+  type (\Data{Vec₁}), with a decoding function (\Fun{Vec₂}).
+  The inductive-recursive type (\Data{Vec₁}) still contains all
+  non-inductive arguments (like \Var{n} of \Con{cons}).
 
+\item
+  Original inductive arguments (\Var{xs}) of the
+  indexed type are replaced by a value (\Var{xsq}) of a derived dependent pair
+  type (\Fun{Vec}). The first component of the dependent pair is the
+  inductive-recursive type \Data{Vec₁}, and the second component
+  constrains the index of the original inductive argument (\Var{n})
+  to equal what the decoding function (\Fun{Vec₂}) returns.
 
+\item
+  The decoding function (\Fun{Vec₂}) is defined by matching on
+  the constructors of the inductive-recursive type (\Data{Vec₁}), and
+  returning what the original high-level indexed type (\Data{Vec}) had
+  in the index position of the codomain for the corresponding constructor.
 
+\end{enumerate}
+
+Finally, we make one last change, allowing us to formally model the indexed
+type of vectors using our initial algebra semantics of inductive-recursive
+types. The inductive-recursive type \Data{Vec₁} curries inductive
+occurrences of the derived dependent pair (\Data{Vec}) as 2 separate
+arguments. Below, \Var{xsq} is replaced by \Var{xs} (the inductive
+argument of \Data{Vec₁}) and \Var{q} (the constraint). By consequence,
+the dependent pair \Fun{Vec} no longer needs to be defined mutually.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  mutual
+    data Vec₁ (A : Set) : Set where
+      nil : Vec₁ A
+      cons : (n : ℕ) (a : A) (xs : Vec₁ A) (q : Vec₂ xs ≡ n) → Vec₁ A
+
+    Vec₂ : {A : Set} → Vec₁ A → ℕ
+    Vec₂ nil = zero
+    Vec₂ (cons n x xs q) = suc (Vec₂ xs)
+
+  Vec : Set → ℕ → Set
+  Vec A n = Σ (Vec₁ A) (λ xs → Vec₂ xs ≡ n)
+\end{code}
+
+Above, we also changed the \Con{cons} case of the decoding
+function (\Fun{Vec₂}) to make a recursive call instead of immediately
+returning \Var{n}. This change is not necessary
+(but it is still isomorphic to the high-level indexed \Data{Vec}),
+and we only do it to make
+the inductive-recursive definition more pedagogically interesting.
