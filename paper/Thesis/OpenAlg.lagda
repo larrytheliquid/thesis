@@ -690,10 +690,7 @@ inductive function argument (i.e. the right branch).
 We introduce the type of
 \textit{untyped $\lambda$-calculus terms} (\AgdaData{Term}) as a final
 and slightly more complex example
-(i.e. modeling a type with more than 2 constructors). We also
-define semantics for the untyped lambda calculus in subsequent
-sections (using different datatype features), using
-\AgdaData{Term} as a running example.
+(i.e. modeling a type with more than 2 constructors). 
 Below we declare the \AgdaData{Term} type, consisting of
 variable references (\AgdaCon{var}), lambda abstractions
 (\AgdaCon{lam}), and applications (\AgdaCon{app}). 
