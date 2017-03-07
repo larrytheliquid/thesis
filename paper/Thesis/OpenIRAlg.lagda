@@ -1139,12 +1139,7 @@ and an index constraint using the decoding function (\Fun{Vec₂}).
 
 The main thing to notice about the way we model the constructors is
 that our model of indexed vectors (\Fun{Vec}) is in terms of a
-dependent pair. Thus, \Con{nil} and \Con{cons} both return an
-inductive-recursive \Fun{Vec₁} in the first component of the pair, and
-an index constraint proof (in terms of \Fun{Vec₂}) in the second
-component of the pair. Additionally, \Con{cons} destructs its
-``inductive'' \Fun{Vec} arguments in terms of the underlying pair
-components \Var{xs} and \Var{q}.
+dependent pair. 
 
 \begin{code}
   nil : {A : Set} → Vec A zero
@@ -1154,3 +1149,9 @@ components \Var{xs} and \Var{q}.
   cons n a (xs , q) = init (consT , n , a , (λ u → xs) , q , tt) , refl
 \end{code}
 
+Both \Con{nil} and \Con{cons} return an
+inductive-recursive \Fun{Vec₁} in the first component of the pair, and
+an index constraint proof (in terms of \Fun{Vec₂}) in the second
+component of the pair. Additionally, \Con{cons} destructs its
+``inductive'' \Fun{Vec} arguments in terms of the underlying pair
+components \Var{xs} and \Var{q}.
