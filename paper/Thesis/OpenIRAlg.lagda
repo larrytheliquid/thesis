@@ -1069,15 +1069,88 @@ module _ where
 
     Vec₂ : {A : Set} → Vec₁ A → ℕ
     Vec₂ nil = zero
-    Vec₂ (cons n x xs q) = suc (Vec₂ xs)
+    Vec₂ (cons n x xs q) = suc n
 
   Vec : Set → ℕ → Set
   Vec A n = Σ (Vec₁ A) (λ xs → Vec₂ xs ≡ n)
 \end{code}
 
-Above, we also changed the \Con{cons} case of the decoding
-function (\Fun{Vec₂}) to make a recursive call instead of immediately
-returning \Var{n}. This change is not necessary
-(but it is still isomorphic to the high-level indexed \Data{Vec}),
-and we only do it to make
-the inductive-recursive definition more pedagogically interesting.
+%% Above, we also changed the \Con{cons} case of the decoding
+%% function (\Fun{Vec₂}) to make a recursive call instead of immediately
+%% returning \Var{n}. This change is not necessary
+%% (but it is still isomorphic to the high-level indexed \Data{Vec}),
+%% and we only do it to make
+%% the inductive-recursive definition more pedagogically interesting.
+
+Now we formally model the \textit{slice-based} pattern functor of the
+inductive-recursive \Data{Vec₁} type.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open import Relation.Binary.PropositionalEquality
+ open De
+ open El1
+ open El2
+ open Fix
+ private
+\end{code}}
+
+\begin{code}
+  data VecT : Set where
+    nilT consT : VecT
+
+  VecDs : Set → VecT → Desc ℕ
+  VecDs A nilT = `ι zero
+  VecDs A consT =
+    `σ ℕ λ n →
+    `σ A λ a →
+    `δ ⊤ λ xs →
+    `σ (xs tt ≡ n) λ q →
+    `ι (suc n)
+
+  VecD : Set → Desc ℕ
+  VecD A = `σ VecT (VecDs A)
+\end{code}
+
+We model the inductive-recursive type (\Data{Vec₁})
+and decoding function (\Fun{Vec₂}) by applying the
+type component (\Data{μ₁}) and decoding function component
+(\Fun{μ₂}) of the fixpoint operator to the description
+(\Fun{VecD}).
+
+\begin{code}
+  Vec₁ : Set → Set
+  Vec₁ A = μ₁ (VecD A)
+
+  Vec₂ : (A : Set) → Vec₁ A → ℕ
+  Vec₂ A = μ₂ (VecD A)
+\end{code}
+
+Finally, we model the indexed type (\Fun{Vec}) as a dependent pair, derived in
+terms of the inductive-recursive type (\Fun{Vec₁})
+and an index constraint using the decoding function (\Fun{Vec₂}).
+
+\begin{code}
+  Vec : Set → ℕ → Set
+  Vec A n = Σ (Vec₁ A) (λ xs → Vec₂ A xs ≡ n)
+\end{code}
+
+The main thing to notice about the way we model the constructors is
+that our model of indexed vectors (\Fun{Vec}) is in terms of a
+dependent pair. Thus, \Con{nil} and \Con{cons} both return an
+inductive-recursive \Fun{Vec₁} in the first component of the pair, and
+an index constraint proof (in terms of \Fun{Vec₂}) in the second
+component of the pair. Additionally, \Con{cons} destructs its
+``inductive'' \Fun{Vec} arguments in terms of the underlying pair
+components \Var{xs} and \Var{q}.
+
+\begin{code}
+  nil : {A : Set} → Vec A zero
+  nil = init (nilT , tt) , refl
+
+  cons : {A : Set} → (n : ℕ) (a : A) (xs : Vec A n) → Vec A (suc n)
+  cons n a (xs , q) = init (consT , n , a , (λ u → xs) , q , tt) , refl
+\end{code}
+
