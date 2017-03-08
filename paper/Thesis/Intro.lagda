@@ -20,8 +20,8 @@ within a dependently typed
 language~\cite{martinintuitionistic,genericwithdtp}.
 Below, we contrast typical
 generic programming~\cite{generic1,generic2}
-with our new version, which we
-call \textit{fully generic programming}.
+with the approach we describe in this thesis,
+which we call \textit{fully generic programming}.
 
 \paragraph{Generic Programming}
 Typical generic programming captures the pattern of folding an
@@ -36,14 +36,16 @@ returns 1 plus the sum of:
 \item The \textit{recursive} sum of the number of inductive arguments.
 \end{itemize}
 Applying \AgdaFun{size}
-to a single-element list containing a pair of booleans
+to a single-element list containing a pair of
+booleans (\texttt{(True, False):[]})
 results in 3: the sum of
 the \AgdaCon{cons} constructor,
 the pair,
 and the \AgdaCon{nil} constructor. Because the pair is a non-inductive
 argument from the perspective of the list, its size is counted
 atomically as 1 (it would be counted as 1 even if it were a value of
-an \textit{inductive} datatype other than lists, like a tree).
+an \textit{inductive} datatype other than lists, like a tree,
+since it is not inductive with respect to lists).
 
 \paragraph{Fully Generic Programming}
 Fully generic programming (\refsec{fullygeneric}) captures the pattern of folding an
@@ -58,7 +60,8 @@ returns 1 plus the sum of:
 \item The \textit{recursive} sum of the number of inductive arguments.
 \end{itemize}
 Applying \AgdaFun{count}
-to a single-element list containing a pair of booleans
+to a single-element list containing a pair of
+booleans (\texttt{(True, False):[]})
 results in 5: the sum of
 the \AgdaCon{cons} constructor,
 the pair (\AgdaCon{,}) constructor,
@@ -69,12 +72,12 @@ recurses through the components of the pair.
 
 In the remainder of this introduction we
 provide an overview of dependently typed languages
-\& motivate our work (\refsec{deplang}),
+and motivate our work (\refsec{deplang}),
 give an example of fully generic programming over a limited collection
 of datatypes (\refsec{fullyeg}),
 describe the class of datatypes that we have been able to extend
-fully generic programming to (\refsec{algclass}),
-and finally cover our thesis statement \& contributions
+the fully generic programming approach to (\refsec{algclass}),
+and finally cover our thesis statement and contributions
 (\refsec{thesis}).
 
 
@@ -99,8 +102,8 @@ notion of dependency betweeen types allows any proposition of
 intuitionistic logic to be expressed as a type.
 A value (or equivalently, a total program) inhabiting a
 type encoding a proposition serves as its intuitionistic proof. This
-correspondence between values \& types and proofs \& propositions is known
-as the \textit{Curry-Howard Isomorphism}~\cite{curryhoward}.
+correspondence between values \& types, and proofs \& propositions, is known
+as the \textit{Curry-Howard isomorphism}~\cite{curryhoward}.
 For example, below we compare universally quantified
 propositions to dependent function types, and existentially
 propositions to dependent pair types.
@@ -118,7 +121,7 @@ module _ {A : Set} where
   postulate
 \end{code}}
 
-Using the Curry-Howard Isomorphism, we can encode logical
+Using the Curry-Howard isomorphism, we can encode logical
 \textit{preconditions} and \textit{postconditions} at the type level.
 For example, below
 we give the type of a \Fun{lookup} function over lists with a
@@ -157,8 +160,12 @@ are \textit{relations} in the language of logic,
 and are called
 \textit{indexed types}~\cite{indexed1,indexed2}
 in the language of dependent types.
-Rather than constraining a datatype like
-lists using relations after-the-fact, we can create
+Indexed types are (commonly) types whose arguments are values (rather
+than types). For example, less-than (\AgdaData{<})
+takes two natural number (\Data{ℕ}) arguments, and
+equality (\AgdaData{≡}) takes two values of some type \Var{A}.
+Rather than constraining a datatype (like
+lists) using relations after-the-fact, we can create
 more specific (i.e. \textit{indexed})
 variants of datatypes that encode certain
 properties before-the-fact.
@@ -173,7 +180,7 @@ module _ {A : Set} where
 For example, the type of vectors (\Data{Vec} \Var{A} \Var{n})
 is like a length-indexed version of lists. Compared to lists, the type
 former of vectors gains an additional natural number parameter (\Var{n})
-constraining its length. Because the property of of lengths of vectors
+constraining its length. Because the property of the length of a vector
 is encoded at the type level, we can write a variant of \Fun{append}
 where calls to \Fun{length} have been replaced by an index.
 
@@ -213,7 +220,7 @@ for their various algebraic types
 This problem is more pronounced in a dependently typed language, where
 programmers also define indexed variants of types
 (e.g. finite sets, vectors, balanced binary trees, etc.)
-to intrinsically capture preconditions and postconditions.
+that intrinsically capture preconditions and postconditions.
 
 Rather than punishing programmers for creating new datatypes,
 our \textbf{motivation} is to reward them with
@@ -244,9 +251,11 @@ makes sense, as \textit{ad hoc polymorphism} (\refsec{adhoc}) is a
 form of generic programming.
 
 Below we first develop the \Fun{size} function using generic
-programming, and then develop the \Fun{count} function using
+programming (in Haskell and Agda),
+and then develop the \Fun{count} function using
 \textit{fully} generic programming
-(albeit over a fixed and small language),
+(albeit over a fixed and small language,
+and also in Haskell and Agda),
 both described in the introduction (\refch{intro}).
 
 \subsection{Generic Programming}
@@ -430,7 +439,9 @@ In Agda, we declare a new type (\Data{Count}),
 reifying the types over which we will
 generically program \Fun{count}.
 Unlike \Data{Size}, \Data{Count} is an \textit{inductive} type, as
-the arguments to \Con{`Pair} and \Con{`List} are inductive.
+the arguments to \Con{`Pair} and \Con{`List} are inductive
+(i.e. the \Var{A} and \Var{B} arguments have type \Data{Count} below,
+but they have type \Data{Set} in the \Data{Size} datatype).
 
 \begin{code}
   data Count : Set where
@@ -439,7 +450,7 @@ the arguments to \Con{`Pair} and \Con{`List} are inductive.
     `List : (A : Count) → Count
 \end{code}
 
-The types encoded by \Data{Count} can are interpreted
+The types encoded by \Data{Count} are interpreted
 (by the \Fun{⟦\_⟧} function) as actual Agda
 types. The \Fun{⟦\_⟧} function interprets the \textit{inductive}
 arguments of \Con{`Pair} and \Con{`List}
@@ -489,11 +500,16 @@ Finally, \Fun{count} still recurses into the inductive argument
 
 In Agda, generic programming (like the \Fun{count} function) is
 accomplished using a \textit{universe} (\refsec{universes}). A
-universe is the combination of a type of \textit{codes} for types
-(e.g. \Data{Count}) and a \textit{meaning} function (e.g. \Fun{⟦\_⟧})
+universe is the combination of a type of
+\textit{codes} for types
+(e.g. \Data{Count}) and a
+\textit{meaning}
+function (e.g. \Fun{⟦\_⟧})
 mapping codes to actual types. Generic functions (over all types of
 the universe) are dependent function parameterized
-over all type codes and the meaning of the particular code
+over all type codes (\Data{Code} below)
+and the meaning (\Fun{Meaning} below)
+of the particular code
 supplied.
 $$
 (\AgdaVar{c} : \AgdaData{Code})~
@@ -547,7 +563,8 @@ declaration as the declared type.
 The \Data{Desc} universe models an \textit{extensible} collection of
 algebraic datatypes.
 Generic programming over this universe allows users to write functions
-that can be applied to any algebraic datatype a user might declare:
+that can be applied to any algebraic datatype a user might declare
+(whether the type is already declared now or will be declared in the future):
 $$
 (\Var{D} : \Data{Desc})~
 (\Var{x} : \AgdaData{μ}~\AgdaVar{D})
@@ -557,7 +574,7 @@ $$
 Actually, dependently typed languages can only contain the
 \textit{strictly positive} (\refsec{inft}) subset of algebraic
 datatypes (this restriction keeps the language total, hence consistent
-as a logic under the Curry-Howard Isomorphism).
+as a logic under the Curry-Howard isomorphism).
 A consequence of defining
 \Data{Desc} as a strictly positive datatype is that generic
 programming over it corresponds to
@@ -571,7 +588,8 @@ A primary contribution of this thesis is defining a universe that
 combines the fixed collection of built-in types universe
 (\Data{Type}) with the extensible collection of algebraic datatypes
 universe (\Data{Desc}), in a way that supports
-\textit{fully generic programming}.
+\textit{fully generic programming}
+(while remaining consistent under the Curry-Howard isomorphism).
 
 One important property of what makes fully generic programming possible
 in \Data{Count} is that the arguments to its codes
