@@ -16,8 +16,11 @@ module _ where
 
 In this dissertation we expand the class of functions that can be
 written generically for all types, in a type-safe manner,
-within a dependently typed language. Below, we contrast
-typical generic programming with our new version, which we
+within a dependently typed
+language~\cite{martinintuitionistic,genericwithdtp}.
+Below, we contrast typical
+generic programming~\cite{generic1,generic2}
+with our new version, which we
 call \textit{fully generic programming}.
 
 \paragraph{Generic Programming}
@@ -77,25 +80,27 @@ and finally cover our thesis statement \& contributions
 
 \section{Dependently Typed Languages \& Motivation}\label{sec:deplang}
 
-A standard dependently typed language is
+A standard dependently typed
+language~\cite{martin1975intuitionistic,nordstrom1990programming} is
 \textit{purely functional} (meaning the absence of side effects),
 \textit{total}
 (meaning all inductively defined functions
 terminate and cover all possible inputs), and has a
 type system that captures the notion of \textit{dependency}.
-In this thesis we use the dependently typed language Agda~\cite{TODO}
-for all of our developments.
+In this thesis we use the dependently typed language
+Agda~\cite{lang:agda} for all of our developments.
 
 \subsection{Curry-Howard Isomorphism}
 
 A single term language is used to write programs at the value and type
-levels. The combination of total programming at the type level and a
+levels. The combination of
+total programming at the type level and a
 notion of dependency betweeen types allows any proposition of
 intuitionistic logic to be expressed as a type.
 A value (or equivalently, a total program) inhabiting a
 type encoding a proposition serves as its intuitionistic proof. This
 correspondence between values \& types and proofs \& propositions is known
-as the \textit{Curry-Howard Isomorphism}~\cite{TODO}.
+as the \textit{Curry-Howard Isomorphism}~\cite{curryhoward}.
 For example, below we compare universally quantified
 propositions to dependent function types, and existentially
 propositions to dependent pair types.
@@ -149,8 +154,9 @@ $$
 The less-than (\AgdaData{<}) precondition and equality
 (\AgdaData{≡}) postcondition in the examples above
 are \textit{relations} in the language of logic,
-and are called \textit{indexed types} in the language of dependent
-types.
+and are called
+\textit{indexed types}~\cite{indexed1,indexed2}
+in the language of dependent types.
 Rather than constraining a datatype like
 lists using relations after-the-fact, we can create
 more specific (i.e. \textit{indexed})
@@ -179,7 +185,7 @@ Additionally, the explicit equality proof
 (\Data{≡}) postcondition can be dropped in favor of expressing the
 postcondition directly in the index position of the output vector.
 In other words, the \textit{extrinsic} equality postcondition has been
-dropped in favor of an \textit{intrinsic}~\cite{TODO}
+dropped in favor of an \textit{intrinsic}
 property about the codomain of \Fun{append}.
 
 Another example of an indexed type is the type of finite sets
@@ -223,14 +229,17 @@ functions to them, and programmers should also be able to
 
 \section{A Taste of Fully Generic Programming}\label{sec:fullyeg}
 
-Ordinary generic programming in dependently typed languages is
-accomplished using a construction known as a universe
+Ordinary generic programming in dependently typed
+languages~\cite{martinintuitionistic,genericwithdtp}
+is accomplished using a construction known as a universe
 (\refsec{universes}). Rather than explaining how universes work in
 detail (which we do in \refsec{universes}) in this introduction,
 we develop our dependently typed Agda examples using
-universes in parallel with examples in Haskell using
-type classes~\ref{TODO}. Later we learn why our analogy with
-Haskell~\cite{TODO} type classes~\cite{TODO}
+universes in parallel with examples in
+Haskell~\cite{lang:haskell} using
+type classes~\cite{typeclasse1,typeclasses2}.
+Later we learn why our analogy with
+Haskell type classes
 makes sense, as \textit{ad hoc polymorphism} (\refsec{adhoc}) is a
 form of generic programming.
 
@@ -578,7 +587,7 @@ but also closed under
 \textit{algebraic datatype formation} (\Data{μ}) from
 datatype declarations (\Data{Desc}).
 The details of how to make this work are beyond the scope of this
-introduction (see \refsec{TODO} for the full construction). However,
+introduction (see \refsec{closed} for the full construction). However,
 the central idea has to do with
 defining the \Data{Type} and \Data{Desc} universes \textit{mutually}.
 Thus, fully generic programming over this mutual universe
@@ -649,23 +658,27 @@ datatypes:
 \item{\textbf{Containers} (\refsec{wtypes})} These are datastructures that represent
   types using an analogy of \textit{shapes} (capturing inductive
   structure) and \textit{positions} (capturing contained values).
-  The least fixed points of containers are \textit{well-orderings},
+  The least fixed points of containers~\cite{containers}
+  are \textit{well-orderings}~\cite{wtypes},
   or \Data{W} types.
 \item{\textbf{Dependent Polynomials} (\refsec{depalg})} These are
-  \textit{pattern functors} from initial algebra semantics, whose
+  \textit{pattern functors}~\cite{deppolyfunc}
+  from initial algebra semantics, whose
   least fixed point is returned by the \Data{μ} operator. The
-  \Data{Desc} type of \refsec{fullyeg} is a syntatic reification of
-  dependent polynomial pattern functors, whose meaning function is
+  \Data{Desc} type of \refsec{fullyeg} is a syntactic reification of
+  dependent polynomial pattern functors,
+  whose meaning function is
   \Data{μ} when considered as a universe of dependent algebraic types.
 \end{itemize}
 
 A universe closed under \Data{W} types, supporting fully generic
 programming, is trivial to define (\refsec{wuni}). Unfortunately,
 while \Data{W} types adequately encode algebraic types in
-Extensional Type Theory~\cite{TODO},
+Extensional Type Theory (as implemented by
+NuPRL~\cite{lang:nuprl}),
 they inadequately (\refsec{inad}) encode
 first-order algebraic types in
-Intentional Type Theory~\cite{TODO} (which Agda implements).
+Intentional Type Theory (as implemented by Agda~\cite{lang:agda}).
 For this reason, we choose \textbf{dependent polynomials} to model
 dependent algebraic types.
 
@@ -695,8 +708,11 @@ capture intrinsic correctness properties:
   defined evaluation function. 
 \end{itemize}
 
-Somewhat surprisingly, indexed types and inductive-recursive types
-define isomorphic classes of datatypes~\cite{TODO}. That is, any indexed type
+Somewhat surprisingly,
+indexed types~\cite{indexed1,indexed2}
+and
+inductive-recursive types~\cite{inductionrecursion1,inductionrecursion2}
+define isomorphic classes of datatypes~\cite{smallir}. That is, any indexed type
 (like \Data{Vec}) can be defined as an inductive-recursive type, and
 any inductive-recursive type (like \Data{Arith}) can be defined as an
 indexed type.
@@ -745,13 +761,14 @@ inductive-recursive because they are less studied in the generic
 programming literature.
 
 Finally, because the isomorphism fails in the large case, the ideal
-choice would be to use \textbf{indexed inductive-recursive}
+choice would be to use
+\textbf{indexed inductive-recursive}~\cite{indexedinductionrecursion}
 algebraic types. These are a 3rd option for expressing intentional
 correctness properties of datatypes, where both indexing and
 induction-recursion are expressed naturally.
 \footnote{Interestingly, even indexed inductive-recursive types are
   isomorphic to indexed types and inductive-recursive types in the
-  small case~\cite{TODO}.
+  small case~\cite{smallir}.
 }
 While it is \textit{not technically challenging} to extend
 our work on fully generic programming over closed universes to indexed
@@ -857,7 +874,8 @@ properties they can have.
 \paragraph{\chaptitle{generic}}
 We clarify what we mean by \textit{generic programming}
 (i.e. programming over many types, using various forms of
-polymorphism), because the meaning of this term is overloaded.
+polymorphism~\cite{paramadhocpoly}),
+because the meaning of this term is overloaded.
 We compare and contrast generic
 programming as parametric polymorphism (\refsec{parapoly}) and
 ad hoc polymorphism (\refsec{adhoc}). Additionally, we introduce the
@@ -865,7 +883,7 @@ idea of \textit{concreteness} (\refsec{abscon}) to help clarify what
 we mean by \textit{fully} generic programming. Programming
 total functions in type theory can be non-trivial, especially as the
 class of types we program over expands during generic programming, so
-review techniques to make total programming possible (\refsec{total}).
+review techniques to make total programming possible (\refsec{totality}).
 
 \paragraph{\chaptitle{closedtt}}
 This chapter serves as a mini-version of our thesis, giving examples

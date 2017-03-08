@@ -86,7 +86,15 @@
  address = {New York, NY, USA},
  keywords = {equality, type theory},
  annote = "The authors present a new notion of equality for intentional type theories. Extentional type theories support the useful notion of functional extentionality for definitonal equality, but come with the cost of undecidable type checking. Standard intentional type theories have a definitional equality which does not support functional extentionality, but type checking is decidable. Observational Type Theory (OTT) is intentional, but adds a new propositional equality that supports functional extentionality. Values can be explicitly coerced between observationally equivalent types by supplying a proof of an isomorphism between the types."
-} 
+}
+
+@book{nordstrom1990programming,
+  title={Programming in Martin-L{\"o}f’s type theory},
+  author={Nordstr{\"o}m, Bengt and Petersson, Kent and Smith, Jan M},
+  volume={85},
+  year={1990},
+  publisher={Oxford University Press}
+}
 
 @article{martinintuitionistic,
   title={Intuitionistic type theory.},
@@ -95,6 +103,31 @@
   year = {1984},
   location = {Bibliopolis, Naples},
   annote= "In this seminal work the author presents notes from a lecture series on Intuitionistic Type Theory given by Martin-L{\"o}f. The notes present each type as a package containing its formation rule, the introduction rules for its values, the elimination rules for its values, and the equality rules for its values. In particular dependent functions (\textPi), dependent pairs (\textSigma), and wellorderings / inductive types (W) are covered. Additionally, the important concept of a type theoretical universe is explained, which consists of a set of codes representing types, and a meaning function translating codes into concrete types. This notion of a universe is the primary method by which generic programming is performed in dependently typed languages."
+}
+
+@incollection{genericwithdtp,
+  title={Generic programming within dependently typed programming},
+  author={Altenkirch, Thorsten and McBride, Conor},
+  booktitle={Generic Programming},
+  pages={1--20},
+  year={2003},
+  publisher={Springer}
+}
+
+@inproceedings{generic1,
+  title={Generic programming},
+  author={Backhouse, Roland and Jansson, Patrik and Jeuring, Johan and Meertens, Lambert},
+  booktitle={International School on Advanced Functional Programming},
+  pages={28--115},
+  year={1998},
+  organization={Springer}
+}
+
+@phdthesis{generic2,
+  title={Generic programs and proofs},
+  author={Hinze, Ralf and others},
+  year={2000},
+  school={Citeseer}
 }
 
 @article{mcbride+04,
@@ -106,6 +139,27 @@ volume=14,
 number=1,
 annote = "In standard developments of dependent type theory a value of a type is used via one particular eliminator, namely its induction principle. The authors of this paper present a number of different eliminators that can be used for dependent types, and a {\tt by} construct that provides a uniform syntax for programming with different eliminators. One common alternative eliminator is course of values induction. More interestingly, the authors show how to create eliminators for views of datatypes (e.g. viewing a list as two sublists that produce the original list when appended together)."
 }
+
+@article{paramadhocpoly,
+ author = {Strachey, Christopher},
+ title = {Fundamental Concepts in Programming Languages},
+ journal = {Higher Order Symbol. Comput.},
+ issue_date = {April 2000},
+ volume = {13},
+ number = {1-2},
+ month = apr,
+ year = {2000},
+ issn = {1388-3690},
+ pages = {11--49},
+ numpages = {39},
+ url = {http://dx.doi.org/10.1023/A:1010000313106},
+ doi = {10.1023/A:1010000313106},
+ acmid = {609208},
+ publisher = {Kluwer Academic Publishers},
+ address = {Hingham, MA, USA},
+ keywords = {CPL, L-values, R-values, ad hoc polymorphism, binding mechanisms, foundations of computing, functions as data, parameter passing, parametric polymorphism, programming languages, semantics, type completeness, variable binding},
+}
+
 
 @inproceedings{Altenkirch:2006:GPD:1782894.1782898,
  author = {Altenkirch, Thorsten and McBride, Conor and Morris, Peter},
@@ -141,15 +195,95 @@ annote = "In standard developments of dependent type theory a value of a type is
  address = {New York, NY, USA},
  keywords = {agda, arity-generic programming, dependent types, generic haskell},
  annote = "The authors give provide a framework for doubly-generic programming, combining two standard forms of generic programming. The first kind of generic programming involves functions that operate generically over a universe of types (e.g. any universe in \cite{Altenkirch:2006:GPD:1782894.1782898}). The second kind of generic programming involves functions that operate generically over the arity of a single type (e.g. a {\tt zipWith} that can map over any number of list arguments). Both of these forms of genericity have been explored independently, but the authors show how to write functions that are simultaneously generic over a universe and the arity of a particular type in that universe."
-} 
+}
 
-@INPROCEEDINGS{Dybjer99afinite,
+@inproceedings{deppolyfunc,
+  title={Wellfounded trees and dependent polynomial functors},
+  author={Gambino, Nicola and Hyland, Martin},
+  booktitle={International Workshop on Types for Proofs and Programs},
+  pages={210--225},
+  year={2003},
+  organization={Springer}
+}
+
+@article{containers,
+  title={Containers: constructing strictly positive types},
+  author={Abbott, Michael and Altenkirch, Thorsten and Ghani, Neil},
+  journal={Theoretical Computer Science},
+  volume={342},
+  number={1},
+  pages={3--27},
+  year={2005},
+  publisher={Elsevier}
+}
+
+@article{wtypes,
+  title={Representing inductively defined sets by wellorderings in Martin-L{\"o}f's type theory},
+  author={Dybjer, Peter},
+  journal={Theoretical Computer Science},
+  volume={176},
+  number={1-2},
+  pages={329--335},
+  year={1997},
+  publisher={Elsevier}
+}
+
+@INPROCEEDINGS{inductionrecursion1,
     author = {Peter Dybjer and Anton Setzer},
     title = {A finite axiomatization of inductive-recursive definitions},
     booktitle = {Typed Lambda Calculi and Applications, volume 1581 of Lecture Notes in Computer Science},
     year = {1999},
     pages = {129--146},
     publisher = {Springer}
+}
+
+@article{inductionrecursion2,
+  title={A general formulation of simultaneous inductive-recursive definitions in type theory},
+  author={Dybjer, Peter},
+  journal={The Journal of Symbolic Logic},
+  volume={65},
+  number={02},
+  pages={525--549},
+  year={2000},
+  publisher={Cambridge Univ Press}
+}
+
+@inproceedings{smallir,
+  title={Small induction recursion},
+  author={Hancock, Peter and McBride, Conor and Ghani, Neil and Malatesta, Lorenzo and Altenkirch, Thorsten},
+  booktitle={International Conference on Typed Lambda Calculi and Applications},
+  pages={156--172},
+  year={2013},
+  organization={Springer}
+}
+
+@incollection{indexedinductionrecursion,
+  title={Indexed induction-recursion},
+  author={Dybjer, Peter and Setzer, Anton},
+  booktitle={Proof Theory in Computer Science},
+  pages={93--113},
+  year={2001},
+  publisher={Springer}
+}
+
+@article{indexed1,
+  title={Inductive sets and families in Martin-L{\"o}f’s type theory and their set-theoretic semantics},
+  author={Dybjer, Peter},
+  journal={Logical frameworks},
+  volume={2},
+  pages={6},
+  year={1991}
+}
+
+@article{indexed2,
+  title={Inductive families},
+  author={Dybjer, Peter},
+  journal={Formal aspects of computing},
+  volume={6},
+  number={4},
+  pages={440--465},
+  year={1994},
+  publisher={Springer}
 }
 
 @incollection{Goguen06eliminatingdependent,
@@ -159,14 +293,6 @@ annote = "In standard developments of dependent type theory a value of a type is
   pages={521--540},
   year={2006},
   publisher={Springer}
-}
-
-@book{nordstrom1990programming,
-  title={Programming in Martin-L{\"o}f’s type theory},
-  author={Nordstr{\"o}m, Bengt and Petersson, Kent and Smith, Jan M},
-  volume={85},
-  year={1990},
-  publisher={Oxford University Press}
 }
 
 @article{mcbride+04,
@@ -273,7 +399,7 @@ number=1}
   publisher={College Publications}
 }
 
-@article{howard1980formulae,
+@article{curryhoward,
   title={The formulae-as-types notion of construction},
   author={Howard, William A},
   journal={To HB Curry: essays on combinatory logic, lambda calculus and formalism},
@@ -432,6 +558,31 @@ url = {http://bentnib.org/posts/2011-12-14-type-checker.html}
   publisher={Cambridge University Press}
 }
 
+@book{lang:nuprl,
+  title={Implementing mathematics},
+  author={Constable, RL and Allen, SF and Bromley, HM and Cleaveland, WR and Cremer, JF and Harper, RW and Howe, DJ and Knoblock, TB and Mendler, NP and Panangaden, P and others},
+  year={1986},
+  publisher={Prentice-Hall}
+}
+
+@article{typeclasses1,
+  title={Type classes in Haskell},
+  author={Hall, Cordelia V and Hammond, Kevin and Peyton Jones, Simon L and Wadler, Philip L},
+  journal={ACM Transactions on Programming Languages and Systems (TOPLAS)},
+  volume={18},
+  number={2},
+  pages={109--138},
+  year={1996},
+  publisher={ACM}
+}
+
+@inproceedings{typeclasses2,
+  title={Type classes: an exploration of the design space},
+  author={Jones, Simon Peyton and Jones, Mark and Meijer, Erik},
+  booktitle={Haskell workshop},
+  pages={1--16},
+  year={1997}
+}
 
 @incollection{mcbride2005epigram,
   title={Epigram: Practical programming with dependent types},
@@ -458,15 +609,6 @@ url = {http://bentnib.org/posts/2011-12-14-type-checker.html}
   author={Dagand, Pierre-Evariste and McBride, Conor},
   journal={arXiv preprint arXiv:1210.6390},
   year={2012}
-}
-
-@incollection{altenkirch2003generic,
-  title={Generic programming within dependently typed programming},
-  author={Altenkirch, Thorsten and McBride, Conor},
-  booktitle={Generic Programming},
-  pages={1--20},
-  year={2003},
-  publisher={Springer}
 }
 
 @inproceedings{ko2013relational,
