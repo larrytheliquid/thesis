@@ -676,7 +676,7 @@ programming, is trivial to define (\refsec{wuni}). Unfortunately,
 while \Data{W} types adequately encode algebraic types in
 Extensional Type Theory (as implemented by
 NuPRL~\cite{lang:nuprl}),
-they inadequately (\refsec{inad}) encode
+they inadequately~\cite{winad} (\refsec{inad}) encode
 first-order algebraic types in
 Intentional Type Theory (as implemented by Agda~\cite{lang:agda}).
 For this reason, we choose \textbf{dependent polynomials} to model
