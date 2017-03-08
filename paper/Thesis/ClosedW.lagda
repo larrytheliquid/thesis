@@ -421,7 +421,7 @@ universe of this section is sufficient for all such translations.
 
 \subsection{Open Well-Order Types}\label{sec:wtypes}
 
-The type of well-orderings~\cite{TODO} (\AgdaData{W}) can be used to model
+The type of well-orderings~\cite{wtypes} (\AgdaData{W}) can be used to model
 inductive datatype declarations as well-founded trees.
 \footnote{The etymology of
 ``well-orderings'' comes from \AgdaData{W} being the constructive
@@ -435,8 +435,9 @@ encodes non-inductive arguments for each constructor of an
 algebraic datatype, and the cardinality of \AgdaVar{B}~\AgdaVar{a}
 encodes the number of inductive arguments for each constructor.
 \footnote{Besides cardinailty, the content of the \AgdaVar{B} parameter
-also determines the domain of infinitary arguments, discussed in
-\ref{section-inf}.
+  also determines the domain of
+  infinitary arguments~\cite{infinitary}.
+  %% discussed in \refsec{openalginf}. % TODO cite better section
 }
 The \Data{W} type of well-orderings is \textit{open} due to its two
 open type parameters, \Var{A} and \Var{B} (in contrast, the arguments

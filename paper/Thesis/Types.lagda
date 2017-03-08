@@ -489,7 +489,7 @@ Besides deriving vectors as a function whose type is \textit{computed}
 from its index, we can also derive the type of vectors as a
 \textit{constant} function.
 Vectors are a special case of a class of datatypes called
-\textit{containers}~\ref{TODO}, which are functions from datatype
+\textit{containers}~\cite{containers}, which are functions from datatype
 positions to contained values. Below, the type of vectors is
 represented as a
 \textit{constant} function (i.e. one that does not vary for \AgdaVar{n})
@@ -574,11 +574,12 @@ constructor has one function argument whose codomain is the type being
 defined.
 \footnote{
   \textit{Infinitary types} are also referred to as
-  \textit{generalized inductive definitions}~\cite{TODO}.
+  \textit{generalized inductive definitions}~\cite{infinitary}.
   }
 The domain can never be the
-type being defined, because negative datatypes~\ref{TODO} make type
-theory inconsistent. For example, the datatype below is inconsistent
+type being defined, because negative datatypes make type
+theory inconsistent~\cite{negative}.
+For example, the datatype below is inconsistent
 with type theory.
 
 \begin{code}
@@ -756,8 +757,9 @@ using unit and disjoint union in \refsec{derived}, that derived
 definition is \textit{not} algebraic because it is not defined with
 $\mu$ (either syntatically or semantically).
 However, some derived types \textit{can} be algebraic if we
-internalize $\mu$ as a type former \AgdaData{μ} (as in
-\refsec{TODO}), and use this type former to derive type definitions.
+internalize $\mu$ as a type former
+\AgdaData{μ}~\cite{dagand:phd},
+and use this type former to derive type definitions.
 In the scope of this thesis, an algebraic type is one defined using
 a \AgdaKeyword{data} declaration, a \AgdaData{μ} type former, or a
 \AgdaData{W} type former (introduced in \refsec{wtypes}). Although
@@ -822,8 +824,8 @@ input.
 
 Agda does not currently support a high-level syntax (like
 \AgdaKeyword{data}) for defining computational algebraic
-families. Nonetheless, we semantically model them using an internalized \AgdaData{μ} type
-former in \refsec{TODO}.
+families. Nonetheless, we semantically model them
+using an internalized \AgdaData{μ} type~\cite{dagand:phd}.
 
 \subsection{Open Types}\label{sec:open}
 

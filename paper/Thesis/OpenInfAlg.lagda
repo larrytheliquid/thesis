@@ -567,5 +567,4 @@ boolean argument of the function, returning the inductive
 \AgdaVar{t₂} argument in the false case.
 
 
-
-
+%% TODO W Types example

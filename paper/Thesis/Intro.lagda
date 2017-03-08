@@ -237,7 +237,7 @@ detail (which we do in \refsec{universes}) in this introduction,
 we develop our dependently typed Agda examples using
 universes in parallel with examples in
 Haskell~\cite{lang:haskell} using
-type classes~\cite{typeclasse1,typeclasses2}.
+type classes~\cite{typeclasses1,typeclasses2}.
 Later we learn why our analogy with
 Haskell type classes
 makes sense, as \textit{ad hoc polymorphism} (\refsec{adhoc}) is a

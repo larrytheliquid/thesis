@@ -263,7 +263,7 @@ Finally, note that we establish another convention of ``quoting''
 description constructors with a backtick (e.g. \AgdaCon{`X} for $X$).
 This emphasizes that they are the syntactification of polynomial set
 constructions. As we will see, quoting \AgdaData{Desc} constructors is
-natural as they also act as codes of a universe (\refsec{TODO}).
+natural as they also act as codes of a universe (\refsec{hierir}).
 
 \paragraph{Pattern Functors}
 
@@ -709,12 +709,12 @@ module _ where
     app : (f : Term) (a : Term) → Term
 \end{code}
 
-Our untyped lambda calculus terms use a deBruijn~\cite{TODO}
+Our untyped lambda calculus terms use a deBruijn~\cite{debruijn}
 encoding for variables. A deBruijn-encoded term references variables
 by a natural number index, where 0 refers to the variable bound by the
 most recent $\lambda$ (and 1 refers to the next most recent, and so on). For
 example, below is a high-level syntax for the
-Church-encoded~\cite{TODO} numeral \textbf{one}, and its deBruijn-encoded
+Church-encoded~\cite{churchencoding} numeral \textbf{one}, and its deBruijn-encoded
 equivalent.
 
 $$

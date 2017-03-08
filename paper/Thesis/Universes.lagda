@@ -317,7 +317,7 @@ are also types in the universe. Hence, the type of every argument to
 every constructor of a universe type must also be a type in the
 universe.
 
-For example, the closed \AgdaData{BoolStar} universe of \refsec{bitsstar} is
+For example, the closed \AgdaData{BoolStar} universe of \refsec{umodel} is
 closed because \AgdaCon{Bool} does not have constructor arguments,
 and because the universe is closed under \AgdaData{List} formation
 (thus any sublist only contains types also in the universe).
