@@ -661,6 +661,12 @@ This section addresses the following question: What properties of
 algebraic datatypes should we support to adequately describe all
 possible types definable in a dependently typed language like Agda?
 
+We explain why we choose
+\textit{inductive-recursive} types, instead of indexed types,
+as the answer to this question.
+Non-expert readers may wish to skim this section and come back to it
+after finishing \parttitle{prelude}.
+
 \subsection{Dependent Algebraic Types}
 
 We certainly want to support algebraic
@@ -670,8 +676,8 @@ arguments to constructors of an algebraic datatype can be defined
 independently. In Agda, the \textit{types}
 of subsequent constructor arguments can depend on the
 \textit{values} of previous constructor arguments.
-There are 2 primarily used encodings of dependent algebraic
-datatypes:
+There are 2 common generic encodings (i.e. semantic models)
+of dependent algebraic datatypes:
 \begin{itemize}
 \item{\textbf{Containers} (\refsec{wtypes})} These are datastructures that represent
   types using an analogy of \textit{shapes} (capturing inductive
@@ -703,7 +709,7 @@ dependent algebraic types.
 \subsection{Indexing versus Induction-Recursion}
 
 Besides supporting algebraic types with dependencies between
-arguments, Agda also algebraic types capturing
+arguments, Agda also supports algebraic types capturing
 \textit{intrinsic} correctness properties.
 There are 2 main special kinds of algebraic types used to
 capture intrinsic correctness properties:
@@ -738,7 +744,7 @@ indexed type.
 Thus, picking either indexed or inductive-recursive types is adequate
 to capture all of the algebraic types we would like to encode in our
 closed universe. We choose \textbf{inductive-recursive} types because
-they have been covered less in research on ordinary generic
+there is little research on using them to even do ordinary generic
 programming.
 
 \subsection{Smallness versus Largeness}
@@ -809,7 +815,9 @@ all non-inductive and inductive constructor arguments of all types in
 the universe, is possible over a universe that:
 \begin{itemize}
 \item{(\refsec{closedu})} Models a
-  \textbf{dependently typed language} (or type theory) with datatype declarations.
+  \textbf{dependently typed language}
+  (or type theory, supporting the Curry-Howard isomorphism)
+  with datatype declarations.
 \item{(\refsec{iralg})} Adequately (in intentional types theory)
   models \textbf{small inductive-recursive algebraic types}
   via initial algebra semantics
