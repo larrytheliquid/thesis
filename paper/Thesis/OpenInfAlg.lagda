@@ -246,7 +246,9 @@ module El where
   ⟦ `X^ A ⟧ X = A → X
 \end{code}
 
-Partially applying \AgdaFun{NatD} to the interpretation function
+Partially applying \AgdaFun{NatD}
+(\Con{`1} \Con{`+} \Con{`X\carot} \Data{⊤})
+to the interpretation function
 results in the following pattern functor for an infinitary encoding of
 natural numbers.
 
@@ -345,17 +347,20 @@ Now we repeat the examples of formal models of non-infinitary types
 (\refsec{nondepalgmod}), converting models to their infinitary
 counterparts.
 A straightforward translation from the non-infinitary to the
-infinitary translates both the models for pattern functors and
-datatypes to infinitary versions.
+infinitary models \textit{infinitary} versions of both the
+pattern functors and the exposed datatypes.
 
-Alternatively, we can model non-infinitary datatypes that are defined
-in terms of infinitary pattern functors. In this scenario type formers
+Alternatively, we can \textit{expose} a model of
+\textit{non-infinitary} datatypes
+that are defined in terms of \textit{unexposed infinitary} pattern
+functors.
+In this scenario type formers
 do not require special treatment (i.e. their definitions can be
 equivalent to their non-infinitary counterparts).
 However, we must
 take special care when modeling constructors by exposing a
 non-infinitary type signature (i.e. interface) that is defined in
-terms of an infinitary (hidden) implementation.
+terms of an infinitary (hidden, or unexposed) implementation.
 
 \paragraph{Natural Numbers}
 
@@ -445,14 +450,16 @@ module _ where
     suc : ℕ → ℕ
 \end{code}
 
-To model a non-infinitary type with an infinitary pattern functor, we
+To expose a model of a non-infinitary type,
+with an unexposed infinitary pattern functor, we
 never need to change the type former (so our definition of
 \AgdaData{ℕ} above suffices). Because \AgdaCon{zero} was never
 infinitary to begin with, its previous definition can also be
 reused.
 
-However, we take special care to model a non-infinitary
-\AgdaCon{suc} constructor in terms of its underlying infinitary
+However, we take special care to expose a model of a non-infinitary
+\AgdaCon{suc} constructor in terms of its
+underlying (unexposed) infinitary
 pattern functor \AgdaFun{NatD}.
 We expose the non-infinitary type signature of
 \AgdaCon{suc}, acting as an interface.
@@ -565,6 +572,24 @@ non-infinitary \AgdaCon{branch} by applying a conditional to the
 boolean argument of the function, returning the inductive
 \AgdaVar{t₁} argument in the true case and the inductive
 \AgdaVar{t₂} argument in the false case.
+
+Above, we use the infinitary domain of \Data{Bool}
+(which is isomorphic to \Data{⊤} \Data{⊎} \Data{⊤})
+to model 2 inductive arguments. 
+In general, the number of inductive arguments can be
+modeled with an appropriate type according to the pattern below.
+
+\begin{center}
+\begin{tabular}{ |c|c| } 
+ \hline
+ 0 & \Data{⊥} \\ 
+ 1 & \Data{⊤} \\ 
+ 2 & \Data{⊤} \Data{⊎} \Data{⊤} \\ 
+ 3 & \Data{⊤} \Data{⊎} \Data{⊤} \Data{⊎} \Data{⊤} \\ 
+ n & ... \\ 
+ \hline
+\end{tabular}
+\end{center}
 
 
 %% TODO W Types example

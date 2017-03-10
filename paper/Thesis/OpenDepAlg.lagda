@@ -35,14 +35,16 @@ functors of types involving dependencies.
 
 We mostly keep the syntax of the non-dependent polynomial set constsructions
 1, (+), ($\cdot$), and $X$. However, the meaning of the product of two
-sets ($\cdot$) is actually the \textit{dependent} product, and its
-syntax is reminiscent of dependent functions except ($\cdot$) takes
-the place of ($\arr$). Specifically, the syntax of a dependent product
-uses type ascription to refer to a dependent argument
-(e.g. $(x : A) \cdot B~x$), while a non-dependent
-product does not (e.g. $A \cdot B$).
+sets ($\cdot$) is actually
+the \textit{dependent} product (or dependent pair).
+The syntax of a dependent product
+uses type ascription (e.g. $(x : A) \cdot B~x$),
+allowing the type ($B$) of the second component of the pair to depend on the
+value ($x$) of the first. In contrast, the syntax of a
+non-dependent product (e.g. $A \cdot B$) does not ascribe the type of
+the first component of the pair.
 For example, dependent product can be used to express the set of pairs of
-natural numbers and finite sets (whose size is dependent on the
+natural numbers and finite sets (whose size depends on the
 natural number first component of the pair).
 $$
 (n : \nat) \cdot \tp{Fin}~n
@@ -92,7 +94,7 @@ F \triangleq \lambda X.~
 $$
 
 The purpose of these additional constraints \textit{may not} be readily
-apparent now. However, they allow us to extend
+apparent now. However, they allow us to seamlessly extend
 the categorical model of dependent types to include
 induction-recursion (\refsec{iralg}) in the future.
 
@@ -145,8 +147,8 @@ $$
 \paragraph{Rose Trees}
 
 We use the infinitary definition of finitely branching rose trees from
-\refsec{inft}. In this definition of \AgdaData{Rose} the
-list of branches argument is isomorphically expressed as
+\refsec{inft}. In this definition of \AgdaData{Rose}, the
+list-of-branches argument is isomorphically expressed as
 a natural number and an infinitary argument with a finite set
 (whose size is equal to the natural number) as its domain.
 

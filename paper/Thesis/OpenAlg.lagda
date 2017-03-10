@@ -331,7 +331,9 @@ $$
 $$
 
 For example, below we instantiate \AgdaVar{D} to be the description of
-natural numbers (\AgdaFun{NatD}), and demonstrate the functor produced
+natural numbers
+(\AgdaFun{NatD}, defined as \Con{`1} \Con{`+} \Con{`X}),
+and demonstrate the functor produced
 by partially applying the interpretation function to \AgdaFun{NatD}.
 
 \AgdaHide{
@@ -361,11 +363,14 @@ represents the inductive occurrences of the datatype being modeled.
 A sound model must rule out pattern functors representing
 datatypes that are not consistent in type theory, such as
 \textit{negative} datatypes like \AgdaData{Neg} of \refsec{inft}.
-We could \textit{directly} define the functor for \AgdaData{Neg} to be
+
+In Agda, we could \textit{directly} define the functor for \AgdaData{Neg} to be
 (\AgdaFun{F} \AgdaVar{X} = \AgdaVar{X} \arr~\AgdaVar{X}), modeling the
 negative inductive occurrence of \AgdaData{Neg} in the argument to
 \AgdaCon{neg} by using \AgdaVar{X} in the domain
-of the function type.
+of the function type. However, defining a fixpoint datatype for such a
+negative functor would be rejected by Agda's positivity checker, as it
+would make the language unsound.
 
 Instead, we choose to define functors
 \textit{indirectly} by partially applying a description
@@ -385,8 +390,9 @@ inject many non-polynomial types. While this is true, it is not
 problematic because the type (\AgdaVar{A}) that \AgdaCon{`κ} injects
 must be \textit{non-inductive}. The non-inductivity of \AgdaVar{A} is
 enforced because \AgdaVar{A} must be a type defined independently of
-\AgdaVar{X} (i.e. the interpretation of \AgdaCon{`κ} does not, for
-example, pass \AgdaVar{X} to \AgdaVar{A}).
+\AgdaVar{X}. In other words, the interpretation of
+\AgdaCon{`κ} (i.e. \Fun{⟦} \Con{`κ} \Var{A} \Fun{⟧} \Var{X} = \Var{A}) does
+not pass \AgdaVar{X} to \AgdaVar{A}.
 
 \paragraph{Fixpoints}
 
@@ -426,14 +432,15 @@ $$
 \anit : F~(\mu~F) \arr \mu~F
 $$
 
-Applying $F$ to its least fixed fixpoint ($\mu~F$)
+Applying $F$ to its least fixed point ($\mu~F$)
 results in a type isomorphic to its fixpoint. In other words, the $\set$ (or
-\AgdaData{Set} in the model case) resulting from $F~(\mu~F)$
+\AgdaData{Set} in the formal model) resulting from $F~(\mu~F)$
 represents the types of constructors (and the types of their arguments)
 of $\mu~F$.
-Therefore, we declare \AgdaData{μ} to have a single constructor named
-\AgdaCon{init} (for \textit{initial algebra}) that models
-$\anit$.
+Therefore, the formal model of the fixpoint operator (\AgdaData{μ})
+has a single constructor named
+\AgdaCon{init} (for \textit{initial algebra}), corresponding to
+$\anit$ in the categorical model.
 
 \begin{code}
     init : ⟦ D ⟧ (μ D) → μ D
@@ -461,7 +468,9 @@ module _ where
   NatD = `1 `+ `X
 \end{code}}
 
-For example, we can define the type of natural numbers as follows.
+For example, we can define the type of natural numbers
+(described by \AgdaFun{NatD} as \Con{`1} \Con{`+} \Con{`X})
+as follows.
 
 \begin{code}
   ℕ : Set
@@ -648,6 +657,8 @@ type former and constructors of a type using the primitives of our
 formal model, using the types to define values and function
 definitions is indistinguishable from using declared types thanks to
 syntactic conveniences afforded by Agda.
+Hence, all functions defined over declared types in \refsec{types} can
+be reused as functions over our formally modeled algebraic types.
 
 \paragraph{Binary Trees}
 
@@ -744,7 +755,10 @@ by a natural number index, where 0 refers to the variable bound by the
 most recent $\lambda$ (and 1 refers to the next most recent, and so on). For
 example, below is a high-level syntax for the
 Church-encoded~\cite{churchencoding} numeral \textbf{one}, and its deBruijn-encoded
-equivalent.
+equivalent. In the example,
+the term on the left names its variables, while the term
+on the right uses deBruijn variables, but both terms Church-encode the
+numeral \textbf{one}.
 
 $$
 \dfn{one} \lambda f.~ \lambda x.~ f~x \triangleq \lambda~ (\lambda~ 1~0)
