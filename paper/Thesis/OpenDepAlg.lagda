@@ -189,14 +189,18 @@ descriptions.
 
 Recall from \refsec{depalgsem} that we constrained dependent pattern
 functors to be a sequence of products ending in 1. Recall also that
-descriptions are the reification (or model) of the language used to
+descriptions are the reification (or formal model) of the language used to
 create legal pattern functors.
 Hence, we change the type of descriptions to enforce that pattern
 functors (representing definitions of datatypes) are sequences of
 dependent pairs (\AgdaData{Σ}) ending in the unit type
-(\AgdaData{⊤}).
+(\AgdaData{⊤}). Now we explain the definition of
+\Data{Desc} for dependent algebraic types,
+and subsequently compare it to the
+\Data{Desc} for non-dependent types from \refsec{infalgmod}.
 
-Below, the \AgdaCon{`ι} constructor models the pattern of ending a
+Below (in the definition of \Data{Desc}),
+the \AgdaCon{`ι} constructor models the pattern of ending a
 functor with the unit type. For now this is simply a renaming
 of the former \AgdaCon{`1} constructor.
 \footnote{
@@ -206,7 +210,8 @@ of the former \AgdaCon{`1} constructor.
   \AgdaCon{`ι} gains additional arguments.
 }
 The \AgdaCon{`σ} constructor models a
-\textit{dependent} (but non-infinitary) argument.
+\textit{dependent}
+(but non-infinitary, thus also non-inductive) argument.
 The \AgdaCon{`δ} constructor models an
 \textit{infinitary} (but non-dependent) argument.
 \footnote{
@@ -239,15 +244,15 @@ module Desc where
 
 Let's compare this with the non-dependent
 description datatype (\refsec{infalgmod}).
-The non-dependent product (\AgdaCon{`∙}) there is replaced by the
+The non-dependent pair (\AgdaCon{`∙}) there is replaced by the
 (no longer infix) dependent pair \AgdaCon{`σ} and infinitary
-non-dependent pair \AgdaCon{`δ}. As an example,
-below (\AgdaFun{RoseD}) is the
+non-dependent pair \AgdaCon{`δ}. For example,
+below \AgdaFun{RoseD} is the
 description of
 \AgdaData{Rose} trees.
 \AgdaFun{RoseD} uses \AgdaCon{`σ} to request a dependent
-\AgdaVar{A} argument (although the dependency \AgdaVar{a} is not
-used), then uses \AgdaCon{`σ} to request a dependent
+\AgdaVar{A} argument (although the dependency \AgdaVar{a} is
+unused), then uses \AgdaCon{`σ} to request a dependent
 natural number argument (\AgdaVar{n}), then uses
 \AgdaCon{`δ} to request a non-dependent but infinitary argument
 (whose domain is \AgdaData{Fin} \AgdaVar{n}),
@@ -271,10 +276,11 @@ When \AgdaCon{`σ} is used to request
 an argument of type \AgdaVar{A}, the rest of the description \AgdaVar{D} may
 depend on a value of \AgdaVar{A}. This is formally modeled by the infinitary
 type of \AgdaVar{D}, namely \AgdaVar{A} \arr~\AgdaData{Desc}.
-Notice that the first argument of (\AgdaCon{`∙}) is
+Notice that the first argument of the non-dependent pair
+(\AgdaCon{`∙}) from \refsec{infalgmod} is
 a description (\AgdaData{Desc}), but the first argument of
-\AgdaCon{`σ} is a type (\AgdaData{Set}). Imagine that
-\AgdaVar{A} was a
+the dependent pair \AgdaCon{`σ} is a type (\AgdaData{Set}).
+Imagine that \AgdaVar{A} was a
 description, and that \AgdaVar{D} could depend on a value of the inductive
 type being defined
 (as the argument to the infinitary domain of \AgdaVar{D}).
@@ -282,14 +288,14 @@ Then, our type of descriptions (\AgdaData{Desc})
 would be \textit{negative} (and we could subsequently use it to
 model pattern functors of negative types).
 Hence, the first component of a dependent pair (\AgdaVar{A})
-must be restricted to a type (guaranteed to be non-inductive)
+must be restricted to a \Data{Set} (guaranteed to be non-inductive)
 so that the infinitary type \AgdaVar{D}
 (representing subsequent arguments in the description) remains
 \textit{positive}.
 
 The infinitary pair constructor \AgdaCon{`δ} is like a specialized
 combination of the former infinitary constructor \AgdaCon{`X\carot}
-and the non-dependent product (or pair) constructor \AgdaCon{`∙}.
+and the non-dependent pair constructor (\AgdaCon{`∙}).
 The \AgdaVar{A} argument represents the domain of the infinitary
 function (like the argument to \AgdaCon{`X\carot}), and the
 non-dependent \AgdaVar{D} argument represents the rest of the
@@ -392,8 +398,15 @@ module _ where
  open El
  open import Relation.Binary.PropositionalEquality
  private
+\end{code}}
+
+\begin{code}
   RoseD : Set → Desc
   RoseD A = `σ A (λ a → `σ ℕ (λ n → `δ (Fin n) `ι))
+\end{code}
+
+\AgdaHide{
+\begin{code}
   _ : {A : Set} →
 \end{code}}
 
@@ -583,11 +596,15 @@ module _ where
   NatD = `σ Bool (λ b → if b then `ι else `δ ⊤ `ι)
 \end{code}
 
-For legibility (especially when types with many different constructors
-are involved), we often create a specialized enumeration type in place
-of the \AgdaData{Bool}, and define the second argument to \AgdaCon{`σ}
-as a pattern matching $\lambda$ rather than an \AgdaFun{if}-like
-elimination principle. For example, we can encode the description of
+For legibility (especially when describing types
+with more than 2 constructors),
+we often create a specialized enumeration type
+(\Data{NatT} below) that takes the place
+of \AgdaData{Bool}. Then, we define the second argument to \AgdaCon{`σ}
+as a separate function (\Fun{NatDs} below) mapping
+enumeration tags (representing constructors) to descriptions
+(representing constructor arguments).
+For example, we can encode the description of
 natural numbers by matching on ``tags'' of the enumeration type
 \AgdaData{NatT}.
 
@@ -605,10 +622,12 @@ module _ where
   data NatT : Set where
     zeroT sucT : NatT
 
+  NatDs : NatT → Desc
+  NatDs zeroT = `ι
+  NatDs sucT = `δ ⊤ `ι
+
   NatD : Desc
-  NatD = `σ NatT λ where
-    zeroT → `ι
-    sucT → `δ ⊤ `ι
+  NatD = `σ NatT NatDs
 \end{code}
 
 By convention, names of tags are suffixed with "\AgdaCon{T}". Tags are merely
@@ -638,17 +657,27 @@ tag. Hence, the first component (e.g. \AgdaCon{zeroT} or
 \AgdaCon{sucT}) in the tuple that the initial algebra
 is applied to is always the tag name.
 
+Finally, note that the same pair constructor (\Con{,}) is used for
+both dependent pair arguments (encoded by \Con{σ}), and non-dependent
+infinitary pair arguments (encoded by \Con{δ}). This is because our
+Agda definition of non-dependent pairs (\Fun{×}) is defined as a special case of
+dependent pairs (\Data{Σ}) that ignores its first argument.
 
 \paragraph{$\lambda$-Calculus Terms}
 
 As a final example we model the untyped $\lambda$-calculus terms
 introduced in \refsec{nondepalgtps} using descriptions of dependent
-types. Compared to the model of natural numbers, no new concepts are
-required to encode \AgdaData{Term}s.
-The reason for this example is that \AgdaData{Term} has 3
-constructors, so we can gain a greater appreciation of the legibility
-afforded by constructor tags compared to choice-encoded using
-boolans.
+types.
+We will first encode \Data{Term} using nested booleans for constructor
+choices, and then repeat the example with named constructor
+enumeration tags.
+
+Compared to the model of natural numbers, no new concepts are
+required to encode \AgdaData{Term}s. However, because
+\AgdaData{Term} has 3 constructors, we gain a greater appreciation of
+the legibility afforded by constructor tags compared to nested
+constructor choices encoded using booleans. Let's refamiliarize
+ourselves with the high-level declaration of \AgdaData{Term}.
 
 \AgdaHide{
 \begin{code}
@@ -758,11 +787,13 @@ module _ where
   data TermT : Set where
     varT lamT appT : TermT
 
+  TermDs : TermT → Desc
+  TermDs varT = `σ ℕ (λ n → `ι)
+  TermDs lamT = `δ ⊤ `ι
+  TermDs appT = `δ Bool `ι
+
   TermD : Desc
-  TermD = `σ TermT λ where
-    varT → `σ ℕ (λ n → `ι)
-    lamT → `δ ⊤ `ι
-    appT → `δ Bool `ι
+  TermD = `σ TermT TermDs
 
   Term : Set
   Term = μ TermD
