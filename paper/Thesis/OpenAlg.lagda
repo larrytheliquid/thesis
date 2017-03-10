@@ -91,6 +91,10 @@ constructions. The polynomial set constructions are denoted
 and $X$, and represent the
 unit set, the sum of two sets, the product of two sets, and
 inductive occurrences of the set.
+Hence, algebraic datatypes can be encoded as sums-of-products by using
+pattern functors, where ``pattern'' means that the functors are
+restricted to the language of polynomial
+set expressions.
 
 \paragraph{Natural Numbers}
 
@@ -117,17 +121,17 @@ $$
 The plus operator (+) represents a choice between constructors, and is
 analogous to
 the disjoint union type (\AgdaData{⊎}). Thus, above the left
-subexpression ($1$) represents the \AgdaCon{zero} constructor and the
-right subexpression ($X$) represents the \AgdaCon{suc}
-constructor. A subexpression represents a constructor by representing
-the types of arguments that it takes.
+summand ($1$) represents the \AgdaCon{zero} constructor and the
+right summand ($X$) represents the \AgdaCon{suc}
+constructor. 
 
 The \AgdaCon{zero} constructor is represented by
 1 (analogous to the unit type \AgdaData{⊤}) because it lacks
 arguments (or isomorphically, it has a single trivial argument).
 The \AgdaCon{suc} constructor is represented by the
 variable $X$, indicating that it takes an inductive
-argument. This is because $\mu$ is binding $X$ so that it may be
+argument. This is because $\mu$ is binding $X$
+(in the semantic expression $\mu X.~1 + X$) so that it may be
 used for inductive occurrences of \AgdaData{ℕ}.
 
 The equation used above is
@@ -157,7 +161,7 @@ module _ where
 
 As another example, consider the type of
 binary trees (parameterized by \AgdaVar{A} and \AgdaVar{B}) containing
-\AgdaVar{A}'s in node positions and \AgdaVar{B}'s in branch positions
+\AgdaVar{A}'s in \Con{leaf} positions and \AgdaVar{B}'s in \Con{branch} positions
 (as presented in \refsec{wtypes}).
 
 \begin{code}
@@ -180,7 +184,10 @@ arguments are represented by $X$ (bound by $\mu$) and its
 non-inductive argument is represented by
 $B$ (bound by another $\lambda$). The multiplication operator ($\cdot$)
 represents multiple arguments of a constructor as a
-conjunction, and is analogous to the pair type (\AgdaData{×}).
+conjunction, and is analogous to the pair type (\AgdaData{×}). Hence,
+the multiplication operator is used to define the ``products'' part of
+a constructor with multiple arguments, in the sum-of-products
+representation of datatypes.
 
 %% TODO maybe mention similarity to param universe ParStar
 \subsection{Formal Model}\label{sec:nondepalgmod}
@@ -198,12 +205,16 @@ Informally (in the categorical model),
 we can check that a functor is defined under these
 restrictions, but in type theory (in the formal model)
 we must formally capture these
-restrictions. We define the formal model by reifying
-the \textit{pattern} fragment (enforcing restrictions)
-of functors as a datatype (\AgdaData{Desc} below), the actual
-pattern \textit{functor}
-as a computational type family (\AgdaFun{⟦\_⟧} below),
-and the \textit{fixpoint} operator as a datatype (\AgdaData{μ} below).
+restrictions. We define the formal model by reifying:
+\begin{enumerate}
+\item The \textit{pattern} fragment (enforcing the restriction to a
+  polynomial language)
+  of functors as a datatype (\AgdaData{Desc} below).
+\item The actual pattern \textit{functor}
+  as a computational type family (\AgdaFun{⟦\_⟧} below)
+\item The \textit{fixpoint} operator as a datatype (\AgdaData{μ}
+  below).
+\end{enumerate}
 
 \paragraph{Descriptions}
 
@@ -224,13 +235,14 @@ Below, the \AgdaData{Desc} constructors
 the 1, $X$, (+), and ($\cdot$) polynomial set constructions.
 Of special note is the \AgdaCon{`κ} \textit{constant} constructor.
 The \textit{constant} constructor reifies a syntax for injecting
-\footnote{
+\textit{non-inductive} constructor arguments (such as \AgdaVar{A} in the
+\AgdaCon{leaf} constructor of \AgdaData{Tree}). \footnote{
   As is often the case with injections, its syntax is implicit
   (i.e. invisible) when defining pattern functors using polynomial set
-  constructions.
+  constructions. For example, the categorical model of trees, using
+  $\kappa$ for explicit non-inductive arguments, would be
+  $\lambda A.~ \lambda B.~ \mu X.~ \kappa~A + X \cdot \kappa~B \cdot X$.
   }
-\textit{non-inductive} constructor arguments (such as \AgdaVar{A} in the
-\AgdaCon{leaf} constructor of \AgdaData{Tree}). 
 
 \AgdaHide{
 \begin{code}
@@ -259,9 +271,26 @@ module _ where
   NatD = `1 `+ `X
 \end{code}
 
+Technically, \Con{`1} is subsumed by \Con{`κ} applied
+to the unit type (\Data{⊤}), but we keep \Con{`1} for legibility.
+For example, natural numbers can equivalently be described as
+follows. 
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Desc
+ private
+\end{code}}
+
+\begin{code}
+  NatD : Desc
+  NatD = `κ ⊤ `+ `X
+\end{code}
+
 Finally, note that we establish another convention of ``quoting''
 description constructors with a backtick (e.g. \AgdaCon{`X} for $X$).
-This emphasizes that they are the syntactification of polynomial set
+This emphasizes that they are a syntatic encoding of polynomial set
 constructions. As we will see, quoting \AgdaData{Desc} constructors is
 natural as they also act as codes of a universe (\refsec{hierir}).
 
