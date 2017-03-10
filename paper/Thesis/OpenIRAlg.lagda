@@ -83,7 +83,7 @@ $O$ (modeling a \textit{decoding} function).
 By convention we use the letter $R$ to refer to the \textit{slice}
 argument to distinguish it from the contained set $X$ and decoding
 function $d$.
-We can use put these two components of the functor together as a
+We can put these two components of the functor together as a
 dependent pair
 to form the actual endofunctor over slices.
 $$
@@ -124,7 +124,11 @@ $$
 
 With the introduction of inductive-recursive types, it is now actually
 possible to use an inductive dependent argument by applying the
-decoding function ($d$). For example, now we can have a functor like
+decoding function ($d$).
+Below, we define functors like $F$ in 2 parts,
+where $F_1$ defines the first (set) part
+and $F_2$ is defines the second (decoding function) part.
+For example, now we can have a functor like
 the following (where $A : \set$ and $B : O \arr \set$).
 $$
 F_1 \triangleq \lambda (X, d).~ (x_1 : X) \cdot (x_2 : B~(d~x_1)) \cdot 1
@@ -165,10 +169,15 @@ $$
 Once again, this is merely notation for directly defining $F$ as a
 dependent pair (a member of the slice $\set/O$). Hence, $\iota$ is
 also just notation rather than being a primitive set construction.
-For example, the notation above expands to the $F$ below.
+For example, the notation above expands to the $F$ below
+(first in terms of $F_1$ and $F_2$, and second once the definitions of
+$F_1$ and $F_2$ have been expanded).
 $$
 F ~\triangleq~
-\lambda R.~ (F_1~R ,~ F_2~R) ~\triangleq~
+\lambda (X, d).~ (F_1~(X, d) ,~ F_2~(X, d))
+$$
+$$
+F ~\triangleq~
 \lambda (X, d).~ ((x_1 : X)
 \cdot (x_2 : B~(d~x_1)
 \cdot 1 ,~ \lambda (x_1, x_2, \bullet).~ f~x_1~x_2))
@@ -297,7 +306,7 @@ $$
 \iota~(d~(f~\bullet))
 $$
 
-Above the result of appliyng the decoding function to a successor of a
+Above the result of applying the decoding function to a successor of a
 natural number is specified
 to be a \textit{recursive call} of the decoding function $d$ applied to:
 the infinitary predecessor $f$
@@ -355,7 +364,7 @@ legal pattern functors. Recall that $\iota$ is applied to an $O$,
 hence we had an argument \AgdaVar{o} of type
 \AgdaVar{O} to the
 \AgdaCon{`ι} constructor. However, we also change \AgdaCon{`δ} in
-a more subtle way.
+a more subtle way (from \refsec{depalgmod}).
 
 \AgdaHide{
 \begin{code}
@@ -371,11 +380,11 @@ module De where
 
 Recall that \AgdaCon{`σ} denotes a dependent
 \textit{non-inductive} argument (of type \AgdaVar{A})
-that subsequent arguments may depend on in \AgdaVar{D}.
+that subsequent arguments, encoded by \AgdaVar{D}, may depend on in.
 With inductive-recursion, \AgdaCon{`δ} denotes an
 infinitary (hence \textit{inductive}) argument
-(whose domain is \AgdaVar{A}) that subsequent arguments may depend on in
-\AgdaVar{D}. However, subsequent arguments in \AgdaVar{D} do not
+(whose domain is \AgdaVar{A}) that subsequent arguments (\Var{D})
+may depend on. However, subsequent arguments in \AgdaVar{D} do not
 depend directly on an infinitary argument
 (i.e. \AgdaVar{A} \arr~\AgdaVar{X}). Instead, \AgdaVar{D} depends on
 a function (i.e. \AgdaVar{A} \arr~\AgdaVar{O}) that is an implicit
@@ -385,9 +394,14 @@ preventing an inductive argument (\AgdaVar{X}) from
 appearing negatively in the domain of the infinitary argument
 \AgdaVar{D} (instead, \AgdaVar{O} appears).
 Below is an example of the natural numbers encoded as a
-trivial (i.e. where the codomain of the decoding function
+trivially (i.e. where the codomain of the decoding function
 \AgdaVar{O} is the unit type \AgdaData{⊤})
 inductive-recursive description.
+\footnote{
+  It also happens to be a trivially infinitary type,
+  because \Con{`δ} is applied to \AgdaData{⊤}, encoding a trivial
+  infinitary domain.
+  }
 
 \AgdaHide{
 \begin{code}
@@ -512,7 +526,7 @@ function (\AgdaVar{d}) and the \textit{dependent}
 infinitary argument (\AgdaVar{f}).
 Thus the subsequent argument types contained in \AgdaVar{D} can
 depend on the the composed function (returning an \AgdaVar{O}), but
-cannot directly depend the infinitary function
+cannot directly depend on the infinitary function
 (returning an inductive \AgdaVar{X}).
 
 Before providing an example, we redefine the description of natural
@@ -670,7 +684,7 @@ Now we formally model the type formers and constructors of
 Typically inductive-recursive datatypes are defined mutually
 in terms of a type and its decoding function.
 In our formal model, a single
-description catpures definition of \textit{both} the type and its
+description captures definition of \textit{both} the type and its
 decoding function.
 
 \paragraph{Natural Numbers}
@@ -803,8 +817,10 @@ the non-infinitary predecessor (\AgdaVar{n}).
 
 Now we model a non-trivially inductive-recursive and
 non-trivially infinitary type, namely the
-type of arithmetic expressions (\AgdaData{Arith}) from
-\refsec{irtypes}. An \AgdaData{Arith} can be evaluated to the natural
+type of arithmetic expressions (\AgdaData{Arith}.
+You may wish to revisit \refsec{irtypes} for
+examples of what arithmetic expressions represent.
+An \AgdaData{Arith} can be evaluated to the natural
 number that the arithmetic expression represents, using the
 \AgdaFun{eval} decoding function.
 
