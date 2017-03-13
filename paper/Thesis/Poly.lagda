@@ -19,7 +19,7 @@ Given a collection of types, a \textit{generic function} can be
 applied to values of any type in the collection. A
 \textit{polymorphic function} universally
 quantifies over some collection of values, and references an arbitrary
-member of that collection in its type signature. Thefore, generic
+member of that collection in its type signature. Therefore, generic
 functions are merely polymorphic functions.
 The type of the quantified variable can be seen as the codes of the
 universe, followed by the meaning function applied to a particular
@@ -185,7 +185,7 @@ module _ where
 If the type of \AgdaFun{Code}s for our universe is
 \textit{algebraic}, \textit{inductive}, and \textit{autonomous},
 then generic functions over the universe can make recursive
-calls on both codes and their interpretions. Because we can make recursive
+calls on both codes and their interpretations. Because we can make recursive
 calls on types of our universe, we can effectively
 \textit{coerce} recursive values of our universe to an appropriate
 output type.
@@ -227,7 +227,7 @@ Ad hoc polymorphic functions may also be a hybrid of
 the overloading and coercion styles.
 For example, if universe \AgdaFun{Code}s are
 \textit{algebraic}, \textit{inductive}, and \textit{subordinate} then
-we can recurse on the codes and interpretations for the autonmous
+we can recurse on the codes and interpretations for the autonomous
 types in the universe (coercion), but can only recurse on
 the interpretations of the subordinate types (overloading).
 For example, consider the \AgdaFun{all} function for the

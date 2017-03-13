@@ -43,7 +43,7 @@ $$
 $$
 
 Values of function types are lambda expressions, for example the lambda
-expression in the body of the identify function (\AgdaVar{id}) below.
+expression in the body of the identity function (\AgdaVar{id}) below.
 
 \AgdaHide{
 \begin{code}
@@ -145,7 +145,7 @@ by some type \AgdaVar{A}, such that the collection is
 uniformly defined for each of its types regardless of what \AgdaVar{A}
 is.
 
-For example, below the type of disjoin unions (\AgdaData{⊎}) is
+For example, below the type of disjoint unions (\AgdaData{⊎}) is
 \textit{non-dependent}, \textit{non-inductive}, and parameterized by two types
 \AgdaVar{A} and \AgdaVar{B}. We define the type of disjoint unions
 along with a function to \AgdaFun{case}-analyze them.
@@ -458,7 +458,7 @@ unit types, ending with a bottom type (\AgdaVar{⊥}, the type without
 any constructors). This makes sense because the finite set of zero
 elements is uninhabited, and the finite set of any other number
 \AgdaVar{n} offers a choice (of \AgdaCon{here}s and \AgdaCon{there}s)
-to index any subnumber of \AgdaVar{n}. Here ``choice'' is interpreted
+to index any sub-number of \AgdaVar{n}. Here ``choice'' is interpreted
 as disjoint union.
 
 \begin{code}
@@ -555,7 +555,7 @@ module _ where
 \end{code}
 
 The first component is zero for the \AgdaCon{nil} constructor. For
-the \AgdaCon{cons} constuctor, the first component is the successor
+the \AgdaCon{cons} constructor, the first component is the successor
 of the natural number \AgdaVar{n} contained within the list being
 extended (the second argument to \AgdaCon{cons}) represented as a
 pair.
@@ -752,10 +752,10 @@ We would like to emphasize that this definition of booleans
 corresponds to the semantics of defining \AgdaData{Bool} using a
 \AgdaKeyword{data} declaration (as in \refsec{nonind}). 
 Although it looks
-syntatically similar to the \textit{derived} definition of booleans
+syntactically similar to the \textit{derived} definition of booleans
 using unit and disjoint union in \refsec{derived}, that derived
 definition is \textit{not} algebraic because it is not defined with
-$\mu$ (either syntatically or semantically).
+$\mu$ (either syntactically or semantically).
 However, some derived types \textit{can} be algebraic if we
 internalize $\mu$ as a type former
 \AgdaData{μ}~\cite{dagand:phd},
@@ -763,7 +763,7 @@ and use this type former to derive type definitions.
 In the scope of this thesis, an algebraic type is one defined using
 a \AgdaKeyword{data} declaration, a \AgdaData{μ} type former, or a
 \AgdaData{W} type former (introduced in \refsec{wtypes}). Although
-\AgdaData{W} types are not syntatically fixpoint constructions, they
+\AgdaData{W} types are not syntactically fixpoint constructions, they
 are semantically very similar so we still call them algebraic.
 
 Finally, below is an example of an indexed type defined algebraically. The
@@ -872,7 +872,7 @@ type \AgdaData{Set}.
 
 A \textit{closed} type is any type whose definition does not mention
 \AgdaData{Set}. For example, if we specialize the type of parametric
-lists to booleans (as the type \AgdaFun{Bits}) the source of openess
+lists to booleans (as the type \AgdaFun{Bits}) the source of openness
 (the parameter \AgdaVar{A} of type \AgdaData{Set}) disappears.
 
 \AgdaHide{

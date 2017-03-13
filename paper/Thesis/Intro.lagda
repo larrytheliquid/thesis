@@ -98,7 +98,7 @@ Agda~\cite{lang:agda} for all of our developments.
 A single term language is used to write programs at the value and type
 levels. The combination of
 total programming at the type level and a
-notion of dependency betweeen types allows any proposition of
+notion of dependency between types allows any proposition of
 intuitionistic logic to be expressed as a type.
 A value (or equivalently, a total program) inhabiting a
 type encoding a proposition serves as its intuitionistic proof. This
@@ -679,7 +679,7 @@ of subsequent constructor arguments can depend on the
 There are 2 common generic encodings (i.e. semantic models)
 of dependent algebraic datatypes:
 \begin{itemize}
-\item{\textbf{Containers} (\refsec{wtypes})} These are datastructures that represent
+\item{\textbf{Containers} (\refsec{wtypes})} These are data structures that represent
   types using an analogy of \textit{shapes} (capturing inductive
   structure) and \textit{positions} (capturing contained values).
   The least fixed points of containers~\cite{containers}
@@ -702,7 +702,7 @@ Extensional Type Theory (as implemented by
 NuPRL~\cite{lang:nuprl}),
 they inadequately~\cite{winad} (\refsec{inad}) encode
 first-order algebraic types in
-Intentional Type Theory (as implemented by Agda~\cite{lang:agda}).
+Intensional Type Theory (as implemented by Agda~\cite{lang:agda}).
 For this reason, we choose \textbf{dependent polynomials} to model
 dependent algebraic types.
 
@@ -755,7 +755,7 @@ first is merely an issue of encoding, but the second emphasizes that
 the isomorphism between indexed and inductive-recursive does not scale
 to ``large'' cases, defined below:
 \begin{itemize}
-\item{\textbf{Intentionality}}
+\item{\textbf{Intensionality}}
   Even though indexed and inductive-recursive types are isomorphic,
   encoding ``naturally'' inductive-recursive types
   (like \Data{Arith}) as indexed types means reasoning about the
@@ -777,7 +777,7 @@ to ``large'' cases, defined below:
   simply use indexed types and apply the isomorphism).
 \end{itemize}
 
-Our arguments (the intentionality of functions and the
+Our arguments (the intensionality of functions and the
 lack of an isomorphism in the large case) could also be used to
 justify choosing indexed types (where we consider ``naturally''
 indexed types and large type indices). Once again, we choose
@@ -787,7 +787,7 @@ programming literature.
 Finally, because the isomorphism fails in the large case, the ideal
 choice would be to use
 \textbf{indexed inductive-recursive}~\cite{indexedinductionrecursion}
-algebraic types. These are a 3rd option for expressing intentional
+algebraic types. These are a 3rd option for expressing intensional
 correctness properties of datatypes, where both indexing and
 induction-recursion are expressed naturally.
 \footnote{Interestingly, even indexed inductive-recursive types are
@@ -818,10 +818,10 @@ the universe, is possible over a universe that:
   \textbf{dependently typed language}
   (or type theory, supporting the Curry-Howard isomorphism)
   with datatype declarations.
-\item{(\refsec{iralg})} Adequately (in intentional types theory)
+\item{(\refsec{iralg})} Adequately (in intensional type theory)
   models \textbf{small inductive-recursive algebraic types}
   via initial algebra semantics
-  (in contrast to the inadquate model of first-order types
+  (in contrast to the inadequate model of first-order types
   in the universe of \refsec{closedw}).
 
 \item{(\refsec{fullygeneric})} Supports the
@@ -982,7 +982,7 @@ at every level of the hierarchy beyond the first.
 The chapter reviews how to model a hierarchy of
 \textit{Closed Well-Order Types}, and then defines a model of the
 hierarchy of \textit{Closed Inductive-Recursive Types}. We
-highlight the subtleties necessary to adquately define a hierarchy
+highlight the subtleties necessary to adequately define a hierarchy
 containing algebraic types modeled using initial algebra semantics.
 
 \paragraph{\chaptitle{fulliesg}}

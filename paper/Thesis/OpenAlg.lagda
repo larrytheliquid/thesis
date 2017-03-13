@@ -27,7 +27,7 @@ First, we define an initial algebra semantics for datatypes in the
 language of category theory, denoting types by their
 \textit{categorical model}. Then, we show the equivalent initial
 algebra semantics in the language of
-type theory (as implemeneted by Agda), denoting types by
+type theory (as implemented by Agda), denoting types by
 their \textit{formal model}.
 We do not fully define the constructions
 in the categorical model, but rather appeal to widely known
@@ -290,7 +290,7 @@ module _ where
 
 Finally, note that we establish another convention of ``quoting''
 description constructors with a backtick (e.g. \AgdaCon{`X} for $X$).
-This emphasizes that they are a syntatic encoding of polynomial set
+This emphasizes that they are a syntactic encoding of polynomial set
 constructions. As we will see, quoting \AgdaData{Desc} constructors is
 natural as they also act as codes of a universe (\refsec{hierir}).
 

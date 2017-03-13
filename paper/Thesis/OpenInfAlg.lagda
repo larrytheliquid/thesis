@@ -202,7 +202,7 @@ module _ where
   NatD = `1 `+ `X^ ⊤
 \end{code}
 
-Finally, note that the ``carot'' in the syntax of
+Finally, note that the ``caret'' in the syntax of
 infinitary occurrences (\AgdaCon{`X\carot}) connotes raising an
 inductive occurrence to some power (the power being
 the cardinality of the domain argument of type \AgdaData{Set}).
@@ -384,7 +384,7 @@ module _ where
 The infinitary pattern functor for this type is described by
 \AgdaFun{NatD}. Its type former \AgdaData{ℕ}
 appears below, and is modeled the same way
-as its non-infinitary coutnerpart in \refsec{nondepalgmod}.
+as its non-infinitary counterpart in \refsec{nondepalgmod}.
 
 \AgdaHide{
 \begin{code}

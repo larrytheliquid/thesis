@@ -52,7 +52,7 @@ must inhabit the same level as its type parameter.
     cons : A → List A → List A
 \end{code}
 
-Just like \AgdaData{Set}, Agda does not expose an elimintation
+Just like \AgdaData{Set}, Agda does not expose an elimination
 principle for \AgdaData{Level} (thus you cannot, for example, pattern
 match on levels in a function definition).
 \footnote{Nevertheless, we can write parametrically

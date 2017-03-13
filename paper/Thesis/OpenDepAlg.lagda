@@ -33,7 +33,7 @@ However, we change the language of
 \textit{polynomial set constructions} to be able to describe pattern
 functors of types involving dependencies.
 
-We mostly keep the syntax of the non-dependent polynomial set constsructions
+We mostly keep the syntax of the non-dependent polynomial set constructions
 1, (+), ($\cdot$), and $X$. However, the meaning of the product of two
 sets ($\cdot$) is actually
 the \textit{dependent} product (or dependent pair).
@@ -808,6 +808,6 @@ module _ where
   app f a = init (appT , (λ b → if b then f else a) , tt)
 \end{code}
 
-Note how in the tagged construction the first componet of the pair is
+Note how in the tagged construction the first component of the pair is
 always a single tag, hence \AgdaCon{lam} and \AgdaCon{app} are not
 defined with nested choices.

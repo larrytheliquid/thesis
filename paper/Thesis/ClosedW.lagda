@@ -174,7 +174,7 @@ is the second constructor of \AgdaData{Bool}, just as
 \AgdaCon{suc zero} is the second value in the ordered
 natural numbers). The sum of a finite set
 \AgdaData{Fin} value is 0 for the \AgdaCon{here} index, and the
-\AgdaCon{suc}essor of the previous index for the \AgdaCon{there}
+\AgdaCon{suc}cessor of the previous index for the \AgdaCon{there}
 case. 
 
 \begin{code}
@@ -647,19 +647,19 @@ types. However, there is one major issue:
 
 \paragraph{Inadequacy}
 The base cases of inductively defined datatypes using
-\AgdaData{W} have an infinite number of intentionally distinct
+\AgdaData{W} have an infinite number of intensionally distinct
 values. Recall that the base case \AgdaCon{leaf} had
 \texttt{⊥ → Tree A B} as its inductive argument. Because the
 domain of the function is bottom, we can write it many different
 ways (i.e. \AgdaFun{elim⊥}, \AgdaFun{elim⊥ ∘ elim⊥}, etc). Even
 though all leaves containing such functions are extensionally
 equivalent, it is inadequate~\cite{winad} to have an infinite number of
-intentionally distinct canonical forms for the model of
+intensionally distinct canonical forms for the model of
 \AgdaData{Tree} (whose initial declaration was first-order).
 
 \Data{W} types are inadequate for our purposes because
 we are interested in dependently typed languages (like Agda)
-implementing intentional type theory, rather than extensional type
+implementing intensional type theory, rather than extensional type
 theory. For this reason, we represent algebraic datatypes using
 initial algebra semantics (instead of \Data{W} types),
 as covered in \refchap{open}.

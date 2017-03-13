@@ -32,7 +32,7 @@ partial function that we wish to encode in a total language.
 Applying \AgdaFun{head} to a non-empty list should return the first
 element, but applying \AgdaFun{head} to an empty list should be
 undefined. Below we explain how to encode \AgdaFun{head} as a total
-function by altering either the domain or codmain, first by using
+function by altering either the domain or codomain, first by using
 non-dependent types and then by taking advantage of dependent types.
 
 \subsection{Non-Dependent Domain Change}

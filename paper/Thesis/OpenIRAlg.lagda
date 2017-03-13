@@ -343,7 +343,7 @@ In this section we extend the formal model of
 dependent types (\refsec{depalgmod}) to support inductive-recursive
 types. The previous description type (\AgdaData{Desc}), interpretation
 function (\AgdaFun{⟦\_⟧}) and least fixed point operator \AgdaData{μ}
-are all modfied to be parameterized over an output type
+are all modified to be parameterized over an output type
 (\AgdaVar{O} : \AgdaData{Set}), the codomain of the decoding function.
 
 \paragraph{Descriptions}
@@ -667,7 +667,7 @@ The argument to the \AgdaCon{init}ial algebra needs to be a type
 representing constructors (of \AgdaData{μ₁}, and their arguments).
 This type is computed by applying the first component
 (\AgdaFun{⟦\_⟧₁}) of the interpretation function to the
-descripiton (\AgdaVar{D}) and its fixpoint (\AgdaData{μ} \AgdaVar{D}).
+description (\AgdaVar{D}) and its fixpoint (\AgdaData{μ} \AgdaVar{D}).
 The output of the
 decoding function (\AgdaFun{μ₂}) is
 computed by applying the description (\AgdaVar{D}),
@@ -999,7 +999,7 @@ module _ where
 \end{code}
 
 While this is a nice and simple translation, it doesn't capture the
-notion of a vector as intentionally as we would like. Specifically,
+notion of a vector as intensionally as we would like. Specifically,
 the \Con{cons} constructor of \Data{List} does not a contain the
 non-inductive natural number argument (\Var{n}). Additionally, while
 the outermost derived \Fun{Vec} contains
