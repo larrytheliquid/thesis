@@ -178,7 +178,7 @@ description (\Fun{NatD}) of the natural numbers is defined
 \Data{Bool} and \Data{⊤}, which are \textit{not} members of the
 universe \Data{`Set}. Instead, they are types
 (\Data{Set}) of our \textit{open} metatheory (Agda).
-The second argument (\Var{D}) to code of fixpoints
+The second argument (\Var{D}) of encoded fixpoints
 (\Con{`μ₁}) has type \Data{Desc}, which seems harmless. However, let's
 inspect the definition of descriptions.
 
@@ -211,7 +211,7 @@ an open type argument (\Var{D}):
   open universe \Data{Set}, rather than our universe \Data{`Set}
   (that we intended to be closed).
 \item We \textit{cannot} write fully generic functions over the
-  universe, which requires defining generic function that works
+  universe, which requires defining generic functions that work
   over any \Con{`μ₁} applied to any \Data{Desc}. We would get suck on
   the \Con{σ} and \Con{δ} cases of such functions, because we could
   \textit{not} case-analyze (or recurse into) the
