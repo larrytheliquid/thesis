@@ -18,7 +18,7 @@ without actually extending the metalanguage as done in
 \textit{open type theory}. Unfortunately, \AgdaData{W} types are
 inadequate (\refsec{inad}) models of first-order canonical terms.
 
-In this section we present an adequate alternative to modeling
+In this chapter we present an adequate alternative to modeling
 datatype declarations, using \textit{initial algebra semantics}. In
 initial algebra semantics a datatype is modeled as the
 \textit{least fixed point} (or \textit{fixpoint} for short)
@@ -40,7 +40,7 @@ the \textit{fixpoint} operator from the categorical model becomes
 the \AgdaData{μ} type (parameterized by \Data{Desc})
 in the formal model.
 
-This section defines the initial algebra semantics for a series
+This chapter defines the initial algebra semantics for a series
 of progressively more expressive classes of datatypes. All formal
 models in the series are expressed as an \textit{open} universe.
 The series ends with a formal model for \textit{inductive-recursive}
