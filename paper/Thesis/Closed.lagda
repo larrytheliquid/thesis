@@ -198,9 +198,28 @@ module _ where
 The root of the problem is that the \Var{A} argument of \Con{σ} and
 \Con{δ} has Agda's type \Data{Set}, rather a code of our universe
 \Data{`Set}. Hence, the universe \Data{`Set} that we defined is
-actually \textit{open} because \Con{`μ₁} is parameterized by
-\Data{Desc}, which is an open type because it has \Data{Set}
+actually \textit{open} because \Con{`μ₁} has an argument
+\Var{D} of type \Data{Desc}, which is an open type because it has \Data{Set}
 arguments.
+There are 2 major consequences resulting from \Con{`μ₁} having
+an open type argument (\Var{D}):
+\begin{enumerate}
+\item Encodings of declared algebraic datatypes can include
+  non-inductive arguments (and decoding codomains) whose types are
+  \textit{not} in the universe \Data{`Set}. For example, a constructor
+  could have a vector (\Data{Vec}) argument, which is in Agda's
+  open universe \Data{Set}, rather than our universe \Data{`Set}
+  (that we intended to be closed).
+\item We \textit{cannot} write fully generic functions over the
+  universe, which requires defining generic function that works
+  over any \Con{`μ₁} applied to any \Data{Desc}. We would get suck on
+  the \Con{σ} and \Con{δ} cases of such functions, because we could
+  \textit{not} case-analyze (or recurse into) the
+  \Var{A} arguments of type \Data{Set}.
+\end{enumerate}
+
+We overcome these problems, by truly defning \Data{`Set} as a
+\textit{closed} universe, in the next section.
 
 \section{Closed Inductive-Recursive Types}\label{sec:closed}
 
