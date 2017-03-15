@@ -223,6 +223,45 @@ We overcome these problems, by truly defning \Data{`Set} as a
 
 \section{Closed Inductive-Recursive Types}\label{sec:closed}
 
+The key to creating an adequate (in intensional type theory)
+closed universe of algebraic datatypes is paying attention to
+not only \textit{types} (\Data{Set}),
+but also \textit{kinds} (\Data{Set₁}).
+Previously, we created the \textit{Closed Vector Types} universe
+(\refsec{closedvecu}) and the 
+\textit{Closed Well-Order Types} universe (\refsec{closedw}).
+In those universes, the kind (\Data{Set₁})
+of types (\Data{Set}) is the only kind in town. Now we create the
+\textit{Closed Inductive-Recursive Types} universe, where we must
+additionally consider the kind (\Data{Set₁})
+of descriptions (\Data{Desc}).
+The lesson to learn is that closing a universe is not only about
+closing over some collection of \textit{types}, but more generally some
+collection of \textit{kinds}.
+
+\subsection{Formal Model}
+
+We wish to formally model a closed type theory, supporting
+user-declared datatypes, within an open type theory (Agda).
+To do so, we define a type of
+\textit{closed types} (\Data{`Set}), and a meaning
+function mapping each closed type (\Data{`Set}) to an
+open type (\Data{Set}) of our model.
+
+We saw in \refsec{naiveclosed} that descriptions
+(\Data{Desc}) are actually \textit{open}. Therefore, to model closed
+type theory we must also close over descriptions!
+To do so, we define a type of
+\textit{closed descriptions} (\Data{`Desc}), and a meaning
+function mapping each closed description (\Data{`Desc}) to an
+open description (\Data{Desc}) of our model.
+Below, we \textit{mutually} define
+closed types (\Data{`Set}) and
+closed descriptions (\Data{`Desc}),
+and their meaning functions
+(\Fun{⟦\_⟧} and \Fun{⟪\_⟫} respectively).
+
+
 \AgdaHide{
 \begin{code}
 module _ where
@@ -259,3 +298,51 @@ module _ where
     ⟪ `δ A D ⟫ = δ ⟦ A ⟧ (λ o → ⟪ D o ⟫)
 \end{code}
 
+Closed fixpoints (\Con{`μ₁}) of closed types (\Data{`Set})
+now take a closed
+description (\Data{`Desc}) as their \Var{D} argument,
+compared to \refsec{naiveclosed}, where \Var{D}
+was an open description (\Data{Desc}).
+Correspondingly, closed non-inductive arguments (\Con{`σ}) and closed
+infinitary arguments (\Con{`δ}) of
+closed descriptions (\Data{`Desc}) now take a
+closed type (\Data{`Set}) as their \Var{A} argument.
+In contrast, the \Var{A}
+argument of \Con{σ} and \Con{δ},
+in the definition of open descriptions (\Data{Desc}),
+is an open type (\Data{Set}).
+
+Before, the meaning function (\Fun{⟦\_⟧}) for closed types only recursed
+on closed types (\Data{`Set}), but now it must mutually recurse using the
+meaning function (\Fun{⟪\_⟫}) for closed descriptions (\Data{`Desc}).
+For example, consider
+the case of defining the meaning of closed fixpoints (\Con{`μ₁}), where
+\Fun{⟦\_⟧} is recursively applied to the closed type \Var{O}, and
+\Fun{⟪\_⟫} is  recursively applied to the closed description
+(\Var{D}).
+
+Conversely, the \Con{`σ} case of the meaning function (\Fun{⟪\_⟫}) for
+closed descriptions (\Data{`Desc}) must mutually recurse
+using the meaning function (\Fun{⟦\_⟧}) for closed types
+(\Data{`Set}). For example, consider
+the case of defining the meaning of
+non-inductive arguments (\Con{`σ}), where
+\Fun{⟪\_⟫} is recursively applied to the closed description
+(\Var{D} \Var{a}), and
+\Fun{⟦\_⟧} is recursively applied to the closed type \Var{A}.
+
+Finally, notice that closed descriptions (\Data{`Desc}) are
+\textit{parameterized} by closed types
+(\Var{O} of type \Data{`Set}).
+Take a look at the type of the meaning
+function (\Fun{⟪\_⟫}) for descriptions,
+mapping a closed description (\Data{`Desc} \Var{O})
+to an open description (\Data{Desc} \Fun{⟦} \Var{O} \Fun{⟧}).
+Because open descriptions expect an
+\textit{open type} (\Data{Set}) parameter, we must apply the meaning
+function of types (\Fun{⟦\_⟧}) to the closed type \Var{O}, to ensure
+that our parameter for open descriptions is well-typed
+(i.e. is a \Data{Set} rather than a \Data{`Set}).
+
+
+\subsection{Kind-Generalized Universes}
