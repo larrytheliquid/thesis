@@ -18,8 +18,6 @@ module Alg where
     σ : (A : Set) (D : A → Desc O) → Desc O
     δ : (A : Set) (D : (A → O) → Desc O) → Desc O
 
-  {-# TERMINATING #-}
-  {-# NO_POSITIVITY_CHECK #-}
   mutual
     ⟦_⟧₁ : {O : Set} (D R : Desc O) → Set
     ⟦ ι o ⟧₁ R = ⊤
@@ -29,7 +27,7 @@ module Alg where
     ⟦_⟧₂ : {O : Set} (D R : Desc O) → ⟦ D ⟧₁ R → O
     ⟦ ι o ⟧₂ R tt = o
     ⟦ σ A D ⟧₂ R (a , xs) = ⟦ D a ⟧₂ R xs
-    ⟦ δ A D ⟧₂ R (f , xs) = ⟦ D (μ₂ R ∘ f) ⟧₂ R xs
+    ⟦ δ A D ⟧₂ R (f , xs) = ⟦ D (λ a → μ₂ R (f a)) ⟧₂ R xs
 
     data μ₁ (O : Set) (D : Desc O) : Set where
       init : ⟦ D ⟧₁ D → μ₁ O D
@@ -98,6 +96,8 @@ Similarly, above we define a version of the fixpoint operator
 (\Data{μ₁}) that explicitly takes the codomain (\Var{O})
 of the inductive-recursive decoding function.
 
+\subsection{Formal Model}
+
 In the vector example of \refsec{iralgtps} we saw that \textit{indexed types}
 can be derived from \textit{inductive-recursive types} and
 \textit{equality constraints}
@@ -156,8 +156,14 @@ by using the encoded identity type
 (\Con{`Id}, rather than \Data{Id}).
 Additionally, the type of the compared values
 in the proposition can also be encoded in the universe
-(as \Con{`Bool}, rather than \Data{Bool}). Next, let's try
-to define the type of natural numbers in the universe.
+(as \Con{`Bool}, rather than \Data{Bool}).
+
+\subsection{Source of Openness}
+
+To discover why \Data{`Set} actually defines an \textit{open}
+universe, let's try
+to define the type of natural numbers in the universe
+(i.e. as a member of \Data{`Set}).
 
 \begin{code}
   NatD : Desc ⊤
@@ -235,6 +241,17 @@ of types (\Data{Set}) is the only kind in town. Now we create the
 \textit{Closed Inductive-Recursive Types} universe, where we must
 additionally consider the kind (\Data{Set₁})
 of descriptions (\Data{Desc}).
+\footnote{
+  The type of types is a kind because \Data{Set} : \Data{Set₁}. Similarly,
+  the type of descriptions is a kind because
+  \Data{Desc} : (\Var{O} : \Data{Set}) → \Data{Set₁}. Distinctively,
+  the type former of descriptions is a function. Even though the function
+  domain (\Var{O}) is a type (\Data{Set}), descriptions are still
+  kinds because the codomain of the functional type former
+  is a kind (\Data{Set₁}). In other words, the codomain of a type
+  former determines whether it is a type or a kind,
+  not its domain.
+  }
 The lesson to learn is that closing a universe is not only about
 closing over some collection of \textit{types}, but more generally some
 collection of \textit{kinds}.
@@ -346,3 +363,126 @@ that our parameter for open descriptions is well-typed
 
 
 \subsection{Kind-Generalized Universes}
+
+Because we are claiming that we are formally modeling a closed
+\textit{universe} (\refsec{universes}), we must be able to
+point out its type of \textit{codes} and its
+\textit{meaning} function. A universe (\Data{Univ}) can be formally
+modeled as a dependent record consisting of a \Field{Code} type, and
+a \Field{Meaning} function mapping codes to types (\Data{Set}).
+\footnote{
+  In \refsec{universes}, universes are modeled as a dependent pair
+  (\Data{Σ}) type, where the first component is the type of codes and
+  the second is the meaning function. The \Data{Univ} record is really
+  just a dependent pair that we have named \Data{Univ},
+  and whose components we have named \Field{Code} and \Field{Meaning}. 
+  }
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  data Desc (O : Set) : Set₁ where
+  data μ (O : Set) (D : Desc O) : Set where
+ 
+  data `Set : Set where
+  data `Desc (O : `Set) : Set where
+  postulate
+   ⟦_⟧ : `Set → Set
+   ⟪_⟫ : {O : `Set} → `Desc O → Desc ⟦ O ⟧
+\end{code}}
+
+\begin{code}
+  record Univ : Set₁ where
+    field
+      Code : Set
+      Meaning : Code → Set
+\end{code}
+
+As expected, the types part of our \textit{Closed Inductive-Recursive Types}
+universe is \Data{Univ}, by using \Data{`Set} for the
+codes and \Fun{⟦\_⟧} for the meaning function.
+
+\begin{code}
+  `SetU : Univ
+  `SetU = record { Code = `Set ; Meaning = ⟦_⟧ }
+\end{code}
+
+Thus, \Fun{`SetU} is the evidence that
+\textit{Closed Inductive-Recursive Types} defines a universe,
+where closed type codes \Data{`Set} are formally modeled by the
+kind of open types \Data{Set} via the meaning function \Fun{⟦\_⟧}.
+Now that we have defined a closed universe modeled in terms of
+the kind of open types (\Data{Set}), can we similarly
+define a closed universe modeled in terms of our other kind,
+namely the kind of open descriptions (\Data{Desc})?
+
+We can, and we call it the
+\textit{Closed Inductive-Recursive Descriptions} universe. But first,
+we must generalize what it means to be a universe. Previously, we
+defined the \Data{Univ} record with a
+\Field{Meaning} function whose codomain is the
+kind \Data{Set}. Now, we will define a generalized version where the
+codomain of the \Field{Meaning} function is an arbitrary
+kind (\Var{K} : \Data{Set₁}).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  data Desc (O : Set) : Set₁ where
+  data μ (O : Set) (D : Desc O) : Set where
+ 
+  data `Set : Set where
+  data `Desc (O : `Set) : Set where
+  postulate
+   ⟦_⟧ : `Set → Set
+   ⟪_⟫ : {O : `Set} → `Desc O → Desc ⟦ O ⟧
+\end{code}}
+
+\begin{code}
+  record Univ (K : Set₁) : Set₁ where
+    field
+      Code : Set
+      Meaning : Code → K
+\end{code}
+
+We can still define
+\textit{Closed Inductive-Recursive Types} as a
+kind-generalized universe by specializing \Var{K} to the kind
+\Data{Set}.
+
+\begin{code}
+  `SetU : Univ Set
+  `SetU = record { Code = `Set ; Meaning = ⟦_⟧ }
+\end{code}
+
+However, now we can also define
+\textit{Closed Inductive-Recursive Descriptions} as a
+kind-generalized universe by specializing
+\Var{K} to the kind \Data{Desc}.
+
+\begin{code}
+  `DescU : (O : `Set) → Univ (Desc ⟦ O ⟧)
+  `DescU O = record { Code = `Desc O ; Meaning = ⟪_⟫ }
+\end{code}
+
+Thus, \Fun{`DescU} is the evidence that
+\textit{Closed Inductive-Recursive Descriptions}
+is a \textit{parameterized} universe (\refsec{paru}),
+where the parameter \Var{O} represents the codomain of the decoding
+function of the closed inductive-recursive algebraic datatypes.
+If we modeled standard (i.e. not inductive-recursive) dependent
+algebraic datatypes (like in \refsec{depalgmod}), then
+this parameter would disappear.
+
+By creating a closed universe of types that includes closed
+user-declared datatypes modeled using initial algebra semantics, we
+learn that the standard notion of a universe in type theory can be
+generalized. A universe normally maps codes to \textit{types} (\Data{Set}), but
+more generally the meaning function can map codes to any
+\textit{kind}, such as \textit{descriptions} (\Data{Desc}).
+This generalization explains why we call \Fun{⟦\_⟧} the
+\textit{meaning} function for closed types (\Data{`Set}), but
+also call \Fun{⟪\_⟫} the \textit{meaning} function
+for closed descriptions (\Data{`Desc}).

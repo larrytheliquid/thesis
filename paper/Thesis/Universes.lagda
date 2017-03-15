@@ -390,7 +390,7 @@ another type, therefore whether we consider \AgdaFun{Pow} and
 \AgdaFun{DList} to be derived types (\refsec{derived}) or derived
 universes is merely a matter of perspective.
 
-\subsection{Parameterized Universes}
+\subsection{Parameterized Universes}\label{sec:paru}
 
 A \textit{parameterized} universe is a collection of universes, parameterized
 by some type \AgdaVar{A}, such that the collection is
