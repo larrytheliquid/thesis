@@ -231,16 +231,16 @@ We overcome these problems, by truly defning \Data{`Set} as a
 \section{Closed Inductive-Recursive Types}\label{sec:closed}
 
 The key to creating an adequate (in intensional type theory)
-closed universe of algebraic datatypes is paying attention to
-not only \textit{types} (\Data{Set}),
+closed universe of algebraic datatypes is paying attention not
+only to \textit{types} (\Data{Set}),
 but also \textit{kinds} (\Data{Set₁}).
 Previously, we created the \textit{Closed Vector Types} universe
 (\refsec{closedvecu}) and the 
 \textit{Closed Well-Order Types} universe (\refsec{closedw}).
 In those universes, the kind (\Data{Set₁})
 of types (\Data{Set}) is the only kind in town. Now we create the
-\textit{Closed Inductive-Recursive Types} universe, where we must
-additionally consider the kind (\Data{Set₁})
+\textit{Closed Inductive-Recursive Types} universe, where we
+additionally account for the kind (\Data{Set₁})
 of descriptions (\Data{Desc}).
 \footnote{
   The type of types is a kind because \Data{Set} : \Data{Set₁}. Similarly,
@@ -350,7 +350,7 @@ non-inductive arguments (\Con{`σ}), where
 (\Var{D} \Var{a}), and
 \Fun{⟦\_⟧} is recursively applied to the closed type \Var{A}.
 
-Finally, notice that closed descriptions (\Data{`Desc}) are
+Notice that closed descriptions (\Data{`Desc}) are
 \textit{parameterized} by closed types
 (\Var{O} of type \Data{`Set}).
 Take a look at the type of the meaning
@@ -362,6 +362,22 @@ Because open descriptions expect an
 function of types (\Fun{⟦\_⟧}) to the closed type \Var{O}, to ensure
 that our parameter for open descriptions is well-typed
 (i.e. is a \Data{Set} rather than a \Data{`Set}).
+
+Finally, recall that our naive attempt
+(in \refsec{naiveclosed}) at closing the universe failed,
+because the resulting universe is actually open. 
+In \refsec{naiveclosed}, \Data{`Set} contains a
+\Var{D} argument (in \Con{`μ₁}) whose \textit{kind} (\Data{Set₁})
+is \Data{Desc}. Therefore, \Data{`Set} of \refsec{naiveclosed} must be a
+\textit{kind}, to account for the size of its \Var{D} argument.
+In contrast, the closed universe of types
+(\Data{`Set}) of this section, and the
+closed universe of descriptions (\Data{`Desc}), are merely
+\textit{types} (\Data{Set}). Moreover, a measure of success for closing
+a universe is the ability to fit
+it in the size of types (\Data{Set}) rather kinds (\Data{Set₁}).
+
+\subsection{Closed Inhabitants}
 
 
 \subsection{Kind-Generalized Universes}
@@ -401,8 +417,9 @@ module _ where
       Meaning : Code → Set
 \end{code}
 
-As expected, the types part of our \textit{Closed Inductive-Recursive Types}
-universe is \Data{Univ}, by using \Data{`Set} for the
+As expected, we can model the
+\textit{Closed Inductive-Recursive Types}
+universe as a member \Data{Univ}, by using \Data{`Set} for the
 codes and \Fun{⟦\_⟧} for the meaning function.
 
 \begin{code}
@@ -424,7 +441,7 @@ We can, and we call it the
 we must generalize what it means to be a universe. Previously, we
 defined the \Data{Univ} record with a
 \Field{Meaning} function whose codomain is the
-kind \Data{Set}. Now, we will define a generalized version where the
+kind \Data{Set}. Now, we define a generalized version where the
 codomain of the \Field{Meaning} function is an arbitrary
 kind (\Var{K} : \Data{Set₁}).
 
@@ -492,11 +509,11 @@ for closed descriptions (\Data{`Desc}).
 
 \section{How to Close a Universe}
 
-The closed universe of \refsec{closed} is a wonderful result, as it
+The closed universe of \refsec{closed} is a fine result, as it
 supports user-declared datatypes,
 but also fully generic programming (demonstrated in \refchap{fullyg}).
 However, readers may be curious how we arrived at this universe.
-Perhaps more importantly, what \textit{procedure} turns
+Perhaps, more importantly, what \textit{procedure} turns
 an open universe into a closed version? You may want to
 support fully generic programming over a universe that represents
 algebraic datatypes with different properties,
@@ -511,14 +528,14 @@ a procedure to close a universe below.
 
   \begin{enumerate}
   \item Declare a \textit{kind} \Var{`K},
-    representing closed codes of \Var{K}.
-  \item For each introduction rule of \Var{K},
+    representing (what will be) closed codes of \Var{K}.
+  \item For each formation rule of \Var{K},
     encode it as a constructor of \Var{`K}.
   \item Define a meaning function (\Fun{⟦\_⟧}) mapping each encoded constructor
-    of \Var{`K} to the actual \Var{K} introduction rule it represents.
+    of \Var{`K} to the actual \Var{K} formation rule it represents.
   \end{enumerate}
 
-\item In the type former and constructors of \Var{`K}, and in the body of the
+\item In the kind former and constructors of \Var{`K}, and in the body of the
   meaning function (\Fun{⟦\_⟧}), simultaneously:
   \begin{enumerate}
   \item Replace occurrences of the kind \Var{K} with its closed encoding \Var{`K}.
@@ -529,8 +546,8 @@ a procedure to close a universe below.
 
 \item Recursively apply this procedure for another kind \Var{J}.
   \begin{enumerate}
-  \item Select \Var{J} from the argument types of the type former,
-    or introduction rules, of \Var{K}.
+  \item Select \Var{J} from the arguments of either the kind former,
+    or formation rules, of \Var{K}.
   \item In the recursive Step 1, for any \Var{K}  that has already
     been closed over, implicitly replace \Var{K} and its
     references with \Var{`K} and applications of its meaning function
@@ -539,7 +556,7 @@ a procedure to close a universe below.
 
 \item Change \Var{`K} from a \textit{kind} to a \textit{type}, by
   replacing \Data{Set} with \Data{Set₁} in the codomain of the
-  type former of \Var{`K}.
+  kind former of \Var{`K}.
 \end{enumerate}
 
 In the procedure above, all closed codes \Var{`K},
@@ -554,14 +571,14 @@ thanks to \textbf{Step 4}.
 
 Typically, we are interested
 in closing over a universe of types, so our initial \Var{K} will be
-the type of open types (\Data{Set}), and its introduction rules will
+the kind of open types (\Data{Set}), and its formation rules will
 be \textit{type formers}
 (e.g. \Data{Bool}, \Data{Id}, \Data{Σ}, \Data{μ₁}, etc.)
 of some finite collection of types.
 Subsequently, other kinds \Var{K} (e.g. \Data{Desc})
 that we encounter have
 \textit{constructors} (e.g. \Con{ι}, \Con{σ}, and \Con{δ})
-as their introduction rules.
+as their formation rules.
 For example, consider closing over the subset of the
 kind \Data{Set} below.
 
@@ -590,9 +607,9 @@ module _ where
 
 We select \Var{K} to be kind \Data{Set}, and
 the \textit{type formers} of the collection of types above are its
-\textit{introduction rules}. Once this step is complete,
-\Var{`K} is \Data{`Set} (representing closed types),
-and the meaning function is \Fun{⟦\_⟧}.
+\textit{formation rules}. Once this step is complete,
+\Var{`K} is \Data{`Set} (representing what will be closed types),
+and its meaning function is \Fun{⟦\_⟧}.
 We present both below.
 
 \AgdaHide{
@@ -646,16 +663,17 @@ module _ where
    ⟦ `μ₁ O D ⟧ = μ₁ ⟦ O ⟧ D
 \end{code}
 
-At this point, over universe is quite like
+At this point, our universe is quite like
 our failed attempt of a closed universe (\refsec{naiveclosed}),
 because \Data{Desc} in argument \Var{D} of \Con{`μ₁} is not closed yet.
 
 \paragraph{Step 3}
 
 Next, we encounter of the kind of descriptions (\Data{Desc}) in the
-\Var{D} argument of \Con{`μ₁}, so we must recursively apply the
+\Var{D} argument of the \Con{`μ₁} constructor,
+so we must recursively apply the
 procedure by choosing \Var{J} to be \Data{Desc}.
-For convenience, we present the kind of descriptions below. 
+For reference, we present the kind of descriptions below. 
 
 \AgdaHide{
 \begin{code}
@@ -673,9 +691,10 @@ module _ where
 \paragraph{Step 3.1}
 
 The \textit{constructors} of \Data{Desc} above are its
-\textit{introduction rules}. Once this step is complete,
-\Var{`J} is \Data{`Desc} (representing closed descriptions),
-and the meaning function is \Fun{⟪\_⟫}.
+\textit{formation rules}. Once this step is complete,
+\Var{`J} is \Data{`Desc}
+(representing what will be closed descriptions),
+and its meaning function is \Fun{⟪\_⟫}.
 We present both below.
 
 \AgdaHide{
@@ -713,7 +732,7 @@ module _ where
   ⟪ `δ A D ⟫ = δ ⟦ A ⟧ D
 \end{code}
 
-Notice that the type former argument
+Notice that the kind former argument
 \Var{O} (of \Data{`Desc}) \textit{already} has
 kind \Data{`Set} (rather than \Data{Set})
 because \Data{Set} was previously encoded as \Data{`Set}.
@@ -749,31 +768,31 @@ module _ where
    data `Set : Set₁ where
      `ℕ : `Set
      `Vec : (A : `Set) (n : ℕ) →  `Set
-     `μ₁ : (O : `Set) (D : Desc ⟦ O ⟧) → `Set
+     `μ₁ : (O : `Set) (D : `Desc O) → `Set
  
    ⟦_⟧ : `Set → Set
    ⟦ `ℕ ⟧ = ℕ
    ⟦ `Vec A n ⟧ = Vec ⟦ A ⟧ n
-   ⟦ `μ₁ O D ⟧ = μ₁ ⟦ O ⟧ D
+   ⟦ `μ₁ O D ⟧ = μ₁ ⟦ O ⟧ ⟪ D ⟫
 \end{code}}
 
 \begin{code}
-  data `Desc (O : `Set) : Set₁ where
-    `ι : (o : ⟦ O ⟧) → `Desc O
-    `σ : (A : `Set) (D : ⟦ A ⟧ → `Desc O) → `Desc O
-    `δ : (A : `Set) (D : (⟦ A ⟧ → ⟦ O ⟧) → `Desc O) → `Desc O
-
-  ⟪_⟫ : {O : `Set} → `Desc O → Desc ⟦ O ⟧
-  ⟪ `ι o ⟫ = ι o
-  ⟪ `σ A D ⟫ = σ ⟦ A ⟧ (λ a → ⟪ D a ⟫)
-  ⟪ `δ A D ⟫ = δ ⟦ A ⟧ (λ o → ⟪ D o ⟫)
+   data `Desc (O : `Set) : Set₁ where
+     `ι : (o : ⟦ O ⟧) → `Desc O
+     `σ : (A : `Set) (D : ⟦ A ⟧ → `Desc O) → `Desc O
+     `δ : (A : `Set) (D : (⟦ A ⟧ → ⟦ O ⟧) → `Desc O) → `Desc O
+   
+   ⟪_⟫ : {O : `Set} → `Desc O → Desc ⟦ O ⟧
+   ⟪ `ι o ⟫ = ι o
+   ⟪ `σ A D ⟫ = σ ⟦ A ⟧ (λ a → ⟪ D a ⟫)
+   ⟪ `δ A D ⟫ = δ ⟦ A ⟧ (λ o → ⟪ D o ⟫)
 \end{code}
 
-Notice that the \Data{`Desc} (which replaced \Data{Desc}
-in the types of \Var{D} of
-the \Con{`σ} and \Con{`δ} constructors) is applied to
-\Var{O}, without the closed types meaing function
-(\Fun{⟦\_⟧}), because the \Data{`Desc} type former
+Notice that \Data{`Desc} (which replaced \Data{Desc}
+in the \Var{D} arguments of the
+\Con{`μ₁}, \Con{`σ}, and \Con{`δ} constructors) is applied to
+\Var{O}, without the closed types meaning function
+(\Fun{⟦\_⟧}), because the \Data{`Desc} kind former
 expects a closed type (\Data{`Set}).
 
 Additionally, the \Con{`σ} and \Con{`δ} cases of the
@@ -786,16 +805,57 @@ Because there are no kinds left to recursively apply the procedure to,
 step 4.1 and 4.2 can be completed by changing
 closed types (\Data{`Set}) and closed descriptions (\Data{`Desc}) from
 \textit{kinds} to \textit{types}.
-Any kind that used to be contained in the types of arguments of
+Any kinds that were arguments of the original collection of type
+formers have been replaced by types, making the final universe
+closed. Below is the final result of the procedure.
 
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  data ℕ : Set where
+  data Vec (A : Set) : ℕ → Set where
+  data Desc (O : Set) : Set₁ where
+    ι : (o : O) → Desc O
+    σ : (A : Set) (D : A → Desc O) → Desc O
+    δ : (A : Set) (D : (A → O) → Desc O) → Desc O
+  data μ₁ (O : Set) (D : Desc O) : Set where
+\end{code}}
 
-% Procedure ensures that the universe is \textit{closed},
-%% not that it is \textit{autonomous}.
+\begin{code}
+  mutual
+   data `Set : Set where
+     `ℕ : `Set
+     `Vec : (A : `Set) (n : ℕ) →  `Set
+     `μ₁ : (O : `Set) (D : `Desc O) → `Set
+ 
+   ⟦_⟧ : `Set → Set
+   ⟦ `ℕ ⟧ = ℕ
+   ⟦ `Vec A n ⟧ = Vec ⟦ A ⟧ n
+   ⟦ `μ₁ O D ⟧ = μ₁ ⟦ O ⟧ ⟪ D ⟫
 
-%% Below, we step through the procedure of closing the
-%% subset (\Data{ℕ}, \Data{Vec}, and \Data{μ₁})
-%% of kind \Data{Set}, which also involves closing
-%% the kind \Data{Desc}.
+   data `Desc (O : `Set) : Set where
+     `ι : (o : ⟦ O ⟧) → `Desc O
+     `σ : (A : `Set) (D : ⟦ A ⟧ → `Desc O) → `Desc O
+     `δ : (A : `Set) (D : (⟦ A ⟧ → ⟦ O ⟧) → `Desc O) → `Desc O
+   
+   ⟪_⟫ : {O : `Set} → `Desc O → Desc ⟦ O ⟧
+   ⟪ `ι o ⟫ = ι o
+   ⟪ `σ A D ⟫ = σ ⟦ A ⟧ (λ a → ⟪ D a ⟫)
+   ⟪ `δ A D ⟫ = δ ⟦ A ⟧ (λ o → ⟪ D o ⟫)
+\end{code}
 
-%% We did not close over Nat because it is not a kind,
-%% similar to x and y in Id
+Reflecting upon how the procedure operates, we come to understand
+that only the constructor \textit{kind} arguments of the original type
+formers are encoded, and the meaning function is only applied to
+members of kinds. This explains why the \Data{ℕ} argument of the
+vector type former (encoded as \Con{`Vec}) did \textit{not} get
+encoded. Hence, we \textit{did not} a create a code (i.e. \Con{`ℕ})
+and meaning function for the \textit{type} of natural numbers, but we
+\textit{did} (i.e. \Con{`Desc}) for the \textit{kind} of descriptions.
+Additionally, the type meaning function
+(\Fun{⟦\_⟧}) does not recurse on \Var{n} in the \Con{`Vec} case, nor
+does the description meaning function (\Fun{⟪\_⟫})
+recurse on \Var{o} in the
+\Con{`ι} case, because both \Var{n} and \Var{o} are values of
+a \textit{type} rather than members of a \textit{kind}.
