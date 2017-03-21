@@ -377,7 +377,7 @@ closed universe of descriptions (\Data{`Desc}), are merely
 a universe is the ability to fit
 it in the size of types (\Data{Set}) rather kinds (\Data{Set₁}).
 
-\subsection{Closed Inhabitants}
+\subsection{Example Values}
 
 
 \subsection{Kind-Generalized Universes}
@@ -507,7 +507,7 @@ also call \Fun{⟪\_⟫} the \textit{meaning} function
 for closed descriptions (\Data{`Desc}).
 
 
-\section{How to Close a Universe}
+\section{How to Close a Universe}\label{sec:closing}
 
 The closed universe of \refsec{closed} is a fine result, as it
 supports user-declared datatypes,
@@ -567,7 +567,7 @@ will be \textit{types} (\Data{Set}),
 rather than \textit{kinds} (\Data{Set₁}),
 thanks to \textbf{Step 4}. 
 
-\subsection{Example}
+\subsection{Example Run}
 
 Typically, we are interested
 in closing over a universe of types, so our initial \Var{K} will be
@@ -673,7 +673,11 @@ Next, we encounter of the kind of descriptions (\Data{Desc}) in the
 \Var{D} argument of the \Con{`μ₁} constructor,
 so we must recursively apply the
 procedure by choosing \Var{J} to be \Data{Desc}.
-For reference, we present the kind of descriptions below. 
+We establish the Step $x$.$y$ naming convention, where $y$ refers to
+the step number in the recursive call (encoding \Data{Desc}),
+and $x$ refers to the
+original step before the recursion (encoding \Data{Set}).
+For reference, we present the kind of descriptions below.
 
 \AgdaHide{
 \begin{code}
@@ -802,7 +806,7 @@ apply \Fun{⟪\_⟫} to the result of the infinitary function \Var{D}.
 \paragraph{Step 4}
 
 Because there are no kinds left to recursively apply the procedure to,
-step 4.1 and 4.2 can be completed by changing
+steps 4.1 and 4.2 can be completed by changing
 closed types (\Data{`Set}) and closed descriptions (\Data{`Desc}) from
 \textit{kinds} to \textit{types}.
 Any kinds that were arguments of the original collection of type
@@ -846,7 +850,7 @@ module _ where
 \end{code}
 
 Reflecting upon how the procedure operates, we come to understand
-that only the constructor \textit{kind} arguments of the original type
+that only \textit{kind} arguments of the original type
 formers are encoded, and the meaning function is only applied to
 members of kinds. This explains why the \Data{ℕ} argument of the
 vector type former (encoded as \Con{`Vec}) did \textit{not} get
@@ -859,3 +863,220 @@ does the description meaning function (\Fun{⟪\_⟫})
 recurse on \Var{o} in the
 \Con{`ι} case, because both \Var{n} and \Var{o} are values of
 a \textit{type} rather than members of a \textit{kind}.
+
+\section{Types versus Kinds}
+
+In \refsec{closing} we explain how to close over a subset of
+types, mutually by closing over descriptions.
+In this section we examine the distinctions between kinds and types in
+more detail. In particular, we compare and contrast the kind of types
+and descriptions, and where they show up (and do not show up) in the
+universe construction.
+
+\subsection{Open Types and Kinds}
+
+While both type (\Data{Set}) and descriptions (\Data{Desc})
+are \textit{open} kinds (\Data{Set₁}), somehow \Data{Desc} feels
+``more closed'' than \Data{Set}. We will precisely identity the
+properties that cause that feeling, by comparing and contrasting
+the open \textit{kinds} \Data{Set} and \Data{Desc}.
+First, let's revisit the idea of open \textit{types}
+from \refsec{open}.
+
+\paragraph{Lists}
+
+Consider the type of lists (\Data{List} below),
+parameterized by some type \Var{A} (representing the type of the
+elements of the list).
+\Data{List} is an \textit{open type},
+because its collection of values is open.
+Hence, whenever a new type is declared (in open type theory), it can
+be used as the \Var{A} parameter
+(e.g. by applying \Data{List} to \Data{Bool}, \Data{Tree}, etc.).
+This is because the kind of the \Var{A} parameter is \Data{Set}, the
+canonical source of openness.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data List (A : Set) : Set where
+    nil : List A
+    cons : (a : A) (xs : List A) → List A
+\end{code}
+
+While the type of lists (\Data{List}) is \textit{open}, it is
+inductively defined by a \textit{closed} collection of constructors.
+This may seem obvious, but we will return to this point when
+discussing the difference between the kinds \Data{Set} and
+\Data{Desc}.
+
+\paragraph{Descriptions}
+
+Now let's consider the kind of descriptions (\Data{Desc} below),
+parameterized by some type \Var{O}, representing the codomain of the
+inductive-recursive decoding function.
+\Data{Desc} is an \textit{open kind},
+because its collection of elements is open. Henceforth, we refer to
+the inhabitants of kinds as \textit{large values} (we could emphasize
+the distinction with inhabitants of types by calling them
+\textit{small values}). 
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data Desc (O : Set) : Set₁ where
+    ι : (o : O) → Desc O
+    σ : (A : Set) (D : A → Desc O) → Desc O
+    δ : (A : Set) (D : (A → O) → Desc O) → Desc O
+\end{code}
+
+Similar to why \Data{List} is an open type, \Data{Desc} is an open
+kind because its collection of large values grows as its \Var{O} parameter
+is instantiated to different types, and is used as the type of the
+\Var{o} argument in the \Con{ι} constructor. Another reason why descriptions
+are an open kind, is because the \Var{A} argument of the \Con{σ} and
+\Con{δ} constructors have kind \Data{Set}. Because \Data{Desc}
+constructors define elements of a kind, we sometimes call them
+\textit{large constructors}.
+
+While the kind of descriptions (\Data{Desc}) is \textit{open}, it is
+inductively defined by a \textit{closed} collection of constructors.
+The \Data{List} type and \Data{Desc} kind are
+both \textit{open}, but are defined by a \textit{closed} collection of
+constructors, because they are both \textit{inductively defined}.
+
+\paragraph{Types}
+
+Finally, consider the kind of types (\Data{Set}). The kind of types is
+open, as it is the canonical source of openness. Unlike \Data{Desc},
+\Data{Set} is \textit{not} inductively defined. Every time a new
+type is declared, its type former becomes a new ``constructor'' of the
+kind of types (\Data{Set}). For example, consider the datatype
+declarations below.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  data Desc (O : Set) : Set where
+  postulate ⟦_⟧₁ : {O : Set} (D R : Desc O) → Set
+\end{code}}
+
+\begin{code}
+  data ℕ : Set where
+    zero : ℕ
+    suc : ℕ → ℕ
+
+  data Vec (A : Set) : ℕ → Set where
+    nil : Vec A zero
+    cons : {n : ℕ} → A → Vec A n → Vec A (suc n)
+
+  data μ₁ (O : Set) (D : Desc O) : Set where
+    init : ⟦ D ⟧₁ D → μ₁ O D
+\end{code}
+
+We can split a datatype declaration into 2 parts.
+\begin{enumerate}
+\item The \textit{signature}, containing the type former between
+  \Key{data} and \Key{where} keywords.
+\item The \textit{body}, containing the constructors after the
+  \Key{where} keyword.
+\end{enumerate}
+
+The formation rules of kind \Data{Set} are defined by the
+\textit{signature} part of datatype declarations, but the collection
+of formation rules is \textit{open} to extension (i.e. whenever a new
+type is declared).
+In contrast, the formation rules of kind \Data{Desc} is defined by the
+\textit{body} part of its datatype declaration, using the
+\textit{closed} collection of constructors in the body.
+
+\subsection{Types versus Descriptions}
+
+In an open type theory like Agda, \Data{Set} is a unique kind because
+it is \textit{not} inductively defined (i.e. it has an open collection
+of formation rules, extended by type formers in the signature of
+datatype declarations).
+Every other kind (like \Data{Desc}) is defined by
+a closed collection of formation rules (i.e. the constructors in the body
+of the datatype declaration for the kind).
+
+The open versus closed formation rules distinction between kinds
+\Data{Set} and \Data{Desc}, and the difference in the way the
+formation rules are defined by datatype declaration signatures or
+bodies, is what made coming up with an adequate definition of a closed
+universe difficult. In fact, we first defined (an admitted to) an
+inadequate definition of a closed universe~\cite{diehl:gupdate}, where
+certain algebraic types (like natural numbers) were (adequately) encoded
+in the first universe, but others (like parameterized lists) needed to
+be (inadequately) lifted to the second universe.
+
+The solution to adequately defining a closed universe
+(as in \refsec{closed}, following the procedure in \refsec{closing})
+is to create codes for types (\Data{`Set}) \textit{mutually} with
+codes for descriptions (\Data{`Desc}). At first, this may seem odd
+because descriptions (\Data{Desc}) can already be viewed as codes
+(whose interpretation function is the fixpoint operator \Data{μ₁}).
+Hence, \Data{`Desc} can be viewed as a a code for codes. However, this
+is necessary because \Data{Desc} codes are \textit{open descriptions},
+while \Data{`Desc} codes are \textit{closed descriptions}.
+
+Part of what led us to realizing that codes for closed types (\Data{`Set})
+need to be defined mutually with codes for closed descriptions
+(\Data{`Desc}), was viewing the ``constructors'' of kinds \Data{Set}
+and \Data{Desc} in a unifying way as kind formers. Rather than
+focusing on the syntactic difference that a type former (of
+\Data{Set}) appears in the signature of a declaration,
+and a large constructor (of \Data{Desc}) appears in the body of a
+declaration, we can simply focus on the fact they are both formation
+rules of some kind. For example, below we list formation rules for
+kind \Data{Set} and kind \Data{Desc} in a unified way.
+
+\begin{center}
+ \begin{tabular}{||c | c ||} 
+ \hline
+ \Data{Set} : \Data{Set₁} &
+ \Data{Desc} : (\Var{O} : \Data{Set}) → \Data{Set₁} \\ [0.5ex] 
+ \hline\hline
+ \Data{ℕ} : \Data{Set} &
+ \Con{ι} : (\Var{o} : \Var{O}) → \Data{Desc} \Var{O} \\ 
+ \hline
+ \Data{Vec} : (\Var{A} : \Data{Set}) (\Var{n} : \Data{ℕ}) → \Data{Set} &
+ \Con{σ} : (\Var{A} : \Data{Set}) (\Var{D} : \Var{A} → \Data{Desc} \Var{O}) → \Data{Desc} \Var{O} \\
+ \hline
+ \Data{μ₁} : (\Var{O} : \Data{Set}) (\Var{D} : \Data{Desc} \Var{O}) → \Data{Set} &
+ \Con{δ} : (\Var{A} : \Data{Set}) (\Var{D} : (\Var{A} → \Var{O}) → \Data{Desc} \Var{O}) → \Data{Desc} \Var{O} \\ [1ex] 
+ \hline
+\end{tabular}
+\end{center}
+
+The first row contains the \textit{kind formers} \Data{Set} and \Data{Desc}.
+Subsequent rows in the first column contain \textit{type formers},
+serving a role analogous to large constructors, but for kind \Data{Set}.
+Subsequent rows in the second column
+contain the large constructors of kind \Data{Desc}. This unified way of
+presenting \Data{Set} and \Data{Desc} leads us to refer to
+large constructors of \Data{Desc} as \textit{description formers}.
+
+%% The reason why \Data{List} is open, is because the type of the \Var{a}
+%% argument of \Con{cons} is the parameter \Var{A}, and the kind of
+%% \Var{A} is \Data{Set}. Recall (from \refsec{open}) that we defined
+%% open types (or kinds) to be those that mention \Data{Set}.
+
+\subsection{Kind-Parameterized Types}
+
+We explain how it is possible for
+\textit{kinds} to be arguments of \textit{type} formers, which may
+seem to violate size rules (at first glance).
+
+%% compare with List with HList which must be a kind
+
+%% also Set vs Set1 vs Set2 all open kinds/superkinds
