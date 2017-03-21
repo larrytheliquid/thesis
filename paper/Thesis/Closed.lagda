@@ -1073,10 +1073,96 @@ large constructors of \Data{Desc} as \textit{description formers}.
 
 \subsection{Kind-Parameterized Types}
 
-We explain how it is possible for
-\textit{kinds} to be arguments of \textit{type} formers, which may
-seem to violate size rules (at first glance).
+In order to perform fully generic programming, our original goal
+was to create a closed universe of \textit{types}. This universe
+corresponds to the first universe in a hierarchy of universes
+(we define the hierarchy in \refchap{hier}). For the first universe to
+be adquate, it should contain all possible \textit{small values}.
+In other words, \Data{`Set} should encode \textit{types}
+like \Con{`Bool} and \Con{`Σ}, whose elements are small values.
+However, it should \textit{not} encode \textit{kinds} like
+\Con{`Set} and \Con{`Desc}, whose elements would be large values.
+Encoding large values in the first universe leads to inconsistency
+due to a \textit{type in type} paradox~\cite{TODO}.
 
-%% compare with List with HList which must be a kind
+If \Con{`Desc} should \textit{not} be encoded in our
+first universe, then why do we need to close over it when defining our
+universe at all? The answer is that the \textit{kind} \Data{Desc}
+appears as an argument to the \textit{type} former of \Data{μ₁}. This
+is similar to how the \textit{kind} \Data{Set} appears as an argument
+to the \textit{type} former of \Data{Σ}. However, this leads us to the
+next question, why can a type like \Data{Σ} have kind-level type
+former arguments while remaining a type (rather than being lifted to a
+kind)? The answer has to do with both \Data{Σ} and \Data{μ₁} being
+defined as \textit{parameterized} types.
+
+\paragraph{Dependent Pairs}
+
+Consider the type of dependent pairs, parameterized by the types
+of their left and right components (\Var{A} and \Var{B},
+respectively).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data Σ (A : Set) (B : A → Set) : Set where
+    _,_ : (a : A) (b : B a) → Σ A B
+\end{code}
+
+Dependent pairs are \textit{types}, rather than \textit{kinds},
+because the codomain of their type former is \Data{Set} (rather than
+\Data{Set₁}). An algebraic datatype can consistently be classified as
+a \textit{type} so long as its constructors do not contain a
+type (\Data{Set}) as a formal argument. Datatype \textit{parameters}
+give us a way to refer to \Var{A} and \Var{B} in the pair constructor,
+without actually taking \Var{A} and \Var{B} as formal arguments of the
+constructor in the \textit{definition} of the parameterized datatype.
+However, if we consider the type of the pair construtor
+\textit{independently} of its definition, we see that \Var{A} and
+\Var{B} are informal arguments.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  data Σ : (A : Set) (B : A → Set) → Set₁ where
+\end{code}}
+
+\begin{code}
+    _,_ : {A : Set} {B : A → Set} (a : A) (b : B a) → Σ A B
+\end{code}
+
+We call \Var{A} and \Var{B} informal arguments because the
+underlying constructor definition does not store \Var{A} and \Var{B}.
+It is exactly this fact, that the definition of the pair constructor
+does not formally store \Var{A} and \Var{B} as arguments, that allows 
+\Data{Σ} to be a type (\Data{Set}) rather than a kind (\Data{Set₁}).
+To see the difference, we define dependent pairs an indexed type,
+rather than a parameterized type, below.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data Σ : (A : Set) (B : A → Set) → Set₁ where
+    _,_ : {A : Set} {B : A → Set} (a : A) (b : B a) → Σ A B
+\end{code}
+
+Above, the type former declares \Var{A} and \Var{B} to be indices
+because they appear to the right of the colon in the datatype
+declaration signature (appearing to the left makes them
+parameters). Now the pair constructor must take \Var{A} and \Var{B} as
+formal arguments (even if they are implicit, using curly braces),
+because they are no longer given as parameters. Because \Var{A} and
+\Var{B} are classified by \textit{kinds}, and are formal arguments of
+the pair constructor, the dependent pair type must be a kind (hence,
+the codomain of its former is \Data{Set₁}).
 
 %% also Set vs Set1 vs Set2 all open kinds/superkinds
