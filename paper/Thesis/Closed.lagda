@@ -377,7 +377,7 @@ closed universe of descriptions (\Data{`Desc}), are merely
 a universe is the ability to fit
 it in the size of types (\Data{Set}) rather kinds (\Data{Set₁}).
 
-\subsection{Example Values}
+\subsection{Example Values}\label{sec:closedeg}
 
 
 \subsection{Kind-Generalized Universes}
@@ -1244,6 +1244,12 @@ Importantly, the result is that fixpoints can be defined as a
 inhabitants are (small) \textit{values}. It would be inadequate to
 model algebraic datatypes (like natural numbers or vectors) at the
 level of kinds, because users expect to declare them as types.
+Siginficantly, by defining closed descriptions (\Data{`Desc}) mutually
+with closed types (\Data{`Set}), we preserve the adequate encoding of
+\Con{`μ₁} as a closed \textit{type}, allowing our formal model of
+closed algebraic datatypes (like in \Fun{`ℕ} and \Fun{`Vec} in
+\refsec{closedeg}) to adequately classify small values
+(like \Fun{`zero} and \Fun{`nil}).
 
 \paragraph{Heterogenous Lists}
 
@@ -1274,6 +1280,8 @@ adquately define heterogenous lists, because the types of elements would
 be statically determined.
 For similar reasons, the descriptions (\Data{Desc}) must be a kind,
 rather than a type.
+
+\paragraph{Conclusion}
 
 The first closed universe (of \refsec{closed}) cannot encode
 kinds like \Data{Set}, \Data{Desc}, and \Data{HList}.
