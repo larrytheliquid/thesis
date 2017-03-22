@@ -1079,7 +1079,7 @@ corresponds to the first universe in a hierarchy of universes
 (we define the hierarchy in \refchap{hier}). For the first universe to
 be adquate, it should contain all possible \textit{small values}.
 In other words, \Data{`Set} should encode \textit{types}
-like \Con{`Bool} and \Con{`Σ}, whose elements are small values.
+like \Con{`Bool}, \Con{`Σ}, and \Con{`Vec}, whose elements are small values.
 However, it should \textit{not} encode \textit{kinds} like
 \Con{`Set} and \Con{`Desc}, whose elements would be large values.
 Encoding large values in the first universe leads to inconsistency
@@ -1090,79 +1090,195 @@ first universe, then why do we need to close over it when defining our
 universe at all? The answer is that the \textit{kind} \Data{Desc}
 appears as an argument to the \textit{type} former of \Data{μ₁}. This
 is similar to how the \textit{kind} \Data{Set} appears as an argument
-to the \textit{type} former of \Data{Σ}. However, this leads us to the
-next question, why can a type like \Data{Σ} have kind-level type
+to the \textit{type} former of \Data{Vec}. However, this leads us to the
+next question, why can a type like \Data{Vec} have kind-level type
 former arguments while remaining a type (rather than being lifted to a
-kind)? The answer has to do with both \Data{Σ} and \Data{μ₁} being
+kind)? The answer has to do with both \Data{Vec} and \Data{μ₁} being
 defined as \textit{parameterized} types.
 
-\paragraph{Dependent Pairs}
+\paragraph{Vectors}
 
-Consider the type of dependent pairs, parameterized by the types
-of their left and right components (\Var{A} and \Var{B},
-respectively).
+Consider the type of vectors, parameterized by
+elements of some type \Var{A}, and indexed by the natural numbers. 
 
 \AgdaHide{
 \begin{code}
 module _ where
+ open import Data.Nat
  private
 \end{code}}
 
 \begin{code}
-  data Σ (A : Set) (B : A → Set) : Set where
-    _,_ : (a : A) (b : B a) → Σ A B
+  data Vec (A : Set) : ℕ → Set where
+    nil : Vec A zero
+    cons : {n : ℕ} → A → Vec A n → Vec A (suc n)
 \end{code}
 
-Dependent pairs are \textit{types}, rather than \textit{kinds},
+Vectors are \textit{types}, rather than \textit{kinds},
 because the codomain of their type former is \Data{Set} (rather than
 \Data{Set₁}). An algebraic datatype can consistently be classified as
 a \textit{type} so long as its constructors do not contain a
 type (\Data{Set}) as a formal argument. Datatype \textit{parameters}
-give us a way to refer to \Var{A} and \Var{B} in the pair constructor,
-without actually taking \Var{A} and \Var{B} as formal arguments of the
-constructor in the \textit{definition} of the parameterized datatype.
-However, if we consider the type of the pair construtor
-\textit{independently} of its definition, we see that \Var{A} and
-\Var{B} are informal arguments.
+give us a way to refer to \Var{A} in the vector constructors,
+without actually taking \Var{A} as a formal argument in the
+\textit{declaration} of each constructor.
+Hence, the declarations of the \Con{nil} and \Con{cons} constructors do not
+have an \Var{A} argument.
+However, if we consider the types of the constructors
+(rather than their declarations),
+we see that \Var{A} appears as an informal argument to each
+constructor. 
 
 \AgdaHide{
 \begin{code}
 module _ where
+ open import Data.Nat
  private
-  data Σ : (A : Set) (B : A → Set) → Set₁ where
+  data Vec : Set → ℕ → Set where
 \end{code}}
 
 \begin{code}
-    _,_ : {A : Set} {B : A → Set} (a : A) (b : B a) → Σ A B
+    nil : {A : Set} → Vec A zero
+    cons : {A : Set} {n : ℕ} → A → Vec A n → Vec A (suc n)
 \end{code}
 
-We call \Var{A} and \Var{B} informal arguments because the
-underlying constructor definition does not store \Var{A} and \Var{B}.
-It is exactly this fact, that the definition of the pair constructor
-does not formally store \Var{A} and \Var{B} as arguments, that allows 
-\Data{Σ} to be a type (\Data{Set}) rather than a kind (\Data{Set₁}).
-To see the difference, we define dependent pairs an indexed type,
-rather than a parameterized type, below.
+Notice that the \Con{cons} constructor must take \Var{n} as a formal
+argument, so that it may determine the index to be \Con{suc} \Var{n}.
+We call \Var{A} an informal argument because the
+underlying constructor declaration does not store \Var{A}.
+It is exactly this fact, that the declaration of the
+\Con{nil} and \Con{cons} constructors
+do not formally store \Var{A} as an argument, that allows 
+\Data{Vec} to be a type (\Data{Set}) rather than a kind (\Data{Set₁}).
+To see the difference, we define vectors to be indexed by \Var{A},
+rather than parameterized \Var{A}, below
 
 \AgdaHide{
 \begin{code}
 module _ where
+ open import Data.Nat
  private
 \end{code}}
 
 \begin{code}
-  data Σ : (A : Set) (B : A → Set) → Set₁ where
-    _,_ : {A : Set} {B : A → Set} (a : A) (b : B a) → Σ A B
+  data Vec : (A : Set) → ℕ → Set where
+    nil : {A : Set} → Vec A zero
+    cons : {A : Set} {n : ℕ} → A → Vec A n → Vec A (suc n)
 \end{code}
 
-Above, the type former declares \Var{A} and \Var{B} to be indices
-because they appear to the right of the colon in the datatype
-declaration signature (appearing to the left makes them
-parameters). Now the pair constructor must take \Var{A} and \Var{B} as
-formal arguments (even if they are implicit, using curly braces),
-because they are no longer given as parameters. Because \Var{A} and
-\Var{B} are classified by \textit{kinds}, and are formal arguments of
-the pair constructor, the dependent pair type must be a kind (hence,
+Above, the type former declares \Var{A} to be an index
+because it appears to the right of the colon in the datatype
+declaration signature (appearing to the left makes it a
+parameter). Now the \Con{nil} and \Con{cons} constructors
+must take \Var{A} as a
+formal argument,
+because it is no longer available as a parameter. Because \Var{A}
+is a \textit{kind} (\Data{Set}), and it appears as formal
+constructor arguments, the indexed vector type must be a kind (hence,
 the codomain of its former is \Data{Set₁}).
 
-%% also Set vs Set1 vs Set2 all open kinds/superkinds
+\paragraph{Fixpoints}
+
+Now let's reconsider the definition of the \textit{type} of fixpoints,
+\textit{parameterized} by the decoding codomain \Var{O} and
+the description \Var{D}. Below, we only present the definition of the
+interpretation function (\Fun{⟦\_⟧₁}) and the
+fixpoint datatype (\Data{μ₁}), but see \refsec{iralgmod} for the
+full definition (including the decoding functions).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Function
+ open import Data.Unit
+ open import Data.Product
+ private
+  data Desc (O : Set) : Set₁ where
+    ι : (o : O) → Desc O
+    σ : (A : Set) (D : A → Desc O) → Desc O
+    δ : (A : Set) (D : (A → O) → Desc O) → Desc O
+  mutual
+\end{code}}
+
+\begin{code}
+    ⟦_⟧₁ : {O : Set} (D R : Desc O) → Set
+    ⟦ ι o ⟧₁ R = ⊤
+    ⟦ σ A D ⟧₁ R = Σ A (λ a → ⟦ D a ⟧₁ R)
+    ⟦ δ A D ⟧₁ R = Σ (A → μ₁ _ R) λ f → ⟦ D (μ₂ R ∘ f) ⟧₁ R
+  
+    data μ₁ (O : Set) (D : Desc O) : Set where
+     init : ⟦ D ⟧₁ D → μ₁ O D
+\end{code}
+
+\AgdaHide{
+\begin{code}
+    ⟦_⟧₂ : {O : Set} (D R : Desc O) → ⟦ D ⟧₁ R → O
+    ⟦ ι o ⟧₂ R tt = o
+    ⟦ σ A D ⟧₂ R (a , xs) = ⟦ D a ⟧₂ R xs
+    ⟦ δ A D ⟧₂ R (f , xs) = ⟦ D (λ a → μ₂ R (f a)) ⟧₂ R xs
+    
+    μ₂ : {O : Set} (D : Desc O) → μ₁ O D → O
+    μ₂ D (init xs) = ⟦ D ⟧₂ D xs
+\end{code}}
+
+Both parameters (\Var{O} and \Var{D}) of the
+fixpoint datatype (\Data{μ₁}) are kinds
+(\Data{Set} and \Data{Desc}, respectively). Hence, \Data{μ₁} can be
+a type (\Data{Set}), rather than a kind (\Data{Set₁}), because its
+constructor (\Con{init}) does not contain any formal arguments that
+are classified by kinds.
+While the type parameter (\Var{O}) is used similarly to the type
+parameter (\Var{A}) of vectors, the description parameter (\Var{D}) is
+used in a significant way. The interpretation function (\Fun{⟦\_⟧₁})
+is applied to the \Var{D} parameter to compute the \textit{type} of
+the argument to \Con{init}. While \Fun{⟦\_⟧₁} takes a \textit{kind}
+(\Var{D}) as an input, it returns a type as an output. Hence,
+\Con{init} never actually store a description (i.e. a kind) as a
+formal argument.
+
+We discuss the significance of computing over a
+\textit{large} (i.e. a \textit{kind}) parameter in a constructor
+argument of a \textit{type} in \refchap{future}.
+Importantly, the result is that fixpoints can be defined as a
+\textit{type}, hence it can model algebraic datatypes as types, whose
+inhabitants are (small) \textit{values}. It would be inadequate to
+model algebraic datatypes (like natural numbers or vectors) at the
+level of kinds, because users expect to declare them as types.
+
+\paragraph{Heterogenous Lists}
+
+We have learned that certain datatypes can be declared as types,
+rather than kinds, by changing datatype indices to datatype
+parameters. However, if a datatype is not indexed, then this change is
+not applicable, and the type must be declared as a kind. For example,
+consider the \textit{kind} of heterogenous lists (\Data{HList} below).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data HList : Set₁ where
+    nil : HList
+    cons : {A : Set} → A → HList → HList
+\end{code}
+
+Because the \Con{cons} constructor of heterogenous lists takes \Var{A}
+of kind \Data{Set} as a formal argument, there is no choice but to
+make \Data{HList} a kind (\Data{Set₁}). We could imagine indexing
+\Data{HList} by the collection of types it contains, and then using
+our trick to turn the index into a parameter. However, this would not
+adquately define heterogenous lists, because the types of elements would
+be statically determined.
+For similar reasons, the descriptions (\Data{Desc}) must be a kind,
+rather than a type.
+
+The first closed universe (of \refsec{closed}) cannot encode
+kinds like \Data{Set}, \Data{Desc}, and \Data{HList}.
+However, \refchap{hier} defines a hiearchy of universes, allowing
+kinds to be represented in the next (i.e. second) universe
+(i.e. the universe of closed kinds). Further levels of the universe
+correspond to superkinds (\Data{Set₂}), and so on
+(\Data{Set₃}, \Data{Set₄}, ... , \Data{Set$_\omega$}).
