@@ -1281,12 +1281,10 @@ be statically determined.
 For similar reasons, the descriptions (\Data{Desc}) must be a kind,
 rather than a type.
 
-\paragraph{Conclusion}
-
 The first closed universe (of \refsec{closed}) cannot encode
 kinds like \Data{Set}, \Data{Desc}, and \Data{HList}.
-However, \refchap{hier} defines a hiearchy of universes, allowing
+However, \refchap{hier} defines a closed hierarchy of universes, allowing
 kinds to be represented in the next (i.e. second) universe
 (i.e. the universe of closed kinds). Further levels of the universe
-correspond to superkinds (\Data{Set₂}), and so on
+correspond to closed superkinds (\Data{Set₂}), and so on
 (\Data{Set₃}, \Data{Set₄}, ... , \Data{Set$_\omega$}).
