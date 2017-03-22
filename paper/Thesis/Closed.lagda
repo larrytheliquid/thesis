@@ -1083,7 +1083,7 @@ like \Con{`Bool}, \Con{`Σ}, and \Con{`Vec}, whose elements are small values.
 However, it should \textit{not} encode \textit{kinds} like
 \Con{`Set} and \Con{`Desc}, whose elements would be large values.
 Encoding large values in the first universe leads to inconsistency
-due to a \textit{type in type} paradox~\cite{TODO}.
+due to a \textit{type in type} paradox~\cite{girards,hurkens}.
 
 If \Con{`Desc} should \textit{not} be encoded in our
 first universe, then why do we need to close over it when defining our
@@ -1091,10 +1091,11 @@ universe at all? The answer is that the \textit{kind} \Data{Desc}
 appears as an argument to the \textit{type} former of \Data{μ₁}. This
 is similar to how the \textit{kind} \Data{Set} appears as an argument
 to the \textit{type} former of \Data{Vec}. However, this leads us to the
-next question, why can a type like \Data{Vec} have kind-level type
-former arguments while remaining a type (rather than being lifted to a
+next question, why can a type like \Data{Vec} have a kind-level type
+former argument (i.e. its parameter \Var{A} of kind \Data{Set})
+while remaining a type itself (rather than being lifted to a
 kind)? The answer has to do with both \Data{Vec} and \Data{μ₁} being
-defined as \textit{parameterized} types.
+defined as \textit{kind-parameterized} types.
 
 \paragraph{Vectors}
 
@@ -1118,8 +1119,8 @@ Vectors are \textit{types}, rather than \textit{kinds},
 because the codomain of their type former is \Data{Set} (rather than
 \Data{Set₁}). An algebraic datatype can consistently be classified as
 a \textit{type} so long as its constructors do not contain a
-type (\Data{Set}) as a formal argument. Datatype \textit{parameters}
-give us a way to refer to \Var{A} in the vector constructors,
+kind (e.g. \Data{Set}) as a formal argument. Datatype \textit{parameters}
+give us a way to refer to \Var{A} (of kind \Data{Set}) in the vector constructors,
 without actually taking \Var{A} as a formal argument in the
 \textit{declaration} of each constructor.
 Hence, the declarations of the \Con{nil} and \Con{cons} constructors do not
@@ -1148,10 +1149,10 @@ We call \Var{A} an informal argument because the
 underlying constructor declaration does not store \Var{A}.
 It is exactly this fact, that the declaration of the
 \Con{nil} and \Con{cons} constructors
-do not formally store \Var{A} as an argument, that allows 
+do not formally store \Var{A} (of kind \Data{Set}) as an argument, that allows 
 \Data{Vec} to be a type (\Data{Set}) rather than a kind (\Data{Set₁}).
 To see the difference, we define vectors to be indexed by \Var{A},
-rather than parameterized \Var{A}, below
+rather than parameterized \Var{A}, below.
 
 \AgdaHide{
 \begin{code}
@@ -1161,12 +1162,12 @@ module _ where
 \end{code}}
 
 \begin{code}
-  data Vec : (A : Set) → ℕ → Set where
+  data Vec : (A : Set) → ℕ → Set₁ where
     nil : {A : Set} → Vec A zero
     cons : {A : Set} {n : ℕ} → A → Vec A n → Vec A (suc n)
 \end{code}
 
-Above, the type former declares \Var{A} to be an index
+The type former \Data{Vec} declares \Var{A} to be an index
 because it appears to the right of the colon in the datatype
 declaration signature (appearing to the left makes it a
 parameter). Now the \Con{nil} and \Con{cons} constructors
@@ -1233,14 +1234,14 @@ used in a significant way. The interpretation function (\Fun{⟦\_⟧₁})
 is applied to the \Var{D} parameter to compute the \textit{type} of
 the argument to \Con{init}. While \Fun{⟦\_⟧₁} takes a \textit{kind}
 (\Var{D}) as an input, it returns a type as an output. Hence,
-\Con{init} never actually store a description (i.e. a kind) as a
+\Con{init} never actually stores a description (i.e. a kind) as a
 formal argument.
 
 We discuss the significance of computing over a
 \textit{large} (i.e. a \textit{kind}) parameter in a constructor
 argument of a \textit{type} in \refchap{future}.
-Importantly, the result is that fixpoints can be defined as a
-\textit{type}, hence it can model algebraic datatypes as types, whose
+The consequence is that fixpoints can be defined as a
+\textit{type}, hence they model algebraic datatypes as types, whose
 inhabitants are (small) \textit{values}. It would be inadequate to
 model algebraic datatypes (like natural numbers or vectors) at the
 level of kinds, because users expect to declare them as types.
