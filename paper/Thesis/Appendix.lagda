@@ -1,7 +1,6 @@
 \AgdaHide{
 \begin{code}
 module _ where
-open import Function
 \end{code}}
 
 \chapter{Open Non-Algebraic Types}\label{apen:openprim}
@@ -48,7 +47,7 @@ module Alg where
     ⟦_⟧₁ : {O : Set} (D R : Desc O) → Set
     ⟦ ι o ⟧₁ R = ⊤
     ⟦ σ A D ⟧₁ R = Σ A (λ a → ⟦ D a ⟧₁ R)
-    ⟦ δ A D ⟧₁ R = Σ (A → μ₁ _ R) λ f → ⟦ D (μ₂ R ∘ f) ⟧₁ R
+    ⟦ δ A D ⟧₁ R = Σ (A → μ₁ _ R) λ f → ⟦ D (λ a → μ₂ R (f a)) ⟧₁ R
   
     ⟦_⟧₂ : {O : Set} (D R : Desc O) → ⟦ D ⟧₁ R → O
     ⟦ ι o ⟧₂ R tt = o
