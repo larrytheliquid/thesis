@@ -301,19 +301,21 @@ to fit the presentation and terminology used in this thesis.
 \bibliographystyle{plainnat}
 \bibliography{thesis}
 
-\clearpage
-\phantomsection
-\addcontentsline{toc}{part}{Index}
-{\small
-\begin{singlespace}
-\printindex
-\end{singlespace}
-}
-
 %% \clearpage
-%% \begin{appendices}
-%% \input{appendix}
-%% \end{appendices}
+%% \phantomsection
+%% \addcontentsline{toc}{part}{Index}
+%% {\small
+%% \begin{singlespace}
+%% \printindex
+%% \end{singlespace}
+%% }
+
+\clearpage
+\phantomsection{}
+\addcontentsline{toc}{part}{Appendix}
+\begin{appendices}
+\input{Thesis/Appendix}
+\end{appendices}
 
 \end{document}
 
