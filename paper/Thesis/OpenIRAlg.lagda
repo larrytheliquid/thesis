@@ -971,7 +971,7 @@ module _ where
     cons : (n : ℕ) (a : A) (xs : Vec A n) → Vec A (suc n)
 \end{code}
 
-Before describing the transformation~\cite{TODO} to turn this indexed type into an
+Before describing the transformation~\cite{smallir} to turn this indexed type into an
 isomorphic type using induction-recursion, we describe the intuition
 behind the transformation. A well-known derived (isomorphic)
 representation of vectors is the dependent pair (\Data{Σ})

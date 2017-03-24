@@ -2,38 +2,7 @@
 \begin{code}
 module _ where
 open import Function
-open import Data.Empty
-open import Data.Unit
-open import Data.Bool
-open import Data.Sum
-open import Data.String
-
-module Alg where
-  open import Data.Product
-  data Id (A : Set) (x : A) : A → Set where
-    refl : Id A x x
-
-  data Desc (O : Set) : Set₁ where
-    ι : (o : O) → Desc O
-    σ : (A : Set) (D : A → Desc O) → Desc O
-    δ : (A : Set) (D : (A → O) → Desc O) → Desc O
-
-  mutual
-    ⟦_⟧₁ : {O : Set} (D R : Desc O) → Set
-    ⟦ ι o ⟧₁ R = ⊤
-    ⟦ σ A D ⟧₁ R = Σ A (λ a → ⟦ D a ⟧₁ R)
-    ⟦ δ A D ⟧₁ R = Σ (A → μ₁ _ R) λ f → ⟦ D (μ₂ R ∘ f) ⟧₁ R
-  
-    ⟦_⟧₂ : {O : Set} (D R : Desc O) → ⟦ D ⟧₁ R → O
-    ⟦ ι o ⟧₂ R tt = o
-    ⟦ σ A D ⟧₂ R (a , xs) = ⟦ D a ⟧₂ R xs
-    ⟦ δ A D ⟧₂ R (f , xs) = ⟦ D (λ a → μ₂ R (f a)) ⟧₂ R xs
-
-    data μ₁ (O : Set) (D : Desc O) : Set where
-      init : ⟦ D ⟧₁ D → μ₁ O D
-
-    μ₂ : {O : Set} (D : Desc O) → μ₁ O D → O
-    μ₂ D (init xs) = ⟦ D ⟧₂ D xs
+open import Appendix
 \end{code}}
 
 \chapter{Closed Algebraic Universe}\label{ch:closed}
@@ -109,14 +78,9 @@ replace \Con{`W} with \Con{`μ₁}, \textit{and} add
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Product
- private
-  data Id (A : Set) (x : A) : A → Set where
-  data Desc (O : Set) : Set₁ where
-    ι : (o : O) → Desc O
-    σ : (A : Set) (D : A → Desc O) → Desc O
-    δ : (A : Set) (D : (A → O) → Desc O) → Desc O
-  data μ₁ (O : Set) (D : Desc O) : Set where
+ open Prim
+ open Alg
+ private 
 \end{code}}
 
 \begin{code}
@@ -137,7 +101,7 @@ module _ where
     ⟦ `μ₁ O D ⟧ = μ₁ ⟦ O ⟧ D
 \end{code}
 
-Nothing immediately stands out as being problematic, as our
+Nothing problematic immediately stands out, as our
 universe looks quite like the \textit{Closed Well-Order Types}
 universe. Let's take a closer look at why the addition of the
 identity type (\Con{`Id})
@@ -167,8 +131,12 @@ to define the type of natural numbers in the universe
 (i.e. as a member of \Data{`Set}).
 
 \begin{code}
+  NatDs : Bool → Desc ⊤
+  NatDs true = ι tt
+  NatDs false = δ ⊤ (λ u → ι tt)
+
   NatD : Desc ⊤
-  NatD = σ Bool (λ b → if b then ι tt else δ ⊤ (λ u → ι tt))
+  NatD = σ Bool NatDs
 
   `ℕ : `Set
   `ℕ = `μ₁ `⊤ NatD
@@ -283,7 +251,7 @@ and their meaning functions
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Product
+ open Prim
  open Alg
  private
 \end{code}}
@@ -377,7 +345,123 @@ closed universe of descriptions (\Data{`Desc}), are merely
 a universe is the ability to fit
 it in the size of types (\Data{Set}) rather kinds (\Data{Set₁}).
 
-\subsection{Example Values}\label{sec:closedeg}
+\subsection{Examples}\label{sec:closedeg}
+
+In \refsec{iralgtps} we demonstrated various examples of encoding
+types and constructors using the universe of \textit{open}
+inductive-recursive types (\refsec{iralgmod}). Now, we repeat these
+examples in our \textit{closed} universe (\refsec{closed}).
+
+Datatypes encoded with \textit{open descriptions} can use any
+\textit{open type} (\Data{Set}) for the \Var{O} parameter of descriptions
+(\Data{Desc}), and the \Var{A} argument of \Con{σ} and \Con{δ}. In
+contrast, \textit{closed descriptions} (\Data{`Desc})
+may only use \textit{closed types} (\Data{`Set})
+for the \Var{O} parameter and \Var{A} argument.
+
+\paragraph{Natural Numbers}
+
+We will encode a closed version of the following trivially infinitary
+and inductive-recursive definition of the natural numbers.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Prim
+ private
+\end{code}}
+
+\begin{code}
+  data ℕ : Set where
+    zero : ℕ
+    suc : (⊤ → ℕ) → ℕ
+
+  point : ℕ → ⊤
+  point zero = tt
+  point (suc f) = point (f tt)
+\end{code}
+
+Next, we encode the closed description of the natural
+numbers. Compared to the description in \refsec{iralgtps}, the one
+below uses the closed type \Con{`⊤} in the codomain of \Fun{NatDs} and
+argument to \Con{`δ}, and uses the closed type \Con{`Bool} in the
+argument to \Con{`σ}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Prim
+ open Alg
+ open Closed
+ private
+\end{code}}
+
+\begin{code}
+  NatDs : Bool → `Desc `⊤
+  NatDs true = `ι tt
+  NatDs false = `δ `⊤ (λ f → `ι (f tt))
+
+  NatD : `Desc `⊤
+  NatD = `σ `Bool NatDs
+\end{code}
+
+Below, we define the type former for natural numbers in two parts.
+First, we define the \textit{code} for the closed type of natural
+numbers, naming it \Fun{`ℕ} and having type \Data{`Set}. Second, we
+define the interpretation of the closed code for the natural number
+type into our open formal model, naming it \Fun{ℕ} and having kind
+\Data{Set}. By convention, we prefix closed type formers with a
+backtick to distinguish them from their interpretation in our open
+formal model.
+
+\begin{code}
+  `ℕ : `Set
+  `ℕ = `μ₁ `⊤ NatD
+
+  ℕ : Set
+  ℕ = ⟦ `ℕ ⟧
+\end{code}
+
+Defining the decoding function \Fun{point} for closed natural numbers
+amounts to applying the decoding function component \Data{μ₂} (from
+our open model of algebraic types in \refsec{iralgmod}) to an
+\textit{open} description. Hence, we apply the
+interpretation function (\Fun{⟪\_⟫}) to our closed description
+(\Data{`Desc}) of natural numbers (\Fun{NatD}), translating it to the
+open description (\Data{Desc}) expected by \Data{μ₂}.
+
+\begin{code}
+  point : ℕ → ⊤
+  point = μ₂ ⟪ NatD ⟫
+\end{code}
+
+Defining the constructors for the natural numbers is no different from
+the open version in \refsec{iralgtps}. While we encode the closed type
+of natural numbers as \Fun{`ℕ}, we also interpret it as the open type
+\Fun{ℕ} in our formal model. While we \textit{encode types} in
+a closed way, we can \textit{use values} of the underlying open formal
+model. That is why constructors (e.g. \Fun{zero} and \Fun{suc}, below)
+appear no differently than in \refsec{iralgtps}.
+
+\begin{code}
+  zero : ℕ
+  zero = init (true , tt)
+
+  suc : ℕ → ℕ
+  suc n = init (false , (λ u → n) , tt)
+\end{code}
+
+It is worth pointing out that creating named constructor tags, like
+the \Data{NatT} below, is no longer possible in our closed universe. Instead,
+a choice of constructors is encoded by applying \Con{`σ} to
+\Con{`Bool}, in a derived-sum way. Creating named tags like \Data{NatT} requires
+extending an \textit{open} theory with the new name enumeration, which
+is not possible in a \textit{closed} theory.
+
+\begin{code}
+  data NatT : Set where
+    zeroT sucT : NatT
+\end{code}
 
 
 \subsection{Kind-Generalized Universes}

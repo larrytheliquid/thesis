@@ -19,6 +19,7 @@ module Prim where
  data Bool : Set where
    true false : Bool
 
+ infixr 4 _,_
  record Σ (A : Set) (B : A → Set) : Set where
    constructor _,_
    field
@@ -65,7 +66,7 @@ module Alg where
 
 \AgdaHide{
 \begin{code}
-module Univ where
+module Closed where
   open Prim
   open Alg
 \end{code}}
