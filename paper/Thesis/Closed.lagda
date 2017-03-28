@@ -482,14 +482,14 @@ module _ where
   mutual
     data Vec₁ (A : Set) : Set where
       nil : Vec₁ A
-      cons : (n : ℕ) (a : A) (xsq : Vec A n) → Vec₁ A
+      cons : (n : ℕ) (a : A) (xs : Vec₁ A) (q : Id ℕ (Vec₂ xs) n) → Vec₁ A
 
     Vec₂ : {A : Set} → Vec₁ A → ℕ
     Vec₂ nil = zero
-    Vec₂ (cons n x xsq) = suc n
+    Vec₂ (cons n x xs q) = suc n
 
-    Vec : Set → ℕ → Set
-    Vec A n = Σ (Vec₁ A) (λ xs → Id ℕ (Vec₂ xs) n)
+  Vec : Set → ℕ → Set
+  Vec A n = Σ (Vec₁ A) (λ xs → Id ℕ (Vec₂ xs) n)
 \end{code}
 
 \AgdaHide{
@@ -584,10 +584,124 @@ natural number argument (\Fun{ℕ}) is defined as the
 generic functions (in \refchap{fullyg}), by pattern matching against
 closed type codes (i.e. the constructors of \Data{`Set}).
 
+\paragraph{Finite Sets}
 
-%% mention `Id
+Now we the type of finite sets (\Data{Fin})
+as another example (in addition to \Data{Vec})
+of modeling an open indexed type as an open
+inductive-recursive type. First, review the high-level open indexed
+type of finite sets.
 
-%% TODO Fin
+\AgdaHide{
+\begin{code}
+module _ where
+ open Prim
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  data Fin : ℕ → Set where
+    here : (n : ℕ) → Fin (suc n)
+    there : (n : ℕ) (i : Fin n) → Fin (suc n)
+\end{code}
+
+Using the same procedure to derive indexed vectors
+from inductive-recursive vectors (in  \refsec{iralgtps}), we derive
+indexed finite sets (\Data{Fin}) from the inductive-recursive type of
+finite sets (\Data{Fin₁}) and its decoding function (\Data{Fin₂}). The
+decoding function computes the index of the codomain of
+each constructor, from its arguments.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Prim
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  mutual
+    data Fin₁ : Set where
+      here : (n : ℕ) → Fin₁
+      there : (n : ℕ) (i : Fin₁) (q : Id ℕ (Fin₂ i) n) → Fin₁
+
+    Fin₂ : Fin₁ → ℕ
+    Fin₂ (here n) = suc n
+    Fin₂ (there n i q) = suc n
+
+  Fin : ℕ → Set
+  Fin n = Σ (Fin₁) (λ i → Id ℕ (Fin₂ i) n)
+\end{code}
+
+Converting the open type above to a closed description follows the
+same rules that we followed to convert open vectors to a closed
+description. The primary difference is that the description of closed
+finite sets is not parameterized by a closed type \Var{A}, because the
+type of finite sets is not parameterized.
+
+\AgdaHide{
+\begin{code}
+module Fin where
+ open Nat
+ open Prim
+ open Alg
+ open Closed
+ private
+\end{code}}
+
+\begin{code}
+  FinDs : Bool → `Desc `ℕ
+  FinDs true = `σ `ℕ λ n → `ι (suc n)
+  FinDs false =
+    `σ `ℕ λ n →
+    `δ `⊤ λ i →
+    `σ (`Id `ℕ (i tt) n) λ q →
+    `ι (suc n)
+
+  FinD : `Desc `ℕ
+  FinD = `σ `Bool FinDs
+\end{code}
+
+Finally, we define the closed type code components
+(\Fun{`Fin₁}, \Fun{`Fin₂}, and \Fun{`Fin}) of finite sets. We also
+define the type former (\Fun{Fin}) and its constructors (\Fun{here} and
+\Fun{there}) by interpreting clodes codes in our open model.
+
+\begin{code}
+  `Fin₁ : `Set
+  `Fin₁ = `μ₁ `ℕ FinD
+  
+  `Fin₂ : ⟦ `Fin₁ ⟧ → ℕ
+  `Fin₂ = μ₂ ⟪ FinD ⟫
+  
+  `Fin : ℕ → `Set
+  `Fin n = `Σ `Fin₁ (λ i → `Id `ℕ (`Fin₂ i) n)
+
+  Fin : ℕ → Set
+  Fin n = ⟦ `Fin n ⟧
+
+  here : {n : ℕ} → Fin (suc n)
+  here {n} = init (true , n , tt) , refl
+  
+  there : {n : ℕ} (i : Fin n) → Fin (suc n)
+  there {n} (i , refl) = init (false , n , (λ u → i) , refl , tt) , refl
+\end{code}
+
+
+Nothing new is required to understand the constructions above.
+One minor change, compared to the \Key{data} declaration of indexed
+finite sets earlier, is that we expose an \textit{implicit} natural
+number (\Var{n}) argument in the \Fun{here} and \Fun{there}
+constructors.
+
+We presented the closed type of finite sets for two reasons. First, as
+another example of an indexed (but not parameterized)
+type derived from an inductive-recursive
+type. Second, our next example is defining closed arithmetic
+expressions (\Data{Arith}), which depends on closed finite sets as an
+argument.
 
 %% TODO Arith
 
