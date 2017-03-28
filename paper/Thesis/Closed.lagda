@@ -381,7 +381,7 @@ module _ where
   point (suc f) = point (f tt)
 \end{code}
 
-Next, we encode the closed description of the natural
+Below, we encode the closed description of the natural
 numbers. Compared to the description in \refsec{iralgtps}, the one
 below uses the closed type \Con{`⊤} in the codomain of \Fun{NatDs} and
 argument to \Con{`δ}, and uses the closed type \Con{`Bool} in the
@@ -389,11 +389,10 @@ argument to \Con{`σ}.
 
 \AgdaHide{
 \begin{code}
-module _ where
- open Prim
- open Alg
- open Closed
- private
+module Nat where
+  open Prim
+  open Alg
+  open Closed
 \end{code}}
 
 \begin{code}
@@ -462,6 +461,135 @@ is not possible in a \textit{closed} theory.
   data NatT : Set where
     zeroT sucT : NatT
 \end{code}
+
+\paragraph{Vectors}
+
+Next, we will encode a closed version of the trivially infinitary and
+non-trivially inductive-recursive vectors, using the translation from
+indexed types to inductive-recursive types
+described in \refsec{iralgtps}. We will encode a closed version of the
+vector type below.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Prim
+ open import Data.Nat
+ private
+\end{code}}
+
+\begin{code}
+  mutual
+    data Vec₁ (A : Set) : Set where
+      nil : Vec₁ A
+      cons : (n : ℕ) (a : A) (xsq : Vec A n) → Vec₁ A
+
+    Vec₂ : {A : Set} → Vec₁ A → ℕ
+    Vec₂ nil = zero
+    Vec₂ (cons n x xsq) = suc n
+
+    Vec : Set → ℕ → Set
+    Vec A n = Σ (Vec₁ A) (λ xs → Id ℕ (Vec₂ xs) n)
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Nat
+ open Prim
+ open Alg
+ open Closed
+ private
+\end{code}}
+
+We get the closed description of vectors from the
+open description in \refsec{iralgtps} by replacing every instance of
+an open type with a closed type. For example, the decoding function
+codomain is the natural numbers, as specified by applying the type of
+closed descriptions (\Data{`Desc}) to the type of closed natural
+numbers (i.e. \Fun{`ℕ}, which we just defined above).
+Every first argument to \Con{`σ} and \Con{`δ} is a
+closed type (i.e. one with a backtick). The \Var{A} parameter of
+\Fun{VecDs} and \Fun{Vec} is also a closed type (\Data{`Set}).
+
+\begin{code}
+  VecDs : `Set → Bool → `Desc `ℕ
+  VecDs A true = `ι zero
+  VecDs A false =
+    `σ `ℕ λ n →
+    `σ A λ a →
+    `δ `⊤ λ xs →
+    `σ (`Id `ℕ (xs tt) n) λ q →
+    `ι (suc n)
+
+  VecD : `Set → `Desc `ℕ
+  VecD A = `σ `Bool (VecDs A)
+\end{code}
+
+Next, we define the \textit{codes} for the closed
+inductive-recursive vector type (\Fun{`Vec₁}), its decoding function
+(\Fun{`Vec₂}), and the indexed vector type (\Fun{`Vec}). Again, this
+mostly involves adding backticks to type arguments.
+
+\begin{code}
+  `Vec₁ : `Set → `Set
+  `Vec₁ A = `μ₁ `ℕ (VecD A)
+  
+  `Vec₂ : (A : `Set) → ⟦ `Vec₁ A ⟧ → ℕ
+  `Vec₂ A = μ₂ ⟪ VecD A ⟫
+  
+  `Vec : `Set → ℕ → `Set
+  `Vec A n = `Σ (`Vec₁ A) (λ xs → `Id `ℕ (`Vec₂ A xs) n)
+\end{code}
+
+Above, the
+``length'' decoding function (\Fun{`Vec₂}), and the closed indexed
+vector type former (\Fun{`Vec}), take interpreted closed codes as
+their second arguments. The former does this by applying
+the type interpretation function (\Fun{⟦\_⟧}) to closed
+inductive-recursive vectors codes (\Fun{`Vec₁}), while the latter
+takes closed natural numbers (\Fun{ℕ}), which were also previously
+defined by applying the type interpretation function (\Fun{⟦\_⟧}) to
+closed natural number codes (\Fun{ℕ₁}).
+
+Additionally, the body of the definition of the closed decoding
+function (\Fun{`Vec₂}) must apply the open decoding function fixpoint
+component (\Data{μ₂}) to an open description, which it obtains by
+applying the description interpretation function (\Fun{⟪\_⟫}) to the
+closed description defined by \Fun{VecD}.
+
+
+Finally, we can define the formal model of closed indexed vectors and
+their constructors.
+
+\begin{code}
+  Vec : `Set → ℕ → Set
+  Vec A n = ⟦ `Vec A n ⟧
+
+  nil : {A : `Set} → Vec A zero
+  nil = init (true , tt) , refl
+  
+  cons : {A : `Set} {n : ℕ} (a : ⟦ A ⟧) (xs : Vec A n) → Vec A (suc n)
+  cons {n = n} a (xs , refl) = init (false , n , a , (λ u → xs) , refl , tt) , refl
+\end{code}
+
+Above, the types of the vector type former and its
+constructors are visually similar to the type \Key{data} declaration
+(of \Data{Vec}) presented at the beginning. One key difference is that every open type
+(\Data{Set}) is replaced by a closed type (\Data{`Set}). While the
+natural number argument (\Fun{ℕ}) is defined as the
+\textit{interpretation} of the natural numbers, the type argument
+(\Data{`Set}) remains uninterpreted. Keeping the closed type
+(\Data{`Set}) argument uninterpreted is the key to writing fully
+generic functions (in \refchap{fullyg}), by pattern matching against
+closed type codes (i.e. the constructors of \Data{`Set}).
+
+
+%% mention `Id
+
+%% TODO Fin
+
+%% TODO Arith
 
 
 \subsection{Kind-Generalized Universes}
@@ -1373,3 +1501,4 @@ kinds to be represented in the next (i.e. second) universe
 (i.e. the universe of closed kinds). Further levels of the universe
 correspond to closed superkinds (\Data{Set₂}), and so on
 (\Data{Set₃}, \Data{Set₄}, ... , \Data{Set$_\omega$}).
+
