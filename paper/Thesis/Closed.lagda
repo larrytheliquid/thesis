@@ -24,7 +24,10 @@ We begin with a naive failed attempt at defining a closed type theory
 using fixpoints (\refsec{naiveclosed}). After explaining why the
 simple but naive attempt actually defines an open (rather than
 closed) type theory, we explain how to properly close the theory
-(\refsec{closed}).
+(\refsec{closed}). Then, we define a procedure to close any type
+theory (\refsec{closing}), rather than just the universe we chose
+for generic programming in this dissertation. Finally, we conclude
+by comparing and contrasting types and kinds (\refsec{kinds}).
 
 \section{Open Inductive-Recursive Types}\label{sec:naiveclosed}
 
@@ -1281,7 +1284,7 @@ recurse on \Var{o} in the
 \Con{`ι} case, because both \Var{n} and \Var{o} are values of
 a \textit{type} rather than members of a \textit{kind}.
 
-\section{Types versus Kinds}
+\section{Types versus Kinds}\label{sec:kinds}
 
 In \refsec{closing} we explain how to close over a subset of
 types, mutually by closing over descriptions.

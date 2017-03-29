@@ -8,26 +8,27 @@ module _ where
 \AgdaHide{
 \begin{code}
 module Prim where
+  open import Agda.Builtin.String public
 \end{code}}
 
 \begin{code}
- data ⊥ : Set where
-
- record ⊤ : Set where
-   constructor tt
-
- data Bool : Set where
-   true false : Bool
-
- infixr 4 _,_
- record Σ (A : Set) (B : A → Set) : Set where
-   constructor _,_
-   field
-     proj₁ : A
-     proj₂ : B proj₁
-
- data Id (A : Set) (x : A) : A → Set where
-   refl : Id A x x
+  data ⊥ : Set where
+  
+  record ⊤ : Set where
+    constructor tt
+  
+  data Bool : Set where
+    true false : Bool
+  
+  infixr 4 _,_
+  record Σ (A : Set) (B : A → Set) : Set where
+    constructor _,_
+    field
+      proj₁ : A
+      proj₂ : B proj₁
+  
+  data Id (A : Set) (x : A) : A → Set where
+    refl : Id A x x
 \end{code}
 
 \chapter{Open Universe of Algebraic Types}\label{apen:openalg}
@@ -74,7 +75,7 @@ module Closed where
 \begin{code}
   mutual
     data `Set : Set where
-      `⊥ `⊤ `Bool : `Set
+      `⊥ `⊤ `Bool `String : `Set
       `Σ `Π : (A : `Set) (B : ⟦ A ⟧ → `Set) → `Set
       `Id : (A : `Set) (x y : ⟦ A ⟧) → `Set
       `μ₁ : (O : `Set) (D : `Desc O) → `Set 
@@ -83,6 +84,7 @@ module Closed where
     ⟦ `⊥ ⟧ = ⊥
     ⟦ `⊤ ⟧ = ⊤
     ⟦ `Bool ⟧ = Bool
+    ⟦ `String ⟧ = String
     ⟦ `Σ A B ⟧ = Σ ⟦ A ⟧ (λ a → ⟦ B a ⟧)
     ⟦ `Π A B ⟧ = (a : ⟦ A ⟧) → ⟦ B a ⟧
     ⟦ `Id A x y ⟧ = Id ⟦ A ⟧ x y
