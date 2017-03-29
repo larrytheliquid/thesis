@@ -644,11 +644,10 @@ type of finite sets is not parameterized.
 \AgdaHide{
 \begin{code}
 module Fin where
- open Nat
- open Prim
- open Alg
- open Closed
- private
+  open Nat
+  open Prim
+  open Alg
+  open Closed
 \end{code}}
 
 \begin{code}
@@ -667,7 +666,7 @@ module Fin where
 Finally, we define the closed type code components
 (\Fun{`Fin₁}, \Fun{`Fin₂}, and \Fun{`Fin}) of finite sets. We also
 define the type former (\Fun{Fin}) and its constructors (\Fun{here} and
-\Fun{there}) by interpreting clodes codes in our open model.
+\Fun{there}) by interpreting closed codes in our open model.
 
 \begin{code}
   `Fin₁ : `Set
@@ -703,7 +702,99 @@ type. Second, our next example is defining closed arithmetic
 expressions (\Data{Arith}), which depends on closed finite sets as an
 argument.
 
-%% TODO Arith
+\paragraph{Arithmetic Expressions}
+
+Now we will close the type of arithmetic expressions (\Data{Arith}),
+an example of a non-trivially infinitary and non-trivially
+inductive-recursive type. All previous examples were trivially
+infinitary (\Data{ℕ}, \Data{Fin}, and \Data{Vec}). Additionally,
+arithmetic expressions are ``naturally'' inductive-recursive,
+whereas \Data{Vec} and \Data{Fin} are indexed types derived from
+inductive-recursive encodings. First, review the high-level
+declaration of arithmetic expressions.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open import Data.Fin
+ private
+  postulate prod : (n : ℕ) (f : Fin n → ℕ) → ℕ
+\end{code}}
+
+\begin{code}
+  mutual
+    data Arith : Set where
+      Num : ℕ → Arith
+      Prod : (a : Arith) (f : Fin (eval a) → Arith) → Arith
+  
+    eval : Arith → ℕ
+    eval (Num n) = n
+    eval (Prod a f) = prod (eval a) (λ a → eval (f a))
+\end{code}
+
+Below, we define the closed description of arithmetic expressions,
+which is quite similar to its open description in \refsec{iralgtps}.
+The interesting difference is that the second \Con{`δ} encodes the
+infinitary domain of \Var{f} to be a \textit{closed} finite set
+(\Fun{`Fin}). Hence, there is no issue defining closed
+inductive-recursive types that use closed indexed types derived from
+closed inductive-recursive types.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Nat
+ open Fin
+ open Prim
+ open Alg
+ open Closed
+ private
+  postulate prod : (n : ℕ) (f : Fin n → ℕ) → ℕ
+\end{code}}
+
+\begin{code}
+  ArithDs : Bool → `Desc `ℕ
+  ArithDs true = `σ `ℕ λ n → `ι n
+  ArithDs false =
+    `δ `⊤ λ a →
+    `δ (`Fin (a tt)) λ f →
+    `ι (prod (a tt) f)
+
+  ArithD : `Desc `ℕ
+  ArithD = `σ `Bool ArithDs
+\end{code}
+
+Now we can define the closed type of (codes for) arithmetic
+expressions (\Fun{`Arith}), and its decoding function (\Fun{eval}).
+
+\begin{code}
+  `Arith : `Set
+  `Arith = `μ₁ `ℕ ArithD
+  
+  eval : ⟦ `Arith ⟧ → ℕ
+  eval = μ₂ ⟪ ArithD ⟫
+\end{code}
+
+Finally, we define the type former (\Fun{Arith}) and its constructors (\Fun{Num} and
+\Fun{Prod}) by interpreting closed codes in our open model.
+In the definition of \Fun{Prod}, we expose a non-infinitary \Var{a}
+argument (of type \Fun{Arith}), so its position in the \Con{init}
+tuple of arguments is wrapped in a trivially infinitary function that
+ignores its \Var{u} argument (of type unit). In contrast, the second
+argument \Var{f} is naturally infinitary, hence no such wrapping is
+necessary for \Var{f}, within \Con{init}.
+
+\begin{code}
+  Arith : Set
+  Arith = ⟦ `Arith ⟧
+
+  Num : ℕ → Arith
+  Num n = init (true , n , tt)
+  
+  Prod : (a : Arith) (f : Fin (eval a) → Arith) → Arith
+  Prod a f = init (false , (λ u → a) , f , tt)
+\end{code}
 
 
 \subsection{Kind-Generalized Universes}
