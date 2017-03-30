@@ -1171,3 +1171,5 @@ an index constraint proof (in terms of \Fun{Vec₂}) in the second
 component of the pair. Additionally, \Con{cons} destructs its
 ``inductive'' \Fun{Vec} arguments in terms of the underlying pair
 components \Var{xs} and \Var{q}.
+
+\subsection{Agda Model}\label{sec:iralgagda}

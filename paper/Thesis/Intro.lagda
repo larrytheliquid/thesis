@@ -493,7 +493,7 @@ Finally, \Fun{count} still recurses into the inductive argument
 \Con{`List} \Var{A}.
 
 
-\subsection{Universes}
+\subsection{Universes}\label{sec:naivegfun}
 
 %% \Data{Count} is \textit{inductively defined} (\refsec{indu}) and
 %% \textit{closed} (\refsec{closedu}).
