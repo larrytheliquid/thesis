@@ -211,10 +211,10 @@ arguments in the closed \Con{`δ} case.
 First, let's define \Fun{count} fully generically for all values of
 all types. This involves calling the mutually defined \Fun{counts}
 functions (for all arguments of the \Con{init}ial algebra), which we define
-next. Below, we restate the type of \Fun{count}, and then define
+next.
+Below, we restate the type of \Fun{count}, and then define
 \Fun{count} by case analysis and recursion over all of its closed
-types. Remember, we wish to define \Fun{count} as the sum of all
-constructors and the recursive \Fun{count} of all constructor arguments.
+types. 
 
 \AgdaHide{
 \begin{code}
@@ -229,6 +229,14 @@ module Count where
 \begin{code}
   count : (A : `Set) → ⟦ A ⟧ → ℕ
 \end{code}
+
+Remember, we wish to define \Fun{count} as the sum of all
+constructors and the recursive \Fun{count} of all constructor
+arguments. It may be helpful to review \Fun{count} for the
+\textit{fixed} closed universe in the introduction
+(\refsec{introcount}), to see how it compares to our new \Fun{count},
+defined over an \textit{extendable}
+(by user-declared datatypes) closed universe.
 
 \paragraph{Dependent Pair}
 
