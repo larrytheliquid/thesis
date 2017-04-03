@@ -356,7 +356,7 @@ use to \Fun{count} it? Because it is an \textit{inductive}
 applied to some description. We kept the original description
 (\Var{R}) to count inductive arguments for exactly this case.
 
-The remaining sequenc of arguments (\Var{xs}) is recursively counted
+The remaining sequence of arguments (\Var{xs}) is recursively counted
 (via \Fun{counts}) using the description resulting from
 applying the \textit{dependent} description \Var{D} (of \Con{`δ})
 to the \textit{composition} of the decoding function fixpoint
