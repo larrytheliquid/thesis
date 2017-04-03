@@ -856,7 +856,7 @@ programming using dependently typed languages:
   \Fun{update}, and \textit{marshalling} (\Fun{ast}) to an abstract
   syntax tree.
 
-\item{\textbf{Extending} (\refch{hier} \& \refch{fulliesg})}
+\item{\textbf{Extending} (\refch{hier})}
   our closed universe to a
   \textit{closed hierarchy of universes}, supporting fully generic
   functions (like an updated version of \Fun{ast})
@@ -985,8 +985,7 @@ hierarchy of \textit{Closed Inductive-Recursive Types}. We
 highlight the subtleties necessary to adequately define a hierarchy
 containing algebraic types modeled using initial algebra semantics.
 
-\paragraph{\chaptitle{fulliesg}}
-In this chapter we show how to extend \textit{fully generic functions}
+In this chapter we also show how to extend \textit{fully generic functions}
 to also be \textit{universe-level generic}. We call such functions
 \textit{leveled fully generic functions}, and they can be applied to
 any type at any level of the universe hierarchy . Importantly, leveled
