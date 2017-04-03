@@ -59,7 +59,7 @@ subsequently-defined generic functions, \Fun{lookup} in \refsec{glookup} and
 \Fun{update} in \refsec{gupdate}, to constrain those operations
 to valid positions of a value.
 
-\subsection{Generic Type}
+\subsection{Generic Types}
 
 Before covering the details of implementing \Fun{count}, we return
 to the introduction of our dissertation to clarify our intuition about
@@ -199,12 +199,116 @@ argument (\Var{R}) constant. This allows
 of it (\Var{D}) as it recurses.
 
 By remembering the original description
-(\Var{R}), the \Con{δ} case can request an infinitary (hence, also
+(\Var{R}), the open \Con{δ} case can request an infinitary (hence, also
 inductive) argument as the first argument to \Data{Σ}.
 For analogous reasons, \Fun{counts} is generically defined over
 all descriptions (\Var{D}), but also a copy (\Var{R}) of the original
 \textit{complete} description that it can use to count infinitary
 arguments in the closed \Con{`δ} case.
+
+\subsection{Counting All Values}
+
+First, let's define \Fun{count} fully generically for all values of
+all types. This involves calling the mutually defined \Fun{counts}
+functions (for all arguments of the \Con{init}ial algebra), which we define
+next. Below, we restate the type of \Fun{count}, and then define
+\Fun{count} by case analysis and recursion over all of its closed
+types. Remember, we wish to define \Fun{count} as the sum of all
+constructors and the recursive \Fun{count} of all constructor arguments.
+
+\AgdaHide{
+\begin{code}
+module Count where
+ open import Data.Nat
+ open Prim
+ open Alg
+ open Closed
+ mutual
+\end{code}}
+
+\begin{code}
+  count : (A : `Set) → ⟦ A ⟧ → ℕ
+\end{code}
+
+\paragraph{Dependent Pair}
+
+We \Fun{count} a dependent pair by summing the recursive
+\Fun{count} of both its components (\Var{a} and \Var{b}),
+plus 1 to also count the pair constructor (\Con{,}). Notice that the
+\textit{dependent} type of the second component (\Var{b}) is computed by
+applying the codomain of the dependent pair (\Var{B}) to the
+first component (\Var{a}).
+
+\begin{code}
+  count (`Σ A B) (a , b) = 1 + count A a + count (B a) b
+\end{code}
+
+\paragraph{Algebraic Fixpoint}
+
+We \Fun{count} an algebraic fixpoint by by recursively counting its
+arguments (\Var{xs}) using \Fun{counts}, plus 1 to account
+for the \Con{init} constructor. When we initially call \Fun{counts},
+\Var{D} is used for both of its arguments. However, as \Fun{counts}
+recurses, the first description argument will be destructed while the
+second (original) description argument is held constant.
+
+\begin{code}
+  count (`μ₁ O D) (init xs) = 1 + counts D D xs
+\end{code}
+
+\paragraph{Remaining Values}
+
+All constructors of the remaining types (such as \Data{Bool}) do not
+have arguments, so we \Fun{count} them as 1 (for their constructor,
+plus 0 for their arguments). Note that this includes functions, which
+which we treat as a black box by counting the $\lambda$ constructor as
+1, without recursively counting its body.
+
+\begin{code}
+  count A a = 1
+\end{code}
+
+\subsection{Counting Algebraic Arguments}
+
+the mutually defined \Fun{count}
+(for values of all types) and
+\Fun{counts} (for arguments of descriptions for all fixpoints)
+functions. Below, we follow the type signatures of each full generic
+function (\Fun{count} and \Fun{counts}) with their definitions by case
+analysis. 
+
+\begin{code}
+  counts : {O : `Set} (D R : `Desc O) → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ → ℕ
+\end{code}
+
+\paragraph{Last Argument}
+
+\begin{code}
+  counts (`ι o) R tt = 1
+\end{code}
+
+\paragraph{Non-Inductive Argument}
+
+\begin{code}
+  counts (`σ A D) R (a , xs) = count A a + counts (D a) R xs
+\end{code}
+
+\paragraph{Inductive Argument}
+
+\begin{code}
+  counts (`δ `⊤ D) R (f , xs) = count (`μ₁ _ R) (f tt) +
+    counts (D (λ u → μ₂ ⟪ R ⟫ (f u))) R xs
+\end{code}
+  
+\paragraph{Infinitary Argument}
+
+\begin{code}
+  counts (`δ A D) R (f , xs) = 1 + counts (D (λ a → μ₂ ⟪ R ⟫ (f a))) R xs
+\end{code}
+
+\subsection{Examples}
+
+\subsection{Generic Lemmas}
 
 \section{Fully Generic Lookup}\label{sec:glookup}
 
