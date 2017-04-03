@@ -206,12 +206,12 @@ all descriptions (\Var{D}), but also a copy (\Var{R}) of the original
 \textit{complete} description that it can use to count infinitary
 arguments in the closed \Con{`δ} case.
 
-\subsection{Counting All Values}
+\subsection{Counting All Values}\label{sec:count}
 
 First, let's define \Fun{count} fully generically for all values of
-all types. This involves calling the mutually defined \Fun{counts}
-functions (for all arguments of the \Con{init}ial algebra), which we define
-next.
+all types. This involves calling \Fun{counts} in the \Con{`μ₁} case,
+defined mutually (in \refsec{counts}) over all arguments of the
+\Con{init}ial algebra.
 Below, we restate the type of \Fun{count}, and then define
 \Fun{count} by case analysis and recursion over all of its closed
 types. 
@@ -242,27 +242,31 @@ defined over an \textit{extendable}
 
 We \Fun{count} a dependent pair by summing the recursive
 \Fun{count} of both its components (\Var{a} and \Var{b}),
-plus 1 to also count the pair constructor (\Con{,}). Notice that the
-\textit{dependent} type of the second component (\Var{b}) is computed by
-applying the codomain of the dependent pair (\Var{B}) to the
-first component (\Var{a}).
+plus 1 to also count the pair constructor (\Con{,}).
 
 \begin{code}
   count (`Σ A B) (a , b) = 1 + count A a + count (B a) b
 \end{code}
 
+Notice that the
+\textit{dependent} type of the second component (\Var{b}) is computed by
+applying the codomain of the dependent pair (\Var{B}) to the
+first component (\Var{a}).
+
 \paragraph{Algebraic Fixpoint}
 
 We \Fun{count} an algebraic fixpoint by by recursively counting its
 arguments (\Var{xs}) using \Fun{counts}, plus 1 to account
-for the \Con{init} constructor. When we initially call \Fun{counts},
-\Var{D} is used for both of its arguments. However, as \Fun{counts}
-recurses, the first description argument will be destructed while the
-second (original) description argument is held constant.
+for the \Con{init} constructor.
 
 \begin{code}
   count (`μ₁ O D) (init xs) = 1 + counts D D xs
 \end{code}
+
+When we initially call \Fun{counts},
+\Var{D} is used for both of its arguments. However, as \Fun{counts}
+recurses, the first description argument will be destructed while the
+second (original) description argument is held constant.
 
 \paragraph{Remaining Values}
 
@@ -276,47 +280,113 @@ which we treat as a black box by counting the $\lambda$ constructor as
   count A a = 1
 \end{code}
 
-\subsection{Counting Algebraic Arguments}
+\subsection{Counting Algebraic Arguments}\label{sec:counts}
 
-the mutually defined \Fun{count}
-(for values of all types) and
-\Fun{counts} (for arguments of descriptions for all fixpoints)
-functions. Below, we follow the type signatures of each full generic
-function (\Fun{count} and \Fun{counts}) with their definitions by case
-analysis. 
+Second, let's define \Fun{counts} fully generically for all
+arguments of the \Con{init}ial algebra. This involves calling
+\Fun{count} in the \Con{`σ} and \Con{`δ} cases,
+defined mutually (in \refsec{count}) over all values of all types.
+Below, we restate the type of \Fun{counts}, and then define
+\Fun{counts} by case analysis and recursion over all of its closed
+descriptions. 
 
 \begin{code}
   counts : {O : `Set} (D R : `Desc O) → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ → ℕ
 \end{code}
 
-\paragraph{Last Argument}
+Recursion is performed over the first description
+argument (\Var{D}), while the second argument (\Var{R}) is kept
+constant, so we have access to the original description in
+the inductive \Con{`δ} case.
 
-\begin{code}
-  counts (`ι o) R tt = 1
-\end{code}
+Finally, our intention is to \Fun{count} an algebraic value
+\Con{init} \Var{xs} as 1 (for \Con{init}) plus the recursive sum of all of its
+arguments (for \Var{xs}). Even though \Var{xs} is technically implemented as a
+sequence of dependent pairs (\Con{,}), we will not add 1 for each
+pair constructor (\Con{,}), which we choose to view as part of the encoding
+rather than something to be counted. Hence, \Fun{counts} treats its argument
+\Var{xs} as a single $n$-tuple, rather than several nested pairs.
 
 \paragraph{Non-Inductive Argument}
+
+When we come across a non-inductive argument, in a sequence of
+arguments, we sum the \Fun{count} of the non-inductive argument
+(\Var{a}) with the \Fun{counts} of the remainder of the sequence of
+arguments (\Var{xs}). 
 
 \begin{code}
   counts (`σ A D) R (a , xs) = count A a + counts (D a) R xs
 \end{code}
 
+Note that \Var{a} is counted using our mutually
+defined \Fun{count} over all values, and \Var{xs} is recursively counted
+(via \Fun{counts})
+using the description resulting from
+applying the \textit{dependent} description \Var{D} (of \Con{`σ})
+to the value \Var{a}. The original description \Var{R} is
+passed to \Fun{counts} unchanged.
+
 \paragraph{Inductive Argument}
+
+When we come across an inductive argument, in a sequence of
+arguments, we sum the \Fun{count} of the inductive argument
+(\Var{x}) with the \Fun{counts} of the remainder of the sequence of
+arguments (\Var{xs}).
 
 \begin{code}
   counts (`δ `⊤ D) R (f , xs) = count (`μ₁ _ R) (f tt) +
-    counts (D (λ u → μ₂ ⟪ R ⟫ (f u))) R xs
+    counts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
 \end{code}
   
+Inductive arguments are a special case of infinitary arguments, where
+the domain of the infinitary function is the unit type (\Data{⊤}).
+The first argument to the \textit{closed description} \Con{`δ} is a
+\textit{closed type}. Because the first argument is a closed type, we
+can pattern match against the closed unit type (\Con{`⊤}). This allows
+us to distinguish how we count \textit{inductive} arguments from how
+we count \textit{infinitary} arguments, and is only possible because
+our universe is \textit{closed} (i.e. if the argument had kind
+\Data{Set}, it would be open and we could not pattern match against
+it)!
+
+The inductive argument is obtained by applying the infinitary argument
+\Var{f} to the trivial value \Con{tt}, but what type should we
+use to \Fun{count} it? Because it is an \textit{inductive}
+(hence, algebraic) value, the type should be the fixpoint (\Con{`μ₁})
+applied to some description. We kept the original description
+(\Var{R}) to count inductive arguments for exactly this case.
+
+The remaining sequenc of arguments (\Var{xs}) is recursively counted
+(via \Fun{counts}) using the description resulting from
+applying the \textit{dependent} description \Var{D} (of \Con{`δ})
+to the \textit{composition} of the decoding function fixpoint
+component (\Fun{μ₂}) and the infinitary value \Var{f}.
+Recall (from \refsec{iralgmod}) that the \Var{D} argument of \Con{`δ}
+is a description that
+depends on the \textit{decoding function} for our inductive-recursive type.
+The \textit{type} of the decoding function is the \textit{implicit} composition
+of the decoding fixpoint component (\Fun{μ₂}) and the infinitary value
+\Var{f}. In our generic function above, we \textit{explicitly} create
+the \textit{value} of this decoding function to satisfy the implicit
+expectation in the type of its description.
+
 \paragraph{Infinitary Argument}
 
 \begin{code}
-  counts (`δ A D) R (f , xs) = 1 + counts (D (λ a → μ₂ ⟪ R ⟫ (f a))) R xs
+  counts (`δ A D) R (f , xs) = 1 + counts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
 \end{code}
 
-\subsection{Examples}
+\paragraph{Last Argument}
 
-\subsection{Generic Lemmas}
+Every sequence of algebraic constructor arguments terminates in the
+trivial value \Con{tt} of type unit (\Data{⊤}), which we count as 1.
+
+\begin{code}
+  counts (`ι o) R tt = 1
+\end{code}
+
+%% \subsection{Examples}
+%% \subsection{Generic Lemmas}
 
 \section{Fully Generic Lookup}\label{sec:glookup}
 
