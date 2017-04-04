@@ -398,6 +398,25 @@ trivial value \Con{tt} of type unit (\Data{⊤}), which we count as 1.
   counts (`ι o) R tt = 1
 \end{code}
 
+We could choose to count the trivial (\Con{tt}) last argument as
+0, hiding the aspect of the encoding that every sequence of arguments
+is terminated by \Con{tt}. However, we choose to count \Con{tt} as 1
+because subsequent generic functions
+(\Fun{lookup} in \refsec{glookup} and
+\Fun{update} in \refsec{gupdate}) treat the result of \Fun{count} as
+an \textit{index} into all values and subvalues of a type.
+\footnote{
+  Using our generic encoding of \textit{inductive-recursive} types,
+  being able to \Fun{count}, \Fun{lookup}, or \Fun{update} the trivial
+  value (\Con{tt}) may not seem useful. Nevertheless, we include this
+  functionality because it becomes useful when generalizing our
+  universe to include \textit{indexed} algebraic types. In the initial
+  algebra semantics for indexed types, the final unit type (\Data{⊤})
+  is replaced by the identity type (\Data{Id}), used as a constraint
+  on the index of the algebraic type. Being able to \Fun{count}, \Fun{lookup}, and
+  \Fun{update} the constraint is important in the indexed universe.
+  }
+
 %% \subsection{Examples}
 %% \subsection{Generic Lemmas}
 
