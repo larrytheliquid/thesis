@@ -272,7 +272,8 @@ second (original) description argument is held constant.
 
 All constructors of the remaining types (such as \Data{Bool}) do not
 have arguments, so we \Fun{count} them as 1 (for their constructor,
-plus 0 for their arguments). Note that this includes functions, which
+plus 0 for their arguments).
+Note that this includes functions (the \Con{`Π} case),
 which we treat as a black box by counting the $\lambda$ constructor as
 1, without recursively counting its body.
 
@@ -344,7 +345,7 @@ The first argument to the \textit{closed description} \Con{`δ} is a
 \textit{closed type}. Because the first argument is a closed type, we
 can pattern match against the closed unit type (\Con{`⊤}). This allows
 us to distinguish how we count \textit{inductive} arguments from how
-we count \textit{infinitary} arguments, and is only possible because
+we count \textit{infinitary} arguments, and is \textit{only possible} because
 our universe is \textit{closed} (i.e. if the argument had kind
 \Data{Set}, it would be open and we could not pattern match against
 it)!
@@ -372,9 +373,21 @@ expectation in the type of its description.
 
 \paragraph{Infinitary Argument}
 
+When we come across an infinitary argument, in a sequence of
+arguments, we add 1 to the the \Fun{counts} of the remainder of the
+sequence of arguments (\Var{xs}).
+This counts the infinitary $\lambda$ constructor as 1, treating it as
+a black box, analogous to how we \Fun{count} the \Con{`Π} case as 1.
+
+
 \begin{code}
   counts (`δ A D) R (f , xs) = 1 + counts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
 \end{code}
+
+The remaining sequence of arguments (\Var{xs}) is recursively counted
+just like the inductive (\Con{`δ} \Con{`⊤}) case, where the dependent description \Var{D}
+is applied to the composition of the fixpoint interpretation component
+(\Fun{μ₂}) and the infinitary argument (\Var{f}).
 
 \paragraph{Last Argument}
 
