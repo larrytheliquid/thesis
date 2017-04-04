@@ -461,6 +461,24 @@ numbers), and the unit value (\Con{tt}).
 We generically \Fun{count} the closed \Fun{zero} by summing 1 for
 the \Con{init}ial algebra constructor, 1 for the \Con{true} argument,
 and 1 for the terminating unit argument (\Con{tt}), resulting in 3.
+\footnote{
+  Once again, this is an encoding-aware \Fun{count}, because it is
+  used to \textit{index} which nodes (in a generically encoded
+  data structure) to \Fun{lookup} (in \refsec{glookup}) and
+  \Fun{update} (in \refsec{gupdate}). It would also be possible to
+  define an encoding-unaware \Fun{count}, that does not count \Con{true}
+  (encoding constructor choice) and \Con{tt} (encoding the end of the
+  sequence of constructors).
+  Encoding-unaware \Fun{count} could be generically
+  defined over a universe
+  of constructor-aware descriptions, equipped with an interpretation
+  function to translate constructor-aware descriptions into our
+  constructor-unaware descriptions.
+  Applying an encoding-unaware \Fun{count}
+  to \Fun{zero} would result in 0, as it would not count constructor
+  choice data (like \Con{true}) or argument sequence data (like
+  \Con{tt}).
+}
 
 \AgdaHide{
 \begin{code}
