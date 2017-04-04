@@ -1,6 +1,8 @@
 \AgdaHide{
 \begin{code}
 module _ where
+open import Data.Nat hiding (zero ; suc)
+open import Relation.Binary.PropositionalEquality
 open import Function
 open import Appendix
 \end{code}}
@@ -88,7 +90,6 @@ mutually defined functions.
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Nat
  open Prim
  open Alg
  open Closed
@@ -120,7 +121,6 @@ of the type component of the fixpoint operator:
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Nat
  open Prim
  open Alg hiding ( μ₁ )
  private
@@ -156,7 +156,6 @@ arguments of algebraic types, isomorphic to \Fun{countμ}).
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Nat
  open Prim
  open Alg
  open Closed
@@ -178,7 +177,6 @@ is an acceptable alternative to defining \Fun{countμ}.
 \AgdaHide{
 \begin{code}
 module _ where
- open import Data.Nat
  open Prim
  open Alg hiding ( ⟦_⟧₁ )
  private
@@ -219,7 +217,6 @@ types.
 \AgdaHide{
 \begin{code}
 module Count where
- open import Data.Nat
  open Prim
  open Alg
  open Closed
@@ -415,9 +412,99 @@ an \textit{index} into all values and subvalues of a type.
   is replaced by the identity type (\Data{Id}), used as a constraint
   on the index of the algebraic type. Being able to \Fun{count}, \Fun{lookup}, and
   \Fun{update} the constraint is important in the indexed universe.
-  }
+}
 
-%% \subsection{Examples}
+\subsection{Examples}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Prim
+ open Alg
+ open Closed
+ open Count
+ private
+  NatDs : Bool → `Desc `⊤
+  NatDs true = `ι tt
+  NatDs false = `δ `⊤ (λ f → `ι (f tt))
+
+  NatD : `Desc `⊤
+  NatD = `σ `Bool NatDs
+
+  `ℕ : `Set
+  `ℕ = `μ₁ `⊤ NatD
+
+  suc : ⟦ `ℕ ⟧ → ⟦ `ℕ ⟧
+  suc n = init (false , (λ u → n) , tt)
+\end{code}}
+
+Now that we've defined \Fun{count} fully generically, let's run it on
+some examples to better understand how it works.
+The key lesson to take away is that \Fun{count} and \Fun{counts}
+use a \textit{depth-first} traversal to count values and subvalues.
+
+First, we consider counting the closed encoding of the natural number 0.
+It may be helpful to review the closed definition of the natural
+numbers in \refsec{closedeg}.
+The natural number 0 is encoded (below) by \Fun{zero}
+as the \Con{init}ial algebra
+applied to a dependent pair (\Con{,}) consisting of the boolean
+\Con{true} (selecting the zero-constructor
+branch of the dependent description used to encode the natural
+numbers), and the unit value (\Con{tt}).
+
+\begin{code}
+  zero : ⟦ `ℕ ⟧
+  zero = init (true , tt)
+\end{code}
+
+We generically \Fun{count} the closed \Fun{zero} by summing 1 for
+the \Con{init}ial algebra constructor, 1 for the \Con{true} argument,
+and 1 for the terminating unit argument (\Con{tt}), resulting in 3.
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   count `ℕ zero ≡ 3 
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.8]{one.pdf}
+\caption{The natural number 1, as a closed algebraic type.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.8]{two.pdf}
+\caption{The natural number 2, as a closed algebraic type.}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.7]{vec1.pdf}  
+\caption{The length-1 vector of pairs of strings
+  [(``a'', ``x'')], as a closed algebraic type.}
+\end{figure}
+
+\begin{sidewaysfigure}[ht]
+\centering
+\includegraphics[scale=0.6]{vec2.pdf}  
+\caption{The length-2 vector of pairs of strings
+  [(``a'', ``x''), (``b'', ``y'')],
+  as a closed algebraic type.}
+\end{sidewaysfigure}
+
+
 %% \subsection{Generic Lemmas}
 
 \section{Fully Generic Lookup}\label{sec:glookup}

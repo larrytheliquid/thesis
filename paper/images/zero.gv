@@ -1,0 +1,1 @@
+graph G { subgraph cluster_0 { 0 [ label="init" fontcolor="#008B00" ] ; 1 [ label="true" fontcolor="#008B00" ] ; 2 [ label="tt" fontcolor="#008B00" ] ;  } 0 -- 1 [label=1] ; 0 -- 2 [label=2] ; }
