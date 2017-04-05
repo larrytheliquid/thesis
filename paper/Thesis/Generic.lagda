@@ -860,19 +860,13 @@ of closed \Fun{Vec}tors.
 \label{fig:vec2}
 \end{sidewaysfigure}
 
-The fully generic \Fun{count} of \Fun{vec2} is 26, as justified
+The fully generic \Fun{count} of \Fun{vec2} is 28, as justified
 by \reffig{vec2}.
 In \reffig{vec2}, node 12 is the length-1 \Str{"b"} and \Str{"y"}
 component of type \Fun{`Vec₁}. Node 14 is the natural number
 \Fun{zero}, the length of \Fun{nil₁} at node 20. Node 3 is the natural
 number \Fun{zero}, the length of the \Str{"b"} and \Str{"y"} vector
 at node 12.
-
-The relationship between algebraically defined length-indexed
-vectors and their algebraically defined natural numbers is elegantly
-captured in \reffig{vec2}. We see the natural numbers
-(nodes 3 and 14) appearing at the same level, and having the same
-height, as their vector equivalents (nodes 12 and 20).
 
 \AgdaHide{
 \begin{code}
@@ -887,6 +881,17 @@ height, as their vector equivalents (nodes 12 and 20).
 \begin{code}
   _ = refl
 \end{code}}
+
+We conclude this chapter by reflecting on how
+the relationship between algebraically defined length-indexed
+vectors and their algebraically defined natural numbers is elegantly
+captured in \reffig{vec2}. Notice how natural numbers
+(nodes 3 and 14) appear at the same level, and have the same
+height, as their vector equivalents (nodes 12 and 20).
+This visually demonstrates how the natural number argument of
+\Con{cons} is mirrored by the structure of the inductive argument of
+\Con{cons}, enforced by their relationship in the definition of
+the indexed type of vectors. 
 
 %% \subsection{Generic Lemmas}
 
