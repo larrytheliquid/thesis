@@ -494,12 +494,87 @@ and 1 for the terminating unit argument (\Con{tt}), resulting in 3.
   _ = refl
 \end{code}}
 
+Next, let's define the closed natural number 1. We can define
+\Fun{one} by applying our closed \Fun{suc}cessor
+(from \refsec{closedeg}) to our closed \Fun{zero}.
+
+\begin{code}
+  one : ⟦ `ℕ ⟧
+  one = suc zero
+\end{code}
+
+Expanding these definitions results in the closed encoding of 1
+below.
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   one ≡ init (false , (λ _ → init (true , tt)) , tt)
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+The \Con{false} value in the closed \Fun{one} definition selects the
+successor branch of the description, and the next argument contains
+the inlined definition of \Fun{zero}, wrapped in a function ignoring
+its trivial unit argument. Recall that \textit{inductive}
+natural numbers are
+encoded as \textit{trivially infinitary} types,
+using the unit type (\Data{⊤}) as the domain of the infinitary
+function. The \textbf{Inductive} case of \Fun{counts} is able to
+recursively count
+the inductive body of the \Fun{suc}cessor (i.e. \Fun{zero}) because it
+is able to pattern match against the closed type \Con{`⊤} to
+distinguish counting inductive (or trivially-infinitary)
+arguments from counting (truly) infinitary arguments.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.8]{one.pdf}
 \caption{The natural number 1, as a closed algebraic type.}
+\label{fig:one}
 \end{figure}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   count `ℕ one ≡ 6
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+Finally, we \Fun{count} closed \Fun{one} as 6, adding up 1 for each
+constructor appearing in the encoded definition
+(\Con{init}, \Con{false}, \Con{init}, \Con{true}, \Con{tt}, and
+\Con{tt}), from left to right.
+The reason behind that order is that \Fun{count} and \Fun{counts}
+recursively add 1 for each encoded constructor by doing a
+\textit{depth-first} traversal. To help visualize the traversal, and
+aid in the legibility of encoded values, refer to
+\reffig{one}. The edges of \reffig{one} are labeled according to a
+depth-first traversal of nodes (where 0 is an implicit edge for the
+root node). Because \Fun{count} (and \Fun{counts})
+traverses in a depth-first manner, each edge respresents the aggregate
+count at the time \Fun{count} is called for the corresponding node.
+Note that the result of applying \Fun{count} to the root node is 1
+plus the final edge (1 + 5, above).
+
+The depth-first labeling of edges pointing to nodes that \Fun{count}
+performs makes it an ideal function to index positions of arguments in
+generically encoded values. For example, in \reffig{one} we can see value
+\Fun{zero} at edge 2, and value \Fun{one} at edge 0 (the root node).
 
 \begin{figure}[ht]
 \centering
