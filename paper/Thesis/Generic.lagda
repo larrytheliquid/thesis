@@ -788,6 +788,15 @@ constraint (of type \Data{Id})
 that the left component has length \Fun{one}.
 Node 1 is the inductive-recursive \Fun{vec1₁} (of type \Fun{`Vec₁}).
 
+We establish
+the convention that suffixing a term or constructor by \texttt{₁} refers to the
+inductive-recursive (of type \Fun{`Vec₁}) equivalent of the
+constraint pair of type \Fun{`Vec}. For example, \Fun{nil₁}
+refers to an empty inductive-recursive vector of type \Fun{`Vec₁},
+the left component of the constraint pair \Fun{nil}
+of type \Fun{`Vec} (mirroring the
+relationship between \Fun{vec1₁} and \Fun{vec1}, above).
+
 In \reffig{vec1} (and all of our figures),
 we draw boxes around the outermost occurrence
 of an inductive value. For example, the root node does not have a box
