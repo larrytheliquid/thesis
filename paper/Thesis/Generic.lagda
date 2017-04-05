@@ -646,14 +646,14 @@ edge 4.
 \paragraph{Vectors}
 
 Now let's encode the closed 0-length empty vector (\texttt{[]}).
-Again, it may be helpful to review the closed definition of the
+Again, it may be helpful to review the closed definition of
 vectors in \refsec{closedeg}.
 Recall that indexed vectors are encoded as a dependent pair whose first
 component is an inductive-recursive \Fun{`Vec₁}
 (like a list, but with natural number arguments and
 index constraints on inductive occurrences), and whose second
 component constrains (via the equality type \Data{Id}) the
-decoding (i.e. \Fun{`Vec₂}, or length function) of the first component
+decoding (via \Fun{`Vec₂}, or the length function) of the first component
 to be the appropriate index.
 
 Below, the closed empty vector \texttt{[]} is encoded
@@ -670,7 +670,24 @@ by its type).
   nil = init (true , tt) , refl
 \end{code}
 
+Our examples count vectors of pairs of strings.
+The generic \Fun{count} of the empty vector (i.e. \Fun{nil}) of pairs
+of strings is 5, the sum of 1 for \Con{init}, \Con{true}, \Con{tt},
+(\Con{,}), and \Con{refl}.
 
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   count (`Vec (`String `× `String) zero) nil ≡ 5
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
 
 \begin{figure}[ht]
 \centering
