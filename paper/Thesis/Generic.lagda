@@ -806,13 +806,14 @@ of node 9 (encoding the inductive occurrence of
 
 Node 2 is \Con{false}, representing the choice of the \Fun{cons₁}
 constructor in the description of \Fun{`Vec₁}.
-Node 6 is the non-inductive pair of strings
-\texttt{"a"} and \texttt{"b"} contained by the vector.
+Node 6 is the non-inductive pair (\Con{\_,\_}) of strings
+\Str{"a"} and \Str{"b"} contained by the vector.
 Node 3 contains a box
 around it, meaning it is an occurrence of an inductive type distinct
 from \Fun{`Vec₁}. Specifically, node 3 is the natural number
-\Fun{zero}, constrained to equal the length of the empty vector at node 9,
-in the type of the constraint at node 12. Finally, nodes 5, 11, and 13
+\Fun{zero}, constrained to equal the length of
+the empty vector (\Fun{nil₁}) at node 9,
+in the type of the constraint (\Con{refl}) at node 12. Finally, nodes 5, 11, and 13
 all represent the terminating unit (\Con{tt}) of an algebraic sequence
 of arguments.
 
