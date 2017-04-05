@@ -443,6 +443,8 @@ some examples to better understand how it works.
 The key lesson to take away is that \Fun{count} and \Fun{counts}
 use a \textit{depth-first} traversal to count values and subvalues.
 
+\paragraph{Natural Numbers}
+
 First, we consider counting the closed encoding of the natural number 0.
 It may be helpful to review the closed definition of the natural
 numbers in \refsec{closedeg}.
@@ -563,13 +565,21 @@ The reason behind that order is that \Fun{count} and \Fun{counts}
 recursively add 1 for each encoded constructor by doing a
 \textit{depth-first} traversal. To help visualize the traversal, and
 aid in the legibility of encoded values, refer to
-\reffig{one}. The edges of \reffig{one} are labeled according to a
+\reffig{one}.
+The edges of \reffig{one} are labeled according to a
 depth-first traversal of nodes (where 0 is an implicit edge for the
 root node). Because \Fun{count} (and \Fun{counts})
 traverses in a depth-first manner, each edge respresents the aggregate
 count at the time \Fun{count} is called for the corresponding node.
 Note that the result of applying \Fun{count} to the root node is 1
 plus the final edge (1 + 5, above).
+\footnote{
+  All algebraic types in Figures hide the infinitary $\lambda$
+  constructor at inductive argument positions,
+  because \Fun{count} (whose depth-first traversal the
+  Figure represents) implicitly applies trivially infinitary functions
+  to \Con{tt} in the \textbf{Inductive} (\Con{`δ}) case.
+  }
 
 The depth-first labeling of edges pointing to nodes that \Fun{count}
 performs makes it an ideal function to index positions of arguments in
