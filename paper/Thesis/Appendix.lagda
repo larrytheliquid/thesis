@@ -100,10 +100,14 @@ module Closed where
     ⟪ `ι o ⟫ = ι o
     ⟪ `σ A D ⟫ = σ ⟦ A ⟧ (λ a → ⟪ D a ⟫)
     ⟪ `δ A D ⟫ = δ ⟦ A ⟧ (λ o → ⟪ D o ⟫)
+\end{code}
 
+\AgdaHide{
+\begin{code}
   _`×_ : (A B : `Set) → `Set
   A `× B = `Σ A (λ _ → B)
-\end{code}
+\end{code}}
+
 
 %% \chapter{Closed Hierarchy of Universes}\label{apen:hier}
 

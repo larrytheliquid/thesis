@@ -809,7 +809,7 @@ type \Fun{`Vec₁}. Recall that each inductive argument of the
 inductive-recursive \Fun{`Vec₁} is packaged with a constraint
 on its length (calculated by the
 inductive-recursive decoding function \Fun{`Vec₂}).
-Node 12 is the contraint that the length
+Node 12 is the constraint that the length
 of node 9 (encoding the inductive occurrence of
 \Fun{nil₁} within the box for \Fun{vec1₁}, at node 1) is 0.
 
@@ -841,6 +841,16 @@ of arguments.
   _ = refl
 \end{code}}
 
+Finally, let's define the length-2 closed vector of pairs of strings
+\texttt{[("a", "x"), ("b", "y")]}. We can define
+\Fun{vec2} with our closed constructors \Fun{nil} and \Fun{cons}
+of closed \Fun{Vec}tors.
+
+\begin{code}
+  vec2 : ⟦ `Vec (`String `× `String) two ⟧
+  vec2 = cons ("a" , "x") (cons ("b" , "y") nil)
+\end{code}
+
 \begin{sidewaysfigure}[ht]
 \centering
 \includegraphics[scale=0.6]{vec2.pdf}  
@@ -850,6 +860,33 @@ of arguments.
 \label{fig:vec2}
 \end{sidewaysfigure}
 
+The fully generic \Fun{count} of \Fun{vec2} is 26, as justified
+by \reffig{vec2}.
+In \reffig{vec2}, node 12 is the length-1 \Str{"b"} and \Str{"y"}
+component of type \Fun{`Vec₁}. Node 14 is the natural number
+\Fun{zero}, the length of \Fun{nil₁} at node 20. Node 3 is the natural
+number \Fun{zero}, the length of the \Str{"b"} and \Str{"y"} vector
+at node 12.
+
+The relationship between algebraically defined length-indexed
+vectors and their algebraically defined natural numbers is elegantly
+captured in \reffig{vec2}. We see the natural numbers
+(nodes 3 and 14) appearing at the same level, and having the same
+height, as their vector equivalents (nodes 12 and 20).
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   count (`Vec (`String `× `String) two) vec2 ≡ 28
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
 
 %% \subsection{Generic Lemmas}
 
