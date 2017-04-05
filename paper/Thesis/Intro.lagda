@@ -997,6 +997,6 @@ but additionally does not contain \Data{Level}).
 
 Finally, we address
 \textbf{\chaptitle{related}},
-\textbf{\chaptitle{future}},
-and state our \textbf{\chaptitle{conclusion}}.
+and conclude (\textbf{\chaptitle{conclusion}})
+with a summary and a description of future work.
 

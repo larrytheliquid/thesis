@@ -641,6 +641,9 @@ edge 4.
   
   `Vec : `Set → ⟦ `ℕ ⟧ → `Set
   `Vec A n = `Σ (`Vec₁ A) (λ xs → `Id `ℕ (`Vec₂ A xs) n)
+
+  cons : {A : `Set} {n : ⟦ `ℕ ⟧} (a : ⟦ A ⟧) (xs : ⟦ `Vec A n ⟧) → ⟦ `Vec A (suc n) ⟧
+  cons {n = n} a (xs , refl) = init (false , n , a , (λ u → xs) , refl , tt) , refl
 \end{code}}
 
 \paragraph{Vectors}
@@ -688,6 +691,42 @@ of strings is 5, the sum of 1 for \Con{init}, \Con{true}, \Con{tt},
 \begin{code}
   _ = refl
 \end{code}}
+
+Next, let's define length-1 closed vector of pairs of strings
+\texttt{[("a", "x")]}. We can define
+\Fun{vec1} by applying our closed \Fun{cons} constructor
+(from \refsec{closedeg}) to our closed \Fun{zero} constructor.
+
+\begin{code}
+  vec1 : ⟦ `Vec (`String `× `String) one ⟧
+  vec1 = cons ("a" , "x") nil
+\end{code}
+
+Expanding these definitions results in the closed encoding of
+\texttt{[("a", "x")]} below.
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   vec1 ≡ (init -- node 1
+            (false -- node 2
+            , init (true , tt) -- node 3
+            , ("a" , "x") -- node 6
+            , (λ _ → init (true , tt)) -- node 9
+            , refl -- node 12
+            , tt) -- node 13
+           , -- node 1
+            refl) -- node 14
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
 
 \begin{figure}[ht]
 \centering
