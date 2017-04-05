@@ -619,18 +619,71 @@ edge 4.
   _ = refl
 \end{code}}
 
+\AgdaHide{
+\begin{code}
+  VecDs : `Set → Bool → `Desc `ℕ
+  VecDs A true = `ι zero
+  VecDs A false =
+    `σ `ℕ λ n →
+    `σ A λ a →
+    `δ `⊤ λ xs →
+    `σ (`Id `ℕ (xs tt) n) λ q →
+    `ι (suc n)
+
+  VecD : `Set → `Desc `ℕ
+  VecD A = `σ `Bool (VecDs A)
+
+  `Vec₁ : `Set → `Set
+  `Vec₁ A = `μ₁ `ℕ (VecD A)
+  
+  `Vec₂ : (A : `Set) → ⟦ `Vec₁ A ⟧ → ⟦ `ℕ ⟧
+  `Vec₂ A = μ₂ ⟪ VecD A ⟫
+  
+  `Vec : `Set → ⟦ `ℕ ⟧ → `Set
+  `Vec A n = `Σ (`Vec₁ A) (λ xs → `Id `ℕ (`Vec₂ A xs) n)
+\end{code}}
+
+\paragraph{Vectors}
+
+Now let's encode the closed 0-length empty vector (\texttt{[]}).
+Again, it may be helpful to review the closed definition of the
+vectors in \refsec{closedeg}.
+Recall that indexed vectors are encoded as a dependent pair whose first
+component is an inductive-recursive \Fun{`Vec₁}
+(like a list, but with natural number arguments and
+index constraints on inductive occurrences), and whose second
+component constrains (via the equality type \Data{Id}) the
+decoding (i.e. \Fun{`Vec₂}, or length function) of the first component
+to be the appropriate index.
+
+Below, the closed empty vector \texttt{[]} is encoded
+by \Fun{nil} as such a dependent pair, where the first component
+is an \Con{init}ial algebra value (of type \Fun{`Vec₁}),
+and the second component is a proof (using \Con{refl}, the
+constructor of equality type \Data{Id}) that \Fun{`Vec₂} applied to the
+first component is indeed \Fun{zero}
+(the expected length of the empty vector, as specified
+by its type).
+
+\begin{code}
+  nil : {A : `Set} → ⟦ `Vec A zero ⟧
+  nil = init (true , tt) , refl
+\end{code}
+
+
+
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.7]{vec1.pdf}  
 \caption{The length-1 vector of pairs of strings
-  [(``a'', ``x'')], as a closed algebraic type.}
+  \texttt{[("a", "x")]}, as a closed algebraic type.}
 \end{figure}
 
 \begin{sidewaysfigure}[ht]
 \centering
 \includegraphics[scale=0.6]{vec2.pdf}  
 \caption{The length-2 vector of pairs of strings
-  [(``a'', ``x''), (``b'', ``y'')],
+  \texttt{[("a", "x"), ("b", "y")]},
   as a closed algebraic type.}
 \end{sidewaysfigure}
 
