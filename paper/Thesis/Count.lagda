@@ -895,9 +895,4 @@ the indexed type of vectors.
 
 %% \subsection{Generic Lemmas}
 
-\section{Fully Generic Lookup}\label{sec:glookup}
-
-\section{Fully Generic Update}\label{sec:gupdate}
-
-\section{Fully Generic AST}\label{sec:gast}
 
