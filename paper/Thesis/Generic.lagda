@@ -575,12 +575,39 @@ The depth-first labeling of edges pointing to nodes that \Fun{count}
 performs makes it an ideal function to index positions of arguments in
 generically encoded values. For example, in \reffig{one} we can see value
 \Fun{zero} at edge 2, and value \Fun{one} at edge 0 (the root node).
+Finally, let's define closed \Fun{two}.
+
+\begin{code}
+  two : ⟦ `ℕ ⟧
+  two = suc one
+\end{code}
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.8]{two.pdf}
 \caption{The natural number 2, as a closed algebraic type.}
+\label{fig:two}
 \end{figure}
+
+\Fun{Count}ing closed \Fun{two} results in 9, as can be seen in
+\reffig{two} (by adding 1 to the final edge 8).
+In \reffig{two}, \Fun{two} appears at edge 0,
+\Fun{one} appears at edge 2, and \Fun{zero} appears at
+edge 4.
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   count `ℕ two ≡ 9
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
 
 \begin{figure}[ht]
 \centering
