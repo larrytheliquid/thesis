@@ -418,12 +418,11 @@ an \textit{index} into all values and subvalues of a type.
 
 \AgdaHide{
 \begin{code}
-module _ where
- open Prim
- open Alg
- open Closed
- open Count
- private
+module Data where
+  open Prim
+  open Alg
+  open Closed
+  open Count
   NatDs : Bool → `Desc `⊤
   NatDs true = `ι tt
   NatDs false = `δ `⊤ (λ f → `ι (f tt))
@@ -697,6 +696,16 @@ Next, let's define length-1 closed vector of pairs of strings
 \Fun{vec1} by applying our closed \Fun{cons} constructor
 (from \refsec{closedeg}) to our closed \Fun{zero} constructor.
 
+\AgdaHide{
+\begin{code}
+module _ where
+ open Prim
+ open Alg
+ open Closed
+ open Data
+ private
+\end{code}}
+
 \begin{code}
   vec1 : ⟦ `Vec (`String `× `String) one ⟧
   vec1 = cons ("a" , "x") nil
@@ -711,15 +720,14 @@ Expanding these definitions results in the closed encoding of
 \end{code}}
 
 \begin{code}
-   vec1 ≡ (init -- node 1
-            (false -- node 2
-            , init (true , tt) -- node 3
-            , ("a" , "x") -- node 6
-            , (λ _ → init (true , tt)) -- node 9
-            , refl -- node 12
-            , tt) -- node 13
-           , -- node 1
-            refl) -- node 14
+   vec1 ≡ (init
+            ( false
+            , init (true , tt)
+            , ("a" , "x")
+            , (λ _ → init (true , tt))
+            , refl
+            , tt)
+           , refl)
 \end{code}
 
 \AgdaHide{
@@ -727,13 +735,101 @@ Expanding these definitions results in the closed encoding of
   _ = refl
 \end{code}}
 
+To understand this, it is worth remembering that indexed vectors
+(\Fun{`Vec}) are defined as a constraint paired with an
+inductive-recursive (but not indexed)
+version of the vector (\Fun{`Vec₁}). Below, we directly define
+the indexed vector \Fun{vec1} (of type \Fun{`Vec}),
+without using the smart constructors
+\Fun{cons} and \Fun{nil}, in terms
+of the auxiliary definition \Fun{vec1₁} for the
+inductive-recursive (\Fun{`Vec₁})
+left component of the pair (of type \Fun{`Vec₁}).
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.7]{vec1.pdf}  
 \caption{The length-1 vector of pairs of strings
   \texttt{[("a", "x")]}, as a closed algebraic type.}
+\label{fig:vec1}
 \end{figure}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Prim
+ open Alg
+ open Closed
+ open Count
+ open Data
+ private
+\end{code}}
+
+\begin{code}
+  vec1₁ : ⟦ `Vec₁ (`String `× `String) ⟧
+  vec1₁ = init
+    ( false
+    , init (true , tt)
+    , ("a" , "x")
+    , (λ _ → init (true , tt))
+    , refl
+    , tt)
+
+  vec1 : ⟦ `Vec (`String `× `String) one ⟧
+  vec1 = vec1₁ , refl
+\end{code}
+
+To understand how \Fun{vec1} is counted (as 15), we refer to
+our visual presentation in \reffig{vec1}, depicting
+the depth-first traversal of \Fun{count}.
+The root node is \Fun{vec1} (of type \Fun{`Vec}),
+the dependent pair. Node 14 is the
+constraint (of type \Data{Id})
+that the left component has length \Fun{one}.
+Node 1 is the inductive-recursive \Fun{vec1₁} (of type \Fun{`Vec₁}).
+
+In \reffig{vec1} (and all of our figures),
+we draw boxes around the outermost occurrence
+of an inductive value. For example, the root node does not have a box
+around it, because it is a non-inductive pair (of type \Con{`Σ}).
+However, node 1 has a box around it, for the inductive
+\Fun{`Vec₁} value (\Fun{vec1₁}). Within a box, any occurrence
+of \Con{init} represents an inductive occurrence whose type shares the
+type of the box. For example, node 9 is a \Fun{nil₁} value of
+type \Fun{`Vec₁}. Recall that each inductive argument of the
+inductive-recursive \Fun{`Vec₁} is packaged with a constraint
+on its length (calculated by the
+inductive-recursive decoding function \Fun{`Vec₂}).
+Node 12 is the contraint that the length
+of node 9 (encoding the inductive occurrence of
+\Fun{nil₁} within the box for \Fun{vec1₁}, at node 1) is 0.
+
+Node 2 is \Con{false}, representing the choice of the \Fun{cons₁}
+constructor in the description of \Fun{`Vec₁}.
+Node 6 is the non-inductive pair of strings
+\texttt{"a"} and \texttt{"b"} contained by the vector.
+Node 3 contains a box
+around it, meaning it is an occurrence of an inductive type distinct
+from \Fun{`Vec₁}. Specifically, node 3 is the natural number
+\Fun{zero}, constrained to equal the length of the empty vector at node 9,
+in the type of the constraint at node 12. Finally, nodes 5, 11, and 13
+all represent the terminating unit (\Con{tt}) of an algebraic sequence
+of arguments.
+
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   count (`Vec (`String `× `String) one) vec1 ≡ 15
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
 
 \begin{sidewaysfigure}[ht]
 \centering
@@ -741,6 +837,7 @@ Expanding these definitions results in the closed encoding of
 \caption{The length-2 vector of pairs of strings
   \texttt{[("a", "x"), ("b", "y")]},
   as a closed algebraic type.}
+\label{fig:vec2}
 \end{sidewaysfigure}
 
 
