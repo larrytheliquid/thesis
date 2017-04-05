@@ -802,8 +802,7 @@ on its length (calculated by the
 inductive-recursive decoding function \Fun{`Vec₂}).
 Node 12 is the contraint that the length
 of node 9 (encoding the inductive occurrence of
-\Fun{nil₁} within the box for \Fun{vec1₁}, at node 1) is
-0 (encoded by node 3 as \Fun{zero}).
+\Fun{nil₁} within the box for \Fun{vec1₁}, at node 1) is 0.
 
 Node 2 is \Con{false}, representing the choice of the \Fun{cons₁}
 constructor in the description of \Fun{`Vec₁}.
