@@ -109,7 +109,7 @@ difference is that we have renamed \Data{Type} to \Data{`Set}, to
 notationally emphasize that its intepretation as a \Data{Set} is
 obtained by ``removing the backtick''.
 
-However, the intuition behind the closed \Fun{countμ} function was
+However, the intuition behind the closed \Fun{countμ} function is
 simplified in the introduction. A minor difference is that we must
 add an \Var{O} parameter, to account for the codomain of the
 inductive-recursive decoding function. One major difference is that
@@ -145,8 +145,8 @@ applied to the meaning of
 
 There is a second major difference between the types we use for fully
 generic programming, and the types behind the intuition in the
-introduction. It is not possible to directly define a function over
-all closed descriptions like \Fun{countμ}. The problem is that the
+introduction. It is not possible to directly define a function like
+\Fun{countμ} over all closed descriptions. The problem is that the
 inductive hypothesis is not general enough in the
 infinitary (hence, also inductive) \Con{`δ} case. Instead of mutually
 defining \Fun{count} with \Fun{countμ} (a function over all algebraic
