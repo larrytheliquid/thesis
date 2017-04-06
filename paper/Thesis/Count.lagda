@@ -190,7 +190,7 @@ module _ where
    ⟦ δ A D ⟧₁ R = Σ (A → μ₁ _ R) λ f → ⟦ D (λ a → μ₂ R (f a)) ⟧₁ R
 \end{code}
 
-The interpretation function recurses over the first argument (\Var{D}) to
+The interpretation function (\Fun{⟦\_⟧₁}) recurses over the first argument (\Var{D}) to
 determine the type of constructor arguments, while holding the second
 argument (\Var{R}) constant. This allows
 \Fun{⟦\_⟧₁} to remember the original \textit{complete} description
@@ -233,8 +233,8 @@ constructors and the recursive \Fun{count} of all constructor
 arguments. It may be helpful to review \Fun{count} for the
 \textit{fixed} closed universe in the introduction
 (\refsec{introcount}), to see how it compares to our new \Fun{count},
-defined over an \textit{extendable}
-(by user-declared datatypes) closed universe.
+defined over an \textit{extendable} closed universe
+(by user-declared datatypes).
 
 \paragraph{Dependent Pair}
 
