@@ -56,5 +56,14 @@ module Lookup where
   lookup A@(`μ₁ _ _) a@(init _) here = ⟦ A ⟧ , a
 
   lookups : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫) → Fin (counts D R xs) → Σ Set (λ A → A)
-  lookups D R xs i = {!!}
+  lookups (`σ A D) R xs i = {!!}
+  lookups (`δ `⊤ D) R xs i = {!!}
+  lookups (`δ `⊥ D) R xs i = {!!}
+  lookups (`δ `Bool D) R xs i = {!!}
+  lookups (`δ `String D) R xs i = {!!}
+  lookups (`δ (`Σ A B) D) R xs i = {!!}
+  lookups (`δ (`Π A B) D) R xs i = {!!}
+  lookups (`δ (`Id A x y) D) R xs i = {!!}
+  lookups (`δ (`μ₁ A D) D₁) R xs i = {!!}
+  lookups (`ι o) R xs i = {!!}
 \end{code}
