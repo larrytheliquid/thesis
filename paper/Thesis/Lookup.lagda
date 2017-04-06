@@ -38,14 +38,17 @@ module Lookup where
 
 \begin{code}
   lookup : (A : `Set) (a : ⟦ A ⟧) → Fin (count A a) → Σ Set (λ A → A)
+
   -- i : Fin (count A a + count (B a) b)
   lookup (`Σ A B) (a , b) (there i) with splitΣ A B a b i
   -- j : Fin (count A a)
   ... | inj₁ j = lookup A a j
   -- j : Fin (count (B a) b)
   ... | inj₂ j = lookup (B a) b j
+
   -- i : Fin (counts D D xs)
-  lookup (`μ₁ A D) (init xs) (there i) = lookups D D xs i
+  lookup (`μ₁ O D) (init xs) (there i) = lookups D D xs i
+
   lookup A@`⊥ a i = ⟦ A ⟧ , a
   lookup A@`⊤ a i = ⟦ A ⟧ , a
   lookup A@`Bool a i = ⟦ A ⟧ , a
@@ -55,15 +58,37 @@ module Lookup where
   lookup A@(`Id _ _ _) a i = ⟦ A ⟧ , a
   lookup A@(`μ₁ _ _) a@(init _) here = ⟦ A ⟧ , a
 
-  lookups : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫) → Fin (counts D R xs) → Σ Set (λ A → A)
-  lookups (`σ A D) R xs i = {!!}
-  lookups (`δ `⊤ D) R xs i = {!!}
-  lookups (`δ `⊥ D) R xs i = {!!}
-  lookups (`δ `Bool D) R xs i = {!!}
-  lookups (`δ `String D) R xs i = {!!}
-  lookups (`δ (`Σ A B) D) R xs i = {!!}
-  lookups (`δ (`Π A B) D) R xs i = {!!}
-  lookups (`δ (`Id A x y) D) R xs i = {!!}
-  lookups (`δ (`μ₁ A D) D₁) R xs i = {!!}
-  lookups (`ι o) R xs i = {!!}
+  lookups : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫)
+    → Fin (counts D R xs) → Σ Set (λ A → A)
+
+  -- i : Fin (count A a + counts (D a) R xs)
+  lookups (`σ A D) R (a , xs) i with splitσ A D R a xs i
+  -- j  : Fin (count A a)
+  ... | inj₁ j = lookup A a j
+  -- j : Fin (counts (D a) R xs)
+  ... | inj₂ j = lookups (D a) R xs j
+
+  -- i : Fin (count (`μ₁ _ R) (f tt) + counts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs)
+  lookups (`δ `⊤ D) R (f , xs) i with splitδ (D ∘ const) R (f tt) xs i
+  -- j : Fin (count (`μ₁ _ R) (f tt))
+  ... | inj₁ j = lookup (`μ₁ _ R) (f tt) j
+  -- j : Fin (counts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs)
+  ... | inj₂ j = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs j
+
+  lookups D@(`ι _) R xs i = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+  lookups D@(`δ `⊥ _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+  lookups D@(`δ `Bool _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+  lookups D@(`δ `String _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+  lookups D@(`δ (`Σ _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+  lookups D@(`δ (`Π _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+  lookups D@(`δ (`Id _ _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+  lookups D@(`δ (`μ₁ _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+
+  lookups (`δ A@`⊥ D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@`Bool D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@`String D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@(`Σ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@(`Π _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@(`Id  _ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@(`μ₁ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
 \end{code}
