@@ -37,7 +37,8 @@ to understand how to generically construct and deconstruct \textit{encoded}
 datatypes, by applying and matching against the \Con{init}ial algebra
 constructor of \Data{μ₁}. By definition, fully generic functions can
 be applied to (and may return) values of any user-declared type, thus
-understanding the underlying generic encoding is necessary. In this
+understanding the underlying generic encoding
+(or something isomorphic to it) is necessary. In this
 chapter we define 4 fully generic functions:
 \begin{enumerate}
 \item \Fun{count}, in \refsec{gcount}, counting the number of nodes
@@ -59,7 +60,7 @@ which counts the number of nodes that make up a generically encoded
 value. The \Fun{count} function is used in the types of
 subsequently-defined generic functions, \Fun{lookup} in \refsec{glookup} and
 \Fun{update} in \refsec{gupdate}, to constrain those operations
-to valid positions of a value.
+operate over valid indexes into a value (or, valid positions of a value).
 
 \subsection{Generic Types}
 
