@@ -415,7 +415,7 @@ an \textit{index} into all values and subvalues of a type.
   \Fun{update} the constraint is important in the indexed universe.
 }
 
-\subsection{Examples}
+\subsection{Examples}\label{sec:gcount:egs}
 
 \AgdaHide{
 \begin{code}

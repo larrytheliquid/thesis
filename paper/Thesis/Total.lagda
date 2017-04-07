@@ -89,7 +89,7 @@ argument even if they are taking the head of a non-empty
 list. With dependent types, we can add an extra \textit{dependent}
 argument to \AgdaFun{head}. The type of the extra argument depends on
 the input list, and is defined below as a
-\textit{computational argument family} (a type family defined as a
+\textit{computational argument type} (a type family defined as a
 computation as in \refsec{compu}, in an argument position of a
 function).
 %% TODO footnote could also define as an algebraic type family propositionally
@@ -130,7 +130,7 @@ Without dependent types we can change the codomain to dynamically
 model partiality using the \AgdaData{Maybe} type. Dependent types
 allow us to statically enforce partiality.
 We define the return type to be a
-\textit{computational return family} (a type family defined as a
+\textit{computational return type} (a type family defined as a
 computation, in the return type position of a function).
 
 \begin{code}
@@ -173,9 +173,9 @@ dependent types, first by adding missing data (the default argument
 for its ``partial'' cases.
 
 A more common approach is to directly model partiality as a computational
-argument family that \textit{requests} an argument of the empty type for the
+argument type that \textit{requests} an argument of the empty type for the
 empty list case. This in contrast to modeling partiality as a
-computational return family (\refsec{compret}) that \textit{returns} unit for the empty
+computational return type (\refsec{compret}) that \textit{returns} unit for the empty
 list case. 
 
 \begin{code}
@@ -193,7 +193,7 @@ type \AgdaData{⊥} is known to not exist.
   head (cons x xs) tt = x
 \end{code}
 
-It is clear that the computational argument family
+It is clear that the computational argument type
 \AgdaFun{HeadArg} above acts a
 \textit{domain predicate}, refining the domain of all lists to be
 undefined for the empty list by asking
@@ -240,7 +240,7 @@ the techniques of this section.
 However, as we write generic programs over larger universes (those
 containing more types),
 it often becomes necessary to use computational argument or
-return families to make generic functions total. This is especially
+return types to make generic functions total. This is especially
 true when writing fully generic functions (\refsec{fullygeneric}), as
 it might not be possible to define them for certain values of a
 universe without domain supplements.
