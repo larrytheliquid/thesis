@@ -852,6 +852,7 @@ of closed \Fun{Vec}tors.
   vec2 = cons ("a" , "x") (cons ("b" , "y") nil)
 \end{code}
 
+\afterpage{
 \begin{sidewaysfigure}[ht]
 \centering
 \includegraphics[scale=0.6]{vec2.pdf}  
@@ -860,6 +861,8 @@ of closed \Fun{Vec}tors.
   as a closed algebraic type.}
 \label{fig:vec2}
 \end{sidewaysfigure}
+\clearpage
+}
 
 The fully generic \Fun{count} of \Fun{vec2} is 28, as justified
 by \reffig{vec2}.
