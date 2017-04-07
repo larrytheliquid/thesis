@@ -2,7 +2,6 @@
 \begin{code}
 module _ where
 open import Data.Sum
-open import Data.Nat
 open import Relation.Binary.PropositionalEquality
 open import Function
 open import Appendix
@@ -17,6 +16,7 @@ open Count.Count
 \AgdaHide{
 \begin{code}
 module _ where
+ open import Data.Nat
  open import Data.Vec hiding ( lookup ) renaming ( [] to nil ; _∷_ to cons)
  private
 \end{code}}
@@ -182,6 +182,7 @@ second (\Fun{proj₂}) projections of dependent pairs (\Data{Σ}).
 \AgdaHide{
 \begin{code}
 module Lookup where
+ open import Data.Nat
  postulate
    splitΣ : (A : `Set) (B : ⟦ A ⟧ → `Set)
      (a : ⟦ A ⟧) (b : ⟦ B a ⟧) →
@@ -503,4 +504,49 @@ encodes and final argument, so there is nothing left to index.
 \AgdaHide{
 \begin{code}
   lookups D@(`ι _) R tt (there ())
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  lookup₁ : (A : `Set) (a : ⟦ A ⟧)
+    → Fin (count A a) → Set
+  lookup₁ A a i = proj₁ (lookup A a i)
+
+  lookup₂ : (A : `Set) (a : ⟦ A ⟧)
+    (i : Fin (count A a)) → lookup₁ A a i
+  lookup₂ A a i = proj₂ (lookup A a i)
+
+  lookups₁ : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫)
+   → Fin (counts D R xs) → Set
+  lookups₁ D R xs i = proj₁ (lookups D R xs i)
+
+  lookups₂ : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫)
+   (i : Fin (counts D R xs)) → lookups₁ D R xs i
+  lookups₂ D R xs i = proj₂ (lookups D R xs i)
+\end{code}}
+
+
+\subsection{Examples}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Fin renaming ( zero to here ; suc to there )
+ open Lookup
+ open Count.Data
+ private
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ `ℕ two here ≡ two
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
 \end{code}}
