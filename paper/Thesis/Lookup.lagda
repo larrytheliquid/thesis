@@ -220,7 +220,7 @@ as \Fun{lookups}). Each template represents a possible type of
 \Data{Fin}, due to partially unfolding a case of
 \Fun{count} (in \refsec{count})
 or \Fun{counts} (in \refsec{counts}).
-\begin{itemize}
+\begin{enumerate}
 \item{\textbf{Case} (\Data{Fin} \Num{1})}
   There is only one possible index, so we define a \Con{here} case
   that returns the value at this index.
@@ -247,29 +247,82 @@ or \Fun{counts} (in \refsec{counts}).
   whether \Var{n} or \Var{m}
   (whichever one we find in the disjoint union)
   is \Fun{count} or \Fun{counts}.
-\end{itemize}
+\end{enumerate}
+
+\paragraph{Algebraic Fixpoint}
+
+For the \Con{there} case of algebraic fixpoints
+(\textbf{Case 2}), we recursively lookup its arguments (\Var{xs}),
+using the mutually defined \Fun{lookups}.
 
 \begin{code}
-
   -- i : Fin (counts D D xs)
   lookup (`μ₁ O D) (init xs) (there i) = lookups D D xs i
+\end{code}
 
+For clarity, we include the type of the
+index \Var{i} (the argument of the \Con{there} constructor) as a
+comment. In the type of \Var{i}, the value that \Data{Fin} is applied
+to corresponds to the value of \Var{n} in \textbf{Case 2}.
+
+\paragraph{Dependent Pair}
+
+For the \Con{there} case of dependent pairs
+(\textbf{Case 3}), we use the helper function \Fun{splitΣ}
+to turn \Var{i}, a single index (\Data{Fin})
+containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
+of two indices. 
+
+\begin{code}
   -- i : Fin (count A a + count (B a) b)
   lookup (`Σ A B) (a , b) (there i) with splitΣ A B a b i
   -- j : Fin (count A a)
   ... | inj₁ j = lookup A a j
   -- j : Fin (count (B a) b)
   ... | inj₂ j = lookup (B a) b j
+\end{code}
 
-  lookup A@`⊥ a i = ⟦ A ⟧ , a
-  lookup A@`⊤ a i = ⟦ A ⟧ , a
-  lookup A@`Bool a i = ⟦ A ⟧ , a
-  lookup A@`String a i = ⟦ A ⟧ , a
+If the disjoint union is the left injection
+(\Con{inj₁}), we recursively \Fun{lookup} the first component of the
+pair (\Var{a}).
+If the disjoint union is the right injection
+(\Con{inj₂}), we recursively \Fun{lookup} the second component of the
+pair (\Var{b}). The two possible values that \Data{Fin} is applied to in
+the two possible types of \Var{j} correspond to \Var{n} and \Var{m}
+in \textbf{Case 3}.
+
+\paragraph{Remaining Values}
+
+Finally, the \Con{here} case can be defined uniformly over all
+types. If the index points to \Con{here}, we simply return the
+value \Var{a} at this position, along with the
+meaning function (\Fun{⟦\_⟧}) applied to its
+closed type (\Var{A}), as a dependent pair (\Con{,}).
+
+\begin{code}
   lookup A@(`Σ _ _) a here = ⟦ A ⟧ , a
+\end{code}
+
+For \Con{`μ₁} this is the \Con{here} component of the
+definition of \textbf{Case 2}, and for \Con{`Σ} this is the
+\Con{here} component of the definition of \textbf{Case 3}.
+For all other types, this is the definition of
+\textbf{Case 1} (which does not have a \Con{there} component).
+
+\AgdaHide{
+\begin{code}
+  lookup A@`⊥ a i = ⟦ A ⟧ , a
+  lookup A@`Bool a i = ⟦ A ⟧ , a
+  lookup A@`⊤ a i = ⟦ A ⟧ , a
+  lookup A@`String a i = ⟦ A ⟧ , a
   lookup A@(`Π _ _) a i = ⟦ A ⟧ , a
   lookup A@(`Id _ _ _) a i = ⟦ A ⟧ , a
   lookup A@(`μ₁ _ _) a@(init _) here = ⟦ A ⟧ , a
+\end{code}}
 
+\subsection{Looking Up Algebraic Arguments}\label{sec:lookups}
+
+\begin{code}
   lookups : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫)
     → Fin (counts D R xs) → Σ Set (λ A → A)
 
@@ -304,5 +357,3 @@ or \Fun{counts} (in \refsec{counts}).
   lookups (`δ A@(`Id  _ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
   lookups (`δ A@(`μ₁ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
 \end{code}
-
-\subsection{Looking Up Algebraic Arguments}\label{sec:lookups}
