@@ -342,17 +342,9 @@ descriptions, \textit{and} its \Data{Fin} indices.
 \end{code}
 
 We will also classify the cases in the definition of \Fun{lookups} by
-the their \textbf{Case} template number from \refsec{lookup}.
-To know which \textbf{Case} template to use for \Fun{lookups} at some
-description \Var{D}, match the template with the \Var{D} case
-of \Fun{counts} in \refsec{counts}.
-
-\paragraph{Non-Inductive Argument}
-
-The \Fun{counts} of a non-inductive argument, in a sequence of
-arguments, does not have a ``\Num{1} \Fun{+} ...'' prefix. Hence,
-it is like the \Con{there} case of \textbf{Case 3}, but without
-a \Con{here} case.
+the \textbf{Case} template numbers. Below, we repeat the first 2
+\textbf{Case} templates from \refsec{lookup} verbatim. However, the 3rd template is
+different because it lacks a ``\Num{1} \Fun{+} ...'' prefix.
 \footnote{
   The lack of the ``\Num{1} \Fun{+} ...''
   prefix is because we allow indexing into any argument of a sequence,
@@ -362,8 +354,45 @@ a \Con{here} case.
   seem like one big $n$-ary tuple, rather than containing $n$ nested
   pairs.
 }
+\begin{enumerate}
+\item{\textbf{Case} (\Data{Fin} \Num{1})}
+  There is only one possible index, so we define a \Con{here} case
+  that returns the value at this index.
+\item{\textbf{Case} (\Data{Fin} (\Num{1} \Fun{+} \Var{n}))}
+  We define a \Con{here} case (for the \Num{1}),
+  returning the value at this index.
+  We also define a \Con{there} case (for the \Var{n}),
+  giving us a new argument of type \Data{Fin} \Var{n}.
+  In the \Con{there} case, we return
+  the recursive call of \Fun{lookup} or \Fun{lookups},
+  depending on whether \Var{n} is \Fun{count} or \Fun{counts}.
+\item{\textbf{Case} (\Data{Fin} (\Var{n} \Fun{+} \Var{m}))}
+  There is only one possible index, so we define its
+  \Con{there} case (for \Var{n} \Fun{+} \Var{m}).
+  Within the \Con{there} case, we must translate the single
+  \Data{Fin} (\Var{n} \Fun{+} \Var{m}) index to the disjoint union of
+  the two potential indices \Data{Fin} \Var{n} \Data{⊎} \Data{Fin} \Var{m}.
+  After case-analyzing the disjoint union (\Data{⊎}),
+  we make a recursive call using the index within the
+  left (\Con{inj₁}) or right (\Con{inj₂}) injection. Once again, the
+  recursive call is either \Fun{lookup} or \Fun{lookups}, depending on
+  whether \Var{n} or \Var{m}
+  (whichever one we find in the disjoint union)
+  is \Fun{count} or \Fun{counts}.
+\end{enumerate}
 
-The helper function \Fun{splitσ} turns \Var{i}, a single index (\Data{Fin})
+
+
+To know which \textbf{Case} template to use for \Fun{lookups} at some
+description \Var{D}, match the template with the \Var{D} case
+of \Fun{counts} in \refsec{counts}.
+
+\paragraph{Non-Inductive Argument}
+
+For the (only) \Con{there} case of a non-inductive argument
+(\textbf{Case 3}), in a sequence of arguments,
+we use the helper function \Fun{splitσ}.
+The helper function turns \Var{i}, a single index (\Data{Fin})
 containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
 of two indices. While \Fun{splitΣ} operates over a dependent pair,
 \Fun{splitσ} is specialized to operate over a non-inductive argument
@@ -387,12 +416,10 @@ sequence of arguments (\Var{xs}).
 
 \paragraph{Inductive Argument}
 
-The \Fun{counts} of an inductive argument, in a sequence of
-arguments, also does not have a ``\Num{1} \Fun{+} ...'' prefix.
-Hence, it is like the \Con{there} case of \textbf{Case 3},
-but without a \Con{here} case.
-
-The helper function \Fun{splitδ} turns \Var{i}, a single index (\Data{Fin})
+For the (only) \Con{there} case of an inductive argument
+(\textbf{Case 3}), in a sequence of
+arguments, we use the helper function \Fun{splitδ}.
+The helper function turns \Var{i}, a single index (\Data{Fin})
 containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
 of two indices. The \Fun{splitδ} function is specialized to work with
 an \textit{inductive} (i.e. not infinitary) argument, and its
@@ -411,20 +438,17 @@ trivially infinitary \Var{f}.
 
 \paragraph{Infinitary Argument}
 
-The \Fun{counts} of an infinitary argument, in a sequence of
-arguments, also \textit{does} have a ``\Num{1} \Fun{+} ...'' prefix.
-Hence, it fits the \Con{there} case of \textbf{Case 2},
-and it also has a \Con{here} case
-(defined as a special case of \textbf{Remaining Arguments}).
+For the \Con{there} case of an infinitary argument (\textbf{Case 2}),
+in a sequence of arguments,
+we recursively \Fun{lookups} its arguments (\Var{xs}).
+\footnote{
+  Because \textbf{Infinitary Argument} matches template \textbf{Case 2},
+  there is also a \Con{here} case. The \Con{here} case is defined as a
+  special case of \textbf{Remaining Arguments}.
+}
 
 \begin{code}
   lookups (`δ A@`Bool D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
-\end{code}
-
-\paragraph{Remaining Arguments}
-
-\begin{code}
-  lookups D@(`ι _) R xs i = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
 \end{code}
 
 \AgdaHide{
@@ -435,7 +459,27 @@ and it also has a \Con{here} case
   lookups (`δ A@(`Π _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
   lookups (`δ A@(`Id  _ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
   lookups (`δ A@(`μ₁ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+\end{code}}
 
+\paragraph{Remaining Arguments}
+
+Finally, the \Con{here} case can be defined uniformly for
+the remaining descriptions (\Con{`ι}, and
+\Con{`δ} where \Var{A} is not \Con{`⊤}).
+
+\begin{code}
+  lookups D@(`ι _) R xs i = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+\end{code}
+
+If the index points to \Con{here}, we simply return the
+
+value \Var{a} at this position, along with the
+type meaning function (\Fun{⟦\_⟧}) applied to the
+closed type (\Var{A}) of the value,
+as a dependent pair (\Con{,}).
+
+\AgdaHide{
+\begin{code}
   lookups D@(`δ `⊥ _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
   lookups D@(`δ `Bool _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
   lookups D@(`δ `String _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
