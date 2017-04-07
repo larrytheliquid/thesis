@@ -490,14 +490,14 @@ but not something within its body
 
 \paragraph{Last Argument}
 
-Finally, the \Con{here} case of the last argument
-(desribed by \Con{`ι}), simply returns the unit type and value.
+Finally, the \Con{here} case of the last argument (\textbf{Case 1}),
+described by \Con{`ι} , simply returns the unit type and value.
 
 \begin{code}
   lookups D@(`ι _) R tt here = ⊤ , tt
 \end{code}
 
-Note also that ther is no \Con{there} case for \Con{`ι}, because it
+Note also that \Con{`ι} does not have a \Con{there} case, because it
 encodes and final argument, so there is nothing left to index.
 
 \AgdaHide{
