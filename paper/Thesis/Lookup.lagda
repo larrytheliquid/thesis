@@ -441,11 +441,6 @@ trivially infinitary \Var{f}.
 For the \Con{there} case of an infinitary argument (\textbf{Case 2}),
 in a sequence of arguments,
 we recursively \Fun{lookups} its arguments (\Var{xs}).
-\footnote{
-  Because \textbf{Infinitary Argument} matches template \textbf{Case 2},
-  there is also a \Con{here} case. The \Con{here} case is defined as a
-  special case of \textbf{Remaining Arguments}.
-}
 
 \begin{code}
   lookups (`δ A@`Bool D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
@@ -461,30 +456,51 @@ we recursively \Fun{lookups} its arguments (\Var{xs}).
   lookups (`δ A@(`μ₁ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
 \end{code}}
 
-\paragraph{Remaining Arguments}
-
-Finally, the \Con{here} case can be defined uniformly for
-the remaining descriptions (\Con{`ι}, and
-\Con{`δ} where \Var{A} is not \Con{`⊤}).
+For the \Con{here} case of an infinitary argument,
+we return the infinitary function. The type of infinitary function
+has the type meaning (\Fun{⟦\_⟧}) of \Var{A} as its domain,
+and the type component of the fixpoint \Data{μ₁}, applied
+to the description meaning (\Fun{⟪\_⟫}) of \Var{R}, as its
+codomain.
 
 \begin{code}
-  lookups D@(`ι _) R xs i = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+  lookups D@(`δ A@`Bool _) R (f , xs) here = (⟦ A ⟧ → μ₁ _ ⟪ R ⟫) , f
 \end{code}
 
-If the index points to \Con{here}, we simply return the
 
-value \Var{a} at this position, along with the
-type meaning function (\Fun{⟦\_⟧}) applied to the
-closed type (\Var{A}) of the value,
-as a dependent pair (\Con{,}).
+Recall that \Fun{lookup} (in \refsec{lookup}, as a special case
+of \textbf{Remaining Values}) only has a \Con{here} case for
+functions (\Con{`Π}). Similarly, there is only a \Con{here} case
+of \Fun{lookups} for infinitary functions
+(\Con{`δ}, where \Var{A} is not \Con{`⊤}). This is because we treat
+functions as a black box, so we can point at an entire
+function (using \Con{here}),
+but not something within its body
+(using \Con{there}).
 
 \AgdaHide{
 \begin{code}
-  lookups D@(`δ `⊥ _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
-  lookups D@(`δ `Bool _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
-  lookups D@(`δ `String _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
-  lookups D@(`δ (`Σ _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
-  lookups D@(`δ (`Π _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
-  lookups D@(`δ (`Id _ _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
-  lookups D@(`δ (`μ₁ _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+  lookups D@(`δ A@`⊥ _) R (f , xs) here = (⟦ A ⟧ → μ₁ _ ⟪ R ⟫) , f
+  lookups D@(`δ A@`String _) R (f , xs) here = (⟦ A ⟧ → μ₁ _ ⟪ R ⟫) , f
+  lookups D@(`δ A@(`Σ _ _) _) R (f , xs) here = (⟦ A ⟧ → μ₁ _ ⟪ R ⟫) , f
+  lookups D@(`δ A@(`Π _ _) _) R (f , xs) here = (⟦ A ⟧ → μ₁ _ ⟪ R ⟫) , f
+  lookups D@(`δ A@(`Id _ _ _) _) R (f , xs) here = (⟦ A ⟧ → μ₁ _ ⟪ R ⟫) , f
+  lookups D@(`δ A@(`μ₁ _ _) _) R (f , xs) here = (⟦ A ⟧ → μ₁ _ ⟪ R ⟫) , f
+\end{code}}
+
+\paragraph{Last Argument}
+
+Finally, the \Con{here} case of the last argument
+(desribed by \Con{`ι}), simply returns the unit type and value.
+
+\begin{code}
+  lookups D@(`ι _) R tt here = ⊤ , tt
+\end{code}
+
+Note also that ther is no \Con{there} case for \Con{`ι}, because it
+encodes and final argument, so there is nothing left to index.
+
+\AgdaHide{
+\begin{code}
+  lookups D@(`ι _) R tt (there ())
 \end{code}}
