@@ -224,7 +224,7 @@ or \Fun{counts} (in \refsec{counts}).
 \item{\textbf{Case} (\Data{Fin} \Num{1})}
   There is only one possible index, so we define a \Con{here} case
   that returns the value at this index.
-\item{\textbf{Case} (\Data{Fin} (\Num{1} + \Var{n}))}
+\item{\textbf{Case} (\Data{Fin} (\Num{1} \Fun{+} \Var{n}))}
   We define a \Con{here} case (for the \Num{1}),
   returning the value at this index.
   We also define a \Con{there} case (for the \Var{n}),
@@ -232,13 +232,13 @@ or \Fun{counts} (in \refsec{counts}).
   In the \Con{there} case, we return
   the recursive call of \Fun{lookup} or \Fun{lookups},
   depending on whether \Var{n} is \Fun{count} or \Fun{counts}.
-\item{\textbf{Case} (\Data{Fin} (\Num{1} + \Var{n} + \Var{m}))}
+\item{\textbf{Case} (\Data{Fin} (\Num{1} \Fun{+} \Var{n} \Fun{+} \Var{m}))}
   We define a \Con{here} case (for the \Num{1}),
   returning the value at this index.
-  We also define a \Con{there} case (for the \Var{n} + \Var{m}),
-  giving us a new argument of type \Data{Fin} (\Var{n} + \Var{m}).
+  We also define a \Con{there} case (for the \Var{n} \Fun{+} \Var{m}),
+  giving us a new argument of type \Data{Fin} (\Var{n} \Fun{+} \Var{m}).
   Within the \Con{there} case, we must translate the single
-  \Data{Fin} (\Var{n} + \Var{m}) index to the disjoint union of
+  \Data{Fin} (\Var{n} \Fun{+} \Var{m}) index to the disjoint union of
   the two potential indices \Data{Fin} \Var{n} \Data{⊎} \Data{Fin} \Var{m}.
   After case-analyzing the disjoint union (\Data{⊎}),
   we make a recursive call using the index within the
@@ -248,6 +248,11 @@ or \Fun{counts} (in \refsec{counts}).
   (whichever one we find in the disjoint union)
   is \Fun{count} or \Fun{counts}.
 \end{enumerate}
+
+To know which \textbf{Case} template to use for \Fun{lookup}
+at some type \Var{A},
+match the template with the \Var{A} case
+of \Fun{count} in \refsec{count}.
 
 \paragraph{Algebraic Fixpoint}
 
@@ -296,8 +301,9 @@ in \textbf{Case 3}.
 Finally, the \Con{here} case can be defined uniformly over all
 types. If the index points to \Con{here}, we simply return the
 value \Var{a} at this position, along with the
-meaning function (\Fun{⟦\_⟧}) applied to its
-closed type (\Var{A}), as a dependent pair (\Con{,}).
+type meaning function (\Fun{⟦\_⟧}) applied to the
+closed type (\Var{A}) of the value,
+as a dependent pair (\Con{,}).
 
 \begin{code}
   lookup A@(`Σ _ _) a here = ⟦ A ⟧ , a
@@ -322,25 +328,114 @@ For all other types, this is the definition of
 
 \subsection{Looking Up Algebraic Arguments}\label{sec:lookups}
 
+Second, let's define \Fun{lookups} fully generically for all
+arguments of the \Con{init}ial algebra. This involves calling
+\Fun{lookup} in the \Con{`σ} and \Con{`δ} cases,
+defined mutually (in \refsec{lookup}) over all values of all types.
+Below, we restate the type of \Fun{lookups}, and then define
+\Fun{lookups} by case analysis and recursion over all of its closed
+descriptions, \textit{and} its \Data{Fin} indices.
+
 \begin{code}
   lookups : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫)
     → Fin (counts D R xs) → Σ Set (λ A → A)
+\end{code}
 
+We will also classify the cases in the definition of \Fun{lookups} by
+the their \textbf{Case} template number from \refsec{lookup}.
+To know which \textbf{Case} template to use for \Fun{lookups} at some
+description \Var{D}, match the template with the \Var{D} case
+of \Fun{counts} in \refsec{counts}.
+
+\paragraph{Non-Inductive Argument}
+
+The \Fun{counts} of a non-inductive argument, in a sequence of
+arguments, does not have a ``\Num{1} \Fun{+} ...'' prefix. Hence,
+it is like the \Con{there} case of \textbf{Case 3}, but without
+a \Con{here} case.
+\footnote{
+  The lack of the ``\Num{1} \Fun{+} ...''
+  prefix is because we allow indexing into any argument of a sequence,
+  but prevent indexing into the sequence itself or subsequences. Instead,
+  we hide that aspect of the algebraic encoding, making
+  \Con{init} (containing the sequence of arguments)
+  seem like one big $n$-ary tuple, rather than containing $n$ nested
+  pairs.
+}
+
+The helper function \Fun{splitσ} turns \Var{i}, a single index (\Data{Fin})
+containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
+of two indices. While \Fun{splitΣ} operates over a dependent pair,
+\Fun{splitσ} is specialized to operate over a non-inductive argument
+(\Var{a}) and its dependent sequence (\Var{xs}).
+
+\begin{code}
   -- i : Fin (count A a + counts (D a) R xs)
   lookups (`σ A D) R (a , xs) i with splitσ A D R a xs i
   -- j  : Fin (count A a)
   ... | inj₁ j = lookup A a j
   -- j : Fin (counts (D a) R xs)
   ... | inj₂ j = lookups (D a) R xs j
+\end{code}
 
+If the disjoint union is the left injection
+(\Con{inj₁}), we recursively \Fun{lookup} 
+the non-inductive argument (\Var{a}).
+If the disjoint union is the right injection
+(\Con{inj₂}), we recursively \Fun{lookups} the tail of the
+sequence of arguments (\Var{xs}).
+
+\paragraph{Inductive Argument}
+
+The \Fun{counts} of an inductive argument, in a sequence of
+arguments, also does not have a ``\Num{1} \Fun{+} ...'' prefix.
+Hence, it is like the \Con{there} case of \textbf{Case 3},
+but without a \Con{here} case.
+
+The helper function \Fun{splitδ} turns \Var{i}, a single index (\Data{Fin})
+containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
+of two indices. The \Fun{splitδ} function is specialized to work with
+an \textit{inductive} (i.e. not infinitary) argument, and its
+dependent sequence (\Var{xs}). Hence, we apply \Fun{splitδ}
+to (\Var{f} \Con{tt}), computing the inductive codomain from the
+trivially infinitary \Var{f}.
+
+\begin{code}
   -- i : Fin (count (`μ₁ _ R) (f tt) + counts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs)
   lookups (`δ `⊤ D) R (f , xs) i with splitδ (D ∘ const) R (f tt) xs i
   -- j : Fin (count (`μ₁ _ R) (f tt))
   ... | inj₁ j = lookup (`μ₁ _ R) (f tt) j
   -- j : Fin (counts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs)
   ... | inj₂ j = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs j
+\end{code}
 
+\paragraph{Infinitary Argument}
+
+The \Fun{counts} of an infinitary argument, in a sequence of
+arguments, also \textit{does} have a ``\Num{1} \Fun{+} ...'' prefix.
+Hence, it fits the \Con{there} case of \textbf{Case 2},
+and it also has a \Con{here} case
+(defined as a special case of \textbf{Remaining Arguments}).
+
+\begin{code}
+  lookups (`δ A@`Bool D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+\end{code}
+
+\paragraph{Remaining Arguments}
+
+\begin{code}
   lookups D@(`ι _) R xs i = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  lookups (`δ A@`⊥ D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@`String D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@(`Σ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@(`Π _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@(`Id  _ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+  lookups (`δ A@(`μ₁ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
+
   lookups D@(`δ `⊥ _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
   lookups D@(`δ `Bool _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
   lookups D@(`δ `String _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
@@ -348,12 +443,4 @@ For all other types, this is the definition of
   lookups D@(`δ (`Π _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
   lookups D@(`δ (`Id _ _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
   lookups D@(`δ (`μ₁ _ _) _) R xs here = ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ , xs
-
-  lookups (`δ A@`⊥ D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
-  lookups (`δ A@`Bool D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
-  lookups (`δ A@`String D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
-  lookups (`δ A@(`Σ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
-  lookups (`δ A@(`Π _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
-  lookups (`δ A@(`Id  _ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
-  lookups (`δ A@(`μ₁ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
-\end{code}
+\end{code}}
