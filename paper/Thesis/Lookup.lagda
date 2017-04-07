@@ -111,7 +111,7 @@ As mentioned above, we expect \Fun{lookup} to have a \Data{Fin}
 index argument whose bound is calculated by the generic \Fun{count}
 of the value that \Fun{lookup} is applied to.
 
-While looking up a \Data{List} \Var{A} must return an \Var{A},
+Looking up a \Data{List} \Var{A} results in an \Var{A}, but
 looking up a node in a generic value causes the return type
 of \Fun{lookup} to depend on the type of node being looked up.
 Thus, we must define a
@@ -146,11 +146,11 @@ via \Fun{lookups}.
 \end{code}
 
 Whenever defining the value component (\Fun{lookup} or \Fun{lookups}),
-we must pattern match at least as many arguments as the
+we must pattern match against at least as many arguments as the
 type component (\Fun{Lookup} or \Fun{Lookups}), in order for the
 computational return type to definitionally unfold.
 Instead of defining the value and type components separately,
-thereby repeating the pattern match structure twice,
+thereby repeating the pattern matching structure twice,
 we will actually define single functions returning
 \textit{dependent pairs} (\Data{Σ}).
 
@@ -170,13 +170,14 @@ module _ where
 
 The first component of the pair corresponds to the type component
 (\Fun{Lookup} or \Fun{Lookups}), and the second component
-of the pair is a value of the first component
-(corresponding to the formerly named \Fun{lookup} or \Fun{lookups}).
+of the pair is a value
+(corresponding to the formerly named \Fun{lookup} or \Fun{lookups}),
+whose type is the first component.
 We can still recover the original type and value components by
 composing our new functions with the first (\Fun{proj₁}) and
 second (\Fun{proj₂}) projections of dependent pairs (\Data{Σ}).
 
-\subsection{Looking Up All Values}
+\subsection{Looking Up All Values}\label{sec:lookup}
 
 \AgdaHide{
 \begin{code}
@@ -197,8 +198,61 @@ module Lookup where
  mutual
 \end{code}}
 
+First, let's define \Fun{lookup} fully generically for all values of
+all types. This involves calling \Fun{lookups} in the \Con{`μ₁} case,
+defined mutually (in \refsec{lookups}) over all arguments of the
+\Con{init}ial algebra.
+Below, we restate the type of \Fun{lookup}, and then define
+\Fun{lookup} by case analysis and recursion over all of its closed
+types, \textit{and} its \Data{Fin} indices.
+
 \begin{code}
   lookup : (A : `Set) (a : ⟦ A ⟧) → Fin (count A a) → Σ Set (λ A → A)
+\end{code}
+
+Before we actually define \Fun{lookup}, let's consider what the type
+of the index \Data{Fin} argument could be \textit{before} we pattern
+match against it, and what \Fun{lookup} should return
+once we do match against the index.
+Below, we give a template of 3 different
+\Data{Fin} types that appear when when defining \Fun{lookup} (as well
+as \Fun{lookups}). Each template represents a possible type of
+\Data{Fin}, due to partially unfolding a case of
+\Fun{count} (in \refsec{count})
+or \Fun{counts} (in \refsec{counts}).
+\begin{itemize}
+\item{\textbf{Case} (\Data{Fin} \Num{1})}
+  There is only one possible index, so we define a \Con{here} case
+  that returns the value at this index.
+\item{\textbf{Case} (\Data{Fin} (\Num{1} + \Var{n}))}
+  We define a \Con{here} case (for the \Num{1}),
+  returning the value at this index.
+  We also define a \Con{there} case (for the \Var{n}),
+  giving us a new argument of type \Data{Fin} \Var{n}.
+  In the \Con{there} case, we return
+  the recursive call of \Fun{lookup} or \Fun{lookups},
+  depending on whether \Var{n} is \Fun{count} or \Fun{counts}.
+\item{\textbf{Case} (\Data{Fin} (\Num{1} + \Var{n} + \Var{m}))}
+  We define a \Con{here} case (for the \Num{1}),
+  returning the value at this index.
+  We also define a \Con{there} case (for the \Var{n} + \Var{m}),
+  giving us a new argument of type \Data{Fin} (\Var{n} + \Var{m}).
+  Within the \Con{there} case, we must translate the single
+  \Data{Fin} (\Var{n} + \Var{m}) index to the disjoint union of
+  the two potential indices \Data{Fin} \Var{n} \Data{⊎} \Data{Fin} \Var{m}.
+  After case-analyzing the disjoint union (\Data{⊎}),
+  we make a recursive call using the index within the
+  left (\Con{inj₁}) or right (\Con{inj₂}) injection. Once again, the
+  recursive call is either \Fun{lookup} or \Fun{lookups}, depending on
+  whether \Var{n} or \Var{m}
+  (whichever one we find in the disjoint union)
+  is \Fun{count} or \Fun{counts}.
+\end{itemize}
+
+\begin{code}
+
+  -- i : Fin (counts D D xs)
+  lookup (`μ₁ O D) (init xs) (there i) = lookups D D xs i
 
   -- i : Fin (count A a + count (B a) b)
   lookup (`Σ A B) (a , b) (there i) with splitΣ A B a b i
@@ -206,9 +260,6 @@ module Lookup where
   ... | inj₁ j = lookup A a j
   -- j : Fin (count (B a) b)
   ... | inj₂ j = lookup (B a) b j
-
-  -- i : Fin (counts D D xs)
-  lookup (`μ₁ O D) (init xs) (there i) = lookups D D xs i
 
   lookup A@`⊥ a i = ⟦ A ⟧ , a
   lookup A@`⊤ a i = ⟦ A ⟧ , a
@@ -253,3 +304,5 @@ module Lookup where
   lookups (`δ A@(`Id  _ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
   lookups (`δ A@(`μ₁ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
 \end{code}
+
+\subsection{Looking Up Algebraic Arguments}\label{sec:lookups}
