@@ -665,3 +665,45 @@ module _ where
 \begin{code}
   _ = refl
 \end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ (`Vec (`String `× `String) one) vec1 (# 9) ≡ nil₁
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ (`Vec (`String `× `String) one) vec1 (# 14) ≡ refl
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ (`Vec (`String `× `String) two) vec2 (# 12) ≡ vec1₁
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
