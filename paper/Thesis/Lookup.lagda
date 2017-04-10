@@ -11,6 +11,7 @@ open Prim  hiding ( Σ )
 open Alg
 open Closed
 open Count.Count
+open Count.Split
 \end{code}}
 
 \AgdaHide{
@@ -183,19 +184,6 @@ second (\Fun{proj₂}) projections of dependent pairs (\Data{Σ}).
 \begin{code}
 module Lookup where
  open import Data.Nat
- postulate
-   splitΣ : (A : `Set) (B : ⟦ A ⟧ → `Set)
-     (a : ⟦ A ⟧) (b : ⟦ B a ⟧) →
-     Fin (count A a + count (B a) b) →
-     Fin (count A a) ⊎ Fin (count (B a) b)
-   splitσ : {O : `Set} (A : `Set) (D : ⟦ A ⟧ → `Desc O) (R : `Desc  O)
-     (a : ⟦ A ⟧) (xs : ⟦ ⟪ D a ⟫ ⟧₁ ⟪ R ⟫) →
-     Fin (count A a + counts (D a) R xs) →
-     Fin (count A a) ⊎ Fin (counts (D a) R xs)
-   splitδ : {O : `Set} (D : ⟦ O ⟧ → `Desc O) (R : `Desc  O)
-     (x : μ₁ ⟦ O ⟧ ⟪ R ⟫) (xs : ⟦ ⟪ D (μ₂ ⟪ R ⟫ x) ⟫ ⟧₁ ⟪ R ⟫) →
-     Fin (count (`μ₁ O R) x + counts (D (μ₂ ⟪ R ⟫ x)) R xs) →
-     Fin (count (`μ₁ O R) x) ⊎ Fin (counts (D (μ₂ ⟪ R ⟫ x)) R xs)
  mutual
 \end{code}}
 
@@ -534,6 +522,7 @@ module _ where
  open import Data.Fin renaming ( zero to here ; suc to there )
  open Lookup
  open Count.Data
+ open Count.VecEg
  private
 \end{code}}
 
@@ -544,6 +533,132 @@ module _ where
 
 \begin{code}
    lookup₂ `ℕ two here ≡ two
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ `ℕ one here ≡ one
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ `ℕ one (there here) ≡ false
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ `ℕ one (there (there here)) ≡ zero
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ `ℕ one (# 3) ≡ true
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ `ℕ one (# 4) ≡ tt
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ `ℕ one (# 5) ≡ tt
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ `ℕ two (# 4) ≡ zero
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ (`Vec (`String `× `String) one) vec1 (# 0) ≡ vec1
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+\end{code}}
+
+\begin{code}
+   lookup₂ (`Vec (`String `× `String) one) vec1 (# 8) ≡ "x"
 \end{code}
 
 \AgdaHide{

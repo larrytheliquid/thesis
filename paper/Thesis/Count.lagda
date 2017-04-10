@@ -757,13 +757,12 @@ left component of the pair (of type \Fun{`Vec₁}).
 
 \AgdaHide{
 \begin{code}
-module _ where
- open Prim
- open Alg
- open Closed
- open Count
- open Data
- private
+module VecEg where
+  open Prim
+  open Alg
+  open Closed
+  open Count
+  open Data
 \end{code}}
 
 \begin{code}
@@ -899,4 +898,86 @@ the indexed type of vectors.
 
 %% \subsection{Generic Lemmas}
 
+\AgdaHide{
+\begin{code}
+module Split where
+ open Prim
+ open Alg
+ open Closed
+ open Count
+ open import Data.Sum
+ open import Data.Nat
+ open import Data.Fin renaming ( zero to here ; suc to there ) hiding ( _+_ )
+
+ -- splitFin : (n m : ℕ) → Fin (n + m) → Fin n ⊎ Fin m
+ -- splitFin zero m i = inj₂ i
+ -- splitFin (suc n) m here = inj₁ here
+ -- splitFin (suc n) m (there i) with splitFin n m i
+ -- ... | inj₁ j = inj₁ (there j)
+ -- ... | inj₂ j = inj₂ j
+
+ splitFin : (n m : ℕ) → Fin (n + suc m) → Fin n ⊎ Fin (suc m)
+ splitFin zero m i = inj₂ i
+ splitFin (suc n) m here = inj₁ here
+ splitFin (suc n) m (there i) with splitFin n m i
+ ... | inj₁ j = inj₁ (there j)
+ ... | inj₂ j = inj₂ j
+
+ countGtz : (A : `Set) (a : ⟦ A ⟧) → Σ ℕ λ n → count A a ≡ suc n
+ countsGtz : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫) → Σ ℕ λ n → counts D R xs ≡ suc n
+ 
+ countGtz (`μ₁ A D) (init xs) with countsGtz D D xs
+ ... | n , q = suc n , cong suc q
+ countGtz (`Σ A B) (a , b) with countGtz A a | countGtz (B a) b
+ ... | na , qa | nb , qb rewrite qa | qb = (suc na + suc nb) , refl
+ countGtz `⊥ a = 0 , refl
+ countGtz `⊤ a = 0 , refl
+ countGtz `Bool a = 0 , refl
+ countGtz `String a = 0 , refl
+ countGtz (`Π _ _) a = 0 , refl
+ countGtz (`Id _ _ _) a = 0 , refl
+
+ countsGtz (`ι o) R xs = 0 , refl
+ countsGtz (`σ A D) R (a , xs) with countGtz A a | countsGtz (D a) R xs
+ ... | na , qa | nxs , qxs rewrite qa | qxs = na + suc nxs , refl
+ countsGtz (`δ `⊤ D) R (f , xs) with countGtz (`μ₁ _ R) (f tt) | countsGtz (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
+ ... | nx , qx | nxs , qxs rewrite qx | qxs = nx + suc nxs , refl
+ countsGtz (`δ A@`⊥ D) R (f , xs) with countsGtz (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
+ ... | n , q = suc n , cong suc q
+ countsGtz (`δ A@`Bool D) R (f , xs) with countsGtz (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
+ ... | n , q = suc n , cong suc q
+ countsGtz (`δ A@`String D) R (f , xs) with countsGtz (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
+ ... | n , q = suc n , cong suc q
+ countsGtz (`δ A@(`Σ _ _) D) R (f , xs) with countsGtz (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
+ ... | n , q = suc n , cong suc q
+ countsGtz (`δ A@(`Π _ _) D) R (f , xs) with countsGtz (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
+ ... | n , q = suc n , cong suc q
+ countsGtz (`δ A@(`Id _ _ _) D) R (f , xs) with countsGtz (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
+ ... | n , q = suc n , cong suc q
+ countsGtz (`δ A@(`μ₁ _ _) D) R (f , xs) with countsGtz (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
+ ... | n , q = suc n , cong suc q
+
+
+ splitΣ : (A : `Set) (B : ⟦ A ⟧ → `Set)
+   (a : ⟦ A ⟧) (b : ⟦ B a ⟧) →
+   Fin (count A a + count (B a) b) →
+   Fin (count A a) ⊎ Fin (count (B a) b)
+ splitΣ A B a b i with countGtz (B a) b
+ ... | n , q rewrite q = splitFin (count A a) n i
+
+ splitσ : {O : `Set} (A : `Set) (D : ⟦ A ⟧ → `Desc O) (R : `Desc  O)
+   (a : ⟦ A ⟧) (xs : ⟦ ⟪ D a ⟫ ⟧₁ ⟪ R ⟫) →
+   Fin (count A a + counts (D a) R xs) →
+   Fin (count A a) ⊎ Fin (counts (D a) R xs)
+ splitσ A D R a xs i with countsGtz (D a) R xs
+ ... | n , q rewrite q = splitFin (count A a) n i
+
+ splitδ : {O : `Set} (D : ⟦ O ⟧ → `Desc O) (R : `Desc  O)
+   (x : μ₁ ⟦ O ⟧ ⟪ R ⟫) (xs : ⟦ ⟪ D (μ₂ ⟪ R ⟫ x) ⟫ ⟧₁ ⟪ R ⟫) →
+   Fin (count (`μ₁ O R) x + counts (D (μ₂ ⟪ R ⟫ x)) R xs) →
+   Fin (count (`μ₁ O R) x) ⊎ Fin (counts (D (μ₂ ⟪ R ⟫ x)) R xs)
+ splitδ D R x xs i with countsGtz (D (μ₂ ⟪ R ⟫ x)) R xs
+ ... | n , q rewrite q = splitFin (count (`μ₁ _ R) x) n i
+
+\end{code}}
 
