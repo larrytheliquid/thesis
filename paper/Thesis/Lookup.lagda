@@ -495,7 +495,7 @@ Finally, the \Con{here} case of the last argument (\textbf{Case 1}),
 described by \Con{`ι} , simply returns the unit type and value.
 
 \begin{code}
-  lookups D@(`ι _) R tt here = ⊤ , tt
+  lookups (`ι o) R tt here = ⊤ , tt
 \end{code}
 
 Note also that \Con{`ι} does not have a \Con{there} case, because it
