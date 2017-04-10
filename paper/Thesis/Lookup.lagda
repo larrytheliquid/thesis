@@ -175,8 +175,13 @@ of the pair is a value
 (corresponding to the formerly named \Fun{lookup} or \Fun{lookups}),
 whose type is the first component.
 We can still recover the original type and value components by
-composing our new functions with the first (\Fun{proj₁}) and
-second (\Fun{proj₂}) projections of dependent pairs (\Data{Σ}).
+taking the first (\Fun{proj₁}) and
+second (\Fun{proj₂}) projections of the dependent pairs (\Data{Σ})
+resulting from the new versions of \Fun{lookup} and \Fun{lookups}.
+By convention, we refer to the first projection (type component)
+of these functions by suffixing ₁ (e.g. \Fun{lookup₁}),
+and to the second projection (value component)
+version by suffixing ₂ (e.g. \Fun{lookup₂}).
 
 \subsection{Looking Up All Values}\label{sec:lookup}
 
@@ -706,7 +711,7 @@ Finally, the \Fun{lookup₂} of \Fun{vec2}
 (visualized by \reffig{vec2})
 at position 12
 is the inductive-recursive component
-of the vector \texttt{[("a", "x")]}
+of the vector \texttt{[("b", "y")]}
 (visualized by \reffig{vec21}).
 
 \AgdaHide{
