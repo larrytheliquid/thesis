@@ -445,7 +445,7 @@ we recursively \Fun{lookups} its arguments (\Var{xs}).
   lookups (`δ A@(`μ₁ _ _) D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
 \end{code}}
 
-For the \Con{here} case of an infinitary argument,
+For the \Con{here} case of an infinitary argument (\textbf{Case 1}),
 we return the infinitary function. The type of infinitary function
 has the type meaning (\Fun{⟦\_⟧}) of \Var{A} as its domain,
 and the type component of the fixpoint \Data{μ₁}, applied
@@ -516,6 +516,37 @@ encodes and final argument, so there is nothing left to index.
 
 \subsection{Examples}
 
+Now we run \Fun{lookup} on some examples. The expected behavior of
+\Fun{lookup} is to return the value associated with the $n$th
+(where $n$ is the \Data{Fin} index) position in a depth-first search.
+Hence, \Con{here} of type \Data{Fin} corresponds to the position 0, and
+\Con{there} \Var{i} of type \Data{Fin} corresponds to the successor of
+the position associated with \Var{i}.
+
+\paragraph{Natural Numbers}
+
+Let's \Fun{lookup₂} some values in the closed
+natural number \Fun{two}.\footnote{
+  Recall that we define \Fun{lookup} as a dependent pair, where
+  the first component is a type and the second component is a value
+  (whose type is the first component). As a shorthand, \Fun{lookup₁}
+  refers to the type component, while \Fun{lookup₂} refers to the
+  value component.
+}
+To see the expected value of
+\Fun{lookup₂} for \Fun{two} at some index, simply consult
+\reffig{two}. The labels in the \reffig{two} correspond to natural
+number indices, ordered according to a depth-first search.
+Thus, by viewing \Con{here} of \Data{Fin}
+as \Con{zero} of \Data{ℕ}, and
+\Con{there} of \Data{Fin} as
+\Con{suc} of \Data{ℕ}, we can always consult the figure to determine
+the expected return value of \Fun{lookup₂}.
+
+Looking up index \Con{here} corresponds to position 0, or the
+root node in \reffig{two}. Hence, \Fun{lookup₂} using index \Con{here}
+is the identity function.
+
 \AgdaHide{
 \begin{code}
 module _ where
@@ -540,19 +571,11 @@ module _ where
   _ = refl
 \end{code}}
 
-\AgdaHide{
-\begin{code}
-  _ :
-\end{code}}
 
-\begin{code}
-   lookup₂ `ℕ one here ≡ one
-\end{code}
-
-\AgdaHide{
-\begin{code}
-  _ = refl
-\end{code}}
+If we lookup position 1 (using index \Con{there} \Con{here})
+of \Fun{two} (visualized by \reffig{two}),
+we get \Con{false} (encoding the choice of the \Fun{cons}
+constructor).
 
 \AgdaHide{
 \begin{code}
@@ -560,13 +583,17 @@ module _ where
 \end{code}}
 
 \begin{code}
-   lookup₂ `ℕ one (there here) ≡ false
+   lookup₂ `ℕ two (there here) ≡ false
 \end{code}
 
 \AgdaHide{
 \begin{code}
   _ = refl
 \end{code}}
+
+If we lookup position 2 (using index \Con{there} (\Con{there}
+\Con{here})) of \Fun{two} (visualized by \reffig{two}),
+we get \Fun{one} (visualized by \reffig{one}).
 
 \AgdaHide{
 \begin{code}
@@ -574,13 +601,20 @@ module _ where
 \end{code}}
 
 \begin{code}
-   lookup₂ `ℕ one (there (there here)) ≡ zero
+   lookup₂ `ℕ two (there (there here)) ≡ one
 \end{code}
 
 \AgdaHide{
 \begin{code}
   _ = refl
 \end{code}}
+
+To make lookups of higher positions more readable,
+we use a helper function (\Fun{\#}) coercing natural numbers
+to finite sets by converting \Con{zero} to \Con{here},
+and \Con{suc} to \Con{there}. Therfore,
+we can repeat the \Fun{lookup₂} of
+position 2 above as follows.
 
 \AgdaHide{
 \begin{code}
@@ -588,7 +622,7 @@ module _ where
 \end{code}}
 
 \begin{code}
-   lookup₂ `ℕ one (# 3) ≡ true
+   lookup₂ `ℕ two (# 2) ≡ one
 \end{code}
 
 \AgdaHide{
@@ -596,33 +630,8 @@ module _ where
   _ = refl
 \end{code}}
 
-\AgdaHide{
-\begin{code}
-  _ :
-\end{code}}
-
-\begin{code}
-   lookup₂ `ℕ one (# 4) ≡ tt
-\end{code}
-
-\AgdaHide{
-\begin{code}
-  _ = refl
-\end{code}}
-
-\AgdaHide{
-\begin{code}
-  _ :
-\end{code}}
-
-\begin{code}
-   lookup₂ `ℕ one (# 5) ≡ tt
-\end{code}
-
-\AgdaHide{
-\begin{code}
-  _ = refl
-\end{code}}
+Finally, looking up position 4 of \Fun{two}
+results in \Fun{zero}.
 
 \AgdaHide{
 \begin{code}
@@ -638,19 +647,33 @@ module _ where
   _ = refl
 \end{code}}
 
+\paragraph{Vectors}
+
+Looking up vectors is just as easy as looking up natural numbers, by
+considering the \Data{Fin} argument as a natural number index
+of a depth-first traversal of the closed value.
+For example, the \Fun{lookup₂} of \Fun{vec2}
+(visualized by \reffig{vec2})
+at position 3
+is the natural number \Fun{one} (visualized by \reffig{one}).
+
 \AgdaHide{
 \begin{code}
   _ :
 \end{code}}
 
 \begin{code}
-   lookup₂ (`Vec (`String `× `String) one) vec1 (# 0) ≡ vec1
+   lookup₂ (`Vec (`String `× `String) two) vec2 (# 3) ≡ one
 \end{code}
 
 \AgdaHide{
 \begin{code}
   _ = refl
 \end{code}}
+
+The \Fun{lookup₂} of \Fun{vec2}
+(visualized by \reffig{vec2})
+at position 10 is the string \Str{"x"}.
 
 \AgdaHide{
 \begin{code}
@@ -666,44 +689,31 @@ module _ where
   _ = refl
 \end{code}}
 
+Finally, the \Fun{lookup₂} of \Fun{vec2}
+(visualized by \reffig{vec2})
+at position 12
+is the inductive-recursive component
+of the vector \texttt{[("a", "x")]}
+(visualized by \reffig{vec1}).
+
 \AgdaHide{
 \begin{code}
   _ :
 \end{code}}
 
 \begin{code}
+   lookup₂ (`Vec (`String `× `String) two) vec2 (# 12) ≡ cons₁ ("b" , "y") nil
+\end{code}
+
+\AgdaHide{
+\begin{code}
+  _ = refl
+\end{code}}
+
+\AgdaHide{
+\begin{code}
+  _ :
+
    lookup₂ (`Vec (`String `× `String) one) vec1 (# 9) ≡ nil₁
-\end{code}
-
-\AgdaHide{
-\begin{code}
-  _ = refl
-\end{code}}
-
-\AgdaHide{
-\begin{code}
-  _ :
-\end{code}}
-
-\begin{code}
-   lookup₂ (`Vec (`String `× `String) one) vec1 (# 14) ≡ refl
-\end{code}
-
-\AgdaHide{
-\begin{code}
-  _ = refl
-\end{code}}
-
-\AgdaHide{
-\begin{code}
-  _ :
-\end{code}}
-
-\begin{code}
-   lookup₂ (`Vec (`String `× `String) two) vec2 (# 12) ≡ vec1₁
-\end{code}
-
-\AgdaHide{
-\begin{code}
   _ = refl
 \end{code}}

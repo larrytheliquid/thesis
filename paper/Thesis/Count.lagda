@@ -766,6 +766,9 @@ module VecEg where
 
   nil₁ : ⟦ `Vec₁ (`String `× `String) ⟧
   nil₁ = init (true , tt)
+
+  cons₁ : {A : `Set} {n : ⟦ `ℕ ⟧} (a : ⟦ A ⟧) (xs : ⟦ `Vec A n ⟧) → ⟦ `Vec₁ A ⟧
+  cons₁ {n = n} a (xs , refl) = init (false , n , a , (λ u → xs) , refl , tt)
 \end{code}}
 
 \begin{code}
@@ -851,7 +854,7 @@ of closed \Fun{Vec}tors.
 
 \begin{code}
   vec2 : ⟦ `Vec (`String `× `String) two ⟧
-  vec2 = cons ("b" , "y") (cons ("a" , "x") nil)
+  vec2 = cons ("a" , "x") (cons ("b" , "y") nil)
 \end{code}
 
 \afterpage{
