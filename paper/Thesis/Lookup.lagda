@@ -689,12 +689,25 @@ at position 10 is the string \Str{"x"}.
   _ = refl
 \end{code}}
 
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.7]{vec21.pdf}  
+\caption{The inductive-recursive component of the
+  length-1 vector of pairs of strings
+  \texttt{[("b", "y")]}, as a closed algebraic type.
+  Recall that indexed vectors are encoded as a dependent pair,
+  where the first component is an inductive-recursive value and the
+  second component is a length constraint. This figure depicts the
+  first component of the vector.}
+\label{fig:vec21}
+\end{figure}
+
 Finally, the \Fun{lookup₂} of \Fun{vec2}
 (visualized by \reffig{vec2})
 at position 12
 is the inductive-recursive component
 of the vector \texttt{[("a", "x")]}
-(visualized by \reffig{vec1}).
+(visualized by \reffig{vec21}).
 
 \AgdaHide{
 \begin{code}
