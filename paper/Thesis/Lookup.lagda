@@ -519,7 +519,7 @@ encodes and final argument, so there is nothing left to index.
 \end{code}}
 
 
-\subsection{Examples}
+\subsection{Examples}\label{sec:glookup:egs}
 
 Now we run \Fun{lookup} on some examples. The expected behavior of
 \Fun{lookup} is to return the value associated with the $n$th

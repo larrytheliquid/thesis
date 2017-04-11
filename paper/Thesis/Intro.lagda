@@ -214,7 +214,7 @@ as follows.
 
 Programmers of non-dependently typed languages already struggle with the
 issue of needing to define logically similar versions of functions
-(like \Fun{count}, \Fun{lookup}, \Fun{update}, etc.)
+(like \Fun{count}, \Fun{lookup}, etc.)
 for their various algebraic types
 (e.g. natural numbers, lists, binary trees, etc.).
 This problem is more pronounced in a dependently typed language, where
@@ -225,7 +225,7 @@ that intrinsically capture preconditions and postconditions.
 Rather than punishing programmers for creating new datatypes,
 our \textbf{motivation} is to reward them with
 \textit{fully generic functions}
-(like \Fun{count}, \Fun{lookup}, \Fun{update}, etc.), which are new
+(like \Fun{count}, \Fun{lookup}, etc.), which are new
 mechanisms for \textit{code reuse}.
 Fully generic functions are predefined once-and-for-all to work with
 any datatype of the language, whether it is defined now or will be
@@ -853,14 +853,13 @@ programming using dependently typed languages:
 \item{\textbf{Examples} (\refch{fullyg})}
   of writing \textit{fully generic functions} over all
   \textit{values} of our universe, including \Fun{count}, \Fun{lookup},
-  \Fun{update}, and \textit{marshalling} (\Fun{ast}) to an abstract
+  and \textit{marshalling} (\Fun{ast}) to an abstract
   syntax tree.
 
 \item{\textbf{Extending} (\refch{hier})}
   our closed universe to a
   \textit{closed hierarchy of universes}, supporting fully generic
-  functions (like an updated version of \Fun{ast})
-  over all \textit{types} in the universe hierarchy
+  functions over all \textit{types} in the universe hierarchy
   (in addition to values), via fully generic programming over all
   universe \textit{levels}.
 

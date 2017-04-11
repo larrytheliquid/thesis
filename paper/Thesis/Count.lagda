@@ -45,8 +45,6 @@ chapter we define 4 fully generic functions:
   in a generically encoded value.
 \item \Fun{lookup}, in \refsec{glookup}, looking up any subnode in a
   in a generically encoded value.
-\item \Fun{update}, in \refsec{gupdate}, updating any subnode in a
-  in a generically encoded value.
 \item \Fun{ast}, in \refsec{gast}, marshalling any generically
   encoded value to an abstract syntax tree (AST), defined as a rose
   tree.
@@ -57,10 +55,10 @@ chapter we define 4 fully generic functions:
 
 In this section we develop a fully generic \Fun{count} function,
 which counts the number of nodes that make up a generically encoded
-value. The \Fun{count} function is used in the types of
-subsequently-defined generic functions, \Fun{lookup} in \refsec{glookup} and
-\Fun{update} in \refsec{gupdate}, to constrain those operations
-operate over valid indexes into a value (or, valid positions of a value).
+value. The \Fun{count} function is used in the type of the
+subsequently-defined generic \Fun{lookup} in \refsec{glookup}.
+The \Fun{count} function is used as the maximum bound for
+the index argument of \Fun{lookup}.
 
 \subsection{Generic Types}
 
