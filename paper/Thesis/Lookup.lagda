@@ -317,7 +317,7 @@ For all other types, this is the definition of
   lookup A@`String a i = ⟦ A ⟧ , a
   lookup A@(`Π _ _) a i = ⟦ A ⟧ , a
   lookup A@(`Id _ _ _) a i = ⟦ A ⟧ , a
-  lookup A@(`μ₁ _ _) a@(init _) here = ⟦ A ⟧ , a
+  lookup A@(`μ₁ _ _) a i = ⟦ A ⟧ , a
 \end{code}}
 
 \subsection{Looking Up Algebraic Arguments}\label{sec:lookups}
