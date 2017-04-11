@@ -277,12 +277,52 @@ the name of the marshalled constructor.
 
 \subsection{Marshalling Algebraic Arguments}\label{sec:asts}
 
+Third, let's define \Fun{asts} fully generically for all arguments
+of the \Con{init}ial algebra.
+Below, we restate the type of \Fun{asts} before defining it by
+its cases.
+
 \begin{code}
   asts : {O : `Set} (D R : `Desc O) → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ → List AST
-  asts (`ι o) R tt = tree (non "tt") [] ∷ []
-  asts (`σ A D) R (a , xs) = ast A a ∷ asts (D a) R xs
-  asts (`δ `⊤ D) R (f , xs) =
-    astInd R (f tt) false ∷ asts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
-  asts (`δ A D) R (f , xs) = tree lam [] ∷ []
 \end{code}
 
+Recall (from \refsec{counts}) that the arguments of the
+\Con{init}ial algebra are treated as one big $n$-tuple,
+rather than $n$ nested pairs. This is why each case of
+\Fun{asts} returns a \Data{List} of \Fun{AST}s, rather than
+\Con{tree} (\Con{non} \Str{"\_,\_"}) applied to such a list.\footnote {
+  If each case of \Fun{asts} did return such a
+  \Con{tree} (\Con{non} \Str{"\_,\_"}) \Var{xs}, then each
+  \Con{init} constructor in figures would have a pair
+  (\Con{\_,\_}) as its child node. The first component of the pair
+  would be the \Fun{head} of \Var{xs}.
+  The second component of the pair
+  child node would be a nested sequence of pairs, i.e. the
+  nested representation of the \Fun{tail}
+  of arguments \Var{xs}.
+  }
+
+\paragraph{Non-Inductive Argument}
+
+\begin{code}
+  asts (`σ A D) R (a , xs) = ast A a ∷ asts (D a) R xs
+\end{code}
+
+\paragraph{Inductive Argument}
+
+\begin{code}
+  asts (`δ `⊤ D) R (f , xs) =
+    astInd R (f tt) false ∷ asts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
+\end{code}
+
+\paragraph{Infinitary Argument}
+
+\begin{code}
+  asts (`δ A D) R (f , xs) = tree lam [] ∷ asts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
+\end{code}
+
+\paragraph{Last Argument}
+
+\begin{code}
+  asts (`ι o) R tt = tree (non "tt") [] ∷ []
+\end{code}
