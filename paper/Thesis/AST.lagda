@@ -88,7 +88,73 @@ Finally, we abbreviate the result of \Fun{ast} as the type synonym
 
 \subsection{Generic Types}
 
-\subsection{Marshalling Initial Algebras}\label{sec:astInd}
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open import Data.List
+ open import Data.Fin renaming ( zero to here ; suc to there ) hiding ( _+_ )
+ open Rose
+ private
+  postulate
+\end{code}}
+
+Before implementing the fully generic marshalling functions, we
+consider the functions involved and their generic types.
+Two functions (\Fun{ast} and \Fun{asts}, below) are unsurprising, but we
+define one extra generic function (\Fun{astInd}, below).
+
+As expected, we will define (in \refsec{ast}) \Fun{ast} to fully
+generically translate any value to an \Data{AST}.
+
+\begin{code}
+   ast : (A : `Set) (a : ⟦ A ⟧) → AST
+\end{code}
+
+Additionally, we will define (in \refsec{asts}) \Fun{asts} to fully
+generically translate algebraic arguments (of \Con{init}),
+to a \textit{list} of \Fun{AST}s.
+Recall that the first argument of the \Con{tree} constructor of
+\Fun{AST} (i.e. \Data{Rose} specialized to \Data{Node}) is a
+\Data{Node}. The second argument to \Con{tree} is a list of other rose
+trees (or \Fun{AST}s). Hence, \Fun{asts} returns a \Data{List} of
+\Fun{AST}s, as it will be used
+for the second argument of \Con{tree}.
+
+\begin{code}
+   asts : {O : `Set} (D R : `Desc O) → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ → List AST
+\end{code}
+
+Finally, we will define one additional helper function,
+\Fun{astInd} (in \refsec{astind}).
+The \Fun{astInd} function is defined fully generically over the
+fixpoint of any description.
+
+\begin{code}
+   astInd : {O : `Set} (D : `Desc O) → μ₁ ⟦ O ⟧ ⟪ D ⟫ → Bool → AST
+\end{code}
+
+Normally, we inline the definition of such a function, by pattern
+matching on \Con{init} (in the \Con{`μ₁} case of \Fun{ast},
+and the \Con{`δ `⊤} case of \Fun{asts}),
+and applying \Fun{asts} to the contained
+algebraic arguments. However, we prefer to extract the definition
+of \Fun{astInd} to define \Fun{ast} and \Fun{asts}.
+
+Notice that \Fun{astInd} has an extra \Data{Bool} argument. We will
+supply this argument to the \Con{ind} constructor of \Data{Node},
+indicating whether or not to draw a box around the \textit{inductive} node.
+Recall from \refsec{gcount:egs} that we draw boxes in figures around
+the first occurrence of an inductive value, and suppress drawing boxes
+for any contained inductive arguments \textit{of the same type}. However,
+inductive values of \textit{different} types should start process
+over, beginning by drawing a box around the inductive node.
+In \refsec{ast} and \refsec{asts}
+(when defining \Fun{ast} and \Fun{asts}),
+we will see how passing the
+appropriate boolean to \Fun{astInd} implements this box drawing logic.
+
+\subsection{Marshalling Initial Algebras}\label{sec:astind}
 
 \subsection{Marshalling All Values}\label{sec:ast}
 
@@ -109,7 +175,7 @@ module AST where
   astInd : {O : `Set} (D : `Desc O) → μ₁ ⟦ O ⟧ ⟪ D ⟫ → Bool → AST
   astInd D (init xs) b = tree (ind b) (asts D D xs)
 
-  ast : (A : `Set) (a : ⟦ A ⟧) → Rose Node
+  ast : (A : `Set) (a : ⟦ A ⟧) → AST
   ast (`Σ A B) (a , b) = tree (non "_,_") (ast A a ∷ ast (B a) b ∷ [])
   ast (`μ₁ A D) x = astInd D x true
   ast (`Π A B) f = tree lam []
