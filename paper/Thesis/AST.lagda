@@ -31,7 +31,11 @@ Graphviz~\cite{graphviz}.
 
 The result of \Fun{ast} is a specialized version of a \Data{Rose}
 tree. We use the standard \Data{List}-based rose tree, rather than an
-infinitary version (\refsec{inft}).
+infinitary version (\refsec{inft}). Additionally, throughout this
+section the ``cons'' constructor of \Data{List} is denoted by
+(\Con{∷}), an infix constructor, and the ``nil'' constructor
+of \Data{List}
+is denoted by \Con{[]}.
 
 \AgdaHide{
 \begin{code}
@@ -154,13 +158,6 @@ In \refsec{ast} and \refsec{asts}
 we will see how passing the
 appropriate boolean to \Fun{astInd} implements this box drawing logic.
 
-\subsection{Marshalling Initial Algebras}\label{sec:astind}
-
-\subsection{Marshalling All Values}\label{sec:ast}
-
-\subsection{Marshalling Algebraic Arguments}\label{sec:asts}
-
-
 \AgdaHide{
 \begin{code}
 module AST where
@@ -171,13 +168,73 @@ module AST where
  mutual
 \end{code}}
 
+\subsection{Marshalling Initial Algebras}\label{sec:astind}
+
+First, let's define \Fun{astInd} fully generically over all
+descriptions and their fixpoints. Below, we restate the type
+of \Fun{astInd}, and define the only case to that needs to be
+considered, the case for the lone \Con{init}ial algebra
+constructor of \Data{μ₁}.
+
 \begin{code}
   astInd : {O : `Set} (D : `Desc O) → μ₁ ⟦ O ⟧ ⟪ D ⟫ → Bool → AST
   astInd D (init xs) b = tree (ind b) (asts D D xs)
+\end{code}
 
+The first argument of the rose \Con{tree} constructor has type
+\Data{Node}. Since initial algebras encode inductive types, we
+use the \Con{ind} node. The boolean \Var{b} argument is also passed
+along to the \Con{ind} node.
+
+The second argument of the rose
+\Con{tree} constructor is a \Data{List} of rose trees. Hence,
+the second argument to \Con{tree} is the result of
+recursively applying the mutually defined \Fun{asts} function to the
+algebraic arguments (\Var{xs}). Hence, the number of children of the
+resulting rose tree is equal to the number of arguments in \Var{xs}.
+
+\subsection{Marshalling All Values}\label{sec:ast}
+
+Second, let's define \Fun{ast} fully generically for all values of all
+types. Below, we restate the type of \Fun{ast} before defining it by
+its cases.
+
+\begin{code}
   ast : (A : `Set) (a : ⟦ A ⟧) → AST
-  ast (`Σ A B) (a , b) = tree (non "_,_") (ast A a ∷ ast (B a) b ∷ [])
+\end{code}
+
+\paragraph{Algebraic Fixpoint}
+
+To define the fixpoint case, we simply apply the mutually defined
+\Fun{astInd} function to the algebraic argument \Var{x}.
+
+\begin{code}
   ast (`μ₁ A D) x = astInd D x true
+\end{code}
+
+Importantly, we use \Con{true} for the boolean argument of
+\Fun{astInd}. Hence, applying \Fun{ast} to any
+algebraic value (having type \Con{`μ₁}) results in drawing a box
+around it using the DOT language.
+
+\paragraph{Dependent Pair}
+
+The dependent pair case creates a rose tree with two children, by
+recursively applying \Fun{ast} to each component of the pair
+(\Var{a} and \Var{b}).
+
+\begin{code}
+  ast (`Σ A B) (a , b) = tree (non "_,_") (ast A a ∷ ast (B a) b ∷ [])
+\end{code}
+
+Because dependent pairs are non-inductive types, the
+\Data{Node} we return is \Con{non}. The argument to \Con{non} is a
+string representing the name of the infix
+dependent pair constructor (\Con{\_,\_}). 
+
+\subsection{Marshalling Algebraic Arguments}\label{sec:asts}
+
+\begin{code}
   ast (`Π A B) f = tree lam []
   ast `⊥ ()
   ast `⊤ tt = tree (non "tt") []
