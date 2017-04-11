@@ -304,16 +304,37 @@ rather than $n$ nested pairs. This is why each case of
 
 \paragraph{Non-Inductive Argument}
 
+The non-inductive argument case results in a list whose
+head is the \Fun{AST} of the non-inductive argument (\Var{a}),
+and whose tail is the \Data{List} of \Data{AST}s for
+the reamining arguments (\Var{xs}).
+
 \begin{code}
   asts (`σ A D) R (a , xs) = ast A a ∷ asts (D a) R xs
 \end{code}
 
 \paragraph{Inductive Argument}
 
+The inductive argument case results in a list whose
+head is the \Fun{AST} of the
+inductive argument (\Var{f} \Con{tt}),
+and whose tail is the \Data{List} of \Data{AST}s for
+the reamining arguments (\Var{xs}).
+
 \begin{code}
   asts (`δ `⊤ D) R (f , xs) =
     astInd R (f tt) false ∷ asts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
 \end{code}
+
+Note that the \Fun{AST} of the inductive argument (\Var{f} \Con{tt})
+is computed by \Fun{astInd}. Importantly, \Con{false} is supplied as
+the boolean argument to \Fun{astInd}. This is because the inductive
+argument we are marshalling is known to be one of the
+arguments of some previous \Con{init}ial algebra
+(that was already marshalled with a box in the
+\Con{`μ₁} case of \Fun{ast}). Hence, we do
+\textit{not} want to draw a box around this inductive argument
+occurrence, so we choose \Con{false} as the argument to \Fun{astInd}.
 
 \paragraph{Infinitary Argument}
 
