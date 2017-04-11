@@ -56,6 +56,7 @@ module Update where
 
   updates : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫)
     (i : Fin (counts D R xs)) → Σ Set (λ Y → Y → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫)
+
   updates (`σ A D) R (a , xs) i with splitσ A D R a xs i
   ... | inj₁ j =
     Σ (update₁ A a j)
