@@ -219,7 +219,8 @@ around it using the DOT language.
 
 \paragraph{Dependent Pair}
 
-The dependent pair case creates a rose tree with two children, by
+The dependent pair case creates a rose \Con{tree} with two children
+(in the second argument to \Con{tree}), by
 recursively applying \Fun{ast} to each component of the pair
 (\Var{a} and \Var{b}).
 
@@ -227,8 +228,8 @@ recursively applying \Fun{ast} to each component of the pair
   ast (`Σ A B) (a , b) = tree (non "_,_") (ast A a ∷ ast (B a) b ∷ [])
 \end{code}
 
-Because dependent pairs are non-inductive types, the
-\Data{Node} we return is \Con{non}. The argument to \Con{non} is a
+Because dependent pairs are non-inductive types, the first
+(\Data{Node}) argument to \Con{tree} is \Con{non}. The argument to \Con{non} is a
 string representing the name of the infix
 dependent pair constructor (\Con{\_,\_}). 
 
