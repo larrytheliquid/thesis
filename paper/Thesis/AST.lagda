@@ -31,9 +31,12 @@ module AST where
    non str : String → Node
 
  mutual
+  astInd : {O : `Set} (D : `Desc O) → μ₁ ⟦ O ⟧ ⟪ D ⟫ → Bool → Rose Node
+  astInd D (init xs) b = tree (ind b) (asts D D xs)
+
   ast : (A : `Set) (a : ⟦ A ⟧) → Rose Node
   ast (`Σ A B) (a , b) = tree (non "_,_") (ast A a ∷ ast (B a) b ∷ [])
-  ast (`μ₁ A D) (init xs) = tree (ind true) (asts D D xs)
+  ast (`μ₁ A D) x = astInd D x true
   ast (`Π A B) f = tree lam []
   ast `⊥ ()
   ast `⊤ tt = tree (non "tt") []
@@ -41,9 +44,6 @@ module AST where
   ast `Bool false = tree (non "false") []
   ast `String x = tree (str x) []
   ast (`Id A x y) refl = tree (non "refl") []
-
-  astInd : {O : `Set} (D : `Desc O) → μ₁ ⟦ O ⟧ ⟪ D ⟫ → Bool → Rose Node
-  astInd D (init xs) b = tree (ind b) (asts D D xs)
 
   asts : {O : `Set} (D R : `Desc O) → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ → List (Rose Node)
   asts (`ι o) R tt = tree (non "tt") [] ∷ []
