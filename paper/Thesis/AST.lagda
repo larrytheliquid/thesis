@@ -338,12 +338,32 @@ occurrence, so we choose \Con{false} as the argument to \Fun{astInd}.
 
 \paragraph{Infinitary Argument}
 
+The infinitary argument case results in a list whose
+head is a childless \Con{lam} node, 
+and whose tail is the \Data{List} of \Data{AST}s for
+the reamining arguments (\Var{xs}).
+
 \begin{code}
   asts (`δ A D) R (f , xs) = tree lam [] ∷ asts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
 \end{code}
 
+The reason why the head of the returned list is a \Con{lam} node, is
+because we treat the higher-order infinitary function \Var{f} as a
+black box. This is similar to how we treat functions as black boxes
+in the \Con{`Π} of \Fun{ast}.
+
+
 \paragraph{Last Argument}
+
+Finally, the \Fun{asts} of the last argument
+(in the sequence of \Con{init}ial algebra arguments)
+results in a single element list.
 
 \begin{code}
   asts (`ι o) R tt = tree (non "tt") [] ∷ []
 \end{code}
+
+The single element of the returned list is a childless \Con{non} node
+(because the type of \Con{tt} is \Data{⊤}, which is non-inductive).
+The name of the \Con{non} is ``tt'', after the name of the trivial
+value \Con{tt}.
