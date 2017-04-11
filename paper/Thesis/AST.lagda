@@ -220,7 +220,7 @@ around it using the DOT language.
 \paragraph{Dependent Pair}
 
 The dependent pair case creates a rose \Con{tree} with two children
-(in the second argument to \Con{tree}), by
+(in the second argument to \Con{tree}, below), by
 recursively applying \Fun{ast} to each component of the pair
 (\Var{a} and \Var{b}).
 
@@ -233,17 +233,51 @@ Because dependent pairs are non-inductive types, the first
 string representing the name of the infix
 dependent pair constructor (\Con{\_,\_}). 
 
-\subsection{Marshalling Algebraic Arguments}\label{sec:asts}
+\paragraph{Dependent Function}
+
+We treat higher-order values, like dependent functions, as black
+boxes. Hence, the \Fun{ast} of a function is a childless \Con{tree},
+whose \Data{Node} is \Con{lam}.
 
 \begin{code}
   ast (`Π A B) f = tree lam []
+\end{code}
+
+\paragraph{String}
+
+Strings are non-inductive values, so we use the \Con{str} constructor
+of \Data{Node}. Strings also have no additional arguments, so their
+\Fun{AST} tree has no children.
+
+\begin{code}
+  ast `String x = tree (str x) []
+\end{code}
+
+Note that the string value \Var{x} is supplied as the argument to the
+\Con{str} constructor of \Data{Node}, so a quoted version of \Var{x}
+can act as the name of the node when interpreted as DOT code.
+
+\paragraph{Remaining Non-Inductive Values}
+
+All remaining non-inductive values use
+the \Con{non} constructor of \Data{Node},
+and are childless (except for the \Con{`⊥} value, which is
+uninhabited). 
+
+\begin{code}
   ast `⊥ ()
   ast `⊤ tt = tree (non "tt") []
   ast `Bool true = tree (non "true") []
   ast `Bool false = tree (non "false") []
   ast (`Id A x y) refl = tree (non "refl") []
-  ast `String x = tree (str x) []
+\end{code}
 
+Each occurrence of \Con{non} is applied to string name corresponding to
+the name of the marshalled constructor.
+
+\subsection{Marshalling Algebraic Arguments}\label{sec:asts}
+
+\begin{code}
   asts : {O : `Set} (D R : `Desc O) → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ → List AST
   asts (`ι o) R tt = tree (non "tt") [] ∷ []
   asts (`σ A D) R (a , xs) = ast A a ∷ asts (D a) R xs
