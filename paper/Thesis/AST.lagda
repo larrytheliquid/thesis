@@ -45,9 +45,8 @@ module Rose where
 
 Specifically, the result of \Fun{ast} is a \Data{Rose} tree containing
 \Data{Node} values.
-A \Data{Node} identifies the graph node as one of the following
-constructors.
-  
+A \Data{Node} is one of the following constructors.
+ 
 \begin{code}
   data Node : Set where
     non str : String → Node
