@@ -1458,6 +1458,88 @@ In contrast, the formation rules of kind \Data{Desc} is defined by the
 \textit{body} part of its datatype declaration, using the
 \textit{closed} collection of constructors in the body.
 
+\subsection{Gratuitous Kinds}
+
+An algebraic declaration introduces a \textit{type} into our open
+theory if the codomain of the \textit{signature} of the declaration is
+\Data{Set}. In contrast, an algebraic declaration introduces a
+\textit{kind} into our open
+theory if the codomain of the \textit{signature} of the declaration is
+\Data{Set₁}.
+
+However, what determines that a declaration \textit{needs} to be a
+kind, as opposed to a type? If all non-inductive arguments of all
+constructors are classified by types
+(like \Var{n} : \Data{ℕ}, \Var{b} : \Data{Bool},
+and \Var{a} : \Var{A} where \Var{A} : \Data{Set}),
+then we can \textit{choose} to algebraically declare a \textit{type}.
+For example, lists (\Data{List}, below)
+\textit{can} be declared as a \textit{type} because the only non-inductive
+constructor argument is \Var{a} of \textit{type} \Var{A}
+(where \Var{A} : \Data{Set}, and is the parameter of the lists).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data List (A : Set) : Set where
+    nil : List A
+    cons : (a : A) (xs : List A) → List A
+\end{code}
+
+However, we may choose to \textit{gratuitously} declare lists as a
+\textit{kind} (\Data{List₁}, below),
+even though it is consistent to declare them as a type.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data List₁ (A : Set) : Set₁ where
+    nil : List₁ A
+    cons : (a : A) (xs : List₁ A) → List₁ A
+\end{code}
+
+However, if at least one algebraic constructor has an argument that is
+classified by a \textit{kind} (like \Var{A} : \Data{Set},
+\Var{D} : \Data{Desc} \Var{O}, etc.), then we \textit{must} algebraically
+declare a \textit{kind}. For example, heterogenous lists
+(\Data{HList}, below) must be declared as a \textit{kind}, because
+the \Con{cons} constructor contains argument
+\Var{A} of \textit{kind} \Data{Set}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data HList : Set₁ where
+    nil : HList
+    cons : {A : Set} → A → HList → HList
+\end{code}
+
+Finally, we emphasize that both types and kinds can be closed or open,
+so the type versus kind distinction is orthogonal to the
+closed versus open distinction.
+For example, the \textit{type} of parameterized lists (\Data{List},
+above) is \textit{open} (we explain why this is possible in
+\refsec{kindparam}). On the other hand, below we gratuitously declare
+\textit{closed} natural numbers (\Data{ℕ₁}) as a \textit{kind}.
+
+\begin{code}
+  data ℕ₁ : Set₁ where
+    zero : ℕ₁
+    suc : (n : ℕ₁) → ℕ₁
+\end{code}
+
 \subsection{Types versus Descriptions}
 
 In an open type theory like Agda, \Data{Set} is a unique kind because
@@ -1472,7 +1554,7 @@ The open versus closed formation rules distinction between kinds
 \Data{Set} and \Data{Desc}, and the difference in the way the
 formation rules are defined by datatype declaration signatures or
 bodies, is what made coming up with an adequate definition of a closed
-universe difficult. In fact, we first defined (an admitted to) an
+universe difficult. In fact, we first defined an
 inadequate definition of a closed universe~\cite{diehl:gupdate}, where
 certain algebraic types (like natural numbers) were (adequately) encoded
 in the first universe, but others (like parameterized lists) needed to
@@ -1530,7 +1612,7 @@ large constructors of \Data{Desc} as \textit{description formers}.
 %% \Var{A} is \Data{Set}. Recall (from \refsec{open}) that we defined
 %% open types (or kinds) to be those that mention \Data{Set}.
 
-\subsection{Kind-Parameterized Types}
+\subsection{Kind-Parameterized Types}\label{sec:kindparam}
 
 In order to perform fully generic programming, our original goal
 was to create a closed universe of \textit{types}. This universe
