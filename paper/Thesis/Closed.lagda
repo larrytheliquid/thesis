@@ -1530,8 +1530,8 @@ Finally, we emphasize that both types and kinds can be closed or open,
 so the type versus kind distinction is orthogonal to the
 closed versus open distinction.
 For example, the \textit{type} of parameterized lists (\Data{List},
-above) is \textit{open} (we explain why this is possible in
-\refsec{kindparam}). On the other hand, below we gratuitously declare
+above) is \textit{open} (we explain how parameterization makes this is
+possible in \refsec{kindparam}). On the other hand, below we gratuitously declare
 \textit{closed} natural numbers (\Data{ℕ₁}) as a \textit{kind}.
 
 \begin{code}
