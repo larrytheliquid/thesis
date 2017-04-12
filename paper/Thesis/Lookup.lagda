@@ -297,7 +297,20 @@ types. If the index points to \Con{here}, we simply return the
 value \Var{a} at this position, along with the
 type meaning function (\Fun{⟦\_⟧}) applied to the
 closed type (\Var{A}) of the value,
-as a dependent pair (\Con{,}).
+as a dependent pair (\Con{,}).\footnote{
+  We use an @-pattern to bind \Var{A} to the matched \Con{`Σ}
+  type. Unfortunately Agda makes us repeat this definition for all
+  other remaining types, but at least the right-hand sides are all the
+  same because of the @-pattern.
+  The problem with \Fun{lookup} is that \Fun{count}
+  appears in its type, which is defined using a catch-all pattern
+  clause. Unfortunately, we cannot write \Fun{lookup} using the same
+  catch-all pattern structure, and must instead enumerate all types
+  and duplicate their right-hand sides manually.
+  Defining \Fun{lookup} by repating the catch-all structure of
+  \Fun{count} would be possible if Agda were changed to type-check
+  code \textit{after} coverage checking. 
+  }
 
 \begin{code}
   lookup A@(`Σ _ _) a here = ⟦ A ⟧ , a
@@ -307,7 +320,8 @@ For \Con{`μ₁} this is the \Con{here} component of the
 definition of \textbf{Case 2}, and for \Con{`Σ} this is the
 \Con{here} component of the definition of \textbf{Case 3}.
 For all other types, this is the definition of
-\textbf{Case 1} (which does not have a \Con{there} component).
+\textbf{Case 1} (which does not have a \Con{there}
+component).
 
 \AgdaHide{
 \begin{code}
