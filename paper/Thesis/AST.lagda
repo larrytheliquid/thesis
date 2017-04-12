@@ -21,13 +21,18 @@ In this section we develop a fully generic function (\Fun{ast})
 to \textit{marshal} values to an abstract syntax tree (AST).
 Previously (in \refsec{gcount:egs} and \refsec{glookup:egs}),
 we visualized generically encoded data in figures
-(such as \reffig{vec2}). Those figures were created using fully
+(such as \reffig{vec21}). Those figures were created using fully
 generic programming, rather than drawn by hand.
 They are the result of applying \Fun{ast} to the value
 they visualize, converting the resulting AST to a graph in the
 DOT language~\cite{lang:dot},
 and rendering the DOT code using
-Graphviz~\cite{graphviz}.
+Graphviz~\cite{graphviz}.\footnote{
+  In this dissertation, we define the fully generic function \Fun{ast}
+  to convert any value to an AST. The function to convert the AST to DOT
+  code does not involve generic programming, so it can be found in the
+  accompanying source code of this dissertation.
+  }
 
 The result of \Fun{ast} is a specialized version of a \Data{Rose}
 tree. We use the standard \Data{List}-based rose tree, rather than an

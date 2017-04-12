@@ -11,7 +11,6 @@ open Prim  hiding ( Σ )
 open Alg
 open Closed
 open Count.Count
-open Count.Split
 \end{code}}
 
 \AgdaHide{
@@ -188,6 +187,7 @@ version by suffixing ₂ (e.g. \Fun{lookup₂}).
 \AgdaHide{
 \begin{code}
 module Lookup where
+ open Count.Split
  open import Data.Nat
  mutual
 \end{code}}
@@ -268,9 +268,10 @@ to corresponds to the value of \Var{n} in \textbf{Case 2}.
 
 For the \Con{there} case of dependent pairs
 (\textbf{Case 3}), we use the helper function \Fun{splitΣ}
+(defined in \refsec{split})
 to turn \Var{i}, a single index (\Data{Fin})
 containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
-of two indices. 
+of two indices.
 
 \begin{code}
   -- i : Fin (count A a + count (B a) b)
@@ -399,7 +400,8 @@ of \Fun{counts} in \refsec{counts}.
 
 For the (only) \Con{there} case of a non-inductive argument
 (\textbf{Case 3}), in a sequence of arguments,
-we use the helper function \Fun{splitσ}.
+we use the helper function
+\Fun{splitσ} (defined in \refsec{split}).
 The helper function turns \Var{i}, a single index (\Data{Fin})
 containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
 of two indices. While \Fun{splitΣ} operates over a dependent pair,
@@ -426,7 +428,8 @@ sequence of arguments (\Var{xs}).
 
 For the (only) \Con{there} case of an inductive argument
 (\textbf{Case 3}), in a sequence of
-arguments, we use the helper function \Fun{splitδ}.
+arguments, we use the helper function
+\Fun{splitδ} (defined in \refsec{split}).
 The helper function turns \Var{i}, a single index (\Data{Fin})
 containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
 of two indices. The \Fun{splitδ} function is specialized to work with
@@ -532,6 +535,121 @@ encodes and final argument, so there is nothing left to index.
   lookups₂ D R xs i = proj₂ (lookups D R xs i)
 \end{code}}
 
+\subsection{Splitting Functions}\label{sec:split}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open import Data.Fin renaming ( zero to here ; suc to there ) hiding (_+_)
+ private
+\end{code}}
+
+When defining \Fun{lookup} (in \refsec{lookup}) and
+\Fun{lookups} (in \refsec{lookups}), we appealed to the helper
+functions \Fun{splitΣ}, \Fun{splitσ}, and \Fun{splitδ}.
+All 3 of these helpers are defined as shallow wrappers
+(in \reffig{split}) around a more general function,
+\Fun{splitFin}.
+
+Recall that if we match against index
+\Con{there} \Var{i} in \textbf{Case 3} of \refsec{lookup},
+then \Var{i} has type \Data{Fin} (\Var{n} \Fun{+} \Var{m}),
+where \Var{n} and \Var{m} each represent either
+\Fun{count} or \Fun{counts}.
+In an instance of \textbf{Case 3}, such as the
+\Con{`Σ} case of \Fun{lookup} (\refsec{lookup}),
+we need to convert
+\Var{i} into the disjoint union of \Data{Fin} \Var{n} and
+\Data{Fin} \Var{m}, so that we may recursively \Fun{lookup}
+the first component of the pair (\Var{a}) using the left injection,
+or the second component of the pair (\Var{b}) using the right
+injection. The \Fun{splitFin}
+function helps us do this.
+
+\begin{code}
+  splitFin : (n m : ℕ) → Fin (n + m) → Fin n ⊎ Fin m
+\end{code}
+
+Because \Fun{lookup} is defined as a depth-first search, the
+\Fun{splitFin} function must be left-biased
+(i.e. biased to return a \Data{Fin} index whose bound is \Var{n},
+the left component of the sum).
+Hence, \Fun{splitFin} should return the left injection
+if index \Var{i} points to \Con{here}, and \Var{n}
+is greater than 0
+(i.e. it is the \Con{suc}cessor of some other number).
+
+\begin{code}
+  splitFin (suc n) m here = inj₁ here
+\end{code}
+
+If \Var{n} \textit{is} zero, then the left injection is uninhabited
+(because it has type  \Data{Fin} \Num{0}),
+so we are forced to return the right
+injection (of type \Data{Fin} \Var{m}).
+
+\begin{code}
+  splitFin zero m i = inj₂ i
+\end{code}
+
+Finally, if \Var{n} is greater than 0 and the index is
+\Con{there} \Var{i}, then we recursively split \Var{i}.
+
+\begin{code}
+  splitFin (suc n) m (there i) with splitFin n m i
+  ... | inj₁ j = inj₁ (there j)
+  ... | inj₂ j = inj₂ j
+\end{code}
+
+If the recursive call of \Fun{splitFin} on \Var{i} results in a left
+injection, it will have type \Data{Fin} \Var{n}. Hence, we must wrap
+the left injection in another \Con{there} to bump the index and
+get the expected return type
+(\Data{Fin} (\Con{suc} \Var{n})).
+If the recursive call of \Fun{splitFin} on \Var{i} results in a right
+injection, it already has the expected return type
+(\Data{Fin} (\Con{suc} \Var{m})).
+
+In the input pattern of case above, \Con{there} \Var{i} has type
+\Data{Fin} (\Con{suc} (\Var{n} \Fun{+} \Var{m})).
+In the recursive call,
+\Var{i} has type \Data{Fin} (\Var{n} \Fun{+} \Var{m}). Hence,
+in the recursive call \Var{n} becomes smaller (compared to \Con{suc}
+\Var{n}), while \Var{m} remains the same. This explains why we bump
+the index (using \Con{there}) if the recursive call results in a left
+injection, but not if it results in a right injection.
+
+
+
+\begin{figure}[ht]
+\centering
+\begin{code}
+  splitΣ : (A : `Set) (B : ⟦ A ⟧ → `Set)
+    (a : ⟦ A ⟧) (b : ⟦ B a ⟧) →
+    Fin (count A a + count (B a) b) →
+    Fin (count A a) ⊎ Fin (count (B a) b)
+  splitΣ A B a b i = splitFin (count A a) (count (B a) b) i
+ 
+  splitσ : {O : `Set} (A : `Set) (D : ⟦ A ⟧ → `Desc O) (R : `Desc  O)
+    (a : ⟦ A ⟧) (xs : ⟦ ⟪ D a ⟫ ⟧₁ ⟪ R ⟫) →
+    Fin (count A a + counts (D a) R xs) →
+    Fin (count A a) ⊎ Fin (counts (D a) R xs)
+  splitσ A D R a xs i = splitFin (count A a) (counts (D a) R xs) i
+ 
+  splitδ : {O : `Set} (D : ⟦ O ⟧ → `Desc O) (R : `Desc  O)
+    (x : μ₁ ⟦ O ⟧ ⟪ R ⟫) (xs : ⟦ ⟪ D (μ₂ ⟪ R ⟫ x) ⟫ ⟧₁ ⟪ R ⟫) →
+    Fin (count (`μ₁ O R) x + counts (D (μ₂ ⟪ R ⟫ x)) R xs) →
+    Fin (count (`μ₁ O R) x) ⊎ Fin (counts (D (μ₂ ⟪ R ⟫ x)) R xs)
+  splitδ D R x xs i = splitFin (count (`μ₁ _ R) x) (counts (D (μ₂ ⟪ R ⟫ x)) R xs) i
+\end{code}
+\caption{Definitions of the helper splitting functions
+  (\Fun{splitΣ}, \Fun{splitσ}, and \Fun{splitδ})
+  used in \refsec{lookup} and \refsec{lookups}.
+  The helpers are all just shallow wrappers around the
+  \Fun{splitFin} function, defined in \refsec{split}.}
+\label{fig:split}
+\end{figure}
 
 \subsection{Examples}\label{sec:glookup:egs}
 
@@ -749,3 +867,5 @@ of the vector \texttt{[("b", "y")]}
    lookup₂ (`Vec (`String `× `String) one) vec1 (# 9) ≡ nil₁
   _ = refl
 \end{code}}
+
+
