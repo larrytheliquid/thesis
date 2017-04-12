@@ -268,7 +268,7 @@ to corresponds to the value of \Var{n} in \textbf{Case 2}.
 
 For the \Con{there} case of dependent pairs
 (\textbf{Case 3}), we use the helper function \Fun{splitΣ}
-(defined in \refsec{split})
+(defined in \reffig{split})
 to turn \Var{i}, a single index (\Data{Fin})
 containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
 of two indices.
@@ -401,7 +401,7 @@ of \Fun{counts} in \refsec{counts}.
 For the (only) \Con{there} case of a non-inductive argument
 (\textbf{Case 3}), in a sequence of arguments,
 we use the helper function
-\Fun{splitσ} (defined in \refsec{split}).
+\Fun{splitσ} (defined in \reffig{split}).
 The helper function turns \Var{i}, a single index (\Data{Fin})
 containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
 of two indices. While \Fun{splitΣ} operates over a dependent pair,
@@ -429,7 +429,7 @@ sequence of arguments (\Var{xs}).
 For the (only) \Con{there} case of an inductive argument
 (\textbf{Case 3}), in a sequence of
 arguments, we use the helper function
-\Fun{splitδ} (defined in \refsec{split}).
+\Fun{splitδ} (defined in \reffig{split}).
 The helper function turns \Var{i}, a single index (\Data{Fin})
 containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
 of two indices. The \Fun{splitδ} function is specialized to work with
