@@ -70,7 +70,7 @@ constructor represents and how it affects the translation to DOT code:
 \item{\Con{str}:} Used for string values. The name of the
   node is determined by the \Data{String} argument. The string
   argument is colored \Str{\textit{red}} and is enclosed in quotes.
-\item{\Con{non}:} Used for the inductive initial algebra constructor
+\item{\Con{ind}:} Used for the inductive initial algebra constructor
   (\Con{init} of type \Data{μ₁}).
   The name of the node is ``init'', and is colored
   \Con{\textit{green}}.
