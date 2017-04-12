@@ -1325,8 +1325,11 @@ a \textit{type} rather than members of a \textit{kind}.
 In \refsec{closing} we explain how to close over a subset of
 types, mutually by closing over descriptions.
 In this section we examine the distinctions between kinds and types in
-more detail. In particular, we compare and contrast the kind of types
-and descriptions, and where they show up (and do not show up) in the
+more detail. In particular, we compare and contrast the
+kind of types (\Data{Set} : \Data{Set₁})
+and the kind of descriptions
+(\Data{Desc} : \Data{Set} → \Data{Set₁}),
+and where they show up (and do not show up) in the
 universe construction.
 
 \subsection{Open Types and Kinds}
