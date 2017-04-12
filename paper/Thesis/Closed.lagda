@@ -20,7 +20,7 @@ Initial algebra semantics, unlike well-orderings,
 adequately models declared datatypes in
 intensional (as opposed to extensional) type theory.
 
-We begin with a naive failed attempt at defining a closed type theory
+We begin with a naive failing attempt at defining a closed type theory
 using fixpoints (\refsec{naiveclosed}). After explaining why the
 simple but naive attempt actually defines an open (rather than
 closed) type theory, we explain how to properly close the theory
@@ -31,8 +31,8 @@ by comparing and contrasting types and kinds (\refsec{kinds}).
 
 \section{Open Inductive-Recursive Types}\label{sec:naiveclosed}
 
-In this section we present a naive failed attempt at creating a
-\textit{closed} universe using fixpoints. It is a failed attempt
+In this section we present a naive failing attempt at creating a
+\textit{closed} universe using fixpoints. It is a failing attempt
 because it actually defines an \textit{open} universe.
 We will define a universe similar to the
 \textit{Closed Well-Order Types} of \refsec{wtypes}, but replacing
@@ -67,6 +67,11 @@ explicitly refer to the type (\Var{A}) of the compared values.
 Similarly, above we define a version of the fixpoint operator
 (\Data{μ₁}) that explicitly takes the codomain (\Var{O})
 of the inductive-recursive decoding function.
+The fixpoint operator (\Data{μ₁})
+also takes an explicit description argument (\Var{D}),
+as before, where the kind of
+inductive-recursive descriptions (\Data{Desc})
+is defined in \refsec{iralgmod}.
 
 \subsection{Formal Model}
 
@@ -104,13 +109,13 @@ module _ where
     ⟦ `μ₁ O D ⟧ = μ₁ ⟦ O ⟧ D
 \end{code}
 
-Nothing problematic immediately stands out, as our
+Nothing immediately problematic stands out, as our
 universe looks quite like the \textit{Closed Well-Order Types}
 universe. Let's take a closer look at why the addition of the
 identity type (\Con{`Id})
 is not problematic, but the addition of fixpoints
-(\Con{`μ₁}) is, by constructing values of both.
-First, we construct the (false) boolean proposition that true
+(\Con{`μ₁}) is problematic, by constructing values of both.
+First, we construct the (uninhabited) boolean proposition that true
 is equal to false, using the identity type.
 
 \begin{code}
@@ -126,7 +131,17 @@ Additionally, the type of the compared values
 in the proposition can also be encoded in the universe
 (as \Con{`Bool}, rather than \Data{Bool}).
 
-\subsection{Source of Openness}
+Hence, the identity type (\Data{Id}) can be encoded in the universe
+using its backtick equivalent (\Con{`Id}). Additionally,
+its \textit{type} argument can be \Con{`Bool},
+the backtick universe encoding of type \Data{Bool}.
+Next (in \refsec{source}), we will see that while the fixpoint
+type (\Data{μ₁}) can be encoded in the universe using its
+backtick equivalent (\Con{`μ₁}), its \textit{description}
+argument cannot be a backtick encoding of a \Data{Desc}
+constructor, which is the source of openness of our universe.
+
+\subsection{Source of Openness}\label{sec:source}
 
 To discover why \Data{`Set} actually defines an \textit{open}
 universe, let's try
@@ -196,8 +211,17 @@ an open type argument (\Var{D}):
   \Var{A} arguments of type \Data{Set}.
 \end{enumerate}
 
+Both of these consequences are a result of \Data{Desc} being a valid
+model of algebraic datatype declarations in
+an \textit{open} universe (where we can use any type, or \Data{Set},
+of the Agda metalanguage to construct a \Data{Desc}),
+but not in a \textit{closed} universe (where we need to restrict
+\Data{Desc} to only be constructed from closed types,
+or \Con{`Set}s).
 We overcome these problems, by truly defning \Data{`Set} as a
-\textit{closed} universe, in the next section.
+\textit{closed} universe (in terms of a closed equivalent of descriptions,
+named \Data{`Desc}), in the next section.
+
 
 \section{Closed Inductive-Recursive Types}\label{sec:closed}
 
