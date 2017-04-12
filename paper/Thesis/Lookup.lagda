@@ -41,19 +41,21 @@ length of the vector. Recall the type of finite sets from
     there : {n : ℕ} → Fin n → Fin (suc n)
 \end{code}
 
-The type of finite sets acts as a 1-based index whose maxium value is
-the natural number that \Data{Fin} is applied to. For all
-\Var{n}, there are \Var{n}-1 inhabitants of \Data{Fin} \Var{n}, where
+We think of the the type of finite sets acts as a 0-based index whose
+maxium value is the natural number that \Data{Fin} is applied
+to, minus 1. For all
+\Var{n}, there are \Var{n} inhabitants of \Data{Fin} \Var{n}
+(representing indices 0 through $n$-1), where
 the first is \Con{here}, and the rest are successive applications of
 \Con{there} (ending in \Con{here}). For example, the inhabitants of
 \Data{Fin} \Num{3} are
-\Con{here} (for index \Num{1}),
-\Con{there here} (for index \Num{2}), and
-\Con{there} (\Con{there here}) (for index \Num{3}).
+\Con{here} (for index \Num{0}),
+\Con{there here} (for index \Num{1}), and
+\Con{there} (\Con{there here}) (for index \Num{2}).
 
 To \Fun{lookup} a \Data{Vec}tor of length \Var{n}, we index by
 \Data{Fin} \Var{n}. The implementation of \Fun{lookup} returns the
-head of the vector (at position \Num{1}) if the index is
+head of the vector (at index position \Num{0}) if the index is
 \Con{here}. If the index is \Con{there}, \Fun{lookup} recursively
 searches the tail of the vector (until it finally finds a value
 to return, indicated by peeling off enough \Con{there}'s to arrive
@@ -86,7 +88,8 @@ module _ where
 
 Besides needing to supply explicit evidence, by pattern matching
 against the uninhabited empty \Data{Fin} \Num{0} index
-(using empty parentheses) in the \Con{nil} case, the implementation
+(using empty parentheses, which is Agda syntax for explicitly
+pattern matching against an uninhabited type) in the \Con{nil} case, the implementation
 for \Data{List}s is the same as the implementation for \Data{Vec}tors.
 
 Our fully generic \Fun{lookup} is defined similarly to the \Data{List}

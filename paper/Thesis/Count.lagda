@@ -910,7 +910,7 @@ at node 12.
   _ = refl
 \end{code}}
 
-We conclude this chapter by reflecting on how
+We conclude this section by reflecting on how
 the relationship between algebraically defined length-indexed
 vectors and their algebraically defined natural numbers is elegantly
 captured in \reffig{vec2}. Notice how natural numbers
