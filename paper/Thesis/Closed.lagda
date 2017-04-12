@@ -1596,13 +1596,15 @@ module _ where
 
 \begin{code}
     nil : {A : Set} → Vec A zero
-    cons : {A : Set} {n : ℕ} → A → Vec A n → Vec A (suc n)
+    cons : {A : Set} {n : ℕ} (a : A) → Vec A n → Vec A (suc n)
 \end{code}
 
 Notice that the \Con{cons} constructor must take \Var{n} as a formal
 argument, so that it may determine the index to be \Con{suc} \Var{n}.
 We call \Var{A} an informal argument because the
-underlying constructor declaration does not store \Var{A}.
+underlying constructor declaration does not store the type \Var{A}
+(even though \Con{cons} does store the value \Var{a} of type \Var{A},
+because \Var{a} is not a parameter of \Data{Vec}).
 It is exactly this fact, that the declaration of the
 \Con{nil} and \Con{cons} constructors
 do not formally store \Var{A} (of kind \Data{Set}) as an argument, that allows 
