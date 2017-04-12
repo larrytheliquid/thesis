@@ -110,11 +110,14 @@ obtained by ``removing the backtick''.
 However, the intuition behind the closed \Fun{countμ} function is
 simplified in the introduction. A minor difference is that we must
 add an \Var{O} parameter, to account for the codomain of the
-inductive-recursive decoding function. One major difference is that
+inductive-recursive decoding function.
+
+The first major difference is that
 the intuition from the introduction leads to defining \Fun{countμ}
 over all \textit{open} descriptions (\Data{Desc}), but fully generic
 programming demands that we define it over all \textit{closed}
 descriptions (\Data{`Desc}). Let's remind ourselves of the definition
+(from \refsec{iralgagda})
 of the type component of the fixpoint operator:
 
 \AgdaHide{
@@ -132,25 +135,40 @@ module _ where
 
 Recall that \Data{μ₁} expects \Var{O} to be the kind of open types
 (\Data{Set}), and \Var{D} to be the kind of open descriptions
-(\Data{Desc}). In the type of the generic \Fun{countμ} function,
-\Var{O} is the type of closed types
-(\Data{`Set}), and \Var{D} is the type of closed descriptions
-(\Data{`Desc}), hence \Data{μ₁}
-(appearing in an argument position of the type of \Fun{countμ}) is
-applied to the meaning of
-\Var{O} and \Var{D}
-(obtained by applying \Fun{⟦\_⟧} and \Fun{⟪\_⟫}, respectively).
+(\Data{Desc}). When we write the type of a generic function, like
+\Fun{countμ}, we quantify over all closed types \Var{O}
+(of type \Data{`Set}), and all closed descriptions 
+\Var{D} (of type \Data{`Desc}).
 
-There is a second major difference between the types we use for fully
+The third argument to \Fun{countμ}
+is the result of applying the type meaning function (\Fun{⟦\_⟧}) to
+the closed type (\Con{`μ₁} \Var{O} \Var{D}), which definitionally
+reduces to \Data{μ₁} applied the
+type meaning (\Fun{⟦\_⟧}) of \Var{O}
+and the description meaning (\Fun{⟪\_⟫}) of \Var{D}.
+This models values of closed types within our open metalanguage,
+Agda (using open types like \Data{μ₁}).
+
+The second major difference between the types we use for fully
 generic programming, and the types behind the intuition in the
-introduction. It is not possible to directly define a function like
-\Fun{countμ} over all closed descriptions. The problem is that the
+introduction, is that we cannot directly define a function like
+\Fun{countμ} over all closed descriptions.
+The problem is that the
 inductive hypothesis is not general enough in the
-infinitary (hence, also inductive) \Con{`δ} case. Instead of mutually
+infinitary (hence, also inductive) \Con{`δ} case.
+If we tried to directly write \Fun{countμ}, we would not remember
+the original inductive description when we reach the \Con{`δ} case,
+because \Fun{countμ} would be defined by recursively destructing
+the description argument.
+
+Instead of mutually
 defining \Fun{count} with \Fun{countμ} (a function over all algebraic
 types), we mutually define
 \Fun{count} with \Fun{counts} (a function over all
 arguments of algebraic types, isomorphic to \Fun{countμ}).
+The \Fun{counts} function has an extra description argument, \Var{R},
+that stays constant to remember the original description as the
+\Var{D} description argument is recursively destructed.
 
 \AgdaHide{
 \begin{code}
@@ -285,7 +303,8 @@ arguments of the \Con{init}ial algebra. This involves calling
 defined mutually (in \refsec{count}) over all values of all types.
 Below, we restate the type of \Fun{counts}, and then define
 \Fun{counts} by case analysis and recursion over all of its closed
-descriptions. 
+descriptions (for reference, the declaration of \Data{Desc}
+appears in \refapen{openalg}). 
 
 \begin{code}
   counts : {O : `Set} (D R : `Desc O) → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ → ℕ
@@ -363,7 +382,8 @@ is a description that
 depends on the \textit{decoding function} for our inductive-recursive type.
 The \textit{type} of the decoding function is the \textit{implicit} composition
 of the decoding fixpoint component (\Fun{μ₂}) and the infinitary value
-\Var{f}. In our generic function above, we \textit{explicitly} create
+\Var{f} (the nature of the implicit composition is explained
+in \refsec{iralgmod}). In our generic function above, we \textit{explicitly} create
 the \textit{value} of this decoding function to satisfy the implicit
 expectation in the type of its description.
 
@@ -397,20 +417,21 @@ trivial value \Con{tt} of type unit (\Data{⊤}), which we count as 1.
 We could choose to count the trivial (\Con{tt}) last argument as
 0, hiding the aspect of the encoding that every sequence of arguments
 is terminated by \Con{tt}. However, we choose to count \Con{tt} as 1
-because subsequent generic functions
-(\Fun{lookup} in \refsec{glookup} and
-\Fun{update} in \refsec{gupdate}) treat the result of \Fun{count} as
+because the subsequently defined generic function,
+\Fun{lookup} in \refsec{glookup},
+treats the result of \Fun{count} as
 an \textit{index} into all values and subvalues of a type.
 \footnote{
-  Using our generic encoding of \textit{inductive-recursive} types,
-  being able to \Fun{count}, \Fun{lookup}, or \Fun{update} the trivial
+  Given our generic encoding of \textit{inductive-recursive} types,
+  the ability to \Fun{count} or \Fun{lookup} the trivial
   value (\Con{tt}) may not seem useful. Nevertheless, we include this
   functionality because it becomes useful when generalizing our
   universe to include \textit{indexed} algebraic types. In the initial
   algebra semantics for indexed types, the final unit type (\Data{⊤})
   is replaced by the identity type (\Data{Id}), used as a constraint
-  on the index of the algebraic type. Being able to \Fun{count}, \Fun{lookup}, and
-  \Fun{update} the constraint is important in the indexed universe.
+  on the index of the algebraic type. Being able to
+  \Fun{count} and \Fun{lookup} the constraint is important in the
+  indexed universe.
 }
 
 \subsection{Examples}\label{sec:gcount:egs}
@@ -464,8 +485,8 @@ and 1 for the terminating unit argument (\Con{tt}), resulting in 3.
 \footnote{
   Once again, this is an encoding-aware \Fun{count}, because it is
   used to \textit{index} which nodes (in a generically encoded
-  data structure) to \Fun{lookup} (in \refsec{glookup}) and
-  \Fun{update} (in \refsec{gupdate}). It would also be possible to
+  data structure) to \Fun{lookup} (in \refsec{glookup}).
+  It would also be possible to
   define an encoding-unaware \Fun{count}, that does not count \Con{true}
   (encoding constructor choice) and \Con{tt} (encoding the end of the
   sequence of constructors).

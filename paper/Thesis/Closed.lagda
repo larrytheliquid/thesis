@@ -1527,7 +1527,7 @@ module _ where
 \end{code}
 
 Finally, we emphasize that both types and kinds can be closed or open,
-so the type versus kind distinction is orthogonal to the
+so the type versus kind distinction is \textit{orthogonal} to the
 closed versus open distinction.
 For example, the \textit{type} of parameterized lists (\Data{List},
 above) is \textit{open} (we explain how parameterization makes this is
