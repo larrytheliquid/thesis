@@ -399,7 +399,8 @@ for the \Var{O} parameter and \Var{A} argument.
 \paragraph{Natural Numbers}
 
 We will encode a closed version of the following trivially infinitary
-and inductive-recursive definition of the natural numbers.
+and trivially inductive-recursive definition of the natural
+numbers.
 
 \AgdaHide{
 \begin{code}
@@ -491,7 +492,7 @@ It is worth pointing out that creating named constructor tags, like
 the \Data{NatT} below, is no longer possible in our closed universe. Instead,
 a choice of constructors is encoded by applying \Con{`σ} to
 \Con{`Bool}, in a derived-sum way. Creating named tags like \Data{NatT} requires
-extending an \textit{open} theory with the new name enumeration, which
+extending an \textit{open} theory with the new enumeration type, which
 is not possible in a \textit{closed} theory.
 
 \begin{code}
@@ -838,9 +839,9 @@ necessary for \Var{f}, within \Con{init}.
 
 Because we are claiming that we are formally modeling a closed
 \textit{universe} (\refsec{universes}), we must be able to
-point out its type of \textit{codes} and its
-\textit{meaning} function. A universe (\Data{Univ}) can be formally
-modeled as a dependent record consisting of a \Field{Code} type, and
+inhabit the type of \textit{codes} and its
+\textit{meaning} function. A universe (\Data{Univ}) can be
+\textit{formally} modeled as a dependent record consisting of a \Field{Code} type, and
 a \Field{Meaning} function mapping codes to types (\Data{Set}).
 \footnote{
   In \refsec{universes}, universes are modeled as a dependent pair
@@ -1021,14 +1022,13 @@ will be \textit{types} (\Data{Set}),
 rather than \textit{kinds} (\Data{Set₁}),
 thanks to \textbf{Step 4}. 
 
-\subsection{Example Run}
+\subsection{Example Procedure Run}
 
 Typically, we are interested
 in closing over a universe of types, so our initial \Var{K} will be
 the kind of open types (\Data{Set}), and its formation rules will
-be \textit{type formers}
+be some finite collection of \textit{type formers}
 (e.g. \Data{Bool}, \Data{Id}, \Data{Σ}, \Data{μ₁}, etc.)
-of some finite collection of types.
 Subsequently, other kinds \Var{K} (e.g. \Data{Desc})
 that we encounter have
 \textit{constructors} (e.g. \Con{ι}, \Con{σ}, and \Con{δ})
@@ -1118,7 +1118,7 @@ module _ where
 \end{code}
 
 At this point, our universe is quite like
-our failed attempt of a closed universe (\refsec{naiveclosed}),
+our failing attempt of a closed universe (\refsec{naiveclosed}),
 because \Data{Desc} in argument \Var{D} of \Con{`μ₁} is not closed yet.
 
 \paragraph{Step 3}
@@ -1127,11 +1127,13 @@ Next, we encounter of the kind of descriptions (\Data{Desc}) in the
 \Var{D} argument of the \Con{`μ₁} constructor,
 so we must recursively apply the
 procedure by choosing \Var{J} to be \Data{Desc}.
-We establish the Step $x$.$y$ naming convention, where $y$ refers to
-the step number in the recursive call (encoding \Data{Desc}),
-and $x$ refers to the
-original step before the recursion (encoding \Data{Set}).
-For reference, we present the kind of descriptions below.
+For the next part of this this procedure run, we need to start over at
+\textbf{Step 1} when recursively closing over the kind \Data{Desc}.
+However, we will instead call this \textbf{Step 3.1}, where the
+\textbf{3} prefix indicates that the recursion was initiated by
+\textbf{Step 3} when closing over the kind \Data{Set}.
+For reference,
+we present the kind of descriptions (\Data{Desc}) below.
 
 \AgdaHide{
 \begin{code}
@@ -1260,7 +1262,7 @@ apply \Fun{⟪\_⟫} to the result of the infinitary function \Var{D}.
 \paragraph{Step 4}
 
 Because there are no kinds left to recursively apply the procedure to,
-steps 4.1 and 4.2 can be completed by changing
+\textbf{Step 4.1} and \textbf{Step 4.2} can be completed by changing
 closed types (\Data{`Set}) and closed descriptions (\Data{`Desc}) from
 \textit{kinds} to \textit{types}.
 Any kinds that were arguments of the original collection of type

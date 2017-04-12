@@ -206,7 +206,15 @@ The inductive type can thus be defined as normally, without referring
 to its trivial function.
 For example, below we define the
 type of natural numbers along with the trivial function
-(\AgdaFun{point}) from natural numbers to unit.
+(\AgdaFun{point}) from natural numbers to unit.\footnote{
+  The intuition behind the name of the decoding function, \Fun{point},
+  is that any inhabitant of the function is forced to eventually
+  return \Con{tt}, the sole inhabitant of the unit type
+  (\Data{⊤}). Hence, all \Fun{point} functions are extensionally
+  equivalent, as they all ``point'' to \Con{tt}. Additionally, the
+  single inhabitant \Con{tt} of \Data{⊤} can be considered a
+  ``point''.
+}
 
 \AgdaHide{
 \begin{code}
