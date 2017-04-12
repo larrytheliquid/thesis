@@ -225,8 +225,17 @@ named \Data{`Desc}), in the next section.
 
 \section{Closed Inductive-Recursive Types}\label{sec:closed}
 
-The key to creating an adequate (in intensional type theory)
-closed universe of algebraic datatypes is paying attention not
+The key to creating an adequate\footnote{
+  By \textit{adequate} we mean that values of algebraic types
+  have intensionally unique canonical forms. This property is violated when
+  values of algebraic types are encoded using well-orderings,
+  as explained in \refsec{inad}. In contrast,
+  encoding values of algebraic types using
+  descriptions and fixpoints (like the examples in \refsec{iralgtps}) is adequate.
+  }
+closed universe of algebraic datatypes
+in intensional type theory,
+is paying attention not
 only to \textit{types} (\Data{Set}),
 but also \textit{kinds} (\Data{Set₁}).
 Previously, we created the \textit{Closed Vector Types} universe
@@ -238,8 +247,9 @@ of types (\Data{Set}) is the only kind in town. Now we create the
 additionally account for the kind (\Data{Set₁})
 of descriptions (\Data{Desc}).
 \footnote{
-  The type of types is a kind because \Data{Set} : \Data{Set₁}. Similarly,
-  the type of descriptions is a kind because
+  The ``type'' of types is actually a \textit{kind}
+  because \Data{Set} : \Data{Set₁}. Similarly,
+  the ``type'' of descriptions is actually a \textit{kind} because
   \Data{Desc} : (\Var{O} : \Data{Set}) → \Data{Set₁}. Distinctively,
   the type former of descriptions is a function. Even though the function
   domain (\Var{O}) is a type (\Data{Set}), descriptions are still
