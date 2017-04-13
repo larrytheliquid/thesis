@@ -120,7 +120,10 @@ of \Fun{lookup} to depend on the type of node being looked up.
 Thus, we must define a
 computational return type (\refsec{compret}),
 named \Fun{Lookup} below, to determine what the return type of
-\Fun{lookup} should be. 
+\Fun{lookup} should be. In other words,
+the \Fun{Lookup} function, with an uppercase 'L',
+computes the return type of the \Fun{lookup} function,
+with a lowercase 'l'.
 
 \AgdaHide{
 \begin{code}
@@ -139,7 +142,10 @@ module _ where
 We must also mutually define
 \Fun{Lookups}, to compute the return type when
 looking up an argument of an algebraic constructor,
-via \Fun{lookups}.
+via \Fun{lookups}. The \Fun{lookups} and \Fun{Lookups} functions are
+defined over all closed descriptions (\Data{`Desc}),
+analogous to how the \Fun{lookup} and \Fun{Lookup} functions are
+defined over all closed types (\Data{`Set}).
 
 \begin{code}
    Lookups : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫)
@@ -148,11 +154,12 @@ via \Fun{lookups}.
     (i : Fin (counts D R xs)) → Lookups D R xs i
 \end{code}
 
-Whenever defining the value component (\Fun{lookup} or \Fun{lookups}),
-we must pattern match against at least as many arguments as the
-type component (\Fun{Lookup} or \Fun{Lookups}), in order for the
-computational return type to definitionally unfold.
-Instead of defining the value and type components separately,
+The computational return types (\Fun{Lookup} and \Fun{Lookups}) are
+defined by pattern matching on some arguments. The functions using
+these types (\Fun{lookup} and \Fun{lookups}) must match the same
+arguments in the same way, in order for the computational return types
+to definitionally unfold.
+Instead of defining the value and type functions separately,
 thereby repeating the pattern matching structure twice,
 we will actually define single functions returning
 \textit{dependent pairs} (\Data{Σ}).
@@ -171,12 +178,11 @@ module _ where
     (i : Fin (counts D R xs)) → Σ Set (λ A → A)
 \end{code}
 
-The first component of the pair corresponds to the type component
-(\Fun{Lookup} or \Fun{Lookups}), and the second component
-of the pair is a value
-(corresponding to the formerly named \Fun{lookup} or \Fun{lookups}),
-whose type is the first component.
-We can still recover the original type and value components by
+The first component of the pair corresponds to the computational
+return type (\Fun{Lookup} or \Fun{Lookups}), and the second component
+of the pair corresponds to the function typed by the first component
+(the formerly named \Fun{lookup} or \Fun{lookups}).
+We can still recover the original type and value functions by
 taking the first (\Fun{proj₁}) and
 second (\Fun{proj₂}) projections of the dependent pairs (\Data{Σ})
 resulting from the new versions of \Fun{lookup} and \Fun{lookups}.
@@ -264,7 +270,9 @@ using the mutually defined \Fun{lookups}.
 
 For clarity, we include the type of the
 index \Var{i} (the argument of the \Con{there} constructor) as a
-comment. In the type of \Var{i}, the value that \Data{Fin} is applied
+comment. In Agda, comments are colored \Str{red} and
+are prefixed by a dash.
+In the type of \Var{i}, the value that \Data{Fin} is applied
 to corresponds to the value of \Var{n} in \textbf{Case 2}.
 
 \paragraph{Dependent Pair}
@@ -571,8 +579,15 @@ injection. The \Fun{splitFin}
 function helps us do this.
 
 \begin{code}
-  splitFin : (n m : ℕ) → Fin (n + m) → Fin n ⊎ Fin m
+  splitFin : (n m : ℕ) (i : Fin (n + m)) → Fin n ⊎ Fin m
 \end{code}
+
+We only need to define \Fun{splitFin} by pattern matching on the first
+(\Var{n}) and third (\Var{i}) arguments, but not the second argument
+(\Var{m}). This is related to the fact
+that addition (\Fun{+}) is defined by pattern matching on its first
+argument, so we only need to match \Var{n} (not \Var{m}) for
+the type of \Var{i}, namely \Data{Fin} (\Var{n} \Fun{+} \Var{m}), to reduce.
 
 Because \Fun{lookup} is defined as a depth-first search, the
 \Fun{splitFin} function must be left-biased
