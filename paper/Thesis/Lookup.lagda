@@ -173,9 +173,9 @@ module _ where
 
 \begin{code}
    lookup : (A : `Set) (a : ⟦ A ⟧)
-     → Fin (count A a) → Σ Set (λ A → A)
+     → Fin (count A a) → Σ Set (λ T → T)
    lookups : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫)
-    (i : Fin (counts D R xs)) → Σ Set (λ A → A)
+    (i : Fin (counts D R xs)) → Σ Set (λ T → T)
 \end{code}
 
 The first component of the pair corresponds to the computational
@@ -210,7 +210,7 @@ Below, we restate the type of \Fun{lookup}, and then define
 types, \textit{and} its \Data{Fin} indices.
 
 \begin{code}
-  lookup : (A : `Set) (a : ⟦ A ⟧) → Fin (count A a) → Σ Set (λ A → A)
+  lookup : (A : `Set) (a : ⟦ A ⟧) → Fin (count A a) → Σ Set (λ T → T)
 \end{code}
 
 Before we actually define \Fun{lookup}, let's consider what the type
@@ -358,7 +358,7 @@ descriptions, \textit{and} its \Data{Fin} indices.
 
 \begin{code}
   lookups : {O : `Set} (D R : `Desc O) (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫)
-    → Fin (counts D R xs) → Σ Set (λ A → A)
+    → Fin (counts D R xs) → Σ Set (λ T → T)
 \end{code}
 
 We will also classify the cases in the definition of \Fun{lookups} by

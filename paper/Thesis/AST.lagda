@@ -180,7 +180,7 @@ module AST where
 
 First, let's define \Fun{astInd} fully generically over all
 descriptions and their fixpoints. Below, we restate the type
-of \Fun{astInd}, and define the only case to that needs to be
+of \Fun{astInd}, and define the only case that needs to be
 considered, the case for the lone \Con{init}ial algebra
 constructor of \Data{μ₁}.
 
@@ -375,3 +375,73 @@ The single element of the returned list is a childless \Con{non} node
 (because the type of \Con{tt} is \Data{⊤}, which is non-inductive).
 The name of the \Con{non} is ``tt'', after the name of the trivial
 value \Con{tt}.
+
+\subsection{Generic Template}
+
+We conclude this chapter by presenting a generic template that can be
+used to define fully generic algorithms. If the return type of a
+fully generic algorithm is \textit{not} dependent on its inputs, then
+the algorithm can be implemented by mutually defining 2 functions.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  postulate
+   ⋯ : Set
+\end{code}}
+
+\begin{code}
+   generic : (A : `Set) → ⟦ A ⟧ → ⋯
+   generics : {O : `Set} (D R : `Desc O) → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ → ⋯
+\end{code}
+
+The first function (\Fun{generic}) is defined over
+all closed types (\Data{`Set}) and their values.
+The second function (\Fun{generics}) is
+defined over all closed descriptions (\Data{`Data})
+and arguments of the described \Con{init}ial algebra.
+
+If the return type of a
+fully generic algorithm \textit{is} dependent on its inputs, then
+the algorithm can be implemented by mutually defining 4 functions.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  postulate
+\end{code}}
+
+\begin{code}
+   Generic : (A : `Set) → ⟦ A ⟧ → Set
+   generic : (A : `Set) (a : ⟦ A ⟧) → Generic A a
+   Generics : {O : `Set} (D R : `Desc O) → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ → Set
+   generics : {O : `Set} (D R : `Desc O)
+     (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫) → Generics D R xs
+\end{code}
+
+The 2 uppercase functions (\Fun{Generic} and \Fun{Generics}) determine
+the return types of the 2 lowercase functions
+(\Fun{generic} and \Fun{generics}).
+Alternatively, we may mutually
+define 2 functions that return dependent pairs (\Data{Σ}).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  postulate
+\end{code}}
+
+\begin{code}
+   generic : (A : `Set) (a : ⟦ A ⟧) → Σ Set (λ T → T)
+   generics : {O : `Set} (D R : `Desc O)
+     (xs : ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫) → Σ Set (λ T → T)
+\end{code}
+
+The first component of the pair corresponds to the generic dependent
+type of the function (\Fun{Generic} and \Fun{Generics}),
+and the second component corresponds to its
+generic inhabitant (formerly \Fun{generic} and \Fun{generics},
+from the 4 mutually defined functions).
