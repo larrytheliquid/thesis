@@ -36,7 +36,7 @@ In this section we present a naive failing attempt at creating a
 because it actually defines an \textit{open} universe.
 We will define a universe similar to the
 \textit{Closed Well-Order Types} of \refsec{wtypes}, but replacing
-\Data{W} with \Data{μ₁}, and
+\Data{W} with \Data{μ₁} (of \refapen{openalg}), and
 adding the identity (or equality) type \Data{Id}.
 First, let's remind ourselves of the definitions of the identity type, and
 the type of fixpoints for inductive-recursive definitions.
@@ -245,7 +245,7 @@ In those universes, the kind (\Data{Set₁})
 of types (\Data{Set}) is the only kind in town. Now we create the
 \textit{Closed Inductive-Recursive Types} universe, where we
 additionally account for the kind (\Data{Set₁})
-of descriptions (\Data{Desc}).
+of descriptions (\Data{Desc} of \refapen{openalg}).
 \footnote{
   The ``type'' of types is actually a \textit{kind}
   because \Data{Set} : \Data{Set₁}. Similarly,
@@ -381,6 +381,8 @@ closed universe of descriptions (\Data{`Desc}), are merely
 \textit{types} (\Data{Set}). Moreover, a measure of success for closing
 a universe is the ability to fit
 it in the size of types (\Data{Set}) rather kinds (\Data{Set₁}).
+The closed universe of algebraic types presented in this section can
+also be found in \refapen{closed}.
 
 \subsection{Examples}\label{sec:closedeg}
 
@@ -389,7 +391,8 @@ types and constructors using the universe of \textit{open}
 inductive-recursive types (\refsec{iralgmod}). Now, we repeat these
 examples in our \textit{closed} universe (\refsec{closed}).
 
-Datatypes encoded with \textit{open descriptions} can use any
+Datatypes encoded with \textit{open descriptions}
+(\refapen{openalg}) can use any
 \textit{open type} (\Data{Set}) for the \Var{O} parameter of descriptions
 (\Data{Desc}), and the \Var{A} argument of \Con{σ} and \Con{δ}. In
 contrast, \textit{closed descriptions} (\Data{`Desc})

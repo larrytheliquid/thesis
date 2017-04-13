@@ -647,7 +647,13 @@ the fixpoint (\AgdaFun{μ}) as a dependent pair consisting of a
 type component (\AgdaData{μ₁}) and a decoding function
 component (\AgdaFun{μ₂}). We define these 3 constructions
 (a type synonym \AgdaFun{μ}, a datatype \AgdaData{μ₁}, and
-a function \AgdaFun{μ₂}) mutually below. 
+a function \AgdaFun{μ₂}) mutually below.\footnote{
+  The type \Data{μ₁} and the function
+  \Fun{μ₂} in this section can only be defined by disabling Agda's
+  positivity and termination checkers. In \refsec{iralgagda}, we
+  present an alternative model that need not disable any
+  Agda checkers.
+  }
 
 \AgdaHide{
 \begin{code}
@@ -1181,3 +1187,94 @@ component of the pair. Additionally, \Con{cons} destructs its
 components \Var{xs} and \Var{q}.
 
 \subsection{Agda Model}\label{sec:iralgagda}
+
+In previous sections on
+non-dependent types (\refsec{nondepalgmod}),
+infinitary types (\refsec{infalgmod}),
+and dependent types (\refsec{depalgmod}),
+the formal model (i.e. a model in type theory)
+and the Agda model (i.e. a model in an implementation of type theory)
+corresponded. Unfortunately, this is not the case for the formal model
+presented for inductive-recursive types in \refsec{iralgmod}.
+
+Although we used Agda syntax in the formal model of \refsec{iralgmod},
+we had to turn off the positivity and termination checkers when
+inductive-recursively defining the fixpoint datatype (\Data{μ₁}) and
+its decoding function (\Fun{μ₂}). Even though Agda (the
+implementation of type theory that we are using) cannot confirm that
+this definition preserves consistency, Dybjer and Setzer have proven
+the consistency of the construction in a model of set theory (extended
+by the Mahlo cardinal)~\cite{inductionrecursion1}.
+
+To pass Agda's positivity and termination checkers,
+we define the following
+Agda model as an alternative to the formal model in \refsec{iralgmod}.
+Our Agda model mutually defines the pattern functor
+interpretation functions (\Fun{⟦\_⟧₁} for the interpretation of types,
+and \Fun{⟦\_⟧₂} for the interpretation of decoding functions),
+along with the inductive-recursive fixpoint type \Data{μ₁}
+and fixpoint decoding function (\Fun{μ₂}).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open De
+ private
+\end{code}}
+
+\begin{code}
+  mutual
+    ⟦_⟧₁ : {O : Set} (D R : Desc O) → Set
+    ⟦ `ι o ⟧₁ R = ⊤
+    ⟦ `σ A D ⟧₁ R = Σ A (λ a → ⟦ D a ⟧₁ R)
+    ⟦ `δ A D ⟧₁ R = Σ (A → μ₁ R) λ f → ⟦ D (λ a → μ₂ R (f a)) ⟧₁ R
+  
+    ⟦_⟧₂ : {O : Set} (D R : Desc O) → ⟦ D ⟧₁ R → O
+    ⟦ `ι o ⟧₂ R tt = o
+    ⟦ `σ A D ⟧₂ R (a , xs) = ⟦ D a ⟧₂ R xs
+    ⟦ `δ A D ⟧₂ R (f , xs) = ⟦ D (λ a → μ₂ R (f a)) ⟧₂ R xs
+ 
+    data μ₁ {O : Set} (D : Desc O) : Set where
+      init : ⟦ D ⟧₁ D → μ₁ D
+ 
+    μ₂ : {O : Set} (D : Desc O) → μ₁ D → O
+    μ₂ D (init xs) = ⟦ D ⟧₂ D xs
+\end{code}
+
+Notice that the types of the pattern functor interpretation
+functions (\Fun{⟦\_⟧₁} and \Fun{⟦\_⟧₂}) have changed.
+In the type of the interpretation functions,
+the \Var{R} argument is now
+a description (\Data{Desc} \Var{O}),
+instead of a slice (\Fun{Set/} \Var{O}).
+Because \Var{R} is now a description (rather than a slice),
+partially applying a description \Var{D} to the
+interpretation function (\Fun{⟦\_⟧}, defined as the dependent pair
+of \Fun{⟦\_⟧₁} and \Fun{⟦\_⟧₂} in \refsec{iralgmod})
+no longer results in a pattern endofunctor on
+slices. While we lose some of the beautiful correspondence with our
+categorical model, we have effectively inlined a specialized version
+of the interpretation functions that allows Agda to confirm that
+the type fixpoint component (\Data{μ₁})
+is positive and that the decoding function fixpoint component
+(\Fun{μ₂}) terminates.
+
+All examples of inductive-recursive type encodings
+(\refsec{iralgtps}) still work.
+This is because our examples of type formers and constructors only
+rely on the interfaces exposed by \Data{μ₁} and \Fun{μ₂},
+so changing their implementations to mutually
+be defined in terms of \Fun{⟦\_⟧₁} and \Fun{⟦\_⟧₂} does not break
+anything. 
+
+Finally, this construction of open algebraic types
+can also be found in \refapen{openalg}.
+In the Appendix, we remove backticks from the \Data{Desc}
+constructor names, so that we may distinguish open descriptions
+from closed descriptions in \refchap{closed}.
+We also change the \Var{O} parameter
+of \Data{μ₁} to be an explicit argument.
+The primitive types assumed in the
+construction of \refapen{openalg}
+are defined in \refapen{openprim}.
+
