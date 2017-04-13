@@ -110,8 +110,11 @@ module _ where
 
 Before implementing the fully generic marshalling functions, we
 consider the functions involved and their generic types.
-Two functions (\Fun{ast} and \Fun{asts}, below) are unsurprising, but we
-define one extra generic function (\Fun{astInd}, below).
+Two functions are unsurprising: \Fun{ast} defined over all
+closed types (\Data{`Set}) and \Fun{asts} defined over all
+closed descriptions (\Data{`Desc}). But, we will
+define one extra generic function, named \Fun{astInd},
+also over all closed descriptions (\Data{`Desc}).
 
 As expected, we will define (in \refsec{ast}) \Fun{ast} to fully
 generically translate any value to an \Data{AST}.

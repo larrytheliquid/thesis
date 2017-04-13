@@ -221,6 +221,12 @@ all descriptions (\Var{D}), but also a copy (\Var{R}) of the original
 \textit{complete} description that it can use to count infinitary
 arguments in the closed \Con{`δ} case.
 
+In summary, we define how to generically count values of the closed
+universe in terms of 2 mutually defined functions,
+\Fun{count} and \Fun{counts}. The first is defined over all closed
+types (\Data{`Set}) and the second is defined over all closed
+descriptions (\Data{`Desc}).
+
 \subsection{Counting All Values}\label{sec:count}
 
 First, let's define \Fun{count} fully generically for all values of
