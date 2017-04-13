@@ -315,7 +315,7 @@ rather than $n$ nested pairs. This is why each case of
 The non-inductive argument case results in a list whose
 head is the \Fun{AST} of the non-inductive argument (\Var{a}),
 and whose tail is the \Data{List} of \Data{AST}s for
-the reamining arguments (\Var{xs}).
+the remaining arguments (\Var{xs}).
 
 \begin{code}
   asts (`σ A D) R (a , xs) = ast A a ∷ asts (D a) R xs
@@ -327,7 +327,7 @@ The inductive argument case results in a list whose
 head is the \Fun{AST} of the
 inductive argument (\Var{f} \Con{tt}),
 and whose tail is the \Data{List} of \Data{AST}s for
-the reamining arguments (\Var{xs}).
+the remaining arguments (\Var{xs}).
 
 \begin{code}
   asts (`δ `⊤ D) R (f , xs) =
@@ -349,7 +349,7 @@ occurrence, so we choose \Con{false} as the argument to \Fun{astInd}.
 The infinitary argument case results in a list whose
 head is a childless \Con{lam} node, 
 and whose tail is the \Data{List} of \Data{AST}s for
-the reamining arguments (\Var{xs}).
+the remaining arguments (\Var{xs}).
 
 \begin{code}
   asts (`δ A D) R (f , xs) = tree lam [] ∷ asts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs

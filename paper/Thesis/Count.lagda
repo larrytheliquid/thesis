@@ -104,7 +104,7 @@ module _ where
 The intuition (presented in \refsec{naivegfun} of the introduction)
 behind the closed \Fun{count} function is largely correct. The only
 difference is that we have renamed \Data{Type} to \Data{`Set}, to
-notationally emphasize that its intepretation as a \Data{Set} is
+notationally emphasize that its interpretation as a \Data{Set} is
 obtained by ``removing the backtick''.
 
 However, the intuition behind the closed \Fun{countμ} function is
@@ -594,7 +594,7 @@ aid in the legibility of encoded values, refer to
 The edges of \reffig{one} are labeled according to a
 depth-first traversal of nodes (where 0 is an implicit edge for the
 root node). Because \Fun{count} (and \Fun{counts})
-traverses in a depth-first manner, each edge respresents the aggregate
+traverses in a depth-first manner, each edge represents the aggregate
 count at the time \Fun{count} is called for the corresponding node.
 Note that the result of applying \Fun{count} to the root node is 1
 plus the final edge (1 + 5, above).

@@ -42,7 +42,7 @@ length of the vector. Recall the type of finite sets from
 \end{code}
 
 We think of the the type of finite sets acts as a 0-based index whose
-maxium value is the natural number that \Data{Fin} is applied
+maximum value is the natural number that \Data{Fin} is applied
 to, minus 1. For all
 \Var{n}, there are \Var{n} inhabitants of \Data{Fin} \Var{n}
 (representing indices 0 through $n$-1), where
@@ -97,7 +97,7 @@ lookup, except \Fun{length} (calculating the bound of index
 \Data{Fin}) is replaced by our fully generic \Fun{count}
 from \refsec{gcount}. Recall that \Fun{count} sums the number of nodes
 in a generic value according to a depth-first traversal. Therefore,
-\Fun{lookup}ing up a node in a generic value corresponds to supplying
+looking up a node in a generic value (using \Fun{lookup}) corresponds to supplying
 a \Data{Fin} index representing the depth-first label of the node
 (seen in the figures of \refsec{gcount:egs}).
 
@@ -767,7 +767,7 @@ we get \Fun{one} (visualized by \reffig{one}).
 To make lookups of higher positions more readable,
 we use a helper function (\Fun{\#}) coercing natural numbers
 to finite sets by converting \Con{zero} to \Con{here},
-and \Con{suc} to \Con{there}. Therfore,
+and \Con{suc} to \Con{there}. Therefore,
 we can repeat the \Fun{lookup₂} of
 position 2 above as follows.
 

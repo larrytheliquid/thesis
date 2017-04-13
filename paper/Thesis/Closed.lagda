@@ -60,7 +60,7 @@ module _ where
 The identity type allows us to propositionally state that two values
 (\Var{x} and \Var{y}) are equal. If they are indeed equal,
 the constructor \Con{refl} serves as a proof of the proposition.
-In previous parts of this disseration, we used an infix
+In previous parts of this dissertation, we used an infix
 version of the identity type (\Data{≡}), in which the type of the
 compared values is implicit. Here, we use \Data{Id} so we can
 explicitly refer to the type (\Var{A}) of the compared values.
@@ -79,7 +79,7 @@ In the vector example of \refsec{iralgtps} we saw that \textit{indexed types}
 can be derived from \textit{inductive-recursive types} and
 \textit{equality constraints}
 (i.e. use of identity type). In our universe below, we want to encode
-indexed types in addition to inductie-recursive types, thus we
+indexed types in addition to inductive-recursive types, thus we
 replace \Con{`W} with \Con{`μ₁}, \textit{and} add
 \Con{`Id}.
 
@@ -218,7 +218,7 @@ of the Agda metalanguage to construct a \Data{Desc}),
 but not in a \textit{closed} universe (where we need to restrict
 \Data{Desc} to only be constructed from closed types,
 or \Con{`Set}s).
-We overcome these problems, by truly defning \Data{`Set} as a
+We overcome these problems, by truly defining \Data{`Set} as a
 \textit{closed} universe (in terms of a closed equivalent of descriptions,
 named \Data{`Desc}), in the next section.
 
@@ -1569,7 +1569,7 @@ is to create codes for types (\Data{`Set}) \textit{mutually} with
 codes for descriptions (\Data{`Desc}). At first, this may seem odd
 because descriptions (\Data{Desc}) can already be viewed as codes
 (whose interpretation function is the fixpoint operator \Data{μ₁}).
-Hence, \Data{`Desc} can be viewed as a a code for codes. However, this
+Hence, \Data{`Desc} can be viewed as a code for codes. However, this
 is necessary because \Data{Desc} codes are \textit{open descriptions},
 while \Data{`Desc} codes are \textit{closed descriptions}.
 
@@ -1621,7 +1621,7 @@ In order to perform fully generic programming, our original goal
 was to create a closed universe of \textit{types}. This universe
 corresponds to the first universe in a hierarchy of universes
 (we define the hierarchy in \refchap{hier}). For the first universe to
-be adquate, it should contain all possible \textit{small values}.
+be adequate, it should contain all possible \textit{small values}.
 In other words, \Data{`Set} should encode \textit{types}
 like \Con{`Bool}, \Con{`Σ}, and \Con{`Vec}, whose elements are small values.
 However, it should \textit{not} encode \textit{kinds} like
@@ -1791,7 +1791,7 @@ The consequence is that fixpoints can be defined as a
 inhabitants are (small) \textit{values}. It would be inadequate to
 model algebraic datatypes (like natural numbers or vectors) at the
 level of kinds, because users expect to declare them as types.
-Siginficantly, by defining closed descriptions (\Data{`Desc}) mutually
+Significantly, by defining closed descriptions (\Data{`Desc}) mutually
 with closed types (\Data{`Set}), we preserve the adequate encoding of
 \Con{`μ₁} as a closed \textit{type}, allowing our formal model of
 closed algebraic datatypes (like in \Fun{`ℕ} and \Fun{`Vec} in
@@ -1823,7 +1823,7 @@ of kind \Data{Set} as a formal argument, there is no choice but to
 make \Data{HList} a kind (\Data{Set₁}). We could imagine indexing
 \Data{HList} by the collection of types it contains, and then using
 our trick to turn the index into a parameter. However, this would not
-adquately define heterogenous lists, because the types of elements would
+adequately define heterogenous lists, because the types of elements would
 be statically determined.
 For similar reasons, the descriptions (\Data{Desc}) must be a kind,
 rather than a type.
