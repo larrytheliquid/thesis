@@ -1,7 +1,6 @@
 \AgdaHide{
 \begin{code}
 module _ where
-open import Data.Nat
 open import Data.Sum
 open import Relation.Binary.PropositionalEquality
 open import Function
@@ -46,12 +45,109 @@ $$
 \Data{Set}_{\Var{n}} : \Data{Set}_{\Con{suc}~\Var{n}}
 $$
 
+There are 3 primary things we achieve by creating a closed hierarchy
+of universes:
+\begin{enumerate}
+\item We can encode formers and constructors of kinds (as well as
+  superkinds, etc.) in the closed hierarchy. This includes the two
+  primitive kinds, closed types (\Con{`Set}) and
+  closed descriptions (\Con{`Desc}). It also includes closed algebraic
+  user-declared kinds, such as heterogenous lists (\Fun{`HList}).
+\item We can write \textit{leveled} fully generic functions.
+  By this we mean universe polymorphic fully generic functions,
+  which can be applied to members of any universe in the hierarchy.
+  Hence, we can extend fully generic functions
+  (like \Fun{count}, \Fun{lookup}, \Fun{ast}, etc.)
+  from working over all types and their values,
+  to working over all kinds and their types
+  (and all superkinds and their kinds, etc.).
+\item We can \textit{internalize} the kind (and superkind, etc.)
+  signatures of formers, constructors, and functions, by writing them
+  as the meaning of a closed code in our universe.
+\end{enumerate}
+
+Let's clarify what we mean by the third point, above.
+Throughout this disseration we have written the signatures of
+closed formers, constructors, and functions using our Agda metatheory,
+which is \textit{external} to our closed universe. For example,
+consider the \textit{type} signature of the \Fun{suc}cessor of closed
+natural numbers, below.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Closed
+ private 
+  postulate
+   `ℕ : `Set
+\end{code}}
+
+\begin{code}
+   suc : (n : ⟦ `ℕ ⟧) → ⟦ `ℕ ⟧
+\end{code}
+
+The type signature of \Fun{suc} uses Agda's \textit{open} dependent
+function type (→). Instead, we may \textit{internalize} the type
+signature of \Fun{suc} as the meaning (\Fun{⟦\_⟧})
+of a \textit{closed} dependent
+function (\Con{`Π}).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Closed
+ private 
+  postulate
+   `ℕ : `Set
+\end{code}}
+
+\begin{code}
+   suc : ⟦ `Π `ℕ (λ n → `ℕ) ⟧
+\end{code}
+
+Another way to look at it, is that we can fit the entire type
+signature of \Fun{suc} into the meaning brackets (\Fun{⟦\_⟧}),
+as a single closed type (\Data{`Set}).
+In contrast, let's consider the \textit{kind} signature of the
+\Fun{cons} constructor of closed parameterized lists.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Closed
+ private 
+  postulate
+   `List : `Set → `Set
+\end{code}}
+
+\begin{code}
+   cons : (A : `Set) (a : ⟦ A ⟧) (xs : ⟦ `List A ⟧) → ⟦ `List A ⟧
+\end{code}
+
+We cannot internalize the \textit{kind} signature of the \Fun{cons}
+function. Even though \Fun{cons} returns a list value, its signature
+is kinded because the \Var{A} argument is a kind (\Data{`Set}).
+We would like to internalize the kind of \Fun{cons} as
+3 nested uses of \Con{`Π}
+(for arguments \Var{A}, \Var{a}, and \Var{xs}).
+However, the domain of the first \Con{`Π}
+would need to be a constructor of closed kinds (\Con{`Set}),
+which does not exist in the universe of closed types
+(\refapen{closed}).
+
+Similarly, we cannot internalize the kind signature of fully generic
+functions (like \Fun{count}), because they need to equantify over all
+closed types. By defining a closed hierarchy of universes
+in \refsec{hierir}, we \textit{can} internalize
+kind (and superkind, etc.) signatures,
+thereby fitting them within meaning brackets.
 
 \section{Closed Hierarchy of Well-Order Types}\label{sec:hierw}
 
 \AgdaHide{
 \begin{code}
 module _ where
+ open import Data.Nat
  private 
   {-# NO_POSITIVITY_CHECK #-}
 \end{code}}
@@ -80,6 +176,7 @@ module _ where
 \AgdaHide{
 \begin{code}
 module _ where
+ open import Data.Nat
  private 
 \end{code}}
 
