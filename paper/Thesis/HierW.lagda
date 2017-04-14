@@ -147,24 +147,132 @@ thereby fitting them within meaning brackets.
 
 \section{Closed Hierarchy of Well-Order Types}\label{sec:hierw}
 
+In this section we extend the
+\textit{Closed Well-Order Types} universe of \refsec{wuni} to a closed
+hierarchy of universes. At first, we present a
+formal model (in \refsec{hierwi}) of the hierarchy.
+Agda (the implementation of type theory we use
+in this dissertation) does not recognize our definition of the
+universe hierarchy type to be positive. However, we explain why the
+formal model presented in this section is consistent, and use it as
+motivation to define a model (in \refsec{hierwp}) that Agda
+recognizes as positive.
+
+By extending the \textit{Closed Well-Order Types} universe to a
+hierarchy, we can explain how a hierarchy is formalized in a simpler
+setting where \Data{Set} is the only kind being closed over. With this
+background material under our belt, we move on to extending
+the \textit{Closed Inductive-Recursive Types} universe
+in \refsec{hierir}. There, we must close over a hierarchy
+involving two kinds,
+\Data{Set} and \Data{Desc}.
+
+\subsection{Formal Model}\label{sec:hierwi}
+
+Now we define a formal model of a
+\textit{Closed Hierarchy of Well-Order Universes}.
+We do this by mutually defining a type of
+universe codes (\Data{`Set[\_]}), \textit{indexed}
+by the natural numbers, and a
+meaning function (\Fun{⟦\_∣\_⟧})
+mapping a universe in the hierarchy to an
+Agda type (i.e. a type of our metalanguage).
+
+The natural number index represents the universe level, in a hierarchy
+of universes. For example,
+\Data{`Set[ \Num{0} ]} models closed types
+(whose open equivalent is \Data{Set}),
+\Data{`Set[ \Num{1} ]} models closed kinds
+(whose open equivalent is \Data{Set₁}),
+\Data{`Set[ \Num{2} ]} models closed superkinds
+(whose open equivalent is \Data{Set₂}),
+and so on.
+
+
 \AgdaHide{
 \begin{code}
 module _ where
  open import Data.Nat
  private 
   {-# NO_POSITIVITY_CHECK #-}
+  mutual
 \end{code}}
 
+\paragraph{Closed Hierarchy of Universes}
+
+First, we state the type former for our indexed universe hierarchy
+type.
+
 \begin{code}
-  mutual
     data `Set[_] : ℕ → Set where
+\end{code}
+
+The name of the indexed type (\Data{`Set[\_]}) is Agda syntax for
+defining an infix operator, such that natural number indices
+appear where the underscore is located.
+
+\paragraph{Closed Types}
+
+Now let's define the closed types. The closed types inhabit
+\Data{`Set[ \Num{0} ]}, where the natural number index is 0, encoding
+the zeroth universe of types.
+However, we want a version of all closed types
+(especially closed type formers like \Con{`Π}) to appear at higher
+universes as well.
+
+\begin{code}
       `⊥ `⊤ `Bool : ∀{ℓ} → `Set[ ℓ ]
       `Σ `Π `W : ∀{ℓ} (A : `Set[ ℓ ]) (B : ⟦ ℓ ∣ A ⟧ → `Set[ ℓ ]) → `Set[ ℓ ]
       `Id : ∀{ℓ} (A : `Set[ ℓ ]) (x y : ⟦ ℓ ∣ A  ⟧) → `Set[ ℓ ]
+\end{code}
+
+Above, the index in the codomain of all constructors is \Var{ℓ}. Thus,
+we have defined closed types as the special case where \Var{ℓ} is \Num{0},
+and a copy of the closed types at all higher levels.
+
+\paragraph{Closed Kinds}
+
+Now let's define the closed kinds.
+The closed types inhabit
+\Data{`Set[ \Num{1} ]}, where the natural number index is 1, encoding
+the first universe of kinds.
+We also want a version of all closed kinds
+to appear at higher universes.
+
+\begin{code}
       `Set : ∀{ℓ} → `Set[ suc ℓ ]
       `⟦_⟧ : ∀{ℓ} → `Set[ ℓ ] → `Set[ suc ℓ ]
+\end{code}
 
+Above, the index in the codomain of all constructors is
+\Con{suc} \Var{ℓ}. Thus,
+we have defined closed kinds as the special case where \Var{ℓ} is \Num{0},
+and a copy of the closed kinds at all higher levels.
+
+At universe level 1,
+\Con{`Set} is the closed kind of types
+(\Con{`Set} : \Data{`Set[ \Num{1} ]}). At universe level 0,
+the \Con{`Set} constructor is uninhabited because its index specifies
+that it should be greater than or equal to 1.
+
+We have also added a closed meaning function constructor
+(\Con{`⟦\_⟧}), allowing us to \textit{lift} a \textit{type} from the previous
+universe to be a \textit{kind} in the current universe.
+The closed meaning function (\Con{`⟦\_⟧}), or type lifting operator,
+ensures that our universes form a \textit{hierarchy}.
+This is because we can apply the type lifting operator \Con{`⟦\_⟧}
+to any universe \Data{`Set[ \Var{ℓ} ]}, making it a member
+of the subsequent universe \Data{`Set[ \Con{suc}~\Var{ℓ} ]}. 
+
+\paragraph{Meaning of Closed Hierarchy of Universes}
+
+\begin{code}
     ⟦_∣_⟧ : (ℓ : ℕ) → `Set[ ℓ ] → Set
+\end{code}
+
+\paragraph{Meaning of Closed Types}
+
+\begin{code}
     ⟦ ℓ ∣ `⊥ ⟧ = ⊥
     ⟦ ℓ ∣ `⊤ ⟧ = ⊤
     ⟦ ℓ ∣ `Bool ⟧ = Bool
@@ -172,9 +280,17 @@ module _ where
     ⟦ ℓ ∣ `Π A B ⟧ = (a : ⟦ ℓ ∣ A ⟧) → ⟦ ℓ ∣ B a ⟧
     ⟦ ℓ ∣ `W A B ⟧ = W ⟦ ℓ ∣ A ⟧ (λ a → ⟦ ℓ ∣ B a ⟧)
     ⟦ ℓ ∣ `Id A x y ⟧ = Id ⟦ ℓ ∣ A ⟧ x y
+\end{code}
+
+
+\paragraph{Meaning of Closed Kinds}
+
+\begin{code}
     ⟦ suc ℓ ∣ `Set ⟧ = `Set[ ℓ ]
     ⟦ suc ℓ ∣ `⟦ A ⟧ ⟧ = ⟦ ℓ ∣ A ⟧
 \end{code}
+
+\subsection{Agda Model}\label{sec:hierwp}
 
 \AgdaHide{
 \begin{code}
@@ -231,6 +347,6 @@ module _ where
   ⟦ ℓ ∣ A ⟧ = ⟦ level ℓ / A ⟧
 \end{code}
 
-\section{Closed Hierarchy of Well-Order Types}\label{sec:hierw}
+
 \section{Closed Hierarchy of Inductive-Recursive Types}\label{sec:hierir}
 \section{Leveled Fully Generic Domain}\label{sec:gdom}
