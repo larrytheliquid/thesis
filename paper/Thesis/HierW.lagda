@@ -136,7 +136,10 @@ which does not exist in the universe of closed types
 (\refapen{closed}).
 
 Similarly, we cannot internalize the kind signature of fully generic
-functions (like \Fun{count}), because they need to equantify over all
+functions (like \Fun{count}),
+or even parametrically polymorphic functions
+(like the \Fun{id}entity function),
+because they need to equantify over all
 closed types. By defining a closed hierarchy of universes
 in \refsec{hierir}, we \textit{can} internalize
 kind (and superkind, etc.) signatures,
