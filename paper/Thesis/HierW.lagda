@@ -672,17 +672,62 @@ argument.
 
 \paragraph{Derived Indexed Hierarchy of Universes}
 
+Now we derive closed leveled types
+(\Fun{`Set[\_]}),
+indexed by the natural numbers,
+from pre-closed leveled types (\Data{`SetForm}),
+parameterized by levels (\Data{Level}).
+
+For each natural number, we need to apply
+\Data{`SetForm} to a closed \Data{Level}
+encoding the previous universe in the hierarchy that the natural
+numbers represent. To do so, we define the \Fun{level} function that
+maps each natural number,
+representing the \textit{current} universe,
+to a \Data{Level}, encoding the \textit{previous} universe.
+
 \begin{code}
   level : (ℓ : ℕ) → Level
+\end{code}
+
+If the universe level is 0, then there is no previous universe. Hence,
+we define the previous closed types (\Field{`SetForm})
+to be uninhabited (i.e. the bottom type \Data{⊥}). The meaning function
+\Field{⟦\_/\_⟧} for these previous closed types is also uninhabited, as
+indicated by a $\lambda$ term matching against its empty argument
+(empty parentheses, in an argument position,
+is Agda syntax for matching against a value
+of an uninhabited type).
+
+\begin{code}
   level zero = record
     { `SetForm = ⊥
     ; ⟦_/_⟧ = λ()
     }
+\end{code}
+
+If the universe level is the successor of some natural number, then
+the previous closed types (\Field{`SetForm})
+are the pre-closed types (\Data{`SetForm}), whose parameter is
+instantiated with \Fun{level} applied to the predecessor of the input
+natural number. The previous closed meaning function
+(\Field{⟦\_/\_⟧}) is defined by the previous pre-closed meaning
+function (\Fun{⟦\_/\_⟧}) in the same fashion.
+
+\begin{code}
   level (suc ℓ) = record
     { `SetForm = `SetForm (level ℓ)
     ; ⟦_/_⟧ = ⟦_/_⟧ (level ℓ)
     }
 \end{code}
+
+Thus, we inductively define closed universe \Data{Level}s, for any
+natural number, by applying pre-closed constructions to previous
+closed levels, and defining the zeroth level to be uninhabited.
+
+Finally, we derive (indexed) closed leveled types (and their
+meaning functions) by composing pre-closed types (and their meaning
+functions) with \Fun{level}.
 
 \begin{code}
   `Set[_] : ℕ → Set
@@ -692,6 +737,9 @@ argument.
   ⟦ ℓ ∣ A ⟧ = ⟦ level ℓ / A ⟧
 \end{code}
 
+The \textit{indexed} leveled types are derived from the
+\textit{parameterized} pre-closed types, because the pre-closed types
+are used to define \Fun{level}.
 
 \section{Closed Hierarchy of Inductive-Recursive Types}\label{sec:hierir}
 \section{Leveled Fully Generic Functions}\label{sec:gdom}
