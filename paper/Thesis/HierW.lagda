@@ -598,11 +598,23 @@ different ways.
 
 \paragraph{Meaning of Closed Leveled Types}
 
+Now let's define the meaning function for closed types parameterized
+by the previous universe.
+
 \begin{code}
     ⟦_/_⟧ : (ℓ : Level) → `SetForm ℓ → Set
 \end{code}
 
+The only difference in the syntax of the type signature is that we use
+a slash, instead of a pipe, to distinguish the abstract
+\Data{Level} version of the meaning function (\Fun{⟦\_/\_⟧})
+from the natural number version (\Fun{⟦\_∣\_⟧}).
+
 \paragraph{Meaning of Closed Types}
+
+The meaning of closed types using abstract levels is syntactically
+identical to the natural number version, besides replacing pipes with
+slashes.
 
 \begin{code}
     ⟦ ℓ / `⊥ ⟧ = ⊥
