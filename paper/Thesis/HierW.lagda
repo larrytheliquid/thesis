@@ -484,12 +484,14 @@ Agda fails to recognize as a positive definition.
 
 Now, we define the hierarchy in 2 stages, allowing Agda to recognize
 the positivity of the definition. In the first stage,
-we define a datatype (\Data{`SetForm})
+we define an \textit{open} datatype (\Data{`SetForm}),
 \textit{parameterized} by an abstract notion of the previous universe
 level (\Data{Level}).
-In the second stage, we define the hierarchy (\Fun{`Set[\_]})
-\textit{indexed}
-by the natural numbers, but as a computational type. In other words,
+In the second stage, we define the \textit{closed}
+hierarchy (\Fun{`Set[\_]}) of universes, \textit{indexed}
+by the natural numbers, but as a
+\textit{computational family} (\refsec{compu}).
+In other words,
 we model the indexed definition (\Fun{`Set[\_]})
 by \textit{deriving} it as a
 \textit{function} from the natural numbers to types, and this function
@@ -526,6 +528,9 @@ universe, and the \Field{⟦\_/\_⟧} field represents the closed type meaning
 function from the previous universe.
 Note that \Data{Level} is isomoprhic to the \Data{Univ} record of
 \refsec{gkind}, just with different field names.
+Additionally, note that \Field{`SetForm} is a \Data{Set},
+and the codomain of \Field{⟦\_/\_⟧} is \Data{Set}, so
+\Data{Level} is an \textit{open} kind.
 
 \AgdaHide{
 \begin{code}
@@ -537,6 +542,9 @@ Note that \Data{Level} is isomoprhic to the \Data{Univ} record of
 Next, we state the type former
 of a closed type at an arbitrary level,
 parameterized by the universe at the previous level.
+We plan to fill in the parameter with a closed universe in stage 2 of
+the construction, but we define \Data{`SetForm} parametrically over
+open \Data{Level}s.
 
 \begin{code}
     data `SetForm (ℓ : Level) : Set where
