@@ -628,10 +628,36 @@ slashes.
 
 \paragraph{Meaning of Closed Kinds}
 
+The meaning of closed kinds is interpreted by projecting the field in
+the \Data{Level} record \Var{ℓ} associated with the closed kind being
+interpreted.
+
 \begin{code}
     ⟦ ℓ / `Set ⟧ = Level.`SetForm ℓ
     ⟦ ℓ / `⟦ A ⟧ ⟧ = Level.⟦ ℓ / A ⟧
 \end{code}
+
+The meaning of a closed type (\Con{`Set}) is a
+closed type (\Field{`SetForm}) from the
+previous universe (\Var{ℓ}).
+The meaning of the closed meaning
+function is the meaning function (\Fun{⟦\_/\_⟧})
+from the previous universe (\Var{ℓ}).
+
+\paragraph{Passing Positivity Check}
+
+It the definition of \Data{`SetForm}, the codomain of the \Var{B}
+argument of the \Con{`Σ}, \Con{`Π}, and \Con{`W} constructors is still
+an application of the meaning function (\Fun{⟦\_/\_⟧}).
+However, now the meaning of \Con{`Set} of is an abstract
+\Data{Set} from the \Data{Level} record parameter \Var{ℓ}, whose field
+we happend to call \Field{`SetForm}. This name simply documents that
+we plan to instantiate the field with a \Data{`SetForm} of the
+previous universe, in the second stage of our indexed universe
+hierarchy construction. From the point of view of the definition of
+\Data{`SetForm}, \Field{`SetForm} contains an arbitrary \Data{Set}, so
+posivitiy is not violated when checking the infinitary \Var{B}
+argument.
 
 \paragraph{Derived Indexed Hierarchy of Universes}
 
