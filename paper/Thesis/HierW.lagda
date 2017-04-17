@@ -3,7 +3,7 @@
 module _ where
 open import Data.Sum
 open import Relation.Binary.PropositionalEquality
-open import Function
+open import Function hiding ( id )
 open import Appendix
 open import Data.Product
 open import Data.List
@@ -195,9 +195,8 @@ and so on.
 
 \AgdaHide{
 \begin{code}
-module _ where
- open import Data.Nat
- private 
+module HierWI where
+  open import Data.Nat
   {-# NO_POSITIVITY_CHECK #-}
   mutual
 \end{code}}
@@ -368,12 +367,112 @@ current level. Currently, Agda's positivity checker cannot perform
 such an analysis, so \refsec{hierwp} defines an Agda model that
 reifies our positivity argument in its structure.
 
-
 \subsection{Examples}
+
+Let's consider some examples where we internalize the signatures of
+functions using codes of our universe hierarchy.
 
 \paragraph{Negation Function}
 
+First, we define the negation function (\Fun{not}),
+whose type is defined using a dependent function (→),
+external to our
+closed hierarchy (i.e. from our Agda metalanguage).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open HierWI
+ private
+\end{code}}
+
+\begin{code}
+  not : (b : ⟦ 0 ∣ `Bool ⟧) → ⟦ 0 ∣ `Bool ⟧ 
+  not true = false
+  not false = true
+\end{code}
+
+Note that the signature is a \textit{type} because the universe level
+(i.e. the first argument to the meaning function)
+is 0. Now, we internalize the type signature of negation.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open HierWI
+ private
+\end{code}}
+
+\begin{code}
+  not : ⟦ 0 ∣ `Π `Bool (λ b → `Bool) ⟧
+  not true = false
+  not false = true
+\end{code}
+
+It is good that we can internalize the \textit{type} of negation, but
+we could already do that using our universe of closed types
+in \refsec{wuni}. Our next example (the identity function) shows how
+to internalize a \textit{kind}, which the universe of \refsec{wuni}
+cannot do.
+
 \paragraph{Identity Function}
+
+First, we define the identity function (\Fun{id}),
+whose type is defined using a dependent function (→) external to our
+closed hierarchy.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open HierWI
+ private
+\end{code}}
+
+\begin{code}
+  id : (A : `Set[ 0 ]) (a : ⟦ 0 ∣ A ⟧) → ⟦ 0 ∣ A ⟧ 
+  id A a = a
+\end{code}
+
+The type of the identity function quantifies over all types in the
+zeroth universe. Hence, the universe of closed types
+(in \refsec{wuni}) cannot internalize the signature of \Fun{id},
+because it is a \textit{kind} signature that requires quanitifying
+over all types. The universe of closed types (in \refsec{wuni}) does
+not have a code for closed types (\Con{`Set}), making such a 
+quantification impossible.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open HierWI
+ private
+\end{code}}
+
+\begin{code}
+  id : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
+  id A a = a
+\end{code}
+
+Above, we have internalized the \textit{kind} signature of
+\Fun{id}. The signature is a kind, because the universe level
+(i.e. the first argument to the meaning function) is 1. At
+universe level 1, the closed type constructor \Con{`Set} and closed
+meaning function constructor (\Con{`⟦\_⟧}) are inhabited, allowing us
+to internalize the signature of \Fun{id} as a closed kind.
+
+Note that the argument \Var{A} in the closed kind of \Fun{id} is the
+meaning of \Con{`Set}. At \textit{kind} level 1,
+the meaning function of \Con{`Set}
+returns a closed \textit{type}
+(\Data{`Set[ \Num{0} ]}, at level 0). Hence, the second
+argument of \Fun{id}, and the codomain of \Fun{id}, must lift
+(using \Con{`⟦\_⟧}) the \textit{type} \Var{A}
+(at level 0), so that the entire signature
+of \Fun{id} can be a \textit{kind} (at level 1).
 
 \subsection{Agda Model}\label{sec:hierwp}
 
