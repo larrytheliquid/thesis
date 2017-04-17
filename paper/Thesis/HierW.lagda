@@ -476,12 +476,43 @@ of \Fun{id} can be a \textit{kind} (at level 1).
 
 \subsection{Agda Model}\label{sec:hierwp}
 
+Now we define an Agda model of a
+\textit{Closed Hierarchy of Well-Order Universes}.
+Previously (in \refsec{hierwi}), we defined a formal model of the
+hierarchy as a datatype \textit{indexed} by the natural numbers, which
+Agda fails to recognize as a positive definition.
+
+Now, we define the hierarchy in 2 stages, allowing Agda to recognize
+the positivity of the definition. In the first stage,
+we define a datatype (\Data{`SetForm})
+\textit{parameterized} by an abstract notion of the previous universe
+level (\Data{Level}).
+In the second stage, we define the hierarchy (\Fun{`Set[\_]})
+\textit{indexed}
+by the natural numbers, but as a computational type. In other words,
+we model the indexed definition (\Fun{`Set[\_]})
+by \textit{deriving} it as a
+\textit{function} from the natural numbers to types, and this function
+is defined in terms of the parameterized definition (\Data{`SetForm}).
+Correspondingly, we also define a meaning function abstracted over the
+previous universe level (\Fun{⟦\_/\_⟧}),
+which is used to derive the meaning function
+over all levels (\Fun{⟦\_∣\_⟧}).
+
 \AgdaHide{
 \begin{code}
-module _ where
+module HierWP where
  open import Data.Nat
  private 
 \end{code}}
+
+\paragraph{Abstract Universe Levels}
+
+First, we define the abstract notion of the previous universe
+(whose level is the predecessor of the current universe),
+as the dependent record \Data{Level}. The \Data{Level} record is used
+as the parameter of the type defined in the first stage of our
+hierarchy construction. 
 
 \begin{code}
   record Level : Set₁ where
@@ -490,16 +521,74 @@ module _ where
       ⟦_/_⟧ : `SetForm → Set
 \end{code}
 
+The \Field{`SetForm} field represents a closed type from the previous
+universe, and the \Field{⟦\_/\_⟧} field represents the closed type meaning
+function from the previous universe.
+Note that \Data{Level} is isomoprhic to the \Data{Univ} record of
+\refsec{gkind}, just with different field names.
+
+\AgdaHide{
 \begin{code}
   mutual
+\end{code}}
+
+\paragraph{Closed Leveled Types}
+
+Next, we state the type former
+of a closed type at an arbitrary level,
+parameterized by the universe at the previous level.
+
+\begin{code}
     data `SetForm (ℓ : Level) : Set where
+\end{code}
+
+We name the parameterized closed type \Data{`SetForm}.
+Whereas \Data{`Set[\_]} is \textit{indexed} by natural numbers,
+\Data{`SetForm} is \textit{parameterized} by the previous universe
+level. We call this type \Data{`SetForm}, because we intend to
+``fill in'' the abstract universe level
+(of the ``form'') with a concrete universe in
+the second stage of the construction (i.e. when deriving
+the indexed type \Data{`Set[\_]}).
+
+\paragraph{Closed Types}
+
+The closed type (and copies at higher levels) constructors of our
+parameterized type (\Data{`SetForm})
+are similar to the constructors of the indexed
+formal model (\Data{`Set[\_]}).
+
+\begin{code}
       `⊥ `⊤ `Bool : `SetForm ℓ
       `Σ `Π `W : (A : `SetForm ℓ) (B : ⟦ ℓ / A ⟧ → `SetForm ℓ) → `SetForm ℓ
       `Id : (A : `SetForm ℓ) (x y : ⟦ ℓ / A  ⟧) → `SetForm ℓ
+\end{code}
+
+Compared to \Data{`Set[\_]}, the main difference is that the
+constructors of \Data{`SetForm} do not take the level \Var{ℓ} as a
+formal argument. This is because \Var{ℓ} is now a parameter, hence it
+is an informal and implicit argument of all constructors.
+Importantly,
+this allows \Data{`SetForm} to be a \textit{type}, even though it is
+parameterized by \Data{Level}, which is a \textit{kind}
+(as explained in \refsec{kindparam}).
+
+\paragraph{Closed Kinds}
+
+\begin{code}
       `Set : `SetForm ℓ
       `⟦_⟧ : Level.`SetForm ℓ → `SetForm ℓ
+\end{code}
 
+\paragraph{Meaning of Closed Leveled Types}
+
+\begin{code}
     ⟦_/_⟧ : (ℓ : Level) → `SetForm ℓ → Set
+\end{code}
+
+\paragraph{Meaning of Closed Types}
+
+\begin{code}
     ⟦ ℓ / `⊥ ⟧ = ⊥
     ⟦ ℓ / `⊤ ⟧ = ⊤
     ⟦ ℓ / `Bool ⟧ = Bool
@@ -507,9 +596,16 @@ module _ where
     ⟦ ℓ / `Π A B ⟧ = (a : ⟦ ℓ / A ⟧) → ⟦ ℓ / B a ⟧
     ⟦ ℓ / `W A B ⟧ = W ⟦ ℓ / A ⟧ (λ a → ⟦ ℓ / B a ⟧)
     ⟦ ℓ / `Id A x y ⟧ = Id ⟦ ℓ / A ⟧ x y
+\end{code}
+
+\paragraph{Meaning of Closed Kinds}
+
+\begin{code}
     ⟦ ℓ / `Set ⟧ = Level.`SetForm ℓ
     ⟦ ℓ / `⟦ A ⟧ ⟧ = Level.⟦ ℓ / A ⟧
 \end{code}
+
+\paragraph{Derived Indexed Hierarchy of Universes}
 
 \begin{code}
   level : (ℓ : ℕ) → Level

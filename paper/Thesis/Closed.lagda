@@ -838,7 +838,7 @@ necessary for \Var{f}, within \Con{init}.
 \end{code}
 
 
-\subsection{Kind-Generalized Universes}
+\subsection{Kind-Generalized Universes}\label{sec:gkind}
 
 Because we are claiming that we are formally modeling a closed
 \textit{universe} (\refsec{universes}), we must be able to
