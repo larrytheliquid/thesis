@@ -537,31 +537,34 @@ and the codomain of \Field{⟦\_/\_⟧} is \Data{Set}, so
   mutual
 \end{code}}
 
-\paragraph{Closed Leveled Types}
+\paragraph{Pre-Closed Leveled Types}
 
-Next, we state the type former
-of a closed type at an arbitrary level,
+Next, we state the type former (\Data{`SetForm})
+of a type at an arbitrary level,
 parameterized by the universe at the previous level.
-We plan to fill in the parameter with a closed universe in stage 2 of
-the construction, but we define \Data{`SetForm} parametrically over
-open \Data{Level}s.
+Technically, \Data{`SetForm} is an \textit{open} type, due to its
+use of the open \Data{Level} parameter.
+However, we plan to fill in the parameter with a closed universe in stage 2 of
+the construction. Hence, we refer to \Data{`SetForm}, and associated
+constructions, as being \textit{pre-closed}.
 
 \begin{code}
     data `SetForm (ℓ : Level) : Set where
 \end{code}
 
-We name the parameterized closed type \Data{`SetForm}.
+We name our parameterized pre-closed type ``\Data{`SetForm}''.
 Whereas \Data{`Set[\_]} is \textit{indexed} by natural numbers,
 \Data{`SetForm} is \textit{parameterized} by the previous universe
 level. We call this type \Data{`SetForm}, because we intend to
 ``fill in'' the abstract universe level
-(of the ``form'') with a concrete universe in
+with a concrete universe in
 the second stage of the construction (i.e. when deriving
-the indexed type \Data{`Set[\_]}).
+the indexed type \Data{`Set[\_]}),
+just like we would ``fill in'' a ``form''.
 
-\paragraph{Closed Types}
+\paragraph{Pre-Closed Types}
 
-The closed type constructors of our
+The pre-closed type constructors of our
 parameterized type (\Data{`SetForm})
 are similar to the corresponding constructors of the indexed
 formal model (\Data{`Set[\_]}).
@@ -581,9 +584,9 @@ this allows \Data{`SetForm} to be a \textit{type}, even though it is
 parameterized by \Data{Level}, which is a \textit{kind}
 (as explained in \refsec{kindparam}).
 
-\paragraph{Closed Kinds}
+\paragraph{Pre-Closed Kinds}
 
-The main change in the closed kinds appears in the closed meaning
+The main change in the pre-closed kinds appears in the pre-closed meaning
 function constructor (\Con{`⟦\_⟧}).
 
 \begin{code}
@@ -597,16 +600,16 @@ The indexed closed meaning function constructor takes
 the constructor, we \textit{cannot} return a \Data{`SetForm \Var{ℓ}}, because
 the parameter \Var{ℓ} must remain constant for all constructors.
 However, we \textit{can} make the argument to the constructor be
-a closed type from the previous universe, by projecting
+a pre-closed type from the previous universe, by projecting
 \Field{`SetForm} out of our \Data{Level} record parameter \Var{ℓ}.
 Hence, the argument in the indexed and parameterized version
-of the closed meaning function constructor (\Con{`⟦\_⟧}) both
+of the meaning function constructor (\Con{`⟦\_⟧}) both
 represent a closed type from the previous universe, just in
 different ways.
 
-\paragraph{Meaning of Closed Leveled Types}
+\paragraph{Meaning of Pre-Closed Leveled Types}
 
-Now let's define the meaning function for closed types parameterized
+Now let's define the meaning function for pre-closed types parameterized
 by the previous universe.
 
 \begin{code}
@@ -618,9 +621,9 @@ a slash, instead of a pipe, to distinguish the abstract
 \Data{Level} version of the meaning function (\Fun{⟦\_/\_⟧})
 from the natural number version (\Fun{⟦\_∣\_⟧}).
 
-\paragraph{Meaning of Closed Types}
+\paragraph{Meaning of Pre-Closed Types}
 
-The meaning of closed types using abstract levels is syntactically
+The meaning of pre-closed types using abstract levels is syntactically
 identical to the natural number version, besides replacing pipes with
 slashes.
 
@@ -634,10 +637,10 @@ slashes.
     ⟦ ℓ / `Id A x y ⟧ = Id ⟦ ℓ / A ⟧ x y
 \end{code}
 
-\paragraph{Meaning of Closed Kinds}
+\paragraph{Meaning of Pre-Closed Kinds}
 
-The meaning of closed kinds is interpreted by projecting the field in
-the \Data{Level} record \Var{ℓ} associated with the closed kind being
+The meaning of pre-closed kinds is interpreted by projecting the field in
+the \Data{Level} record \Var{ℓ} associated with the pre-closed kind being
 interpreted.
 
 \begin{code}
@@ -645,10 +648,10 @@ interpreted.
     ⟦ ℓ / `⟦ A ⟧ ⟧ = Level.⟦ ℓ / A ⟧
 \end{code}
 
-The meaning of a closed type (\Con{`Set}) is a
-closed type (\Field{`SetForm}) from the
+The meaning of a pre-closed type (\Con{`Set}) is a
+pre-closed type (\Field{`SetForm}) from the
 previous universe (\Var{ℓ}).
-The meaning of the closed meaning
+The meaning of the pre-closed meaning
 function is the meaning function (\Fun{⟦\_/\_⟧})
 from the previous universe (\Var{ℓ}).
 
