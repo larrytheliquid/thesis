@@ -742,4 +742,38 @@ The \textit{indexed} leveled types are derived from the
 are used to define \Fun{level}.
 
 \section{Closed Hierarchy of Inductive-Recursive Types}\label{sec:hierir}
+
+\subsection{Agda Model}\label{sec:hierir}
+
+Now, we define an Agda model of a
+\textit{Closed Hierarchy of Inductive-Recursive Universes}.
+Just like the Agda model of the
+\textit{Closed Hierarchy of Well-Order Universes} in
+\refsec{hierwp}, we derive closed leveled types and their meaning
+from closed \Fun{level} universes, defined in terms of pre-closed
+constructions parameterized by \Data{Level}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Closed
+ open import Data.Nat
+ private 
+  postulate
+   Level : Set₁
+   `SetForm : Level → Set
+   ⟦_/_⟧ : (ℓ : Level) → `SetForm ℓ → Set
+   level : ℕ → Level
+\end{code}}
+
+\begin{code}
+  `Set[_] : ℕ → Set
+  `Set[ ℓ ] = `SetForm (level ℓ)
+
+  ⟦_∣_⟧ : (ℓ : ℕ) → `Set[ ℓ ] → Set
+  ⟦ ℓ ∣ A ⟧ = ⟦ level ℓ / A ⟧
+\end{code}
+
+
+
 \section{Leveled Fully Generic Functions}\label{sec:gdom}
