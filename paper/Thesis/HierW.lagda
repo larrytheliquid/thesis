@@ -553,9 +553,9 @@ the indexed type \Data{`Set[\_]}).
 
 \paragraph{Closed Types}
 
-The closed type (and copies at higher levels) constructors of our
+The closed type constructors of our
 parameterized type (\Data{`SetForm})
-are similar to the constructors of the indexed
+are similar to the corresponding constructors of the indexed
 formal model (\Data{`Set[\_]}).
 
 \begin{code}
@@ -575,10 +575,26 @@ parameterized by \Data{Level}, which is a \textit{kind}
 
 \paragraph{Closed Kinds}
 
+The main change in the closed kinds appears in the closed meaning
+function constructor (\Con{`⟦\_⟧}).
+
 \begin{code}
       `Set : `SetForm ℓ
       `⟦_⟧ : Level.`SetForm ℓ → `SetForm ℓ
 \end{code}
+
+The indexed closed meaning function constructor takes
+\Data{`Set[ \Var{ℓ} ]} as an argument and returns a
+\Data{`Set[ \Con{suc} \Var{ℓ} ]}. In this parameterized version of
+the constructor, we \textit{cannot} return a \Data{`SetForm \Var{ℓ}}, because
+the parameter \Var{ℓ} must remain constant for all constructors.
+However, we \textit{can} make the argument to the constructor be
+a closed type from the previous universe, by projecting
+\Field{`SetForm} out of our \Data{Level} record parameter \Var{ℓ}.
+Hence, the argument in the indexed and parameterized version
+of the closed meaning function constructor (\Con{`⟦\_⟧}) both
+represent a closed type from the previous universe, just in
+different ways.
 
 \paragraph{Meaning of Closed Leveled Types}
 
