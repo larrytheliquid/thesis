@@ -177,11 +177,19 @@ the previous universe.
 
 \paragraph{Meaning of Pre-Closed Leveled Types}
 
+Let's define the meaning function for pre-closed leveled types,
+having the signature below.
+
 \begin{code}
     ⟦_/_⟧ : (ℓ : Level) → SetForm ℓ → Set
 \end{code}
 
 \paragraph{Meaning of Pre-Closed Types}
+
+The meaning of pre-closed types is no different from
+the well-order hierarchy version (\refsec{hierwp}),
+except we replace the \Con{`W} case with
+the \Con{`μ₁} case.
 
 \begin{code}
     ⟦ ℓ / `⊥ ⟧ = ⊥
@@ -193,7 +201,16 @@ the previous universe.
     ⟦ ℓ / `μ₁ O D ⟧ = μ₁ ⟦ ℓ / O ⟧ ⟪ ℓ / D ⟫
 \end{code}
 
+In the fixpoint case (\Con{`μ₁}), we compute the meaning of the
+description argument (\Var{D}) using the mutually defined
+meaning of leveled pre-closed descriptions
+(\Fun{⟪\_/\_⟫}).
+
 \paragraph{Meaning of Pre-Closed Kinds}
+
+The meaning of each pre-closed kind code is defined using its
+corresponding \Data{Level} field,
+using the previous universe level \Var{ℓ}.
 
 \begin{code}
     ⟦ ℓ / `Set ⟧ = Level.SetForm ℓ
@@ -203,13 +220,33 @@ the previous universe.
     ⟦ ℓ / `μ₁' O D ⟧ = Level.μ₁' ℓ O D
 \end{code}
 
+Note that the arguments of each pre-closed kind code have exactly the
+types expected by the \Data{Level} fields,
+so meaning translations
+(via \Fun{⟦\_/\_⟧} or \Fun{⟪\_/\_⟫}) are unnecessary.
+
 \paragraph{Pre-Closed Leveled Descriptions}
+
+Let's define the meaning function for pre-closed leveled descriptions,
+having the signature below.
 
 \begin{code}
     data DescForm (ℓ : Level) (O : SetForm ℓ) : Set where
 \end{code}
 
+Note that pre-closed leveled descriptions are parameterized by
+\Var{O}, a pre-closed type (\Data{SetForm}) at the same level (\Var{ℓ}) as the current
+pre-closed description (\Data{DescForm}), encoding the codomain of the decoding function
+for this inductive-recursive description.
+
 \paragraph{Pre-Closed Descriptions}
+
+The leveled pre-closed description constructors are just like the
+closed descriptions of \refsec{closed}. The only difference is that we
+replace closed constructions (\Data{`Desc}, \Data{`Set}, and
+\Fun{⟦\_⟧}) with their pre-closed leveled
+counterparts (\Data{DescForm}, \Data{SetForm}, and
+\Fun{⟦\_/\_⟧}), at level \Var{ℓ}.
 
 \begin{code}
       `ι : (o : ⟦ ℓ / O ⟧) → DescForm ℓ O
@@ -221,11 +258,22 @@ the previous universe.
 
 \paragraph{Meaning of Pre-Closed Leveled Descriptions}
 
+Let's define the meaning function for pre-closed leveled descriptions,
+having the signature below.
+
 \begin{code}
     ⟪_/_⟫ : (ℓ : Level) {O : SetForm ℓ} → DescForm ℓ O → Desc ⟦ ℓ / O ⟧
 \end{code}
 
 \paragraph{Meaning of Pre-Closed Descriptions}
+
+The meaning of leveled pre-closed descriptions is also just like the
+meaning of closed descriptions in \refsec{closed}.
+This time we replace closed meaning functions
+(\Fun{⟦\_⟧} and \Fun{⟪\_⟫}) with their pre-closed leveled
+counterparts
+(\Fun{⟦\_/\_⟧} and \Fun{⟪\_/\_⟫}), at level \Var{ℓ}.
+
 
 \begin{code}
     ⟪ ℓ / `ι o ⟫ = ι o
