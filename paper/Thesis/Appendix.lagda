@@ -109,5 +109,87 @@ module Closed where
 \end{code}}
 
 
-%% \chapter{Closed Hierarchy of Universes}\label{apen:hier}
+\chapter{Closed Hierarchy of Universes}\label{apen:hier}
 
+\AgdaHide{
+\begin{code}
+module ClosedHier where
+  open import Data.Nat
+  open Prim
+  open Alg
+\end{code}}
+
+\begin{code}
+  record Level : Set₁ where
+    field
+      SetForm : Set
+      ⟦_/_⟧ : (A : SetForm) → Set
+      DescForm : (O : SetForm) → Set
+      ⟦_/_⟧₁ : {O : SetForm} (D R : DescForm O) → Set
+      μ₁⟦_/_⟧⟪_⟫ : (O : SetForm) (D : DescForm O) → Set
+
+  mutual
+    data SetForm (ℓ : Level) : Set where
+      `⊥ `⊤ `Bool : SetForm ℓ
+      `Σ `Π : (A : SetForm ℓ) (B : ⟦ ℓ / A ⟧ → SetForm ℓ) → SetForm ℓ
+      `Id : (A : SetForm ℓ) (x y : ⟦ ℓ / A  ⟧) → SetForm ℓ
+      `μ₁ : (O : SetForm ℓ) (D : DescForm ℓ O) → SetForm ℓ
+      `Set : SetForm ℓ
+      `⟦_⟧ : Level.SetForm ℓ → SetForm ℓ
+      `Desc : Level.SetForm ℓ → SetForm ℓ
+      `⟦_⟧₁ : {O : Level.SetForm ℓ} (D R : Level.DescForm ℓ O) → SetForm ℓ
+      `μ₁⟦_⟧⟪_⟫ : (O : Level.SetForm ℓ) (D : Level.DescForm ℓ O) → SetForm ℓ
+
+    ⟦_/_⟧ : (ℓ : Level) → SetForm ℓ → Set
+    ⟦ ℓ / `⊥ ⟧ = ⊥
+    ⟦ ℓ / `⊤ ⟧ = ⊤
+    ⟦ ℓ / `Bool ⟧ = Bool
+    ⟦ ℓ / `Σ A B ⟧ = Σ ⟦ ℓ / A ⟧ (λ a → ⟦ ℓ / B a ⟧)
+    ⟦ ℓ / `Π A B ⟧ = (a : ⟦ ℓ / A ⟧) → ⟦ ℓ / B a ⟧
+    ⟦ ℓ / `Id A x y ⟧ = Id ⟦ ℓ / A ⟧ x y
+    ⟦ ℓ / `μ₁ O D ⟧ = μ₁ ⟦ ℓ / O ⟧ ⟪ ℓ / D ⟫
+    ⟦ ℓ / `Set ⟧ = Level.SetForm ℓ
+    ⟦ ℓ / `⟦ A ⟧ ⟧ = Level.⟦ ℓ / A ⟧
+    ⟦ ℓ / `Desc O ⟧ = Level.DescForm ℓ O
+    ⟦ ℓ / `⟦ D ⟧₁ R ⟧ = Level.⟦ ℓ / D ⟧₁ R
+    ⟦ ℓ / `μ₁⟦ O ⟧⟪ D ⟫ ⟧ = Level.μ₁⟦ ℓ / O ⟧⟪ D ⟫
+
+    data DescForm (ℓ : Level) (O : SetForm ℓ) : Set where
+      `ι : (o : ⟦ ℓ / O ⟧) → DescForm ℓ O
+      `σ : (A : SetForm ℓ) (D : ⟦ ℓ / A ⟧ → DescForm ℓ O) → DescForm ℓ O
+      `δ : (A : SetForm ℓ) (D : (o : ⟦ ℓ / A ⟧ → ⟦ ℓ / O ⟧) → DescForm ℓ O)
+        → DescForm ℓ O
+
+    ⟪_/_⟫ : (ℓ : Level) {O : SetForm ℓ} → DescForm ℓ O → Desc ⟦ ℓ / O ⟧
+    ⟪ ℓ / `ι o ⟫ = ι o
+    ⟪ ℓ / `σ A D ⟫ = σ ⟦ ℓ / A ⟧ (λ a → ⟪ ℓ / D a ⟫)
+    ⟪ ℓ / `δ A D ⟫ = δ ⟦ ℓ / A ⟧ (λ o → ⟪ ℓ / D o ⟫)
+
+  level : (ℓ : ℕ) → Level
+  level zero = record
+    { SetForm = ⊥
+    ; ⟦_/_⟧ = λ()
+    ; DescForm = λ O → ⊥
+    ; ⟦_/_⟧₁ = λ ()
+    ; μ₁⟦_/_⟧⟪_⟫ = λ ()
+    }
+  level (suc ℓ) = record
+    { SetForm = SetForm (level ℓ)
+    ; ⟦_/_⟧ = λ A → ⟦ level ℓ / A ⟧
+    ; DescForm = DescForm (level ℓ) 
+    ; ⟦_/_⟧₁ = λ D R → ⟦ ⟪ level ℓ / D ⟫ ⟧₁ ⟪ level ℓ / R ⟫
+    ; μ₁⟦_/_⟧⟪_⟫ = λ O D → μ₁ ⟦ level ℓ / O ⟧ ⟪ level ℓ / D ⟫
+    }
+
+  `Set[_] : ℕ → Set
+  `Set[ ℓ ] = SetForm (level ℓ)
+
+  ⟦_∣_⟧ : (ℓ : ℕ) → `Set[ ℓ ] → Set
+  ⟦ ℓ ∣ A ⟧ = ⟦ level ℓ / A ⟧
+
+  `Desc[_] : (ℓ : ℕ) → `Set[ ℓ ] → Set
+  `Desc[ ℓ ] O = DescForm (level ℓ) O
+
+  ⟪_∣_⟫ : (ℓ : ℕ) {O : `Set[ ℓ ]} → `Desc[ ℓ ] O → Desc ⟦ ℓ ∣ O ⟧
+  ⟪ ℓ ∣ D ⟫ = ⟪ level ℓ / D ⟫
+\end{code}
