@@ -484,7 +484,7 @@ Agda fails to recognize as a positive definition.
 
 Now, we define the hierarchy in 2 stages, allowing Agda to recognize
 the positivity of the definition. In the first stage,
-we define an \textit{open} datatype (\Data{`SetForm}),
+we define an \textit{open} datatype (\Data{SetForm}),
 \textit{parameterized} by an abstract notion of the previous universe
 level (\Data{Level}).
 In the second stage, we define the \textit{closed}
@@ -495,7 +495,7 @@ In other words,
 we model the indexed definition (\Fun{`Set[\_]})
 by \textit{deriving} it as a
 \textit{function} from the natural numbers to types, and this function
-is defined in terms of the parameterized definition (\Data{`SetForm}).
+is defined in terms of the parameterized definition (\Data{SetForm}).
 Correspondingly, we also define a meaning function abstracted over the
 previous universe level (\Fun{⟦\_/\_⟧}),
 which is used to derive the meaning function
@@ -519,16 +519,16 @@ hierarchy construction.
 \begin{code}
   record Level : Set₁ where
     field
-      `SetForm : Set
-      ⟦_/_⟧ : `SetForm → Set
+      SetForm : Set
+      ⟦_/_⟧ : SetForm → Set
 \end{code}
 
-The \Field{`SetForm} field represents a closed type from the previous
+The \Field{SetForm} field represents a closed type from the previous
 universe, and the \Field{⟦\_/\_⟧} field represents the closed type meaning
 function from the previous universe.
 Note that \Data{Level} is isomoprhic to the \Data{Univ} record of
 \refsec{gkind}, just with different field names.
-Additionally, note that \Field{`SetForm} is a \Data{Set},
+Additionally, note that \Field{SetForm} is a \Data{Set},
 and the codomain of \Field{⟦\_/\_⟧} is \Data{Set}, so
 \Data{Level} is an \textit{open} kind.
 
@@ -539,23 +539,23 @@ and the codomain of \Field{⟦\_/\_⟧} is \Data{Set}, so
 
 \paragraph{Pre-Closed Leveled Types}
 
-Next, we state the type former (\Data{`SetForm})
+Next, we state the type former (\Data{SetForm})
 of a type at an arbitrary level,
 parameterized by the universe at the previous level.
-Technically, \Data{`SetForm} is an \textit{open} type, due to its
+Technically, \Data{SetForm} is an \textit{open} type, due to its
 use of the open \Data{Level} parameter.
 However, we plan to fill in the parameter with a closed universe in stage 2 of
-the construction. Hence, we refer to \Data{`SetForm}, and associated
+the construction. Hence, we refer to \Data{SetForm}, and associated
 constructions, as being \textit{pre-closed}.
 
 \begin{code}
-    data `SetForm (ℓ : Level) : Set where
+    data SetForm (ℓ : Level) : Set where
 \end{code}
 
-We name our parameterized pre-closed type ``\Data{`SetForm}''.
+We name our parameterized pre-closed type ``\Data{SetForm}''.
 Whereas \Data{`Set[\_]} is \textit{indexed} by natural numbers,
-\Data{`SetForm} is \textit{parameterized} by the previous universe
-level. We call this type \Data{`SetForm}, because we intend to
+\Data{SetForm} is \textit{parameterized} by the previous universe
+level. We call this type \Data{SetForm}, because we intend to
 ``fill in'' the abstract universe level
 with a concrete universe in
 the second stage of the construction (i.e. when deriving
@@ -565,22 +565,22 @@ just like we would ``fill in'' a ``form''.
 \paragraph{Pre-Closed Types}
 
 The pre-closed type constructors of our
-parameterized type (\Data{`SetForm})
+parameterized type (\Data{SetForm})
 are similar to the corresponding constructors of the indexed
 formal model (\Data{`Set[\_]}).
 
 \begin{code}
-      `⊥ `⊤ `Bool : `SetForm ℓ
-      `Σ `Π `W : (A : `SetForm ℓ) (B : ⟦ ℓ / A ⟧ → `SetForm ℓ) → `SetForm ℓ
-      `Id : (A : `SetForm ℓ) (x y : ⟦ ℓ / A  ⟧) → `SetForm ℓ
+      `⊥ `⊤ `Bool : SetForm ℓ
+      `Σ `Π `W : (A : SetForm ℓ) (B : ⟦ ℓ / A ⟧ → SetForm ℓ) → SetForm ℓ
+      `Id : (A : SetForm ℓ) (x y : ⟦ ℓ / A  ⟧) → SetForm ℓ
 \end{code}
 
 Compared to \Data{`Set[\_]}, the main difference is that the
-constructors of \Data{`SetForm} do not take the level \Var{ℓ} as a
+constructors of \Data{SetForm} do not take the level \Var{ℓ} as a
 formal argument. This is because \Var{ℓ} is now a parameter, hence it
 is an informal and implicit argument of all constructors.
 Importantly,
-this allows \Data{`SetForm} to be a \textit{type}, even though it is
+this allows \Data{SetForm} to be a \textit{type}, even though it is
 parameterized by \Data{Level}, which is a \textit{kind}
 (as explained in \refsec{kindparam}).
 
@@ -590,18 +590,18 @@ The main change in the pre-closed kinds appears in the pre-closed meaning
 function constructor (\Con{`⟦\_⟧}).
 
 \begin{code}
-      `Set : `SetForm ℓ
-      `⟦_⟧ : Level.`SetForm ℓ → `SetForm ℓ
+      `Set : SetForm ℓ
+      `⟦_⟧ : Level.SetForm ℓ → SetForm ℓ
 \end{code}
 
 The indexed closed meaning function constructor takes
 \Data{`Set[ \Var{ℓ} ]} as an argument and returns a
 \Data{`Set[ \Con{suc} \Var{ℓ} ]}. In this parameterized version of
-the constructor, we \textit{cannot} return a \Data{`SetForm \Var{ℓ}}, because
+the constructor, we \textit{cannot} return a \Data{SetForm \Var{ℓ}}, because
 the parameter \Var{ℓ} must remain constant for all constructors.
 However, we \textit{can} make the argument to the constructor be
 a pre-closed type from the previous universe, by projecting
-\Field{`SetForm} out of our \Data{Level} record parameter \Var{ℓ}.
+\Field{SetForm} out of our \Data{Level} record parameter \Var{ℓ}.
 Hence, the argument in the indexed and parameterized version
 of the meaning function constructor (\Con{`⟦\_⟧}) both
 represent a closed type from the previous universe, just in
@@ -613,7 +613,7 @@ Now let's define the meaning function for pre-closed types parameterized
 by the previous universe.
 
 \begin{code}
-    ⟦_/_⟧ : (ℓ : Level) → `SetForm ℓ → Set
+    ⟦_/_⟧ : (ℓ : Level) → SetForm ℓ → Set
 \end{code}
 
 The only difference in the syntax of the type signature is that we use
@@ -644,12 +644,12 @@ the \Data{Level} record \Var{ℓ} associated with the pre-closed kind being
 interpreted.
 
 \begin{code}
-    ⟦ ℓ / `Set ⟧ = Level.`SetForm ℓ
+    ⟦ ℓ / `Set ⟧ = Level.SetForm ℓ
     ⟦ ℓ / `⟦ A ⟧ ⟧ = Level.⟦ ℓ / A ⟧
 \end{code}
 
 The meaning of a pre-closed type (\Con{`Set}) is a
-pre-closed type (\Field{`SetForm}) from the
+pre-closed type (\Field{SetForm}) from the
 previous universe (\Var{ℓ}).
 The meaning of the pre-closed meaning
 function is the meaning function (\Fun{⟦\_/\_⟧})
@@ -657,16 +657,16 @@ from the previous universe (\Var{ℓ}).
 
 \paragraph{Passing Positivity Check}
 
-It the definition of \Data{`SetForm}, the codomain of the \Var{B}
+It the definition of \Data{SetForm}, the codomain of the \Var{B}
 argument of the \Con{`Σ}, \Con{`Π}, and \Con{`W} constructors is still
 an application of the meaning function (\Fun{⟦\_/\_⟧}).
 However, now the meaning of \Con{`Set} of is an abstract
 \Data{Set} from the \Data{Level} record parameter \Var{ℓ}, whose field
-we happend to call \Field{`SetForm}. This name simply documents that
-we plan to instantiate the field with a \Data{`SetForm} of the
+we happend to call \Field{SetForm}. This name simply documents that
+we plan to instantiate the field with a \Data{SetForm} of the
 previous universe, in the second stage of our indexed universe
 hierarchy construction. From the point of view of the definition of
-\Data{`SetForm}, \Field{`SetForm} contains an arbitrary \Data{Set}, so
+\Data{SetForm}, \Field{SetForm} contains an arbitrary \Data{Set}, so
 posivitiy is not violated when checking the infinitary \Var{B}
 argument.
 
@@ -675,11 +675,11 @@ argument.
 Now we derive closed leveled types
 (\Fun{`Set[\_]}),
 indexed by the natural numbers,
-from pre-closed leveled types (\Data{`SetForm}),
+from pre-closed leveled types (\Data{SetForm}),
 parameterized by levels (\Data{Level}).
 
 For each natural number, we need to apply
-\Data{`SetForm} to a closed \Data{Level}
+\Data{SetForm} to a closed \Data{Level}
 encoding the previous universe in the hierarchy that the natural
 numbers represent. To do so, we define the \Fun{level} function that
 maps each natural number,
@@ -691,7 +691,7 @@ to a \Data{Level}, encoding the \textit{previous} universe.
 \end{code}
 
 If the universe level is 0, then there is no previous universe. Hence,
-we define the previous closed types (\Field{`SetForm})
+we define the previous closed types (\Field{SetForm})
 to be uninhabited (i.e. the bottom type \Data{⊥}). The meaning function
 \Field{⟦\_/\_⟧} for these previous closed types is also uninhabited, as
 indicated by a $\lambda$ term matching against its empty argument
@@ -701,14 +701,14 @@ of an uninhabited type).
 
 \begin{code}
   level zero = record
-    { `SetForm = ⊥
+    { SetForm = ⊥
     ; ⟦_/_⟧ = λ()
     }
 \end{code}
 
 If the universe level is the successor of some natural number, then
-the previous closed types (\Field{`SetForm})
-are the pre-closed types (\Data{`SetForm}), whose parameter is
+the previous closed types (\Field{SetForm})
+are the pre-closed types (\Data{SetForm}), whose parameter is
 instantiated with \Fun{level} applied to the predecessor of the input
 natural number. The previous closed meaning function
 (\Field{⟦\_/\_⟧}) is defined by the previous pre-closed meaning
@@ -716,7 +716,7 @@ function (\Fun{⟦\_/\_⟧}) in the same fashion.
 
 \begin{code}
   level (suc ℓ) = record
-    { `SetForm = `SetForm (level ℓ)
+    { SetForm = SetForm (level ℓ)
     ; ⟦_/_⟧ = ⟦_/_⟧ (level ℓ)
     }
 \end{code}
@@ -731,7 +731,7 @@ functions) with \Fun{level}.
 
 \begin{code}
   `Set[_] : ℕ → Set
-  `Set[ ℓ ] = `SetForm (level ℓ)
+  `Set[ ℓ ] = SetForm (level ℓ)
 
   ⟦_∣_⟧ : (ℓ : ℕ) → `Set[ ℓ ] → Set
   ⟦ ℓ ∣ A ⟧ = ⟦ level ℓ / A ⟧
@@ -741,39 +741,3 @@ The \textit{indexed} leveled types are derived from the
 \textit{parameterized} pre-closed types, because the pre-closed types
 are used to define \Fun{level}.
 
-\section{Closed Hierarchy of Inductive-Recursive Types}\label{sec:hierir}
-
-\subsection{Agda Model}\label{sec:hierir}
-
-Now, we define an Agda model of a
-\textit{Closed Hierarchy of Inductive-Recursive Universes}.
-Just like the Agda model of the
-\textit{Closed Hierarchy of Well-Order Universes} in
-\refsec{hierwp}, we derive closed leveled types and their meaning
-from closed \Fun{level} universes, defined in terms of pre-closed
-constructions parameterized by \Data{Level}.
-
-\AgdaHide{
-\begin{code}
-module _ where
- open Closed
- open import Data.Nat
- private 
-  postulate
-   Level : Set₁
-   `SetForm : Level → Set
-   ⟦_/_⟧ : (ℓ : Level) → `SetForm ℓ → Set
-   level : ℕ → Level
-\end{code}}
-
-\begin{code}
-  `Set[_] : ℕ → Set
-  `Set[ ℓ ] = `SetForm (level ℓ)
-
-  ⟦_∣_⟧ : (ℓ : ℕ) → `Set[ ℓ ] → Set
-  ⟦ ℓ ∣ A ⟧ = ⟦ level ℓ / A ⟧
-\end{code}
-
-
-
-\section{Leveled Fully Generic Functions}\label{sec:gdom}
