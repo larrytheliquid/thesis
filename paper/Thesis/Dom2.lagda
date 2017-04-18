@@ -28,17 +28,17 @@ module Dom where
    `Map2 : (ℓ : ℕ) → ⟦ suc ℓ ∣ `Π `Set (λ A → (`⟦ A ⟧ `→ `Set) `→ (`⟦ `List2 ℓ A ⟧ `→ `Set)) ⟧
 
  mutual
-   Arg : (ℓ : ℕ) → ⟦ suc ℓ ∣ `Π `Set (λ A → `⟦ A ⟧ `→ `Set) ⟧
-   Arg ℓ (`Σ A B) (a , b) = Arg ℓ A a `× Arg ℓ (B a) b
-   Arg ℓ (`Π A B) f = `Σ (`List A) (λ xs → `Map ℓ A (λ a → Arg ℓ (B a) (f a)) xs)
-   Arg ℓ (`μ₁ O D) (init xs) = Args ℓ O D D xs
-   Arg ℓ A a = `⊤
+   Dom : (ℓ : ℕ) → ⟦ suc ℓ ∣ `Π `Set (λ A → `⟦ A ⟧ `→ `Set) ⟧
+   Dom ℓ (`Σ A B) (a , b) = Dom ℓ A a `× Dom ℓ (B a) b
+   Dom ℓ (`Π A B) f = `Σ (`List A) (λ xs → `Map ℓ A (λ a → Dom ℓ (B a) (f a)) xs)
+   Dom ℓ (`μ₁ O D) (init xs) = Doms ℓ O D D xs
+   Dom ℓ A a = `⊤
 
-   Args : (ℓ : ℕ) → ⟦ suc ℓ ∣ `Π `Set (λ O → `Π (`Desc O) (λ D → `Π (`Desc O) (λ R →
+   Doms : (ℓ : ℕ) → ⟦ suc ℓ ∣ `Π `Set (λ O → `Π (`Desc O) (λ D → `Π (`Desc O) (λ R →
      `⟦ D ⟧₁ R `→ `Set))) ⟧
-   Args ℓ O (`σ A D) R (a , xs) = Arg ℓ A a `× Args ℓ O (D a) R xs
-   Args ℓ O (`δ A D) R (f , xs) = `Σ (`List A) (`Map ℓ A (λ a → Arg ℓ (`μ₁ O R) (f a)))
-     `× Args ℓ O (D (μ₂ ⟪ level ℓ / R ⟫ ∘ f)) R xs
-   Args ℓ O (`ι o) R xs = `⊤
+   Doms ℓ O (`σ A D) R (a , xs) = Dom ℓ A a `× Doms ℓ O (D a) R xs
+   Doms ℓ O (`δ A D) R (f , xs) = `Σ (`List A) (`Map ℓ A (λ a → Dom ℓ (`μ₁ O R) (f a)))
+     `× Doms ℓ O (D (μ₂ ⟪ level ℓ / R ⟫ ∘ f)) R xs
+   Doms ℓ O (`ι o) R xs = `⊤
 \end{code}
 
