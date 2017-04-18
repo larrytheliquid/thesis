@@ -283,9 +283,23 @@ counterparts
 
 \paragraph{Derived Indexed Hierarchy of Universes}
 
+Now that we've defined pre-closed leveled types and descriptions,
+\textit{parameterized} by levels (\Data{Level}), we can \textit{derive} closed
+leveled types and descriptions, \textit{indexed} by natural numbers
+(as a computational family). First, we define \Fun{level} to map each
+natural number to a \Data{Level} representing the \textit{previous}
+universe (i.e. a natural number $n$ is mapped to universe $n$-1).
+
 \begin{code}
   level : (ℓ : ℕ) → Level
 \end{code}
+
+At level 0, there is no previous universe.
+Thus, field \Field{SetForm} is bottom,
+field \Field{DescForm} is a constant function returning bottom, and
+the meaning functions match against their
+uninhabited arguments
+(signified in Agda by empty parentheses in the argument position).
 
 \begin{code}
   level zero = record
@@ -297,15 +311,62 @@ counterparts
     }
 \end{code}
 
+If the universe level is the successor of some natural number, then
+the previous closed
+type and description fields (\Field{SetForm} and \Field{DescForm})
+are the pre-closed types and descriptions
+(\Data{SetForm} and \Data{DataForm}), whose parameters are
+instantiated with \Fun{level} applied to the predecessor of the input
+natural number. The previous closed meaning function for types field
+(\Field{⟦\_/\_⟧}) is defined by the previous pre-closed meaning
+function for types (\Fun{⟦\_/\_⟧}) in the same fashion.
+
 \begin{code}
   level (suc ℓ) = record
     { SetForm = SetForm (level ℓ)
-    ; ⟦_/_⟧ = λ A → ⟦ level ℓ / A ⟧
+    ; ⟦_/_⟧ = ⟦_/_⟧ (level ℓ)
     ; DescForm = DescForm (level ℓ) 
     ; ⟦_/_⟧₁ = λ D R → ⟦ ⟪ level ℓ / D ⟫ ⟧₁ ⟪ level ℓ / R ⟫
     ; μ₁' = λ O D → μ₁ ⟦ level ℓ / O ⟧ ⟪ level ℓ / D ⟫
     }
 \end{code}
+
+The closed description interpretation and fixpoint fields
+(\Field{⟦\_/\_⟧₁} and \Field{μ₁'}) are defined using the open
+description interpretation function and fixpoint
+(\Fun{⟦\_⟧₁} and \Data{μ₁}) from \refapen{openalg}.
+
+
+The open description interpretation function (\Fun{⟦\_⟧₁})
+expects open description arguments, but the field
+\Field{⟦\_/\_⟧₁} has leveled closed description
+arguments (\Var{D} and \Var{R}).
+Thus, we translate the leveled closed descriptions
+(\Var{D} and \Var{R}) using the
+leveled description meaning function
+(\Fun{⟪\_/\_⟫}) at the predecessor
+\Fun{level} (\Var{ℓ}).
+
+Similarly, the open description fixpoint (\Data{μ₁})
+expects an open type and an open description,
+but the field
+\Field{μ₁'} has a leveled closed type argument
+(\Var{O}) and a leveled closed description argument
+(\Var{D}). The closed type (\Var{O}) is translated
+using the leveled type meaning function
+(\Fun{⟦\_/\_⟧}), and the closed description (\Var{D})
+is translated using the leveled description meaning function
+(\Fun{⟪\_/\_⟫}). Both of the leveled meaning functions are translated
+at the predecessor \Fun{level} (\Var{ℓ}).
+
+Finally, we can derive indexed closed leveled types
+(\Data{`Set[\_]}) from parameterized pre-closed leveled types
+(\Data{SetForm}), by instantiating the parameter with the result of
+applying \Fun{level} to the input natural number index,
+as in \refsec{hierwp}. The leveled closed
+type meaning function (\Fun{⟦\_∣\_⟧}) is also derived
+from the pre-closed version (\Fun{⟦\_/\_⟧}),
+as in \refsec{hierwp}.
 
 \begin{code}
   `Set[_] : ℕ → Set
@@ -313,7 +374,16 @@ counterparts
 
   ⟦_∣_⟧ : (ℓ : ℕ) → `Set[ ℓ ] → Set
   ⟦ ℓ ∣ A ⟧ = ⟦ level ℓ / A ⟧
+\end{code}
 
+Now, we additionally derive the indexed closed leveled descriptions
+(\Data{`Desc[\_]}) from parameterized pre-closed leveled descriptions
+(\Data{DescForm}), also by instantiating the parameter with the
+result of applying \Fun{level} to the input index. The leveled
+closed description meaning function (\Fun{⟪\_∣\_⟫}) is derived from
+the pre-closed version (\Fun{⟪\_/\_⟫}) in the same way.
+
+\begin{code}
   `Desc[_] : (ℓ : ℕ) → `Set[ ℓ ] → Set
   `Desc[ ℓ ] O = DescForm (level ℓ) O
 
