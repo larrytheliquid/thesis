@@ -126,7 +126,7 @@ module ClosedHier where
       ⟦_/_⟧ : (A : SetForm) → Set
       DescForm : (O : SetForm) → Set
       ⟦_/_⟧₁ : {O : SetForm} (D R : DescForm O) → Set
-      μ₁⟦_/_⟧⟪_⟫ : (O : SetForm) (D : DescForm O) → Set
+      μ₁' : (O : SetForm) (D : DescForm O) → Set
 
   mutual
     data SetForm (ℓ : Level) : Set where
@@ -138,7 +138,7 @@ module ClosedHier where
       `⟦_⟧ : Level.SetForm ℓ → SetForm ℓ
       `Desc : Level.SetForm ℓ → SetForm ℓ
       `⟦_⟧₁ : {O : Level.SetForm ℓ} (D R : Level.DescForm ℓ O) → SetForm ℓ
-      `μ₁⟦_⟧⟪_⟫ : (O : Level.SetForm ℓ) (D : Level.DescForm ℓ O) → SetForm ℓ
+      `μ₁' : (O : Level.SetForm ℓ) (D : Level.DescForm ℓ O) → SetForm ℓ
 
     ⟦_/_⟧ : (ℓ : Level) → SetForm ℓ → Set
     ⟦ ℓ / `⊥ ⟧ = ⊥
@@ -152,7 +152,7 @@ module ClosedHier where
     ⟦ ℓ / `⟦ A ⟧ ⟧ = Level.⟦ ℓ / A ⟧
     ⟦ ℓ / `Desc O ⟧ = Level.DescForm ℓ O
     ⟦ ℓ / `⟦ D ⟧₁ R ⟧ = Level.⟦ ℓ / D ⟧₁ R
-    ⟦ ℓ / `μ₁⟦ O ⟧⟪ D ⟫ ⟧ = Level.μ₁⟦ ℓ / O ⟧⟪ D ⟫
+    ⟦ ℓ / `μ₁' O D ⟧ = Level.μ₁' ℓ O D
 
     data DescForm (ℓ : Level) (O : SetForm ℓ) : Set where
       `ι : (o : ⟦ ℓ / O ⟧) → DescForm ℓ O
@@ -171,14 +171,14 @@ module ClosedHier where
     ; ⟦_/_⟧ = λ()
     ; DescForm = λ O → ⊥
     ; ⟦_/_⟧₁ = λ ()
-    ; μ₁⟦_/_⟧⟪_⟫ = λ ()
+    ; μ₁' = λ ()
     }
   level (suc ℓ) = record
     { SetForm = SetForm (level ℓ)
     ; ⟦_/_⟧ = λ A → ⟦ level ℓ / A ⟧
     ; DescForm = DescForm (level ℓ) 
     ; ⟦_/_⟧₁ = λ D R → ⟦ ⟪ level ℓ / D ⟫ ⟧₁ ⟪ level ℓ / R ⟫
-    ; μ₁⟦_/_⟧⟪_⟫ = λ O D → μ₁ ⟦ level ℓ / O ⟧ ⟪ level ℓ / D ⟫
+    ; μ₁' = λ O D → μ₁ ⟦ level ℓ / O ⟧ ⟪ level ℓ / D ⟫
     }
 
   `Set[_] : ℕ → Set
@@ -193,3 +193,12 @@ module ClosedHier where
   ⟪_∣_⟫ : (ℓ : ℕ) {O : `Set[ ℓ ]} → `Desc[ ℓ ] O → Desc ⟦ ℓ ∣ O ⟧
   ⟪ ℓ ∣ D ⟫ = ⟪ level ℓ / D ⟫
 \end{code}
+
+\AgdaHide{
+\begin{code}
+  _`×_ : {ℓ : Level} (A B : SetForm ℓ) → SetForm ℓ
+  A `× B = `Σ A (λ _ → B)
+
+  _`→_ : {ℓ : Level} (A B : SetForm ℓ) → SetForm ℓ
+  A `→ B = `Π A (λ _ → B)
+\end{code}}

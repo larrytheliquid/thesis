@@ -30,7 +30,7 @@ module Dom where
   Arg : (A : `Set) → ⟦ A ⟧ → Set
   Arg (`Σ A B) (a , b) = Arg A a × Arg (B a) b
   Arg (`Π A B) f = Σ (List ⟦ A ⟧) (Map (λ a → Arg (B a) (f a)))
-  Arg (`μ₁ A D) (init xs) = Args D D xs
+  Arg (`μ₁ O D) (init xs) = Args D D xs
   Arg A a = ⊤
 
   Args :  {O : `Set} (D R : `Desc O) → ⟦ ⟪ D ⟫ ⟧₁ ⟪ R ⟫ → Set
