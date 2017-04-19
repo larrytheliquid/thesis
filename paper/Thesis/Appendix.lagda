@@ -201,4 +201,7 @@ module ClosedHier where
 
   _`→_ : {ℓ : Level} (A B : SetForm ℓ) → SetForm ℓ
   A `→ B = `Π A (λ _ → B)
+
+  infixr 2 _`×_ 
+  infixr 2 _`→_ 
 \end{code}}
