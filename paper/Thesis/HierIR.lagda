@@ -850,3 +850,35 @@ module _ where
     → ⟦ ⟪ 0 ∣ D ⟫ ⟧₁ ⟪ 0 ∣ D ⟫ → μ₁ ⟦ 0 ∣ O ⟧ ⟪ 0 ∣ D ⟫    
   init' O D xs = init xs
 \end{code}
+
+\paragraph{Lifting Functions}
+
+We conclude this section by reflecting upon the internalization of the
+kind signatures for the pair (\Con{\_,\_}) and initial algebra
+(\Con{init}) constructors (as \Fun{pair'} and \Fun{init'}), in the
+examples above.
+
+The former is evidence that we need to quantify over
+the kind of closed types (\Con{`Set}), and then lift the quantifier to
+the kind level using the
+closed meaning function of types (\Con{`⟦\_⟧}).
+
+The latter is evidence that we need to quantify over
+the kind of closed descriptions (\Con{`Desc}),
+and then lift the quantifier to
+the kind level using the
+closed interpretation function (\Con{`⟦\_⟧₁}) of
+descriptions, and the (lifting)
+closed fixpoint operator (\Con{`μ₁'}) of descriptions.
+
+Hence, our sanity check in \refapen{intern}, that the signature of all
+datatype constructors can be internalized in our closed universe
+hierarchy, drives the need for quantification over closed kinds
+(\Con{`Set} and \Con{`Desc}). In turn, quantification over closed
+kinds drives results in types (i.e. the previous universe), which
+drives the need for lifting functions appropriate to each kind
+(\Con{`⟦\_⟧}, \Con{`⟦\_⟧₁}, and \Con{`μ₁'}).
+Thus, we recognize the sanity check in \refapen{intern} as a good way
+to measure whether we have appropriately closed our hiearchy,
+and are grateful for the structure that the check provides to the
+definition of our hierarchy.
