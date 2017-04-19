@@ -205,3 +205,45 @@ module ClosedHier where
   infixr 2 _`×_ 
   infixr 2 _`→_ 
 \end{code}}
+
+\chapter{Internalized Signatures of Closed Constructors}\label{apen:intern}
+
+\AgdaHide{
+\begin{code}
+module Internalization where
+  open import Data.Nat
+  open Prim
+  open Alg
+  open ClosedHier
+\end{code}}
+
+\begin{code}
+  bot' : ⟦ 0 ∣ `⊥ `→ `⊥ ⟧
+  bot' p = p
+
+  tt' : ⟦ 0 ∣ `⊤ ⟧
+  tt' = tt
+
+  true' : ⟦ 0 ∣ `Bool ⟧
+  true' = true
+
+  false' : ⟦ 0 ∣ `Bool ⟧
+  false' = false
+
+  pair' : ⟦ 1 ∣ `Π `Set (λ A → `Π (`⟦ A ⟧ `→ `Set) (λ B →
+    `Π `⟦ A ⟧ (λ a → `Π `⟦ B a ⟧ (λ b →
+    `Σ `⟦ A ⟧ (λ a → `⟦ B a ⟧))))) ⟧
+  pair' A B a b = a , b
+
+  lambda' : ⟦ 1 ∣ `Π `Set (λ A → `Π (`⟦ A ⟧ `→ `Set) (λ B →
+    `Π (`Π `⟦ A ⟧ (λ a → `⟦ B a ⟧)) (λ f →
+    `Π `⟦ A ⟧ (λ a → `⟦ B a ⟧)))) ⟧
+  lambda' A B f = λ a → f a
+
+  refl' : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `Id `⟦ A ⟧ a a)) ⟧
+  refl' A a = refl
+
+  init' : ⟦ 1 ∣ `Π `Set (λ O → `Π (`Desc O) (λ D → 
+    `⟦ D ⟧₁ D `→ `μ₁' O D)) ⟧
+  init' O D xs = init xs
+\end{code}

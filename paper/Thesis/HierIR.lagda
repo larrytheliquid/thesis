@@ -5,12 +5,7 @@ open import Data.Sum
 open import Relation.Binary.PropositionalEquality
 open import Function hiding ( id )
 open import Appendix
-open import Data.Product
 open import Data.List
-open import Count
-open import Lookup
-open Prim  hiding ( Σ )
-open Alg
 \end{code}}
 
 \section{Closed Hierarchy of Inductive-Recursive Types}\label{sec:hierir}
@@ -49,6 +44,9 @@ and pre-closed leveled descriptions (\Data{DescForm}).
 \begin{code}
 module _ where
  open import Data.Nat
+ open import Data.Product
+ open Prim  hiding ( Σ )
+ open Alg
  private
 \end{code}}
 
@@ -446,6 +444,8 @@ each signature can be represented as the leveled type meaning
 \begin{code}
 module Nat where
   open import Data.Nat hiding ( zero ; suc ; ℕ )
+  open Prim  hiding ( Σ )
+  open Alg
   open ClosedHier
 \end{code}}
 
@@ -597,6 +597,8 @@ module _ where
 \AgdaHide{
 \begin{code}
 module _ where
+ open Prim  hiding ( Σ )
+ open Alg
  open ClosedHier
  private
 \end{code}}
@@ -695,13 +697,112 @@ module _ where
   id ℓ A a = a
 \end{code}}
 
+\paragraph{Dependent Pair}
 
-\paragraph{Initial Algebra}
+As a sanity check for the construction of our
+\textit{Closed Hierarchy of Inductive-Recursive Universes}
+(\refsec{hierir}), we should be able to internalize each signature
+(whether it be a type or kind) of every constructor of every datatype
+in the universe. This sanity check can be found in \refapen{intern}.
+
+As one illustrative example, we show how to internalize the pair
+constructor of dependent pairs. In open type theory
+(\refapen{openalg}), the pair
+constructor has the following type.
 
 \AgdaHide{
 \begin{code}
 module _ where
  open import Data.Nat
+ open ClosedHier
+ private
+  data Σ : (A : Set) (B : A → Set) → Set where
+\end{code}}
+
+\begin{code}
+   _,_ : {A : Set} {B : A → Set} (a : A) → B a → Σ A B
+\end{code}
+
+Below, we define \Fun{pair'} to be pair constructor \Con{init},
+while internalizing the kind signature of \Con{\_,\_}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open Prim
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  pair' : ⟦ 1 ∣ `Π `Set (λ A → `Π (`⟦ A ⟧ `→ `Set) (λ B →
+    `Π `⟦ A ⟧ (λ a → `Π `⟦ B a ⟧ (λ b →
+    `Σ `⟦ A ⟧ (λ a → `⟦ B a ⟧))))) ⟧
+  pair' A B a b = a , b
+\end{code}
+
+Internalizing the kind of the pair constructor (\Con{,}) as
+\Fun{pair'} takes advantage of being able to quantify over
+closed types (\Con{`Set}),
+and the closed type meaning function (\Con{`⟦\_⟧}), used to lift types
+to the kind level. Really, it is just a slightly more involved
+example of internalizing the signature of the identity function
+(\Fun{id}).
+
+Note that we must use explicit function arguments for
+\Var{A} and \Var{B}, as our universe does not currently support
+an implicit version of dependent functions (\Con{`Π}).
+For reference, we also present the external type signature that the
+meaning of our internal type above expands to.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open Prim
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  pair' : (A : `Set[ 0 ]) (B : ⟦ 0 ∣ A ⟧ → `Set[ 0 ])
+    (a : ⟦ 0 ∣ A ⟧) (b : ⟦ 0 ∣ B a ⟧)
+    → Σ ⟦ 0 ∣ A ⟧ (λ a → ⟦ 0 ∣ B a ⟧)
+  pair' A B a b = a , b
+\end{code}
+
+\paragraph{Initial Algebra}
+
+As our final example, we internalize the signature of the initial
+algebra constructor (\Con{init}) of fixpoints. The internalization of
+the signature for \Con{init} is unique, as it quantifies over the
+closed kind of \textit{descriptions} (\Con{`Desc}), and must be
+defined with description-lifting operations. First, review the type of
+the \Con{init} constructor in open type theory (\refapen{openalg}).
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open Prim
+ open Alg hiding ( μ₁ ; init )
+ private
+  data μ₁ : (O : Set) (D : Desc O) → Set₁ where
+\end{code}}
+
+\begin{code}
+   init : {O : Set} {D : Desc O} → ⟦ D ⟧₁ D → μ₁ O D
+\end{code}
+
+Below, we define \Fun{init'} to be \Con{init}, while internalizing the
+kind signature of \Con{init}.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open Alg
  open ClosedHier
  private
 \end{code}}
@@ -712,10 +813,34 @@ module _ where
   init' O D xs = init xs
 \end{code}
 
+We internalize the \Var{D} argument by quantifying over a closed
+description (\Con{`Desc}). Because \Var{D} is a description from the
+previous universe, the subsequent argument uses
+the lifting description interpretation function
+(\Con{`⟦\_⟧₁}). Similarly, the codomain uses the lifting fixpoint
+constructor (\Con{`μ₁'}). Importantly, the codomain of \Con{init} is
+internalized with the prime-variant of closed fixpoint constructor
+(\Con{`μ₁'}), defined over descriptions of the previous universe, not
+the non-prime fixpoint constructor (\Con{`μ₁}), defined over
+descriptions of the current universe.
+
+It is not obvious that the definition of our hierarchy needs
+fixpoints of descriptions in
+the current (\Con{`μ₁}) and previous (\Con{`μ₁'}) universes. It is also
+not obvious that the hierarchy needs to internalize the description
+intepretation function (\Con{`⟦\_⟧₁}),
+for descriptions of the previous universe.
+However, our sanity check, in \refapen{intern},
+exposes that both \Con{`μ₁'} and \Con{`⟦\_⟧₁} are necessary to
+internalize the kind signature of the \Con{init} constructor.
+For reference, we also present the external type signature that the
+meaning of our internal type above expands to.
+
 \AgdaHide{
 \begin{code}
 module _ where
  open import Data.Nat
+ open Alg
  open ClosedHier
  private
 \end{code}}
