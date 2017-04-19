@@ -405,8 +405,8 @@ module _ where
 \end{code}}
 
 \begin{code}
-  id₀ : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
-  id₀ A a = a
+  id : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
+  id A a = a
 \end{code}
 
 \AgdaHide{
@@ -418,9 +418,17 @@ module _ where
 \end{code}}
 
 \begin{code}
-  id₀ : (A : `Set[ 0 ]) (a : ⟦ 0 ∣ A ⟧) → ⟦ 0 ∣ A ⟧ 
-  id₀ A a = a
+  id : (A : `Set[ 0 ]) (a : ⟦ 0 ∣ A ⟧) → ⟦ 0 ∣ A ⟧ 
+  id A a = a
 \end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open ClosedHier
+ private
+\end{code}}
 
 \begin{code}
   id : {ℓ : ℕ} → ⟦ suc ℓ ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
@@ -439,9 +447,9 @@ module _ where
 \end{code}}
 
 \begin{code}
-  init₀ : ⟦ 1 ∣ `Π `Set (λ O → `Π (`Desc O) (λ D → 
+  init' : ⟦ 1 ∣ `Π `Set (λ O → `Π (`Desc O) (λ D → 
     `⟦ D ⟧₁ D `→ `μ₁' O D)) ⟧
-  init₀ O D xs = init xs
+  init' O D xs = init xs
 \end{code}
 
 \AgdaHide{
@@ -453,9 +461,9 @@ module _ where
 \end{code}}
 
 \begin{code}
-  init₀ : (O : `Set[ 0 ]) (D : `Desc[ 0 ] O)
+  init' : (O : `Set[ 0 ]) (D : `Desc[ 0 ] O)
     → ⟦ ⟪ 0 ∣ D ⟫ ⟧₁ ⟪ 0 ∣ D ⟫ → μ₁ ⟦ 0 ∣ O ⟧ ⟪ 0 ∣ D ⟫    
-  init₀ O D xs = init xs
+  init' O D xs = init xs
 \end{code}
 
 \paragraph{Natural Numbers}
@@ -468,29 +476,22 @@ module Nat where
 \end{code}}
 
 \begin{code}
-  NatDs : Bool → `Desc[ 0 ] `⊤
+  NatDs : ⟦ 1 ∣ `Bool `→ `Desc `⊤ ⟧
+  NatD : ⟦ 1 ∣ `Desc `⊤ ⟧
+  `ℕ : ⟦ 1 ∣ `Set ⟧
+  zero : ⟦ 0 ∣ `ℕ ⟧
+  suc : ⟦ 0 ∣ `ℕ `→ `ℕ ⟧
+\end{code}
+
+\AgdaHide{
+\begin{code}
   NatDs true = `ι tt
   NatDs false = `δ `⊤ (λ f → `ι (f tt))
-
-  NatD : `Desc[ 0 ] `⊤
   NatD = `σ `Bool NatDs
-\end{code}
-
-\begin{code}
-  `ℕ : `Set[ 0 ]
   `ℕ = `μ₁ `⊤ NatD
-
-  ℕ : Set
-  ℕ = ⟦ 0 ∣ `ℕ ⟧
-\end{code}
-
-\begin{code}
-  zero : ℕ
   zero = init (true , tt)
-
-  suc : ℕ → ℕ
   suc n = init (false , (λ u → n) , tt)
-\end{code}
+\end{code}}
 
 \paragraph{Vectors}
 
@@ -505,7 +506,17 @@ module _ where
 \end{code}}
 
 \begin{code}
-  VecDs : `Set[ 0 ] → Bool → `Desc[ 0 ] `ℕ
+  VecDs : ⟦ 1 ∣ `Set `→ `Bool `→ `Desc `ℕ ⟧
+  VecD : ⟦ 1 ∣ `Set `→ `Desc `ℕ ⟧
+  `Vec₁ : ⟦ 1 ∣ `Set `→ `Set ⟧
+  `Vec₂ : ⟦ 1 ∣ `Π `Set (λ A → `⟦ `Vec₁ A ⟧ `→ `⟦ `ℕ ⟧) ⟧
+  `Vec : ⟦ 1 ∣ `Set `→ `⟦ `ℕ ⟧ `→ `Set ⟧
+  nil : ⟦ 1 ∣ `Π `Set (λ A → `⟦ `Vec A zero ⟧) ⟧
+  cons : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ `ℕ ⟧ (λ n → `⟦ A ⟧ `→ `⟦ `Vec A n ⟧ `→ `⟦ `Vec A (suc n) ⟧)) ⟧
+\end{code}
+
+\AgdaHide{
+\begin{code}
   VecDs A true = `ι zero
   VecDs A false =
     `σ `ℕ λ n →
@@ -513,103 +524,56 @@ module _ where
     `δ `⊤ λ xs →
     `σ (`Id `ℕ (xs tt) n) λ q →
     `ι (suc n)
-
-  VecD : `Set[ 0 ] → `Desc[ 0 ] `ℕ
   VecD A = `σ `Bool (VecDs A)
-\end{code}
-
-\begin{code}
-  `Vec₁ : `Set[ 0 ] → `Set[ 0 ]
   `Vec₁ A = `μ₁ `ℕ (VecD A)
-  
-  `Vec₂ : (A : `Set[ 0 ]) → ⟦ 0 ∣ `Vec₁ A ⟧ → ℕ
   `Vec₂ A = μ₂ ⟪ 0 ∣ VecD A ⟫
-  
-  `Vec : `Set[ 0 ] → ℕ → `Set[ 0 ]
   `Vec A n = `Σ (`Vec₁ A) (λ xs → `Id `ℕ (`Vec₂ A xs) n)
-\end{code}
+  nil A = init (true , tt) , refl
+  cons A n a (xs , refl) = init (false , n , a , (λ u → xs) , refl , tt) , refl
+\end{code}}
 
-\begin{code}
-  Vec : `Set[ 0 ] → ℕ → Set
-  Vec A n = ⟦ 0 ∣ `Vec A n ⟧
-
-  nil : {A : `Set[ 0 ]} → Vec A zero
-  nil = init (true , tt) , refl
-  
-  cons : {A : `Set[ 0 ]} {n : ℕ} (a : ⟦ 0 ∣ A ⟧) (xs : Vec A n) → Vec A (suc n)
-  cons {n = n} a (xs , refl) = init (false , n , a , (λ u → xs) , refl , tt) , refl
-\end{code}
+\paragraph{Heterogenous Lists}
 
 \AgdaHide{
 \begin{code}
-module Nat2 where
-  open import Data.Nat hiding ( zero ; suc ; ℕ )
-  open ClosedHier
+module _ where
+ private
 \end{code}}
 
 \begin{code}
-  NatDs : ⟦ 1 ∣ `Bool `→ `Desc `⊤ ⟧
-  NatDs true = `ι tt
-  NatDs false = `δ `⊤ (λ f → `ι (f tt))
-
-  NatD : ⟦ 1 ∣ `Desc `⊤ ⟧
-  NatD = `σ `Bool NatDs
-\end{code}
-
-\begin{code}
-  `ℕ : ⟦ 1 ∣ `Set ⟧
-  `ℕ = `μ₁ `⊤ NatD
-\end{code}
-
-\begin{code}
-  zero : ⟦ 0 ∣ `ℕ ⟧
-  zero = init (true , tt)
-
-  suc : ⟦ 0 ∣ `ℕ `→ `ℕ ⟧
-  suc n = init (false , (λ u → n) , tt)
+  data HList : Set₁ where
+    nil : HList
+    cons : (A : Set) → A → HList → HList
 \end{code}
 
 \AgdaHide{
 \begin{code}
 module _ where
- open Nat2
- open Prim
- open Alg
  open ClosedHier
  private
 \end{code}}
 
 \begin{code}
-  VecDs : ⟦ 1 ∣ `Set `→ `Bool `→ `Desc `ℕ ⟧
-  VecDs A true = `ι zero
-  VecDs A false =
-    `σ `ℕ λ n →
-    `σ A λ a →
+  HListDs : ⟦ 2 ∣ `Bool `→ `Desc `⊤ ⟧
+  HListDs true = `ι tt
+  HListDs false =
+    `σ `Set λ A →
+    `σ `⟦ A ⟧ λ a →
     `δ `⊤ λ xs →
-    `σ (`Id `ℕ (xs tt) n) λ q →
-    `ι (suc n)
+    `ι tt
 
-  VecD : ⟦ 1 ∣ `Set `→ `Desc `ℕ ⟧
-  VecD A = `σ `Bool (VecDs A)
+  HListD : ⟦ 2 ∣ `Desc `⊤ ⟧
+  HListD = `σ `Bool HListDs
+
+  `HList : ⟦ 2 ∣ `Set ⟧
+  `HList = `μ₁ `⊤ HListD
 \end{code}
 
 \begin{code}
-  `Vec₁ : ⟦ 1 ∣ `Set `→ `Set ⟧
-  `Vec₁ A = `μ₁ `ℕ (VecD A)
-  
-  `Vec₂ : ⟦ 1 ∣ `Π `Set (λ A → `⟦ `Vec₁ A ⟧ `→ `⟦ `ℕ ⟧) ⟧
-  `Vec₂ A = μ₂ ⟪ 0 ∣ VecD A ⟫
-  
-  `Vec : ⟦ 1 ∣ `Set `→ `⟦ `ℕ ⟧ `→ `Set ⟧
-  `Vec A n = `Σ (`Vec₁ A) (λ xs → `Id `ℕ (`Vec₂ A xs) n)
+  nil : ⟦ 1 ∣ `HList ⟧
+  nil = init (true , tt)
+
+  cons : ⟦ 1 ∣ `Π `Set (λ A → `⟦ A ⟧ `→ `HList `→ `HList) ⟧
+  cons A a xs = init (false , A , a , (λ u → xs) , tt)
 \end{code}
 
-\begin{code}
-  nil : ⟦ 1 ∣ `Π `Set (λ A → `⟦ `Vec A zero ⟧) ⟧
-  nil A = init (true , tt) , refl
-  
-  cons : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ `ℕ ⟧ (λ n → `⟦ A ⟧ `→ `⟦ `Vec A n ⟧ `→ `⟦ `Vec A (suc n) ⟧)) ⟧
-  cons A n a (xs , refl) = init (false , n , a , (λ u → xs) , refl , tt) , refl
-\end{code}
-
-\paragraph{Heterogenous Lists}
