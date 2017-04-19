@@ -869,7 +869,7 @@ programming using dependently typed languages:
   functions over all \textit{types} in the universe hierarchy
   (in addition to values), via fully generic programming over all
   universe \textit{levels}
-  (in \refsec{gdom}).
+  (in \refsec{lgcount}).
 
 \end{enumerate}
 

@@ -11,8 +11,7 @@ open import HierIR
 open Nat
 \end{code}}
 
-\section{Leveled Fully Generic Functions}\label{sec:gdom}
-
+\section{Leveled Fully Generic Functions}\label{sec:lgcount}
 
 \AgdaHide{
 \begin{code}
