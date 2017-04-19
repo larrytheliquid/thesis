@@ -197,14 +197,17 @@ module ClosedHier where
 
 \AgdaHide{
 \begin{code}
+  infixr 2 _`×_ 
+  infixr 2 _`→_ 
+
   _`×_ : {ℓ : Level} (A B : SetForm ℓ) → SetForm ℓ
   A `× B = `Σ A (λ _ → B)
 
   _`→_ : {ℓ : Level} (A B : SetForm ℓ) → SetForm ℓ
   A `→ B = `Π A (λ _ → B)
 
-  infixr 2 _`×_ 
-  infixr 2 _`→_ 
+  `μ₂ : {ℓ : Level} {O : SetForm ℓ} (D : DescForm ℓ O) → μ₁ ⟦ ℓ / O ⟧ ⟪ ℓ / D ⟫ → ⟦ ℓ / O ⟧
+  `μ₂ D = μ₂ ⟪ _ / D ⟫
 \end{code}}
 
 \chapter{Internalized Signatures of Closed Constructors}\label{apen:intern}
