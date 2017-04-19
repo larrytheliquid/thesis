@@ -527,7 +527,8 @@ level (using \Con{`⟦\_⟧}).
 
 \begin{code}
   nil : ⟦ 1 ∣ `Π `Set (λ A → `⟦ `Vec A zero ⟧) ⟧
-  cons : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ `ℕ ⟧ (λ n → `⟦ A ⟧ `→ `⟦ `Vec A n ⟧ `→ `⟦ `Vec A (suc n) ⟧)) ⟧
+  cons : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ `ℕ ⟧ (λ n →
+    `⟦ A ⟧ `→ `⟦ `Vec A n ⟧ `→ `⟦ `Vec A (suc n) ⟧)) ⟧
 \end{code}
 
 Above, we internalize the
@@ -572,6 +573,15 @@ update our universe to an implicit version of the \Con{`Π} code.
 
 \paragraph{Heterogenous Lists}
 
+Previously, we defined types, like the natural numbers, whose
+signatures were kinds (at universe level 1). Now, we give an example
+of defining a kind, the heterogenous lists, whose
+signature is a superkind (at universe level 2).
+Defining the \textit{kind} of heterogenous lists is not possible
+in the \textit{Closed Inductive-Recursive Types} universe of
+\refsec{closed}, which only supports \textit{types}. First, let's
+review the kind of heterogenous lists.
+
 \AgdaHide{
 \begin{code}
 module _ where
@@ -591,6 +601,9 @@ module _ where
  private
 \end{code}}
 
+The signatures of the closed description and closed type, used to
+define heterogenous lists, are superkinded at universe level 2.
+
 \begin{code}
   HListDs : ⟦ 2 ∣ `Bool `→ `Desc `⊤ ⟧
   HListDs true = `ι tt
@@ -607,6 +620,17 @@ module _ where
   `HList = `μ₁ `⊤ HListD
 \end{code}
 
+Notice that the descriptin of the first argument of the \Fun{cons}
+constructor (the \Con{false} case of \Fun{HListDs}) takes
+a type as an argument (\Con{`Set}), and the second argument
+takes a value of the lifting of that type.
+We can also see that \Fun{`HList} is a closed \textit{kind}, because
+it is classified as a \Con{`Set} at universe level 2. The meaning of
+\Con{`Set} at universe level 2 is the \Data{SetForm} of the previous
+universe level, or \Fun{Set[ \Var{1} ]}. Hence, closed \Fun{`HList} is
+classified as a closed kind (\Fun{Set[ \Var{1} ]}), just like
+open \Data{HList} is classified as an open kind (\Data{Set₁}).
+
 \begin{code}
   nil : ⟦ 1 ∣ `HList ⟧
   nil = init (true , tt)
@@ -615,6 +639,13 @@ module _ where
   cons A a xs = init (false , A , a , (λ u → xs) , tt)
 \end{code}
 
+Above, we define the
+\textit{kind} (i.e. universe level 1)
+constructors of the heterogenous lists. We know that \Fun{nil} and
+\Fun{cons} construct kinds, because their codomains do not have any
+liftings (i.e. occurrences of \Con{`⟦\_⟧}),
+so 1 - 0 leaves the codomains at universe level 1,
+the level of kinds.
 
 \paragraph{Identity Function}
 
