@@ -130,7 +130,7 @@ module ClosedHier where
 
   mutual
     data SetForm (ℓ : Level) : Set where
-      `⊥ `⊤ `Bool : SetForm ℓ
+      `⊥ `⊤ `Bool `String : SetForm ℓ
       `Σ `Π : (A : SetForm ℓ) (B : ⟦ ℓ / A ⟧ → SetForm ℓ) → SetForm ℓ
       `Id : (A : SetForm ℓ) (x y : ⟦ ℓ / A  ⟧) → SetForm ℓ
       `μ₁ : (O : SetForm ℓ) (D : DescForm ℓ O) → SetForm ℓ
@@ -144,6 +144,7 @@ module ClosedHier where
     ⟦ ℓ / `⊥ ⟧ = ⊥
     ⟦ ℓ / `⊤ ⟧ = ⊤
     ⟦ ℓ / `Bool ⟧ = Bool
+    ⟦ ℓ / `String ⟧ = String
     ⟦ ℓ / `Σ A B ⟧ = Σ ⟦ ℓ / A ⟧ (λ a → ⟦ ℓ / B a ⟧)
     ⟦ ℓ / `Π A B ⟧ = (a : ⟦ ℓ / A ⟧) → ⟦ ℓ / B a ⟧
     ⟦ ℓ / `Id A x y ⟧ = Id ⟦ ℓ / A ⟧ x y

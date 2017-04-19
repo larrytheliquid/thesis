@@ -882,3 +882,9 @@ Thus, we recognize the sanity check in \refapen{intern} as a good way
 to measure whether we have appropriately closed our hiearchy,
 and are grateful for the structure that the check provides to the
 definition of our hierarchy.
+
+As one final note, we emphasize that it is not enough that we can
+exhibit kind signatures for every datatype constructors. It is also
+important that the meaning of our closed kind signatures reduce to
+exactly the signatures expected by the underlying
+Agda constructors of our open type theory model. 
