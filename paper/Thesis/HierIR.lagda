@@ -394,77 +394,51 @@ the pre-closed version (\Fun{⟪\_/\_⟫}) in the same way.
 
 \subsection{Examples}
 
-\paragraph{Identity Function}
+The \textit{Closed Inductive-Recursive Types} universe
+examples in \refsec{closedeg} correspond to examples that we can
+demonstrate in the zeroth universe of our hierarchy.
+The \textit{Closed Inductive-Recursive Types} universe does not
+include the kinds \Con{`Set} and \Con{`Desc}, hence all of the
+signatures (e.g. \Fun{NatDs}, \Fun{`ℕ}, etc.) used to construct the
+examples were defined \textit{externally} to the universe
+(using types, like function space, of our Agda metalanguage).
 
-\AgdaHide{
-\begin{code}
-module _ where
- open import Data.Nat
- open ClosedHier
- private
-\end{code}}
+We can port all of the examples in \refsec{closedeg} to the zeroth
+universe of our hierarchy by patching them using the table below. For
+each definition (in its signature and body),
+replace occurrences of the left table column
+with the right table column.
 
-\begin{code}
-  id : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
-  id A a = a
-\end{code}
+\begin{center}
+ \begin{tabular}{||c | c ||} 
+ \hline
+ Closed Types Universe &
+ Universe 0 in Hierarchy \\ [0.5ex] 
+ \hline\hline
 
-\AgdaHide{
-\begin{code}
-module _ where
- open import Data.Nat
- open ClosedHier
- private
-\end{code}}
+ \Data{`Set} &
+ \Fun{`Set[ \Num{0} ]} \\ 
+ \hline
 
-\begin{code}
-  id : (A : `Set[ 0 ]) (a : ⟦ 0 ∣ A ⟧) → ⟦ 0 ∣ A ⟧ 
-  id A a = a
-\end{code}
+ \Data{`Desc} &
+ \Fun{`Desc[ \Num{0} ]} \\ 
+ \hline
 
-\AgdaHide{
-\begin{code}
-module _ where
- open import Data.Nat
- open ClosedHier
- private
-\end{code}}
+ \Fun{⟦ \Var{A} ⟧} &
+ \Fun{⟦ \Num{0} ∣ \Var{A} ⟧} \\ 
+ \hline
 
-\begin{code}
-  id : {ℓ : ℕ} → ⟦ suc ℓ ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
-  id A a = a
-\end{code}
+ \Fun{⟪ \Var{D} ⟫} &
+ \Fun{⟪ \Num{0} ∣ \Var{D} ⟫} \\ 
+ \hline
 
+ \end{tabular}
+\end{center}
 
-\paragraph{Initial Algebra}
-
-\AgdaHide{
-\begin{code}
-module _ where
- open import Data.Nat
- open ClosedHier
- private
-\end{code}}
-
-\begin{code}
-  init' : ⟦ 1 ∣ `Π `Set (λ O → `Π (`Desc O) (λ D → 
-    `⟦ D ⟧₁ D `→ `μ₁' O D)) ⟧
-  init' O D xs = init xs
-\end{code}
-
-\AgdaHide{
-\begin{code}
-module _ where
- open import Data.Nat
- open ClosedHier
- private
-\end{code}}
-
-\begin{code}
-  init' : (O : `Set[ 0 ]) (D : `Desc[ 0 ] O)
-    → ⟦ ⟪ 0 ∣ D ⟫ ⟧₁ ⟪ 0 ∣ D ⟫ → μ₁ ⟦ 0 ∣ O ⟧ ⟪ 0 ∣ D ⟫    
-  init' O D xs = init xs
-\end{code}
+However, we can also choose to \textit{internalize} the signatures
+used in the examples, as we see below. By ``internalize'' we mean that
+each signature can be represented as the leveled type meaning
+(\Fun{⟦\_∣\_⟧}), of some closed type, at some level in our hierarchy.
 
 \paragraph{Natural Numbers}
 
@@ -475,13 +449,37 @@ module Nat where
   open ClosedHier
 \end{code}}
 
+
+Let's internalize the signatures used in the natural number examples.
+The definition bodies remain the same as those in \refsec{closedeg}, so we
+only present the signatures below.
+First, we internalize the signatures of the closed description and
+type \textit{kinds} (i.e. at universe level 1).
+
 \begin{code}
   NatDs : ⟦ 1 ∣ `Bool `→ `Desc `⊤ ⟧
   NatD : ⟦ 1 ∣ `Desc `⊤ ⟧
   `ℕ : ⟦ 1 ∣ `Set ⟧
+\end{code}
+
+Crucially, internalizing the kinds above relies on having codes for
+closed types (\Con{`Set}) and closed descriptions (\Con{`Desc}).
+If an internalized signature needs to refer to a type, it must refer
+to the internalized ``backtick'' version of the type.
+Because we can internalize \textit{all} signatures, we no longer need
+to define non-backtick versions of types (e.g. \Fun{ℕ}). We can always
+recover a non-backtick version of a type by applying the meaning
+function (\Fun{⟦\_∣\_⟧}) to the backtick version, at the appropriate
+level. 
+
+\begin{code}
   zero : ⟦ 0 ∣ `ℕ ⟧
   suc : ⟦ 0 ∣ `ℕ `→ `ℕ ⟧
 \end{code}
+
+Above, we internalize the
+\textit{value} (i.e. typed at universe level 0)
+constructors of the natural numbers. 
 
 \AgdaHide{
 \begin{code}
@@ -505,15 +503,55 @@ module _ where
  private
 \end{code}}
 
+Now, let's internalize the \textit{kinds} used to derive indexed
+vectors from inductive-recursive vectors.
+
 \begin{code}
   VecDs : ⟦ 1 ∣ `Set `→ `Bool `→ `Desc `ℕ ⟧
   VecD : ⟦ 1 ∣ `Set `→ `Desc `ℕ ⟧
   `Vec₁ : ⟦ 1 ∣ `Set `→ `Set ⟧
   `Vec₂ : ⟦ 1 ∣ `Π `Set (λ A → `⟦ `Vec₁ A ⟧ `→ `⟦ `ℕ ⟧) ⟧
   `Vec : ⟦ 1 ∣ `Set `→ `⟦ `ℕ ⟧ `→ `Set ⟧
+\end{code}
+
+Notice that the decoding function (\Fun{`Vec₂}) quantifies over
+the \textit{kind} \Con{`Set}, binding variable \Var{A}. The bound variable
+\Var{A} is a \textit{type}, the inhabitant of the \textit{kind}
+\Con{`Set}. Hence, in order to ask for argument of
+\Fun{`Vec₁} applied to \Var{A}, we must first \textit{lift} this type
+to the kind level (using \Con{`⟦\_⟧}). Also recall that \Con{`ℕ} is
+defines to be a \textit{type}. Hence, when asking for a
+natural number argument, in kind signatures of
+\Fun{`Vec₂} and \Fun{`Vec}, we also lift the \Con{`ℕ} type to the kind
+level (using \Con{`⟦\_⟧}). 
+
+\begin{code}
   nil : ⟦ 1 ∣ `Π `Set (λ A → `⟦ `Vec A zero ⟧) ⟧
   cons : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ `ℕ ⟧ (λ n → `⟦ A ⟧ `→ `⟦ `Vec A n ⟧ `→ `⟦ `Vec A (suc n) ⟧)) ⟧
 \end{code}
+
+Above, we internalize the
+\textit{value}
+constructors of the vectors.
+Even though the signatures of \Fun{nil} an \Fun{cons} are kinds (at
+universe level 1), their codomains return lifted (using \Con{`⟦\_⟧})
+vector \textit{types} (at universe level 0).
+For similar reasons, the natural number argument of \Fun{cons} is
+actually a value of \textit{type} \Con{`ℕ}, which has merely been
+lifted to the kind level to fit in the signature of \Con{cons}.
+
+To determine what level an argument or codomain lives at, substract
+the number of liftings (i.e. nested occurrences of \Con{`⟦\_⟧}) from
+the level of the signature (i.e. the number to the left of the pipe in
+the meaning function). For example, the codomain of \Con{nil} is
+1 minus 1 lifting, thus \Con{nil} returns a value of \textit{type}
+(i.e. universe level 0) \Fun{`Vec}, even though its signature is
+kinded (i.e. at universe level 1).
+
+Finally, note that both \Fun{nil} and \Fun{cons} have explicit type
+arguments, and \Fun{cons} also has an explicit natural number
+argument. To change these to be implicit arguments, we would need to
+update our universe to an implicit version of the \Con{`Π} code.
 
 \AgdaHide{
 \begin{code}
@@ -577,3 +615,72 @@ module _ where
   cons A a xs = init (false , A , a , (λ u → xs) , tt)
 \end{code}
 
+
+\paragraph{Identity Function}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  id : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
+  id A a = a
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  id : (A : `Set[ 0 ]) (a : ⟦ 0 ∣ A ⟧) → ⟦ 0 ∣ A ⟧ 
+  id A a = a
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open ClosedHier
+ private
+  id : (ℓ : ℕ) → ⟦ suc ℓ ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
+  id ℓ A a = a
+\end{code}}
+
+
+\paragraph{Initial Algebra}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  init' : ⟦ 1 ∣ `Π `Set (λ O → `Π (`Desc O) (λ D → 
+    `⟦ D ⟧₁ D `→ `μ₁' O D)) ⟧
+  init' O D xs = init xs
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  init' : (O : `Set[ 0 ]) (D : `Desc[ 0 ] O)
+    → ⟦ ⟪ 0 ∣ D ⟫ ⟧₁ ⟪ 0 ∣ D ⟫ → μ₁ ⟦ 0 ∣ O ⟧ ⟪ 0 ∣ D ⟫    
+  init' O D xs = init xs
+\end{code}
