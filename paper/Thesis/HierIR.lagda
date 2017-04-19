@@ -47,9 +47,9 @@ and pre-closed leveled descriptions (\Data{DescForm}).
 
 \AgdaHide{
 \begin{code}
-module HierIR where
+module _ where
  open import Data.Nat
- private 
+ private
 \end{code}}
 
 \paragraph{Abstract Universe Levels}
@@ -390,3 +390,156 @@ the pre-closed version (\Fun{⟪\_/\_⟫}) in the same way.
   ⟪_∣_⟫ : (ℓ : ℕ) {O : `Set[ ℓ ]} → `Desc[ ℓ ] O → Desc ⟦ ℓ ∣ O ⟧
   ⟪ ℓ ∣ D ⟫ = ⟪ level ℓ / D ⟫
 \end{code}
+
+
+\subsection{Examples}
+
+\paragraph{Identity Function}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  id₀ : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
+  id₀ A a = a
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  id₀ : (A : `Set[ 0 ]) (a : ⟦ 0 ∣ A ⟧) → ⟦ 0 ∣ A ⟧ 
+  id₀ A a = a
+\end{code}
+
+\begin{code}
+  id : {ℓ : ℕ} → ⟦ suc ℓ ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
+  id A a = a
+\end{code}
+
+
+\paragraph{Initial Algebra}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  init₀ : ⟦ 1 ∣ `Π `Set (λ O → `Π (`Desc O) (λ D → 
+    `⟦ D ⟧₁ D `→ `μ₁' O D)) ⟧
+  init₀ O D xs = init xs
+\end{code}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open import Data.Nat
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  init₀ : (O : `Set[ 0 ]) (D : `Desc[ 0 ] O)
+    → ⟦ ⟪ 0 ∣ D ⟫ ⟧₁ ⟪ 0 ∣ D ⟫ → μ₁ ⟦ 0 ∣ O ⟧ ⟪ 0 ∣ D ⟫    
+  init₀ O D xs = init xs
+\end{code}
+
+\paragraph{Natural Numbers}
+
+\AgdaHide{
+\begin{code}
+module Nat where
+  open import Data.Nat
+  open ClosedHier
+
+\end{code}}
+
+\begin{code}
+  NatDs₀ : Bool → `Desc[ 0 ] `⊤
+  NatDs₀ true = `ι tt
+  NatDs₀ false = `δ `⊤ (λ f → `ι (f tt))
+
+  NatD₀ : `Desc[ 0 ] `⊤
+  NatD₀ = `σ `Bool NatDs₀
+\end{code}
+
+\begin{code}
+  `ℕ₀ : `Set[ 0 ]
+  `ℕ₀ = `μ₁ `⊤ NatD₀
+
+  ℕ₀ : Set
+  ℕ₀ = ⟦ 0 ∣ `ℕ₀ ⟧
+\end{code}
+
+\begin{code}
+  zero₀ : ℕ₀
+  zero₀ = init (true , tt)
+
+  suc₀ : ℕ₀ → ℕ₀
+  suc₀ n = init (false , (λ u → n) , tt)
+\end{code}
+
+\paragraph{Vectors}
+
+\AgdaHide{
+\begin{code}
+module _ where
+ open Nat
+ open Prim
+ open Alg
+ open ClosedHier
+ private
+\end{code}}
+
+\begin{code}
+  VecDs : `Set[ 0 ] → Bool → `Desc[ 0 ] `ℕ₀
+  VecDs A true = `ι zero₀
+  VecDs A false =
+    `σ `ℕ₀ λ n →
+    `σ A λ a →
+    `δ `⊤ λ xs →
+    `σ (`Id `ℕ₀ (xs tt) n) λ q →
+    `ι (suc₀ n)
+
+  VecD : `Set[ 0 ] → `Desc[ 0 ] `ℕ₀
+  VecD A = `σ `Bool (VecDs A)
+\end{code}
+
+\begin{code}
+  `Vec₁ : `Set[ 0 ] → `Set[ 0 ]
+  `Vec₁ A = `μ₁ `ℕ₀ (VecD A)
+  
+  `Vec₂ : (A : `Set[ 0 ]) → ⟦ 0 ∣ `Vec₁ A ⟧ → ℕ₀
+  `Vec₂ A = μ₂ ⟪ 0 ∣ VecD A ⟫
+  
+  `Vec : `Set[ 0 ] → ℕ₀ → `Set[ 0 ]
+  `Vec A n = `Σ (`Vec₁ A) (λ xs → `Id `ℕ₀ (`Vec₂ A xs) n)
+\end{code}
+
+\begin{code}
+  Vec : `Set[ 0 ] → ℕ₀ → Set
+  Vec A n = ⟦ 0 ∣ `Vec A n ⟧
+
+  nil : {A : `Set[ 0 ]} → Vec A zero₀
+  nil = init (true , tt) , refl
+  
+  cons : {A : `Set[ 0 ]} {n : ℕ₀} (a : ⟦ 0 ∣ A ⟧) (xs : Vec A n) → Vec A (suc₀ n)
+  cons {n = n} a (xs , refl) = init (false , n , a , (λ u → xs) , refl , tt) , refl
+\end{code}
+
+
+\paragraph{Heterogenous Lists}
