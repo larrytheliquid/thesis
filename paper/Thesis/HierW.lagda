@@ -367,7 +367,7 @@ current level. Currently, Agda's positivity checker cannot perform
 such an analysis, so \refsec{hierwp} defines an Agda model that
 reifies our positivity argument in its structure.
 
-\subsection{Examples}
+\subsection{Examples}\label{sec:hierweg}
 
 Let's consider some examples where we internalize the signatures of
 functions using codes of our universe hierarchy.

@@ -657,10 +657,20 @@ module _ where
  private
 \end{code}}
 
+In \refsec{hierweg}, we demonstrate internalizing the
+signature of the identify function in level 0 of the
+\textit{Closed Hierarchy of Well-Order Universes}.
+We can still do this in our
+\textit{Closed Hierarchy of Inductive-Recursive Universes},
+as the internalized type below demonstrates.
+
 \begin{code}
   id : ⟦ 1 ∣ `Π `Set (λ A → `Π `⟦ A ⟧ (λ a → `⟦ A ⟧)) ⟧
   id A a = a
 \end{code}
+
+For reference, we also present the external type signature that the
+meaning of our internal type above expands to.
 
 \AgdaHide{
 \begin{code}
