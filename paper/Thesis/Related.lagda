@@ -35,7 +35,7 @@ module _ where
 \end{code}}
 
 \begin{code}
-   generic : (A : Code) → ⟦ A ⟧ → ⋯
+   generic : (A : Code) (a : ⟦ A ⟧) → ⋯
 \end{code}
 
 
@@ -59,7 +59,7 @@ universe (\Data{U}) encoding bits, characters, natural numbers, and
 even vectors. Even though \Fun{parse} and \Fun{print} are
 \textit{fully generic functions}, they are defined over a fixed
 universe of types. This makes sense for the problem at hand, where
-file formats should be able to use the dependenty type of vectors to
+file formats should be able to use dependent pairs and vectors to
 encode the length of the remaining file format, after reading a
 natural number specifiying said length. In their setting, it does not
 make sense to support arbitrary user-declared types when defining file
@@ -69,8 +69,17 @@ dependently typed programming language
 so this dissertation concerns itself with a closed
 \textit{extendable} universe (by user-declared datatypes).
 
-\section{Open Algebraic Universes}
+\section{Extendable Open or Closed Well-Order Universes}
 
-%% \section{Closed Well-Order Universe}
+\section{Extendable Open Algebraic Universes}
 
-\section{Nearly Closed Algebraic Universes}
+\section{Extendable Nearly Closed Algebraic Universes}
+
+\section{Syntactic Universes versus Semantic Universes}
+
+\section{Dependent Polynomials versus Dependent Tuples}
+
+\section{Fully Generic Programming versus Ornaments}
+
+\section{Static Syntactic Universe Structure}
+
