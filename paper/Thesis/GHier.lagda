@@ -32,16 +32,17 @@ over all \textit{types} of kinds.
 As we shall see, the \Fun{Count} function at level 1 must be defined
 in terms of the \Fun{count} function at level 0,
 because the values of level 0 are lifted to the type level 1,
-which is expected because our universes form a \textit{hierarchy}.
+which can be expected because our universes form a \textit{hierarchy}.
 
 We only patch \Fun{count} to work at level 0 (and extend it
-to work at level 1) but other fully generic functions
+to work at level 1), but other fully generic functions
 (like \Fun{lookup} and \Fun{ast})
 can be similarly defined as \textit{leveled} fully generic functions.
 Leveling a function primarily involves 2 things:
 \begin{enumerate}
 \item The type of the fully generic function must be
-  \textit{internalized} as a kind (of the next universe level).
+  \textit{internalized} as a kind
+  (i.e. we move from level 0, to the subsequent level, 1).
 \item Additional cases must be handled, for the closed kinds
   \Con{`Set} and \Con{`Desc}, and their associated
   lifting functions (\Con{`⟦\_⟧}, \Con{`⟦\_⟧₁}, and \Con{`μ₁'}).
@@ -178,7 +179,7 @@ functions (\Con{`⟦\_⟧}, \Con{`⟦\_⟧₁}, and \Con{`μ₁'}), in
 the definition of \Fun{count}.
 
 In \reffig{count0}, if the first argument of \Fun{count} is
-\Con{`Set}, then the second argument is its meaning (or
+\Con{`Set}, and the second argument is its meaning (or
 lifting). However, at universe level 0 the meaning of \Con{`Set}
 is \Data{⊥}, so the second argument is empty parenthess,
 which is Agda syntax for matching against an uninhabited argument.
@@ -187,7 +188,7 @@ defined over \textit{values}, hence we do not need to define a case
 for counting \textit{types} (inhabitants of \Con{`Set}).
 The same is true for the \Con{`Desc} case. Finally, each lifting
 function constructor (\Con{`⟦\_⟧}, \Con{`⟦\_⟧₁}, and \Con{`μ₁'}) takes a
-closed type or description as one of its arguments. Because we know
+closed type or description as one of its arguments. Because we know that
 closed types and descriptions are not inhabited at universe level 0,
 we also do not need to define cases for the lifting functions.
 
@@ -201,12 +202,13 @@ universe level 1 in our closed hierarchy.
 \paragraph{Counting Values}
 
 Even though we think of level 1 as the level of \textit{types}, there
-are copies of constructors like dependent pairs (\Con{`Σ}) at every
+are copies of type constructors (like dependent pairs, or \Con{`Σ}) at every
 level of our hierarchy, whose \textit{values} we must be able to
-count. Thus, we mutually define \Fun{Count} for values at level 1,
+count. Thus, we mutually define (in \reffig{count1})
+\Fun{Count} for values at level 1,
 and \Fun{Counts} for algebraic arguments at level 1. Notice the
 capitalization of \Fun{Count} and \Fun{Counts}, indicating that they
-are the universe level 1 versions of \Fun{count} and \Fun{counts}
+are the universe level 1 equivalents of \Fun{count} and \Fun{counts}
 (from universe level 0).
 
 \AgdaHide{
@@ -259,13 +261,13 @@ module Count1 where
 Notice that because the internalized \textit{superkind} signatures of
 \Fun{Count} and \Fun{Counts} are at level 2, we must lift the return
 type of natural numbers twice (because \Fun{`ℕ} is defined in level
-0). However, the \Var{A} argument must only be lifted once, from
-lifting the quantified \textit{kind} (\Con{`Set} at level 1)
-to level 2 of the \textit{superkind} signature.
+0). However, the \Var{A} argument must only be lifted once, which
+lifts the quantified \textit{kind} (\Con{`Set} at level 1)
+to level 2 (the level of the \textit{superkind} signature).
 Recall (from \refsec{closed})
 that the the lifting constructor \Con{`⟦\_⟧} is defined at
-every level of our universe hiearchy (so is \Con{`Σ}), whereas we only
-defined \Fun{`ℕ} at level 0.
+every level of our universe hiearchy (so is \Con{`Σ}),
+but \Fun{`ℕ} is only defined at level 0.
 
 The definitions of \Fun{Count} and \Fun{Counts} are in
 \reffig{count1}. All cases are the same as the level 0
@@ -273,11 +275,11 @@ The definitions of \Fun{Count} and \Fun{Counts} are in
 except for the kind (\Con{`Desc} and \Con{`Desc}) and
 lifting (\Con{`⟦\_⟧}, \Con{`⟦\_⟧₁}, and \Con{`μ₁'}) cases.
 In the lifting cases, the inhabitant argument comes from the
-\textit{previous} universe, so count the lifted inhabitants using
-level 0 functions (\Fun{count}, \Fun{counts}).
-In for the kind cases (\Con{`Set} and \Con{`Desc}), the inhabitants
+\textit{previous} universe, so we count the lifted inhabitants using
+level 0 functions (\Fun{count} and \Fun{counts}).
+For the kind cases (\Con{`Set} and \Con{`Desc}), the inhabitants
 are closed types and descriptions. Hence, we must additionally
-mutually define \Fun{CountSet} to count types and \Fun{CountDesc} to
+mutually define (in \reffig{Count1}) \Fun{CountSet} to count types and \Fun{CountDesc} to
 count descriptions.
 
 \begin{figure}[ht]
@@ -307,7 +309,7 @@ count descriptions.
 
 \paragraph{Counting Types and Descriptions}
 
-In order to write fully generic functions at level 1 to count closed
+In order to write fully generic functions at level 1, to count closed
 types and descriptions, we must internalize their signatures as
 follows.
 
@@ -328,7 +330,7 @@ Notice that \Fun{CountSet} and \Fun{CountDesc} are defined in level
 of the \Con{`Set} and \Con{`Desc} cases of
 \Fun{Count} (\reffig{count1}). Because the inhabitants are classified
 as the meaning of the closed kind of \Con{`Set} or \Con{`Desc}, the
-inhabitant lives at the previous level. Hence, while \Fun{Count} is
+inhabitants live at the previous level. Hence, while \Fun{Count} is
 defined at level 2, \Fun{CountSet} and \Fun{CountDesc} are defined at
 level 1.
 
@@ -349,7 +351,7 @@ dependent and higher-order \Var{D} argument is treated as a black
 box.
 
 Notice that the \Var{x} and \Var{y} arguments of the identity type
-\Var{`Id} are actually \textit{values}. Hence, we apply \Fun{count} to
+\Con{`Id} are actually \textit{values}. Hence, we apply \Fun{count} to
 them, rather than \Fun{CountSet}. The same is true for \Var{o} in the
 \Con{`ι} case of \Fun{CountDesc}.
 Finally, notice that the \textit{kind} (\Con{`Set} and
