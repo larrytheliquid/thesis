@@ -19,7 +19,7 @@ we only consider generic programming within dependent type
 theory. Namely, intrinsically type-safe generic programming as
 dependent functions over some universe,
 taking a code argument (\Var{A} : \Data{Code})
-and subsequent dependent argument,
+and a subsequent dependentlty typed argument,
 whose type is the meaning of the
 code (\Fun{⟦ \Var{A} ⟧})
 within type theory:
@@ -44,16 +44,17 @@ module _ where
 By a fixed universe, we mean a universe that encodes some fixed number
 of type formers, but does not support encoding encoding user-declared
 datatypes. Generic programming over fixed universe,
-whether they be open (as in \refsec{openu}) or
-closed (as in \refsec{closedu}) is standard practice in
-dependently typed programming. For example,
+whether it is open (as in \refsec{openu}) or
+closed (as in \refsec{closedu}) is standard
+dependently typed programming practice.
 
-Oury and Swierstra~\cite{oury:tpop} demonstrate
+For example, Oury and Swierstra~\cite{oury:tpop} demonstrate
 ``The Power of Pi'' (or dependently typed programming),
 by creating a file \Data{Format} universe, and writing
 \textit{fully generic} \Fun{parse} and \Fun{print} functions for all
-file formats that the universe encodes. The universe includes the
-dependent pairs (whose code they call \Con{Read}), as well as a base
+file formats that the universe encodes.
+The universe is closed under (among other things)
+dependent pair formation (whose code they call \Con{Read}), as well as a base
 universe (\Data{U}) encoding bits, characters, natural numbers, and
 even vectors. Even though \Fun{parse} and \Fun{print} are
 \textit{fully generic functions}, they are defined over a fixed
@@ -63,7 +64,7 @@ encode the length of the remaining file format, after reading a
 natural number specifiying said length. In their setting, it does not
 make sense to support arbitrary user-declared types when defining file
 formats. In contrast, our goal is to model an entire closed
-dependently typed programming langauge
+dependently typed programming language
 (as in \refsec{closed} or \refsec{hierir}), rather than file formats,
 so this dissertation concerns itself with a closed
 \textit{extendable} universe (by user-declared datatypes).
