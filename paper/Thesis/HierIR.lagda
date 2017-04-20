@@ -390,7 +390,7 @@ the pre-closed version (\Fun{⟪\_/\_⟫}) in the same way.
 \end{code}
 
 
-\subsection{Examples}
+\subsection{Examples}\label{sec:hierireg}
 
 The \textit{Closed Inductive-Recursive Types} universe
 examples in \refsec{closedeg} correspond to examples that we can
