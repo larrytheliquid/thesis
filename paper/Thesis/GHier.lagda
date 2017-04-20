@@ -100,9 +100,9 @@ module _ where
 \begin{code}
 module Count0 where
   open Nat0
+  mutual
 \end{code}}
 \begin{code}
-  mutual
     count : ⟦ 1 ∣ `Π `Set (λ A → `⟦ A ⟧ `→ `⟦ `ℕ ⟧) ⟧
     count (`Σ A B) (a , b) = one + count A a + count (B a) b
     count (`μ₁ O D) (init xs) = one + counts O D D xs
@@ -121,7 +121,9 @@ module Count0 where
     counts O (`δ A D) R (f , xs) = one + counts O (D (`μ₂ R ∘ f)) R xs
     counts O (`ι o) R tt = one
 \end{code}
-\caption{Fully generic counting in universe level 0.}
+\caption{Fully generic counting of values (\Fun{count})
+  and algebraic arguments (\Fun{counts})
+  in universe level 0.}
 \label{fig:count0}
 \end{figure}
 
@@ -198,9 +200,9 @@ we also do not need to define cases for the lifting functions.
 module Count1 where
   open Nat0
   open Count0
+  mutual
 \end{code}}
 \begin{code}
-  mutual
     Count : ⟦ 2 ∣ `Π `Set (λ A → `⟦ A ⟧ `→ `⟦ `⟦ `ℕ ⟧ ⟧) ⟧
     Count (`Σ A B) (a , b) = one + Count A a + Count (B a) b
     Count (`μ₁ O D) (init xs) = one + Counts O D D xs
@@ -218,7 +220,16 @@ module Count1 where
       Counts O (D (`μ₂ R ∘ f)) R xs
     Counts O (`δ A D) R (f , xs) = one + Counts O (D (`μ₂ R ∘ f)) R xs
     Counts O (`ι o) R tt = one
+\end{code}
+\caption{Fully generic counting of values (\Fun{Count})
+  and algebraic arguments (\Fun{Counts})
+  in universe level 1.}
+\label{fig:count1}
+\end{figure}
 
+\begin{figure}[ht]
+\centering
+\begin{code}
     CountSet : ⟦ 1 ∣ `Set  `→ `⟦ `ℕ ⟧ ⟧
     CountSet (`Σ A B) = two + CountSet A
     CountSet (`Π A B) = two + CountSet A
@@ -235,6 +246,8 @@ module Count1 where
     CountDesc O (`σ A D) = two + CountSet A
     CountDesc O (`δ A D) = two + CountSet A
 \end{code}
-\caption{Fully generic counting in universe level 1.}
-\label{fig:count1}
+\caption{Fully generic counting of types (\Fun{CountSet})
+  and algebraic arguments (\Fun{CountDesc})
+  in universe level 1.}
+\label{fig:Count1}
 \end{figure}
