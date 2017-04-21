@@ -218,10 +218,46 @@ expand this
 work to also derive a certain class of functions with less finely
 indexed types from functions with more finely indexed types.
 
-%% TODO \paragraph{disjointness and injectivity}
-%% TODO \paragraph{Nearly Closed Universe of Morris
-%% TODO ahmal
+\paragraph{Disjointness and Injectivity}
+
+Goguen et al.~\cite{Goguen06eliminatingdependent} demonstrate how to
+elaborate a high-level syntax of dependent pattern matching to
+low-level uses of eliminators. Part of this elaboration process
+depends upon proofs that constructors are injective and
+disjoint. These proofs are defined generically at the level of
+metatheory, ``on pen and paper'', by McBride et
+al.~\cite{mcbride2006few}. However, Dagand~\cite{dagand:phd} has also
+shown how to internalize these proofs as generic programs over the
+open universe of algebraic datatypes
+(using \Data{Desc} and \Data{μ}).
+
+\paragraph{Strictly Positive Families}
+
+In addition to writing generic functions over open container-based
+datatype encodings, Morris also writes generic functions over an open
+universe of ``Strictly Positive Families''
+(whose type is called \Data{SPT}). He writes functions like generic
+\Fun{map}, a generic decision procedure for equality (over the
+first-order subset of the universe), and generic zipper operations.
+The \Data{SPT} universe can be considered an alternative way to
+define \Data{Desc} and \Data{μ}. Due to the way \Data{SPT} is
+defined, you can write functions that can make recursive calls on
+inductive arguments of varying types, in a way that feels very similar
+to fully generic programming. Nonetheless, ultimately \Data{SPT} is
+still an open universe, as function domains and infinitary domains are
+still encoded using the open \Data{Set} type.
+
+In \refsec{gcount}, we define fully generic \Fun{count} to specialize
+the way it operates over inductive arguments (infinitary argument
+whose domain is the unit type \Con{`⊤}), as opposed to truly infinitary
+arguments (whose domain is a type other than unit). This would not be
+possible in the \Data{SPT} universe, because we could not match on the
+domain argument
+(of open kind \Data{Set}, rather than closed type \Data{`Set}).
+
 %% TODO sijling
+
+%% TODO ahmal
 
 %% TODO \section{Previous Work}
 
