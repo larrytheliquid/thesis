@@ -255,10 +255,91 @@ possible in the \Data{SPT} universe, because we could not match on the
 domain argument
 (of open kind \Data{Set}, rather than closed type \Data{`Set}).
 
-%% TODO sijling
+\paragraph{Static Constructors and Arguments}
+
+Sijsling~\cite{sijsling} defines an open algebraic universe,
+using a ``static'' variant of the datatype of descriptions (\Data{Desc}).
+This universe statically encodes the structure
+of constructors and their arguments, so that we statically know the
+number of constructors and arguments of a datatype.
+In contrast, the type of the second argument of the \Con{σ}
+constructor (of \refsec{depalgmod}), depends on the value of the first
+argument. Hence, we cannot statically determine the number of
+remaining constructor arguments, encoded by
+the second argument of \Con{σ},
+because its type may depend on the first argument of \Con{σ}
+(i.e. a value, only dynamically available).
+
+Sijsling reflects datatype declarations written in high-level Agda
+(using Agda's reflection machinery),
+and uses the reflected declarations to automatically derive encodings
+of the datatypes in terms of his static \Data{Desc}. 
+He then writes generic programs over his static \Data{Desc}, some of
+which can be automatically converted between their high-level Agda
+representations and the low-level static \Data{Desc}-based
+representations.
+
+Sijsling leaves extending his static \Data{Desc} to account for
+infinitary arguments and induction-recursion as future work, which we
+believe is possible. We also cannot imagine any problems with defining
+a closed universe in terms of such static \Data{Desc} types, by
+applying our closing procedure from \refsec{closing}.
 
 %% TODO ahmal
 
-%% TODO \section{Previous Work}
+\section{Previous Work}
 
+Now we discuss how the contributions of this dissertations relate to
+our previously published work.
+
+\paragraph{Closed Universe Zero and Fully Generic Programming}
+
+In a previous publication~\cite{diehl:gupdate},
+we defined the closed universe of inductive-recursive
+algebraic types, and wrote fully generic functions over the universe.
+That work is the basis of \refchap{closed} and \refchap{hier}.
+An important contribution of our dissertation from \refchap{closed},
+not present in
+our previous publication~\cite{diehl:gupdate}, is the generic
+procedure to close \textit{any} universe of kinds (\refsec{closing}).
+
+The fully generic function \Fun{count} (\refsec{gcount})
+and \Fun{ast} (\refsec{gast}) functions of
+\refchap{closed} are also novel to this dissertation.
+In \refsec{glookup}, we define a generic \Fun{lookup} function, that
+takes a finite set (\Data{Fin}) argument, which is indexed by the
+\Fun{count} of the argument being looked up. We also define a
+\Fun{lookup} function in our previous publication, but it is indexed by a
+custom index type (unique to each type being looked up), rather than
+using \Data{Fin} and a dependent application of \Fun{count}.
+Our previous publication also features a generic \Fun{update}
+function. While this dissertation treats higher-order arguments as
+black-boxes, our previous publication~\cite{diehl:gupdate} uses domain
+supplements (\refsec{domsup}) to also recurse into higher-order
+arguments.
+
+\paragraph{Closed Universe Hierarchy and Leveled Fully Generic Programming}
+
+In another previous publication~\cite{diehl:levelingup},
+we defined a closed hierarchy of algebraic (but not infinitary or
+inductive-recursive) types. That was the basis of \refchap{hier}.
+
+While our previous publication featured both description lifting
+functions, \Con{`⟦\_⟧₁} and \Con{`μ₁'}, it did \textit{not} feature
+the non-lifting fixpoint operator \Con{`μ₁}. At the time, we did not
+know how to adequately represent datatypes of the current universe
+level. This resulted in needing to inadequately define certain types
+at one level higher in the hierarchy, so that they may be defined in
+terms of the lifting fixpoint \Con{`μ₁'}.
+
+Our novel solution to this problem appears in \refchap{hier}, where
+we add a non-lifting fixpoint \Con{`μ₁}, whose argument is a
+\textit{mutually} defined \Data{DescForm}. Hence, the novelty of
+\refchap{hier} is combining the
+idea of mutually defined code types
+(\Data{`Set} and \Data{`Set}) and mutually defined
+translation functions (\Fun{⟦\_⟧} and \Fun{⟪\_⟫}),
+from \refchap{closed}, with the idea of description
+lifting functions (\Con{`⟦\_⟧₁} and \Con{`μ₁'}) from our previous
+publication~\cite{diehl:levelingup}.
 
