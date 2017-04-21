@@ -41,7 +41,7 @@ module _ where
 
 \section{Fixed Open or Closed Universes}
 
-By a fixed universe, we mean a universe that encodes some fixed number
+By a \textit{fixed} universe, we mean a universe that encodes some fixed number
 of type formers, but does not support encoding encoding user-declared
 datatypes. Generic programming over fixed universe,
 whether it is open (as in \refsec{openu}) or
@@ -122,6 +122,40 @@ generic, they operate over a fixed universe of natural numbers, closed
 under dependent function formation.
 
 \section{Extendable Open or Closed Well-Order Universes}
+
+\paragraph{Open Universe}
+
+Morris~\cite{morristhesis} demonstrates
+generic programming over small \textit{indexed}
+containers in an \textit{open} universe. Because indexed containers
+can represent arbitrary user-declared datatypes, the universe is also
+\textit{extendable}.
+
+Morris writes a generic functions, like \Fun{map},
+over the open universe of indexed containers.
+This corresponds to
+writing generic functions over the open universe
+of inductive-recursive types in \refsec{iralgmod},
+because small induction-recursion and small indexing are
+equivalent~\cite{smallir}. 
+
+Recursive containers are represented using the
+\Data{W} type of well-orderings,
+which can be seen a the fixpoint of containers. Because 
+As explained in \refsec{inad}, \Data{W} types inadequately encode
+first-order types in intensional type theory, which is why we use the
+more complicated (but adequate) algebraic semantics of
+\refsec{iralgagda}, defined in terms of
+\Data{Desc} and \Data{μ₁}.
+
+\paragraph{Closed Universe}
+
+We expect that it would be straightforward to extend the generic
+functions that Morris wrote over an open universe of containers,
+to operate over a closed universe of well-orderings
+(like the universe in \refsec{wuni}).
+Once again, we were not interested in this option for adequacy
+reasons (\refsec{inad}).
 
 \section{Extendable Open Algebraic Universes}
 
