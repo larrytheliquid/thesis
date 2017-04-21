@@ -48,6 +48,8 @@ whether it is open (as in \refsec{openu}) or
 closed (as in \refsec{closedu}) is standard
 dependently typed programming practice.
 
+\paragraph{Practical Example}
+
 For example, Oury and Swierstra~\cite{oury:tpop} demonstrate
 ``The Power of Pi'' (or dependently typed programming),
 by creating a file \Data{Format} universe, and writing
@@ -56,7 +58,9 @@ file formats that the universe encodes.
 The universe is closed under (among other things)
 dependent pair formation (whose code they call \Con{Read}), as well as a base
 universe (\Data{U}) encoding bits, characters, natural numbers, and
-even vectors. Even though \Fun{parse} and \Fun{print} are
+even vectors.
+
+Even though \Fun{parse} and \Fun{print} are
 \textit{fully generic functions}, they are defined over a fixed
 universe of types. This makes sense for the problem at hand, where
 file formats should be able to use dependent pairs and vectors to
@@ -68,6 +72,54 @@ dependently typed programming language
 (as in \refsec{closed} or \refsec{hierir}), rather than file formats,
 so this dissertation concerns itself with a closed
 \textit{extendable} universe (by user-declared datatypes).
+
+\paragraph{Theoretical Example}
+
+A more theoretical example of generic programming is Coquand's proof
+that an operational semantics of type theory terminates
+~\cite{coquand:realizability}. This is achieved using a logical
+relation defined as an inductive-recursive universe, which can
+be viewed an extension of a universe of
+natural numbers (\Con{`ℕ}),
+closed under dependent function
+formation (\Con{`Π}).
+
+The codes (\Data{Ψ}) of the logical relation are
+additionally indexed by a syntax of expressions (\Data{ε}).
+The codes are
+inhabited for all the expressions corresponding to types in the
+language. The meaning function (\Fun{ψ}) of the logical relation is
+indexed by two expressions, where the first represents the type and
+the second represents values of that type. The meaning function is
+inhabited whenever the expression value is a valid member of the
+expression type.
+
+The meaning function is also indexed by the result
+of applying the code type former to the expression index
+representing type of the other expression index (representing the
+value of said type). Hence,
+the logical relation (or universe) is
+an inductive-inductive type~\cite{indind},
+in addition to being an inductive-recursive type.
+One final difference between the logical relation and an ordinary
+universe of types, is that the logical relation also contains termination
+evidence, in the form of inhabitants of the
+operational semantics judgement
+(defined as a type that is indexed by expressions).
+
+Once again, we emphasize that the logical relation for a dependent
+type theory can be considered a \textit{universe},
+albeit one with additional
+indexing and containing additional data in the form of termination
+witnesses. The fundamental theorem,
+used to prove that the operational semantics terminates,
+is defined over this universe (i.e. the logical relation is one of its
+arguments). Hence, the fundamental theorem can be
+seen as a \textit{fully generic} function. Many lemmas used in the
+proof of termination can likewise be seen as fully generic
+functions. Finally, we note that even though these functions are fully
+generic, they operate over a fixed universe of natural numbers, closed
+under dependent function formation.
 
 \section{Extendable Open or Closed Well-Order Universes}
 
@@ -82,4 +134,9 @@ so this dissertation concerns itself with a closed
 \section{Fully Generic Programming versus Ornaments}
 
 \section{Static Syntactic Universe Structure}
+
+\section{Previous Work}
+
+%% \section{inf update paper}
+%% \section{leveling up paper}
 
