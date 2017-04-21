@@ -48,7 +48,7 @@ whether it is open (as in \refsec{openu}) or
 closed (as in \refsec{closedu}) is standard
 dependently typed programming practice.
 
-\paragraph{Practical Example}
+\paragraph{File Formats}
 
 For example, Oury and Swierstra~\cite{oury:tpop} demonstrate
 ``The Power of Pi'' (or dependently typed programming),
@@ -73,7 +73,7 @@ dependently typed programming language
 so this dissertation concerns itself with a closed
 \textit{extendable} universe (by user-declared datatypes).
 
-\paragraph{Theoretical Example}
+\paragraph{Termination}
 
 A more theoretical example of generic programming is Coquand's proof
 that an operational semantics of type theory terminates
@@ -131,7 +131,7 @@ containers in an \textit{open} universe. Because indexed containers
 can represent arbitrary user-declared datatypes, the universe is also
 \textit{extendable}.
 
-Morris writes a generic functions, like \Fun{map},
+Morris writes generic functions, like \Fun{map},
 over the open universe of indexed containers.
 This corresponds to
 writing generic functions over the open universe
@@ -159,18 +159,69 @@ reasons (\refsec{inad}).
 
 \section{Extendable Open Algebraic Universes}
 
-\section{Extendable Nearly Closed Algebraic Universes}
+There is a lot of work on generic programming over an
+\textit{open} algebraic universe, similar to the one in
+\refsec{iralgmod}. It should be possible to extend any such generic
+functions over an \textit{open} universe, to be fully generic over a
+\textit{closed} universe (or hierarchy of universes),
+using techniques from \refchap{fullyg}
+(and \refsec{lgcount}).
 
-\section{Syntactic Universes versus Semantic Universes}
+\paragraph{Universal Algebra}
 
-\section{Dependent Polynomials versus Dependent Tuples}
+Benke et al.~\cite{benke:generic}
+perform generic programming in the domain of universal
+algebra. Various restrictions of the open inductive-recursive universe
+of \refsec{iralgmod} are used
+for each algebra (e.g. one-sorted term algebras, many-sorted
+term algebras, parameterized term algebras, etc.). Some of these
+algebras restrict the universe to be finitary, some remain infinitary,
+but all of them restrict the use of induction-recursion. As they
+state, their work could have been instead defined as restrictions over
+a universe of indexed inductive types without induction-recursion.
 
-\section{Fully Generic Programming versus Ornaments}
+\paragraph{Induction Principles}
 
-\section{Static Syntactic Universe Structure}
+Chapman et al.~\cite{Chapman:2010:GAL:1932681.1863547}
+define \AgdaData{Desc}riptions for
+indexed dependent types (without induction-recursion). Defining
+generic \AgdaFun{ind}uction principles for types encoded by
+\AgdaData{Desc}riptions requires a computational argument type for all
+the inductive hypotheses (\AgdaData{All}, also called \AgdaData{Hyps}). 
+Although \AgdaData{Desc} is not inductive-recursive, it is still
+infinitary so generic functions over such types, like \AgdaFun{ind},
+share many of the same properties as our generic functions.
 
-\section{Previous Work}
+Our previous work~\citep{diehl:gelim} expands upon the work of
+Chapman et al.~\cite{Chapman:2010:GAL:1932681.1863547},
+defining an alternative interface to
+induction as generic type-theoretic
+\AgdaFun{elim}inators for \AgdaData{Desc}riptions. Defining these
+eliminators involves several nested constructions, where both
+computational argument types (to collect inductive hypotheses) and return
+types (to produce custom eliminator types for each description) are
+used for information retrieval but not modification of infinitary
+descriptions.
 
-%% \section{inf update paper}
-%% \section{leveling up paper}
+\paragraph{Ornaments}
+
+McBride~\cite{mcbride2010ornamental} builds a theory
+of \AgdaData{Orn}aments on top of \AgdaData{Desc}riptions for
+indexed dependent types (without induction-recursion). Ornaments allow
+a description of one type (such as a \AgdaData{Vec}tor) to be related
+to another type (such as a \AgdaData{List}) such that a \AgdaFun{forget}ful map
+from the more finely indexed type to the less finely indexed type can
+be derived as a generic function.
+Dagand and McBride~\cite{dagand2012transporting}
+expand this
+work to also derive a certain class of functions with less finely
+indexed types from functions with more finely indexed types.
+
+%% TODO \paragraph{disjointness and injectivity}
+%% TODO \paragraph{Nearly Closed Universe of Morris
+%% TODO ahmal
+%% TODO sijling
+
+%% TODO \section{Previous Work}
+
 
