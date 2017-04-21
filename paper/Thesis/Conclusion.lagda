@@ -183,25 +183,72 @@ by moving up a universe level. At universe level 1, the codomain of
 a small decoding function could be any kind, but a large decoding
 function would allow the codomain to be any superkind.
 
-%% Expert readers may have noticed that the open inductive-recursive
-%% \AgdaData{Desc} universe of \refsec{genericopen} can actually only
-%% encode small induction-recursion, where the codomain of the mutual
-%% function is not \AgdaData{Set}. Hence, the universe of that
-%% section cannot encode the large \AgdaData{Type} from
-%% \refsec{concretelarge}. We deliberately kept the open \AgdaData{Desc}
-%% universe small for pedagogical reasons, allowing the definitions and
-%% examples to be simple. However, we have a version of the open universe
-%% \AgdaData{Desc} in the accompanying source code that is universe
-%% polymorphic and allows the mutual function to be large.
-
-
 \paragraph{High-Level Generic Programming}
-%% also implementation
+
+In \refchap{fullyg}, we mention that we
+can hide our algebraic encodings via smart constructors and pattern
+synonyms, when defining \textit{concrete} functions
+(i.e. over concrete datatypes).
+However, we need to understand the underlying
+\Con{init}ial-algebra base encoding,
+when defining \textit{fully generic functions}.
+
+McBride~\cite{Goguen06eliminatingdependent}
+defines how to elaborate dependent pattern
+matching, a high-level language feature, to eliminators, which can be
+considered low-level induction principles of a core language.
+We would like to explore implementing a closed dependently typed
+language. It would be nice if we had a high-level feature for writing
+fully generic functions, that could be elaborated to the fully generic
+functions of this dissertations, which explicitly match on low-level
+encodings (like the \Con{init}ial algebra).
+
+Just like McBride allows users to define functions by dependent
+pattern matching, without understanding how to program directly with
+eliminators, we would like users to be able to define fully generic
+functions, without understanding our closed universe model.
+Finally, note that Dagand~\cite{dagand2012elaborating} has already
+shown how to elaborate high-level datatype declarations to their
+description-based (\Data{Desc}) encodings.
 
 \paragraph{Termination of Intensional Closed Type Theory}
 
+In our related work (\refchap{related}), we discus
+how Coquand~\cite{coquand:realizability} proves that an operational
+semantics of type theory, consisting of the natural numbers closed
+under dependent function formation, terminates.
+
+The logical relation of this termination proof can be considered an
+extended version of the closed universe model of natural numbers
+closed under dependent function formation. We would like to
+explore extending our model of closed inductive-recursive types
+(\refapen{closed}) to a logical relation
+(following Coquand's approach), and proving that an
+operational semantics of closed type theory, supporting user-declared
+datatypes (via \Data{Desc} and \Data{μ₁}), terminates.
+
 \paragraph{Inductive Definitions over Infinitary Domain}
 
-%% large IR
-%% inductive-inductive
+Our fully generic \Fun{count} (\refsec{gcount}),
+\Fun{lookup} (\refsec{glookup}), and
+\Fun{ast} (\refsec{gast}) functions all treat the case of inductive
+arguments of the initial algebra as a special case of infinitary
+arguments. Being able to pattern matching against the domain of an
+infinitary argument,
+and ensuring that it is the unit type (\Con{`⊤}), demonstrates the
+power of closed type theory (because we can match against a type).
+
+In our previous work~\cite{diehl:gupdate}, we have also defined
+higher-order domain supplements (\refsec{domsup}),
+that allow us to write fully generic
+functions over higher-order data (like the body of functions, or truly
+infinitary arguments). However, neither the definition of \Fun{count}
+in \refsec{gcount} (which requires matching against \Con{`⊤}), nor the
+fully generic functions
+using higher-order domain supplements~\cite{diehl:gupdate}, are
+defined by \textit{induction} on the higher-order domains
+(like the domain of functions or the domain of infinitary arguments).
+In the future, we would like to explore what horizens have opened up
+to us, now that our closed universe allows us to write functions
+by induction on closed higher-order domains.
 

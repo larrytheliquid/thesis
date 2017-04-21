@@ -75,9 +75,10 @@ so this dissertation concerns itself with a closed
 
 \paragraph{Termination}
 
-A more theoretical example of generic programming is Coquand's proof
-that an operational semantics of type theory terminates
-~\cite{coquand:realizability}. This is achieved using a logical
+A more theoretical example of generic programming is
+Coquand's proof~\cite{coquand:realizability}
+that an operational semantics of type theory terminates.
+This is achieved using a logical
 relation defined as an inductive-recursive universe, which can
 be viewed an extension of a universe of
 natural numbers (\Con{`ℕ}),
