@@ -144,6 +144,10 @@ closed types. By defining a closed hierarchy of universes
 in \refsec{hierir}, we \textit{can} internalize
 kind (and superkind, etc.) signatures,
 thereby fitting them within meaning brackets.
+In the final examples of \refsec{hierweg}, we also discuss a sanity
+check for our closed hierarchy of inductive-recursive universes, making sure
+that the signature of every constructor in the universe can be
+internalized (the evidence is in \refapen{intern}).
 
 \section{Closed Hierarchy of Well-Order Types}\label{sec:hierw}
 
@@ -160,7 +164,8 @@ recognizes as positive.
 
 By extending the \textit{Closed Well-Order Types} universe to a
 hierarchy, we can explain how a hierarchy is formalized in a simpler
-setting where \Data{Set} is the only kind being closed over. With this
+setting where \Data{Set} is the only kind being closed over
+(\refsec{hierwi} and \refsec{hierwp}). With this
 background material under our belt, we move on to extending
 the \textit{Closed Inductive-Recursive Types} universe
 in \refsec{hierir}. There, we must close over a hierarchy
