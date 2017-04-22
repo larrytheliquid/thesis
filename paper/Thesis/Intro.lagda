@@ -143,10 +143,10 @@ a \textit{postcondition} constraining the length of the output list
    append : (xs ys : List A) → Σ (List A) (λ zs → length zs ≡ length xs + length ys)
 \end{code}
 
-The types of \Fun{append} and \Fun{lookup} correspond to the following
+The types of \Fun{lookup} and \Fun{append} correspond to the following
 two logical propositions respectively.
 $$
-\forall n, xs.~ n < \card{xs} \imp \exists x
+\forall n, xs.~ n < \card{xs} \imp \exists x.~ \top
 $$
 $$
 \forall xs, ys.~ \exists zs.~ \card{zs} = \card{xs} + \card{ys}
