@@ -867,8 +867,8 @@ programming using dependently typed languages:
   \textit{closed hierarchy of universes}
   (in \refsec{hierir}), supporting fully generic
   functions over all \textit{types} in the universe hierarchy
-  (in addition to values), via fully generic programming over all
-  universe \textit{levels}
+  (in addition to values), via fully generic programming at
+  any universe \textit{level}
   (in \refsec{lgcount}).
 
 \end{enumerate}
@@ -1004,6 +1004,7 @@ but additionally does not contain \Data{Level}).
 
 Finally, we address
 \textbf{\chaptitle{related}},
-and conclude (\textbf{\chaptitle{conclusion}})
-with a summary and a description of future work.
+\textbf{\chaptitle{future}},
+and summarize our dissertation in the
+(\textbf{\chaptitle{conclusion}}).
 

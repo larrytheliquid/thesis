@@ -7,77 +7,17 @@ open import Data.Nat
 open Prim
 \end{code}}
 
-\chapter{Conclusion}\label{ch:conclusion}
+\chapter{Future Work}\label{ch:future}
 
-We conclude this dissertation with a
-summary of what we've done (\refsec{summary}),
-and a discussion of
-future work (\refsec{future}).
-
-\section{Summary}\label{sec:summary}
-
-Generic programming, within dependently typed programming languages,
-over a universe closed under a fixed collection of type formers
-(e.g. \refsec{closedvecu}) has a rich history.
-If we consider such a universe to be a model of a
-\textit{closed} dependently typed programming language, then users of that
-language may use its fixed collection of types, but may not declare
-their own domain-specific types.
-
-Inspired by categorical models of algebraic semantics, which model
-algebraic datatypes as least-fixed points of pattern functors,
-type theorists have also defined formal models (i.e. in type theory)
-of algebraic semantics. We can view strictly-positive polynomial
-functors (\Data{Desc}) as codes of a universe,
-whose meaning is their fixpoints (\Data{μ₁}).
-Generic dependently typed programming over this algebraic universe
-also has a rich history. Algebraic semantics is modeled as an
-\textit{open} universe, which grows as users of the underlying open
-type theory declare new datatypes.
-
-The \textit{first} major contribution of this dissertation
-(\refchap{closed})
-is creating a closed
-universe, modeling the types of a
-\textit{closed} dependently typed programming
-language that supports user-declared datatypes (\Data{`Desc}).
-We still do this by
-defining a universe closed under a fixed collection of type formers,
-but one of the type formers is a \textit{closed} variant of
-the fixpoint operator (\Con{`μ₁}) from algebraic semantics. This
-variant is parameterized by a mutually defined \textit{closed} variant of
-strictly-positive polynomial functors (\Data{`Desc}).
-
-The \textit{second} major contribution of this dissertation
-(\refchap{fullyg}) is demonstrating what we call
-\textit{fully generic programming}. Fully generic functions are
-defined over a closed universe including user-declared datatypes.
-They can be defined once, working over all current datatypes,
-but they continue to work as users declare
-additional datatypes in the future.
-
-The \textit{third} major contribution of this dissertation
-(\refchap{hier})
-is extending the model of closed types (supporting user-declarations)
-to also model closed kinds, closed superkinds, etc. Hence, we model a
-closed \textit{hierarchy} of universes supporting user-declared
-datatypes. The closed hierarchy of universes models a
-closed dependently typed programming language with a universe
-hierarchy, supporting user-declared datatypes at every level of the
-hierarchy. We also demonstrate leveled fully generic programming, or
-writing fully generic functions at any level in the universe
-hierarchy (over values, types, kinds, superkinds, etc.).
-This achieves our goal, of modeling fully generic programming in a
-closed dependently typed programming language, supporting
-user-declared datatypes.
-
-\section{Future Work}\label{sec:future}
-
-We can perform leveled fully generic programming,
-but there is still much left to do. We discuss a small slice of this
+This dissertation demonstrates that 
+leveled fully generic programming is possible,
+using a universe modeling a closed dependently typed language
+supporting user-declared datatypes.
+But, there is still much work left to do!
+We discuss a small slice of this
 future work, below. 
 
-\paragraph{Universe Polymorphism}
+\section{Universe Polymorphism}
 
 \AgdaHide{
 \begin{code}
@@ -157,7 +97,7 @@ definitions like \Fun{`ℕ} and \Fun{count} can be \textit{internalized}
 (i.e. made to appear within the brackets).
 
 
-\paragraph{Large Induction-Recursion}
+\section{Large Induction-Recursion}
 
 In this dissertation,
 we close over inductive-recursive types (in \refsec{closed}),
@@ -183,7 +123,7 @@ by moving up a universe level. At universe level 1, the codomain of
 a small decoding function could be any kind, but a large decoding
 function would allow the codomain to be any superkind.
 
-\paragraph{High-Level Generic Programming}
+\section{High-Level Generic Programming}
 
 In \refchap{fullyg}, we mention that we
 can hide our algebraic encodings via smart constructors and pattern
@@ -211,7 +151,7 @@ Finally, note that Dagand~\cite{dagand2012elaborating} has already
 shown how to elaborate high-level datatype declarations to their
 description-based (\Data{Desc}) encodings.
 
-\paragraph{Termination of Intensional Closed Type Theory}
+\section{Termination of Intensional Closed Type Theory}
 
 In our related work (\refchap{related}), we discus
 how Coquand~\cite{coquand:realizability} proves that an operational
@@ -227,7 +167,7 @@ explore extending our model of closed inductive-recursive types
 operational semantics of closed type theory, supporting user-declared
 datatypes (via \Data{Desc} and \Data{μ₁}), terminates.
 
-\paragraph{Inductive Definitions over Infinitary Domain}
+\section{Inductive Definitions over Infinitary Domain}
 
 Our fully generic \Fun{count} (\refsec{gcount}),
 \Fun{lookup} (\refsec{glookup}), and
@@ -251,4 +191,61 @@ defined by \textit{induction} on the higher-order domains
 In the future, we would like to explore what horizens have opened up
 to us, now that our closed universe allows us to write functions
 by induction on closed higher-order domains.
+
+\chapter{Conclusion}\label{ch:conclusion}
+
+Generic programming, within dependently typed programming languages,
+over a universe closed under a fixed collection of type formers
+(e.g. \refsec{closedvecu}) has a rich history.
+If we consider such a universe to be a model of a
+\textit{closed} dependently typed programming language, then users of that
+language may use its fixed collection of types, but may not declare
+their own domain-specific types.
+
+Inspired by categorical models of algebraic semantics, which model
+algebraic datatypes as least-fixed points of pattern functors,
+type theorists have also defined formal models (i.e. in type theory)
+of algebraic semantics. We can view strictly-positive polynomial
+functors (\Data{Desc}) as codes of a universe,
+whose meaning is their fixpoints (\Data{μ₁}).
+Generic dependently typed programming over this algebraic universe
+also has a rich history. Algebraic semantics is modeled as an
+\textit{open} universe, which grows as users of the underlying open
+type theory declare new datatypes.
+
+The \textit{first} major contribution of this dissertation
+(\refchap{closed})
+is creating a closed
+universe, modeling the types of a
+\textit{closed} dependently typed programming
+language that supports user-declared datatypes (\Data{`Desc}).
+We still do this by
+defining a universe closed under a fixed collection of type formers,
+but one of the type formers is a \textit{closed} variant of
+the fixpoint operator (\Con{`μ₁}) from algebraic semantics. This
+variant is parameterized by a mutually defined \textit{closed} variant of
+strictly-positive polynomial functors (\Data{`Desc}).
+
+The \textit{second} major contribution of this dissertation
+(\refchap{fullyg}) is demonstrating what we call
+\textit{fully generic programming}. Fully generic functions are
+defined over a closed universe including user-declared datatypes.
+They can be defined once, working over all current datatypes,
+but they continue to work as users declare
+additional datatypes in the future.
+
+The \textit{third} major contribution of this dissertation
+(\refchap{hier})
+is extending the model of closed types (supporting user-declarations)
+to also model closed kinds, closed superkinds, etc. Hence, we model a
+closed \textit{hierarchy} of universes supporting user-declared
+datatypes. The closed hierarchy of universes models a
+closed dependently typed programming language with a universe
+hierarchy, supporting user-declared datatypes at every level of the
+hierarchy. We also demonstrate leveled fully generic programming, or
+writing fully generic functions at any level in the universe
+hierarchy (over values, types, kinds, superkinds, etc.).
+This achieves our goal, of modeling fully generic programming in a
+closed dependently typed programming language, supporting
+user-declared datatypes.
 
