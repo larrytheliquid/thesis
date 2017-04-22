@@ -58,7 +58,7 @@ level by using \Con{`⟦\_⟧} twice.
 \end{code}
 
 Types like dependent pairs (\Con{`Σ}) are built into the universe,
-and appear at every level of the hiearchy. Therfore, we must handle the
+and appear at every level of the hierarchy. Therefore, we must handle the
 \Con{`Σ} case of \Fun{Count} (in universe 1) in exactly the same way that we
 handled it for \Fun{count} (in universe 0). Furthermore, if we want to
 count all kinds of superkinds (in universe 2), we must define yet
@@ -83,7 +83,7 @@ module _ where
 
 Notice that the natural number codomain of \Fun{count} does not need
 to be lifted, because we can just request a version of the natural
-numbers at the \Con{suc}ccesor to level \Var{ℓ}. Also notice that we
+numbers at the \Con{suc}cesor to level \Var{ℓ}. Also notice that we
 can define \Fun{count} once at every level, so we do not need to
 separately define \Fun{Count}.
 
@@ -188,7 +188,7 @@ fully generic functions
 using higher-order domain supplements~\cite{diehl:gupdate}, are
 defined by \textit{induction} on the higher-order domains
 (like the domain of functions or the domain of infinitary arguments).
-In the future, we would like to explore what horizens have opened up
+In the future, we would like to explore what horizons have opened up
 to us, now that our closed universe allows us to write functions
 by induction on closed higher-order domains.
 

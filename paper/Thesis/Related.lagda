@@ -20,7 +20,7 @@ within dependent type theory.
 Namely, intrinsically type-safe generic programming as
 dependent functions over some universe,
 taking a code argument (\Var{A} : \Data{Code})
-and a subsequent dependentlty typed argument,
+and a subsequent dependently typed argument,
 whose type is the meaning of the
 code (\Fun{⟦ \Var{A} ⟧})
 within type theory:
@@ -66,7 +66,7 @@ Even though \Fun{parse} and \Fun{print} are
 universe of types. This makes sense for the problem at hand, where
 file formats should be able to use dependent pairs and vectors to
 encode the length of the remaining file format, after reading a
-natural number specifiying said length. In their setting, it does not
+natural number specifying said length. In their setting, it does not
 make sense to support arbitrary user-declared types when defining file
 formats. In contrast, our goal is to model an entire closed
 dependently typed programming language
@@ -169,7 +169,7 @@ equivalent~\cite{smallir}.
 
 Recursive containers are represented using the
 \Data{W} type of well-orderings,
-which can be seen a the fixpoint of containers.
+which is the fixpoint of containers.
 As we explained in \refsec{inad}, \Data{W} types inadequately encode
 first-order types in intensional type theory, which is why we use the
 more complicated (but adequate) algebraic semantics of
@@ -319,7 +319,7 @@ applying our closing procedure from \refsec{closing}.
 
 \section{Previous Work}
 
-Now we discuss how the contributions of this dissertations relate to
+Now we discuss how the contributions of this dissertation relate to
 our previously published work.
 
 \paragraph{Closed Universe Zero and Fully Generic Programming}

@@ -190,7 +190,7 @@ the latter is used to construct algebraic \textit{kinds}
 
 If we use \Con{`Π} to quantify over a \Con{`Set},
 then the domain (\Var{A}) of
-the depenent argument (\Var{B}) will be the meaning of
+the dependent argument (\Var{B}) will be the meaning of
 \Con{`Set}, which is a \Field{TypeForm} of the previous
 universe. Thus, if we want to use \Var{A} in the type of \Var{B}, we
 must lift it to the current universe with \Con{`⟦\_⟧}.
@@ -563,7 +563,7 @@ level (using \Con{`⟦\_⟧}).
 Above, we internalize the
 \textit{value}
 constructors of the vectors.
-Even though the signatures of \Fun{nil} an \Fun{cons} are kinds (at
+Even though the signatures of \Fun{nil} and \Fun{cons} are kinds (at
 universe level 1), their codomains return lifted (using \Con{`⟦\_⟧})
 vector \textit{types} (at universe level 0).
 For similar reasons, the natural number argument of \Fun{cons} is
@@ -652,7 +652,7 @@ define heterogenous lists, are superkinded at universe level 2.
   `HList = `μ₁ `⊤ HListD
 \end{code}
 
-Notice that the descriptin of the first argument of the \Fun{cons}
+Notice that the description of the first argument of the \Fun{cons}
 constructor (the \Con{false} case of \Fun{HListDs}) takes
 a type as an argument (\Con{`Set}), and the second argument
 takes a value of the lifting of that type.
@@ -858,7 +858,7 @@ It is not obvious that the definition of our hierarchy needs
 fixpoints of descriptions in
 the current (\Con{`μ₁}) and previous (\Con{`μ₁'}) universes. It is also
 not obvious that the hierarchy needs to internalize the description
-intepretation function (\Con{`⟦\_⟧₁}),
+interpretation function (\Con{`⟦\_⟧₁}),
 for descriptions of the previous universe.
 However, our sanity check, in \refapen{intern},
 exposes that both \Con{`μ₁'} and \Con{`⟦\_⟧₁} are necessary to
@@ -909,7 +909,7 @@ kinds drives results in types (i.e. the previous universe), which
 drives the need for lifting functions appropriate to each kind
 (\Con{`⟦\_⟧}, \Con{`⟦\_⟧₁}, and \Con{`μ₁'}).
 Thus, we recognize the sanity check in \refapen{intern} as a good way
-to measure whether we have appropriately closed our hiearchy,
+to measure whether we have appropriately closed our hierarchy,
 and are grateful for the structure that the check provides to the
 definition of our hierarchy.
 

@@ -67,7 +67,7 @@ of universes:
 \end{enumerate}
 
 Let's clarify what we mean by the third point, above.
-Throughout this disseration we have written the signatures of
+Throughout this dissertation we have written the signatures of
 closed formers, constructors, and functions using our Agda metatheory,
 which is \textit{external} to our closed universe. For example,
 consider the \textit{type} signature of the \Fun{suc}cessor of closed
@@ -139,7 +139,7 @@ Similarly, we cannot internalize the kind signature of fully generic
 functions (like \Fun{count}),
 or even parametrically polymorphic functions
 (like the \Fun{id}entity function),
-because they need to equantify over all
+because they need to quantify over all
 closed types. By defining a closed hierarchy of universes
 in \refsec{hierir}, we \textit{can} internalize
 kind (and superkind, etc.) signatures,
@@ -454,7 +454,7 @@ module _ where
 The type of the identity function quantifies over all types in the
 zeroth universe. Hence, the universe of closed types
 (in \refsec{wuni}) cannot internalize the signature of \Fun{id},
-because it is a \textit{kind} signature that requires quanitifying
+because it is a \textit{kind} signature that requires quantifying
 over all types. The universe of closed types (in \refsec{wuni}) does
 not have a code for closed types (\Con{`Set}), making such a 
 quantification impossible.
@@ -541,7 +541,7 @@ hierarchy construction.
 The \Field{SetForm} field represents a closed type from the previous
 universe, and the \Field{⟦\_/\_⟧} field represents the closed type meaning
 function from the previous universe.
-Note that \Data{Level} is isomoprhic to the \Data{Univ} record of
+Note that \Data{Level} is isomorphic to the \Data{Univ} record of
 \refsec{gkind}, just with different field names.
 Additionally, note that \Field{SetForm} is a \Data{Set},
 and the codomain of \Field{⟦\_/\_⟧} is \Data{Set}, so
@@ -678,12 +678,12 @@ argument of the \Con{`Σ}, \Con{`Π}, and \Con{`W} constructors is still
 an application of the meaning function (\Fun{⟦\_/\_⟧}).
 However, now the meaning of \Con{`Set} of is an abstract
 \Data{Set} from the \Data{Level} record parameter \Var{ℓ}, whose field
-we happend to call \Field{SetForm}. This name simply documents that
+we happened to call \Field{SetForm}. This name simply documents that
 we plan to instantiate the field with a \Data{SetForm} of the
 previous universe, in the second stage of our indexed universe
 hierarchy construction. From the point of view of the definition of
 \Data{SetForm}, \Field{SetForm} contains an arbitrary \Data{Set}, so
-posivitiy is not violated when checking the infinitary \Var{B}
+positivity is not violated when checking the infinitary \Var{B}
 argument.
 
 \paragraph{Derived Indexed Hierarchy of Universes}

@@ -182,7 +182,7 @@ the definition of \Fun{count}.
 In \reffig{count0}, if the first argument of \Fun{count} is
 \Con{`Set}, and the second argument is its meaning (or
 lifting). However, at universe level 0 the meaning of \Con{`Set}
-is \Data{⊥}, so the second argument is empty parenthess,
+is \Data{⊥}, so the second argument is empty parentheses,
 which is Agda syntax for matching against an uninhabited argument.
 This makes sense intuitively, because \Fun{count} at level 0 is
 defined over \textit{values}, hence we do not need to define a case
@@ -267,7 +267,7 @@ lifts the quantified \textit{kind} (\Con{`Set} at level 1)
 to level 2 (the level of the \textit{superkind} signature).
 Recall (from \refsec{closed})
 that the the lifting constructor \Con{`⟦\_⟧} is defined at
-every level of our universe hiearchy (so is \Con{`Σ}),
+every level of our universe hierarchy (so is \Con{`Σ}),
 but \Fun{`ℕ} is only defined at level 0.
 
 The definitions of \Fun{Count} and \Fun{Counts} are in
