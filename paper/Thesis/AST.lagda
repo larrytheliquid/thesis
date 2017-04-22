@@ -376,7 +376,7 @@ The single element of the returned list is a childless \Con{non} node
 The name of the \Con{non} is ``tt'', after the name of the trivial
 value \Con{tt}.
 
-\subsection{Generic Template}
+\subsection{Generic Template}\label{sec:template0}
 
 We conclude this chapter by presenting a generic template that can be
 used to define fully generic algorithms. If the return type of a

@@ -364,3 +364,61 @@ level 3 (of superkinds), then the kind and lifiting cases of
 \Fun{CountSet} at level 3 would call their variants at level 2
 (e.g. the \Con{`Set} case of \Fun{CountSet} at level 3 would
 pass its argument to \Fun{CountSet} of level 2).
+
+\subsection{Leveled Generic Template}\label{sec:template1}
+
+In \refsec{template0}, we conclude \refchap{fullyg}, on fully generic
+programming, with a template for writing fully generic functions over
+all types (in universe 0). We conclude this chapter similarly, but this
+time we present a generic template for writing fully generic functions
+over all types (in universe 1). In other words, we generalize the
+signatures of \refsec{count1}, requiring the mutual definition of 4
+functions.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+  postulate
+    ⋯ : {A : Set} → A
+\end{code}}
+
+\begin{code}
+    Generic : ⟦ 2 ∣ `Π `Set (λ A → `⟦ A ⟧ `→ ⋯) ⟧
+    Generics : ⟦ 2 ∣ `Π `Set (λ O → `Π (`Desc O) (λ D → `Π (`Desc O) (λ R →
+      `⟦ D ⟧₁ R `→ ⋯))) ⟧
+
+    GenericSet : ⟦ 1 ∣ `Set  `→ ⋯ ⟧
+    GenericDesc : ⟦ 1 ∣ `Π `Set (λ O → `Desc O  `→ ⋯) ⟧
+\end{code}
+
+These 4 functions are defined over different things, described
+below, but all functions inhabit universe level 1.
+
+\begin{enumerate}
+\item{\Fun{Generic}} is defined over all values.
+\item{\Fun{Generics}} is defined over all algebraic arguments of the initial
+  algebra.
+\item{\Fun{GenericSet}} is defined over all types.
+\item{\Fun{GenericSet}} is defined over all descriptions.
+\end{enumerate}
+
+Recall (from \refsec{count1}) that the types that make up universe 0
+are included in the collection of values of universe 1. Hence,
+\Fun{Generic}
+must call \Fun{GenericSet}
+(in the \Con{`Set} case), as well as a version of
+lowercase \Fun{generic} (like \Fun{count} in \refsec{count0})
+of universe 0 (in the \Con{`⟦\_⟧} case).
+
+The ellipses (\Fun{⋯}) in the first two functions
+(\Fun{Generic} and \Fun{Generics})
+represents a closed type (\Data{`Set[ \Num{1} ]}). 
+The ellipses (\Fun{⋯}) in the next two functions
+(\Fun{GenericSet} and \Fun{GenericDesc})
+represents a closed kind (\Data{`Set[ \Num{2} ]}). 
+If our leveled fully generic function has a dependent type, then we
+would need to define 8 functions instead of 4.
+The additional 4 functions would compute the types of the 4 functions
+given above. The additional 4 functions would be applied in the
+ellipses (\Fun{⋯}) positions of the 4 functions given above.
