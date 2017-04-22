@@ -33,12 +33,16 @@ constructions parameterized by \Data{Level}.
 
 Recall (from \refsec{closed}) that the
 \textit{Closed Inductive-Recursive Types} universe is mutually
-defined by closed types (\Data{`Set})
-and closed descriptions (\Data{`Desc}). Similarly,
+defined by closed types (\Data{`Set}),
+closed descriptions (\Data{`Desc}), and their respective
+closed meaning functions (\Fun{⟦\_⟧} and \Fun{⟪\_⟫}). Similarly,
 the \textit{Closed Hierarchy of Inductive-Recursive Universes}
 is mutually defined by
-pre-closed leveled types (\Data{SetForm})
-and pre-closed leveled descriptions (\Data{DescForm}).
+pre-closed leveled types (\Data{SetForm}),
+pre-closed leveled descriptions (\Data{DescForm}), and their
+respective pre-closed leveled meaning functions
+(\Fun{⟦\_/\_⟧} and \Fun{⟪\_/\_⟫}). 
+
 
 \AgdaHide{
 \begin{code}
@@ -151,7 +155,7 @@ universe to the current universe.
 Finally, we highlight the difference between the pre-closed
 fixpoint (\Con{`μ₁}),
 taking a \Data{DescForm} of the \textit{current} universe,
-and the pre-flosed \textit{lifting} fixpoint (\Con{`μ₁'}, notice the
+and the pre-closed \textit{lifting} fixpoint (\Con{`μ₁'}, notice the
 ``prime'' suffix),
 taking a \Field{DescForm} from the \textit{previous} universe.
 The former is used to construct algebraic \textit{types}
@@ -520,7 +524,7 @@ the \textit{kind} \Con{`Set}, binding variable \Var{A}. The bound variable
 \Con{`Set}. Hence, in order to ask for argument of
 \Fun{`Vec₁} applied to \Var{A}, we must first \textit{lift} this type
 to the kind level (using \Con{`⟦\_⟧}). Also recall that \Con{`ℕ} is
-defines to be a \textit{type}. Hence, when asking for a
+defined to be a \textit{type}. Hence, when asking for a
 natural number argument, in kind signatures of
 \Fun{`Vec₂} and \Fun{`Vec}, we also lift the \Con{`ℕ} type to the kind
 level (using \Con{`⟦\_⟧}). 
@@ -552,7 +556,8 @@ kinded (i.e. at universe level 1).
 Finally, note that both \Fun{nil} and \Fun{cons} have explicit type
 arguments, and \Fun{cons} also has an explicit natural number
 argument. To change these to be implicit arguments, we would need to
-update our universe to an implicit version of the \Con{`Π} code.
+update our universe to include an implicit version of the \Con{`Π} code
+(this is easy to to do).
 
 \AgdaHide{
 \begin{code}

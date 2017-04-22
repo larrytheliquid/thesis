@@ -208,8 +208,9 @@ module HierWI where
 
 \paragraph{Closed Leveled Types}
 
-First, we state the type former
-of the closed leveled types.
+Below, we state the type former of
+of the closed leveled types, and subsequently define its
+constructors. 
 
 \begin{code}
     data `Set[_] : ℕ → Set where
@@ -218,6 +219,9 @@ of the closed leveled types.
 The name of the indexed type (\Data{`Set[\_]}) is Agda syntax for
 defining an infix operator, such that the natural number index
 appear where the underscore is located.
+For example, the universe of closed types is represented by
+\Data{`Set[ \Var{0} ]}. The left component of the infix operator name
+is \Data{`Set[}, and the right component of the name is \Data{]}.
 
 \paragraph{Closed Types}
 
@@ -272,7 +276,7 @@ universe to be a \textit{kind} in the current universe.
 The closed meaning function (\Con{`⟦\_⟧}), or type lifting operator,
 ensures that our universes form a \textit{hierarchy}.
 This is because we can apply the type lifting operator \Con{`⟦\_⟧}
-to any universe \Data{`Set[ \Var{ℓ} ]}, making it a member
+to any universe \Data{`Set[ \Var{ℓ} ]}, making the lifted value a member
 of the subsequent universe \Data{`Set[ \Con{suc}~\Var{ℓ} ]}. 
 
 \paragraph{Meaning of Closed Leveled Types}
@@ -379,10 +383,13 @@ functions using codes of our universe hierarchy.
 
 \paragraph{Negation Function}
 
-First, we define the negation function (\Fun{not}),
+First, we define the negation function
+(\Fun{not}),
 whose type is defined using a dependent function (→),
 external to our
 closed hierarchy (i.e. from our Agda metalanguage).
+Below, we insert the type of \Fun{not} in open type
+theory as a comment.
 
 \AgdaHide{
 \begin{code}
@@ -393,6 +400,7 @@ module _ where
 \end{code}}
 
 \begin{code}
+  -- not : (b : Bool) → Bool
   not : (b : ⟦ 0 ∣ `Bool ⟧) → ⟦ 0 ∣ `Bool ⟧ 
   not true = false
   not false = true
@@ -426,7 +434,8 @@ cannot do.
 
 First, we define the identity function (\Fun{id}),
 whose type is defined using a dependent function (→) external to our
-closed hierarchy.
+closed hierarchy. Below, we insert the type of \Fun{id} in open type
+theory as a comment.
 
 \AgdaHide{
 \begin{code}
@@ -437,6 +446,7 @@ module _ where
 \end{code}}
 
 \begin{code}
+  -- id : (A : Set) (a : A) → A
   id : (A : `Set[ 0 ]) (a : ⟦ 0 ∣ A ⟧) → ⟦ 0 ∣ A ⟧ 
   id A a = a
 \end{code}
@@ -582,7 +592,8 @@ formal model (\Data{`Set[\_]}).
 
 Compared to \Data{`Set[\_]}, the main difference is that the
 constructors of \Data{SetForm} do not take the level \Var{ℓ} as a
-formal argument. This is because \Var{ℓ} is now a parameter, hence it
+formal argument. This is because \Var{ℓ} is now a parameter
+(because it appears to the left of the colon in the datatype declaration), hence it
 is an informal and implicit argument of all constructors.
 Importantly,
 this allows \Data{SetForm} to be a \textit{type}, even though it is
@@ -622,7 +633,7 @@ by the previous universe.
 \end{code}
 
 The only difference in the syntax of the type signature is that we use
-a slash, instead of a pipe, to distinguish the abstract
+a slash (\Fun{/}), instead of a pipe (\Fun{∣}), to distinguish the abstract
 \Data{Level} version of the meaning function (\Fun{⟦\_/\_⟧})
 from the natural number version (\Fun{⟦\_∣\_⟧}).
 
@@ -662,7 +673,7 @@ from the previous universe (\Var{ℓ}).
 
 \paragraph{Passing Positivity Check}
 
-It the definition of \Data{SetForm}, the codomain of the \Var{B}
+In the definition of \Data{SetForm}, the codomain of the \Var{B}
 argument of the \Con{`Σ}, \Con{`Π}, and \Con{`W} constructors is still
 an application of the meaning function (\Fun{⟦\_/\_⟧}).
 However, now the meaning of \Con{`Set} of is an abstract

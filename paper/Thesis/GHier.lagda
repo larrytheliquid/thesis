@@ -76,9 +76,10 @@ module Nat0 where
 
 \subsection{Counting in Universe Zero}\label{sec:count0}
 
-Step 1 of patching
-\Fun{count} (over all values in \refsec{count}) and
-\Fun{counts} (over all algebraic arguments in \refsec{counts}),
+Step 1 of patching the
+\Fun{count} function (defined over all values in \refsec{count}), and
+the mutually defined
+\Fun{counts} function (defined over all algebraic arguments in \refsec{counts}),
 to be defined in level 0 of our hierarchy,
 is \textit{internalizing} their signatures, as follows.
 
