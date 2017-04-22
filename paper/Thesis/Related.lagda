@@ -13,10 +13,11 @@ open Nat
 
 \chapter{Related Work}\label{ch:related}
 
-In discussing work related to generic programming,
-the topic of this dissertation,
-we only consider generic programming within dependent type
-theory. Namely, intrinsically type-safe generic programming as
+The topic of this dissertation falls under the broad practice of
+generic programming,
+but we will only discuss work related to generic programming
+within dependent type theory.
+Namely, intrinsically type-safe generic programming as
 dependent functions over some universe,
 taking a code argument (\Var{A} : \Data{Code})
 and a subsequent dependentlty typed argument,
@@ -41,11 +42,11 @@ module _ where
 
 \section{Fixed Open or Closed Universes}
 
-By a \textit{fixed} universe, we mean a universe that encodes some fixed number
-of type formers, but does not support encoding encoding user-declared
-datatypes. Generic programming over fixed universe,
-whether it is open (as in \refsec{openu}) or
-closed (as in \refsec{closedu}) is standard
+By a \textit{fixed} universe, we mean a universe that encodes some
+fixed collection of type formers, but does not support encoding
+user-declared datatypes. Generic programming over fixed universes,
+whether they are open (as in \refsec{openu}) or
+closed (as in \refsec{closedu}), is standard
 dependently typed programming practice.
 
 \paragraph{File Formats}
@@ -80,28 +81,54 @@ Coquand's proof~\cite{coquand:realizability}
 that an operational semantics of type theory terminates.
 This is achieved using a logical
 relation defined as an inductive-recursive universe, which can
-be viewed an extension of a universe of
+be viewed as an extension of a universe of
 natural numbers (\Con{`ℕ}),
 closed under dependent function
 formation (\Con{`Π}).
+Below, we give the signature
+for the type of expressions (\Data{ε}),
+the indexed logical relation type (\Data{Ψ}),
+and the logical relation meaning function (\Fun{ψ}),
+used in Coquand's formal development.
+
+\AgdaHide{
+\begin{code}
+module _ where
+ private
+\end{code}}
+
+\begin{code}
+  data ε : Set where
+  mutual
+    data Ψ : (A : ε) → Set where
+    ψ : (A : ε) → Ψ A → (a : ε) → Set
+\end{code}
+
+\AgdaHide{
+\begin{code}
+    ψ _ _ _ = ε
+\end{code}}
+
+
 
 The codes (\Data{Ψ}) of the logical relation are
-additionally indexed by a syntax of expressions (\Data{ε}).
+additionally indexed by a syntax of expressions
+(\Var{A} : \Data{ε}).
 The codes are
 inhabited for all the expressions corresponding to types in the
 language. The meaning function (\Fun{ψ}) of the logical relation is
-indexed by two expressions, where the first represents the type and
-the second represents values of that type. The meaning function is
+indexed by two expressions,
+where the first represents the type (\Var{A}) and
+the second represents values of that type (\Var{a}).
+The meaning function is
 inhabited whenever the expression value is a valid member of the
 expression type.
 
 The meaning function is also indexed by the result
-of applying the code type former to the expression index
-representing type of the other expression index (representing the
-value of said type). Hence,
-the logical relation (or universe) is
-an inductive-inductive type~\cite{indind},
-in addition to being an inductive-recursive type.
+of applying the code type former (\Data{Ψ})
+to the expression index
+representing the type (\Var{A}), or evidence that the
+type is well-formed. 
 One final difference between the logical relation and an ordinary
 universe of types, is that the logical relation also contains termination
 evidence, in the form of inhabitants of the
@@ -124,7 +151,7 @@ under dependent function formation.
 
 \section{Extendable Open or Closed Well-Order Universes}
 
-\paragraph{Open Universe}
+\paragraph{Open Universes}
 
 Morris~\cite{morristhesis} demonstrates
 generic programming over small \textit{indexed}
@@ -142,14 +169,14 @@ equivalent~\cite{smallir}.
 
 Recursive containers are represented using the
 \Data{W} type of well-orderings,
-which can be seen a the fixpoint of containers. Because 
-As explained in \refsec{inad}, \Data{W} types inadequately encode
+which can be seen a the fixpoint of containers.
+As we explained in \refsec{inad}, \Data{W} types inadequately encode
 first-order types in intensional type theory, which is why we use the
 more complicated (but adequate) algebraic semantics of
 \refsec{iralgagda}, defined in terms of
 \Data{Desc} and \Data{μ₁}.
 
-\paragraph{Closed Universe}
+\paragraph{Closed Universes}
 
 We expect that it would be straightforward to extend the generic
 functions that Morris wrote over an open universe of containers,
@@ -163,8 +190,8 @@ reasons (\refsec{inad}).
 There is a lot of work on generic programming over an
 \textit{open} algebraic universe, similar to the one in
 \refsec{iralgmod}. It should be possible to extend any such generic
-functions over an \textit{open} universe, to be fully generic over a
-\textit{closed} universe (or hierarchy of universes),
+functions, over an \textit{open} universe, to be fully generic,
+over a \textit{closed} universe (or hierarchy of universes),
 using techniques from \refchap{fullyg}
 (and \refsec{lgcount}).
 
@@ -213,10 +240,13 @@ a description of one type (such as a \AgdaData{Vec}tor) to be related
 to another type (such as a \AgdaData{List}) such that a \AgdaFun{forget}ful map
 from the more finely indexed type to the less finely indexed type can
 be derived as a generic function.
+This allows the \Fun{length} function over lists (\Data{List}) to be derived from
+the \Fun{length} function of (the more finely) indexed vectors (\Data{Vec}).
 Dagand and McBride~\cite{dagand2012transporting}
-expand this
-work to also derive a certain class of functions with less finely
-indexed types from functions with more finely indexed types.
+expand this work to also work in the opposite direction, allowing
+functions over more finely indexed types to be derived from functions
+over less finely indexed types, after providing some structured
+missing information.
 
 \paragraph{Disjointness and Injectivity}
 
@@ -224,10 +254,10 @@ Goguen et al.~\cite{Goguen06eliminatingdependent} demonstrate how to
 elaborate a high-level syntax of dependent pattern matching to
 low-level uses of eliminators. Part of this elaboration process
 depends upon proofs that constructors are injective and
-disjoint. These proofs are defined generically at the level of
-metatheory, ``on pen and paper'', by McBride et
-al.~\cite{mcbride2006few}. However, Dagand~\cite{dagand:phd} has also
-shown how to internalize these proofs as generic programs over the
+disjoint. McBride et al.~\cite{mcbride2006few}
+define these proofs externally, at the level of metatheory.
+Dagand~\cite{dagand:phd} also
+internalizes these proofs, as generic programs over the
 open universe of algebraic datatypes
 (using \Data{Desc} and \Data{μ}).
 
@@ -322,7 +352,7 @@ arguments.
 
 In another previous publication~\cite{diehl:levelingup},
 we defined a closed hierarchy of algebraic (but not infinitary or
-inductive-recursive) types. That was the basis of \refchap{hier}.
+inductive-recursive) types. That is the basis of \refchap{hier}.
 
 While our previous publication featured both description lifting
 functions, \Con{`⟦\_⟧₁} and \Con{`μ₁'}, it did \textit{not} feature
