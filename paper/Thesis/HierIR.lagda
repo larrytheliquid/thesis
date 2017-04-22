@@ -89,6 +89,31 @@ The \Field{⟦\_/\_⟧₁} field represents the type component of
 the interpretation function for closed descriptions of the previous
 universe.
 
+\paragraph{Three Versions of Fixpoints}
+
+We now take a brief intermission to warn the reader that there are 3
+versions of \textit{closed} fixpoints in this closed leveled universe
+construction. We explain why all 3 are necessary as this chapter
+unfolds, but for now just recognize that they are distinct
+(watch out for backtick prefixes and prime prefixes in the names of
+the 3 closed fixpoints):
+\begin{enumerate}
+\item{\Con{`μ₁}} This is a constructor of \Data{SetForm}, and
+  represents the fixpoint of descriptions in the \textit{current}
+  universe.
+\item{\Field{μ₁'}} This is a record field of \Data{Level}, and
+  represents the \textit{abstract} version of
+  the fixpoint of descriptions in the \textit{previous} universe.
+\item{\Con{`μ₁'}} This is a constructor of \Data{SetForm}, and
+  represents the \textit{concrete} version of
+  the fixpoint of descriptions in the \textit{previous} universe.
+  Hence, \Con{`μ₁'} is the concrete version of \Field{μ₁'}.
+\end{enumerate}
+
+Recall that there is also \Data{μ₁},
+the \textit{open} fixpoint operator of \refsec{iralgmod}.
+We now return you to your regularly scheduled generic programming.
+
 \AgdaHide{
 \begin{code}
   mutual
