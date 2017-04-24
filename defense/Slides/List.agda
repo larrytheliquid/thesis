@@ -54,4 +54,4 @@ module _ where
    _ : (A B : Set) → A ⊎ B ≅ Σ Bool (λ b → if b then A else B)
 
   data List (A : Set) : Set where
-    list : (b : Bool) → if b then ⊤ else A × List A × ⊤ → List A
+    list : (b : Bool) → (if b then ⊤ else A × List A × ⊤) → List A
