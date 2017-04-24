@@ -24,3 +24,4 @@ paper/Thesis/agda.sty
 *.lot
 *.out
 *.toc
+*.html
