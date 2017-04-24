@@ -18,10 +18,10 @@ Default
 _TZ_*
 paper/Thesis/*.tex
 paper/Thesis/agda.sty
+defense/html
 *.ptb
 *.idx
 *.lof
 *.lot
 *.out
 *.toc
-*.html
