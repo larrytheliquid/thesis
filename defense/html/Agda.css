@@ -8,7 +8,7 @@
 .Operator      {}
 
 /* NameKinds. */
-.Bound                  { color: #A020F0   }
+.Bound                  { color: black   }
 .InductiveConstructor   { color: #008B00 }
 .CoinductiveConstructor { color: #8B7500 }
 .Datatype               { color: #0000CD }

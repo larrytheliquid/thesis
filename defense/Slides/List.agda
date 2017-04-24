@@ -2,8 +2,7 @@ module Slides.List where
 open import Data.Unit
 open import Data.Product
 
-postulate
-  _≅_ : {A : Set₁} → A → A → Set
+data _≅_ : {A : Set₁} → A → A → Set where
 
 module _ where
  private
