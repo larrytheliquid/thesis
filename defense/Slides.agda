@@ -9,3 +9,4 @@ import Slides.GenFun
 import Slides.ClosedW
 import Slides.OpenAlg
 import Slides.ClosedAlg
+import Slides.GCount
