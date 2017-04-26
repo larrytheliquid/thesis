@@ -4,6 +4,7 @@ open import Data.Product
 open import Data.Sum
 open import Data.Bool
 open import Slides.OpenAlg
+open import Relation.Binary.PropositionalEquality
 
 data _≅_ : {A : Set₁} → A → A → Set where
 
@@ -12,6 +13,13 @@ module _ where
   ListD : Set → Desc
   ListD A = σ Bool
     (λ b → if b then ι else σ A (λ a → δ ι))
+
+  module _ where
+    ListF : Set → Set → Set
+    ListF A X = ⟬ ListD A ⟭ X
+
+    _ : (A : Set) → ListF A ≡ ⟬ ListD A ⟭
+    _ = λ A → refl
 
   List : Set → Set
   List A = μ (ListD A)

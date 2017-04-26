@@ -6,15 +6,16 @@ open import Data.Bool
 
 data _≅_ : {A : Set₁} → A → A → Set where
 
-module _ (A : Set) where
+module _ where
  private
   postulate
    μ : (Set → Set) → Set
 
-  F : Set → Set
-  F X = ⊤ ⊎ A × X
+  ListF : Set → Set → Set
+  ListF A X = ⊤ ⊎ A × X
 
-  List = μ F
+  List : Set → Set
+  List A = μ (ListF A)
 
 module _ where
  private
