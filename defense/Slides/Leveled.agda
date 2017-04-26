@@ -7,11 +7,11 @@ open import Data.Product
 open import Slides.OpenAlg
 open import Slides.ClosedHier
 
-`ℕD : `Desc[ 0 ]
+`ℕD : ⟦ 1 ∣ `Desc ⟧
 `ℕD = `σ `Bool
   (λ b → if b then `ι else `δ `ι)
 
-`ℕ : `Set[ 0 ]
+`ℕ : ⟦ 1 ∣ `Set ⟧
 `ℕ = `μ `ℕD
 
 zero : ⟦ 0 ∣ `ℕ ⟧
