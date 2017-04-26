@@ -39,3 +39,9 @@ postulate
   counts : ⟦ 1 ∣ `Π `Desc (λ D → `Π `Set (λ X → `⟬ D ⟭ X `→ `⟦ `ℕ ⟧)) ⟧
   Count : ⟦ 2 ∣ `Π `Set (λ A → `⟦ A ⟧ `→ `⟦ `⟦ `ℕ ⟧ ⟧) ⟧
   Counts : ⟦ 2 ∣ `Π `Desc (λ D → `Π `Set (λ X → `⟬ D ⟭ X `→ `⟦ `⟦ `ℕ ⟧ ⟧)) ⟧
+
+pair' : ⟦ 1 ∣ `Π `Set (λ A → `Π (`⟦ A ⟧ `→ `Set) (λ B → `Π `⟦ A ⟧ (λ a → `⟦ B a ⟧ `→  `Σ `⟦ A ⟧ (λ x → `⟦ B x ⟧)))) ⟧
+pair' A B a b = a , b
+
+init' : ⟦ 1 ∣ `Π `Desc (λ D → `⟬ D ⟭ (`μ D) `→ `μ' D) ⟧
+init' D xs = init xs
