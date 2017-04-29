@@ -19,3 +19,12 @@ data Desc : Set₁ where
 
 data μ (D : Desc) : Set where
   init : ⟬ D ⟭ (μ D) → μ D
+
+module _ where
+ private
+  postulate
+   Generic : (D : Desc) → μ D → Set
+   generic : (D : Desc) (x : μ D) → Generic D x
+
+   Generics : (D : Desc) (X : Set) → ⟬ D ⟭ X → Set
+   generics : (D : Desc) (X : Set) (xs : ⟬ D ⟭ X) → Generics D X xs
