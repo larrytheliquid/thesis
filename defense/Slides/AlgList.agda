@@ -11,8 +11,7 @@ data _≅_ : {A : Set₁} → A → A → Set where
 module _ where
  private
   ListD : Set → Desc
-  ListD A = σ Bool
-    (λ b → if b then ι else σ A (λ a → δ ι))
+  ListD A = κ ⊤ ⊕ (κ A ⊗ ι)
 
   module _ where
     ListF : Set → Set → Set
@@ -25,27 +24,12 @@ module _ where
   List A = μ (ListD A)
 
   nil : {A : Set} → List A
-  nil = init (true , tt)
+  nil = init (inj₁ tt)
 
   cons : {A : Set} → A → List A → List A
-  cons x xs = init (false , x , xs , tt)
+  cons x xs = init (inj₂ (x , xs))
 
   append : {A : Set} → List A → List A → List A
-  append (init (true , tt)) ys = ys
-  append (init (false , x , xs , tt)) ys = cons x (append xs ys)
+  append (init (inj₁ tt)) ys = ys
+  append (init (inj₂ (x , xs))) ys = cons x (append xs ys)
 
-module _ where
- private
-  ListD : Set → Desc
-  ListD A = σ Bool
-    (λ b → if b then ι else σ A (λ a → δ ι))
-
-  List : Set → Set
-  List A = μ (ListD A)
-
-  pattern nil = init (true , tt)
-  pattern cons x xs = init (false , x , xs , tt)
-
-  append : {A : Set} → List A → List A → List A
-  append nil ys = ys
-  append (cons x xs) ys = cons x (append xs ys)

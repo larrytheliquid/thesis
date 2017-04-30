@@ -3,19 +3,21 @@ open import Data.Empty
 open import Data.Unit
 open import Data.Bool
 open import Data.Product
+open import Data.Sum
 
 data Id (A : Set) (a : A) : A → Set where
   refl : Id A a a
 
 data Desc : Set₁ where
+  _⊕_ _⊗_ : (D E : Desc) → Desc
+  κ : (A : Set) → Desc
   ι : Desc
-  σ : (A : Set) (D : A → Desc) → Desc
-  δ : (D : Desc) → Desc
 
 ⟬_⟭ : Desc → Set → Set
-⟬ ι ⟭ X = ⊤
-⟬ σ A D ⟭ X = Σ A (λ a → ⟬ D a ⟭ X)
-⟬ δ D ⟭ X = X × ⟬ D ⟭ X
+⟬ D ⊕ E ⟭ X = ⟬ D ⟭ X ⊎ ⟬ E ⟭ X
+⟬ D ⊗ E ⟭ X = ⟬ D ⟭ X × ⟬ E ⟭ X
+⟬ κ A ⟭ X = A
+⟬ ι ⟭ X = X
 
 data μ (D : Desc) : Set where
   init : ⟬ D ⟭ (μ D) → μ D

@@ -40,5 +40,5 @@ module _ where
    𝒜 : Set₁
    𝒞 : Set
    ⟦_⟧ : 𝒞 → Set
-   generic : (A : 𝒞) → ⟦ A ⟧ → ⋯
+   generic : (C : 𝒞) → ⟦ C ⟧ → ⋯
 

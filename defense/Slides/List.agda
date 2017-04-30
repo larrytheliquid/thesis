@@ -20,76 +20,15 @@ module _ where
 module _ where
  private
   data List (A : Set) : Set where
-    nil : List A
-    cons : A → List A → List A
-
-module _ where
- private
-  postulate
-   _ : (A : Set) → A ≅ A × ⊤
-
-  data List (A : Set) : Set where
-    nil : ⊤ → List A
-    cons : A → List A → ⊤ → List A
-
-module _ where
- private
-  postulate
-   _ : (A B C : Set) → (A → B → C) ≅ (A × B → C)
-
-  data List (A : Set) : Set where
-    nil : ⊤ → List A
-    cons : A × List A × ⊤ → List A
-
-module _ where
- private
-  postulate
-   _ : (A B C : Set) → (A → B → C) ≅ (A × B → C)
-
-  data List (A : Set) : Set where
-    nil : ⊤ → List A
-    cons : A × List A × ⊤ → List A
-
-module _ where
- private
-  data List (A : Set) : Set where
-    list : ⊤ ⊎ (A × List A × ⊤) → List A
-
-module _ where
- private
-  postulate
-   _ : (A B : Set) → A ⊎ B ≅ Σ Bool (λ b → if b then A else B)
-
-  data List (A : Set) : Set where
-    list : Σ Bool
-      (λ b → if b then ⊤ else A × List A × ⊤)
-      → List A
+    list :  ⊤ ⊎ (A × List A) → List A
 
   nil : {A : Set} → List A
-  nil = list (true , tt)
+  nil = list (inj₁ tt)
 
   cons : {A : Set} → A → List A → List A
-  cons x xs = list (false , x , xs , tt)
+  cons x xs = list (inj₂ (x , xs))
 
   append : {A : Set} → List A → List A → List A
-  append (list (true , tt)) ys = ys
-  append (list (false , x , xs , tt)) ys = cons x (append xs ys)
-
-module _ where
- private
-  postulate
-   _ : (A B : Set) → A ⊎ B ≅ Σ Bool (λ b → if b then A else B)
-
-  data List (A : Set) : Set where
-    list : Σ Bool
-      (λ b → if b then ⊤ else A × List A × ⊤)
-      → List A
-
-  pattern nil = list (true , tt)
-  pattern cons x xs = list (false , x , xs , tt)
-
-  append : {A : Set} → List A → List A → List A
-  append nil ys = ys
-  append (cons x xs) ys = cons x (append xs ys)
-
+  append (list (inj₁ tt)) ys = ys
+  append (list (inj₂ (x , xs))) ys = cons x (append xs ys)
 
