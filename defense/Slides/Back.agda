@@ -29,6 +29,19 @@ module _ where
   append A zero m nil ys = ys
   append A (suc n) m (cons x xs) ys = cons x (append A n m xs ys)
 
+module _ where
+ open import Data.Bool
+ open import Data.String
+ private
+  data 𝒞 : Set where
+    `Bool : 𝒞
+    `ℕ : 𝒞
+    `String : 𝒞
+
+  ⟦_⟧ : 𝒞 → Set
+  ⟦ `Bool ⟧ = Bool
+  ⟦ `ℕ ⟧ = ℕ
+  ⟦ `String ⟧ = String
 
 
 module _ where
