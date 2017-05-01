@@ -13,5 +13,5 @@ import Slides.NaiveAlg
 import Slides.ClosedAlg
 import Slides.Univ
 import Slides.GCount
-import Slides.ClosedHier
-import Slides.Leveled
+-- import Slides.ClosedHier
+-- import Slides.Leveled

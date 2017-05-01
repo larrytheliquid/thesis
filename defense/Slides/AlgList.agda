@@ -33,3 +33,16 @@ module _ where
   append (init (inj₁ tt)) ys = ys
   append (init (inj₂ (x , xs))) ys = cons x (append xs ys)
 
+module _ where
+ open import Data.Nat
+ private
+  mutual
+   size : (D : Desc) → μ D → ℕ
+   size D (init xs) = 1 + sizes D D xs
+    
+   sizes : (D R : Desc) → ⟬ D ⟭ (μ R) → ℕ
+   sizes (D ⊕ E) X (inj₁ xs) = sizes D X xs
+   sizes (D ⊕ E) X (inj₂ ys) = sizes E X ys
+   sizes (D ⊗ E) X (xs , ys) = sizes D X xs + sizes E X ys
+   sizes (κ A) X a = 1
+   sizes ι R x = size R x

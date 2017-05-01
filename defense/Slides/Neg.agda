@@ -22,3 +22,4 @@ bad (neg f) = bad (f (neg f))
 worse : ⊥
 worse = bad (neg (λ x → x))
 
+

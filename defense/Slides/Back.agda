@@ -1,8 +1,13 @@
 module Slides.Back where
 open import Data.Nat
-open import Data.List renaming ( [] to nil ; _∷_ to cons )
-open import Data.Vec renaming ( [] to nil ; _∷_ to cons )
 
+data List (A : Set) : Set where
+  nil : List A
+  cons : A → List A → List A
+
+data Vec (A : Set) : ℕ → Set where
+  nil : Vec A zero
+  cons : {n : ℕ} → A → Vec A n → Vec A (suc n)
 
 module _ where
  private

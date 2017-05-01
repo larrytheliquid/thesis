@@ -3,6 +3,7 @@ open import Data.Unit
 open import Data.Product
 open import Data.Sum
 open import Data.Bool
+open import Data.Nat
 
 data _≅_ : {A : Set₁} → A → A → Set where
 
@@ -10,6 +11,8 @@ module _ where
  private
   postulate
    μ : (Set → Set) → Set
+   sizes : (F : Set → Set) (X : Set) → F X → ℕ
+   size : (F : Set → Set) → μ F → ℕ
 
   ListF : Set → Set → Set
   ListF A X = ⊤ ⊎ A × X

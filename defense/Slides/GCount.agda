@@ -1,7 +1,7 @@
 module Slides.GCount where
 open import Data.Empty
 open import Data.Unit
-open import Data.Bool
+open import Data.Sum
 open import Data.Nat
 open import Data.Product
 open import Slides.OpenAlg
@@ -23,14 +23,18 @@ module _ where
  private
   mutual
     count : (A : `Set) → ⟦ A ⟧ → ℕ
+    count (A `⊎ B) (inj₁ a) = 1 + count A a
+    count (A `⊎ B) (inj₂ b) = 1 + count B b
     count (`Σ A B) (a , b) = 1 + count A a + count (B a) b
     count (`μ D) (init xs) = 1 + counts D (`μ D) xs
     count A a = 1
     
     counts : (D : `Desc) (X : `Set) → ⟬ ⟪ D ⟫ ⟭ ⟦ X ⟧ → ℕ
-    counts (`σ A D) X (a , xs) = count A a + counts (D a) X xs
-    counts (`δ D) X (x , xs) = count X x + counts D X xs
-    counts `ι X tt = 1
+    counts (D `⊕ E) X (inj₁ xs) = counts D X xs
+    counts (D `⊕ E) X (inj₂ ys) = counts E X ys
+    counts (D `⊗ E) X (xs , ys) = counts D X xs + counts E X ys
+    counts (`κ A) X a = count A a
+    counts `ι X x = count X x
 
 
 module _ where
