@@ -20,6 +20,7 @@ module _ where
    generic : (A : Code) → Meaning A → ⋯
 
 module _ where
+ open import Data.Char
  private
 
   data Size : Set₁ where
@@ -37,6 +38,9 @@ module _ where
   size (`Pair A B) (a , b) = 3
   size (`List A) nil = 1
   size (`List A) (cons x xs) = 2 + size (`List A) xs
+
+ _ : ⟦ `List (Bool × Bool) ⟧
+ _ = cons (true , true) (cons (false , false) nil)
 
 module _ where
  private
@@ -84,3 +88,6 @@ module _ where
   count (`Pair A B) (a , b) = 1 + count A a + count B b
   count (`List A) nil = 1
   count (`List A) (cons x xs) = 1 + count A x + count (`List A) xs
+
+ _ : ⟦ `List (`Pair `Bool `Bool) ⟧
+ _ = cons (true , true) (cons (false , false) nil)

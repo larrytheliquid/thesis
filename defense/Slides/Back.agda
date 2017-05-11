@@ -54,9 +54,27 @@ module _ where
 module _ where
  private
   postulate
-   ⋯ : Set
+   ⋯ : Set₀
    𝒜 : Set₁
    𝒞 : Set
    ⟦_⟧ : 𝒞 → Set
    generic : (C : 𝒞) → ⟦ C ⟧ → ⋯
+
+module _ where
+ private
+  postulate
+   ⋯ : Set
+   𝒜 : Set₁
+   ⟦_⟧₁ : 𝒜 → Set
+   generic : (A : 𝒜) → ⟦ A ⟧₁ → ⋯
+
+module _ where
+ private
+  postulate
+   ⋯ : Set
+   𝒜 : Set₁
+   ⟦_⟧₁ : 𝒜 → Set
+   𝒞 : Set
+   ⟦_⟧₂ : 𝒞 → 𝒜
+   generic : (C : 𝒞) → ⟦ ⟦ C ⟧₂ ⟧₁ → ⋯
 
