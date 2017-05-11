@@ -186,13 +186,13 @@ Dependently typed programming languages allow the type system to
 express arbitrary propositions of intuitionistic logic, thanks to the
 Curry-Howard isomorphism. Taking full advantage of this type system
 requires defining more types than usual, in order to encode
-logical correctness criteria into the very definitions of
+logical correctness criteria into the definitions of
 datatypes. While an abundance of specialized types helps ensure
 correctness, it comes at the cost of needing to redefine common
 functions for each specialized type.
 
 This dissertation makes an effort to attack the problem of code reuse
-in dependently typed language. Our solution is to write generic
+in dependently typed languages. Our solution is to write generic
 functions, which can be applied to any datatype.
 Such a generic function can be
 applied to datatypes that are defined at the time the generic function
@@ -205,10 +205,10 @@ Type theory supports generic
 programming using a construction known as a \textit{universe}. A
 universe can be considered the model of a programming language,
 such that writing functions over it models writing generic programs in
-the programming language. Historically, there has been a tradeoff
-between the expressivity of the modeled programming language, and the
-types of generic functions that could be written in it. Our
-dissertation shows that no such tradeoff is necessary, and that we can
+the programming language. Historically, there has been a trade-off
+between the expressive power of the modeled programming language, and the
+types of generic functions that can be written in it. Our
+dissertation shows that no such trade-off is necessary, and that we can
 write future-proof generic functions in a model of a dependently typed
 programming language with a rich collection of types.
 
