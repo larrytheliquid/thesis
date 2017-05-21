@@ -11,7 +11,7 @@ open import Relation.Binary.PropositionalEquality
 
 \section{Open Inductive-Recursive Types}\label{sec:iralg}
 
-In this section we extend the initial algebra semantics of
+In this section, we extend the initial algebra semantics of
 \textit{infinitary} and \textit{dependent} types
 (\refsec{depalg})
 to \textit{inductive-recursive} types
@@ -32,7 +32,7 @@ of such a functor gave us back a set ($\mu~F : \set$).
 Hence, previously each type could be semantically modeled as
 a set ($\set$).
 
-In order to define a categorical model of
+To define a categorical model of
 \textit{inductive-recursive} types, we need to model
 a type ($X : \set$) along with its mutually defined
 \textit{decoding} function ($d : X \arr O$), mapping values of the
@@ -52,8 +52,7 @@ $$
 
 Pattern functors for inductive-recursive types are endofunctors
 ($F : \set/O \arr \set/O$)
-of the slice category $\set/O$
-\footnote{
+of the slice category $\set/O$\footnote{
   Objects of the slice category $\set/O$ are functions
   $f : X \arr O$ (where $X$ is some object-specific set
   and $O$ is a set fixed for the category). Its morphisms are
@@ -285,9 +284,9 @@ $$
 \nat \triangleq \mu (X, d).~ \iota \bullet + X^1 \cdot \iota~\bullet
 $$
 
-Note that because $\iota~\bullet$ appears twice, once on either side of (+),
-technically the $\iota$-based $\nat$ models the decoding function
-\AgdaFun{ℕ₂} below that 
+Because $\iota~\bullet$ appears twice, once on either side of (+),
+the $\iota$-based $\nat$ technically  models the decoding function
+\AgdaFun{ℕ₂} below, which
 matches against \AgdaCon{zero} and \AgdaCon{suc} but returns
 \AgdaCon{tt} in either case.
 
@@ -404,8 +403,7 @@ appearing negatively in the domain of the infinitary argument
 Below is an example of the natural numbers encoded as a
 trivially (i.e. where the codomain of the decoding function
 \AgdaVar{O} is the unit type \AgdaData{⊤})
-inductive-recursive description.
-\footnote{
+inductive-recursive description.\footnote{
   It also happens to be a trivially infinitary type,
   because \Con{`δ} is applied to \AgdaData{⊤}, encoding a trivial
   infinitary domain.
@@ -452,7 +450,7 @@ module _ where
 
 To understand where the implicit composition of the decoding
 function and the infinitary function is happening,
-recognize that in successor case of
+recognize that in the successor case of
 the definitions of \AgdaFun{NatD} and \AgdaFun{ℕ₂} above,
 \AgdaVar{f} $=$ \AgdaFun{ℕ₂} \AgdaFun{∘} \AgdaVar{n}.
 
@@ -512,7 +510,7 @@ module El1 where
   open De
 \end{code}}
 
-First consider the interpretation function component (\AgdaFun{⟦\_⟧₁})
+\textit{First}, consider the interpretation function component (\AgdaFun{⟦\_⟧₁})
 mapping slices to types. The \AgdaCon{`ι} and \AgdaCon{`σ} cases are
 much like they were for the interpretation function of dependent types
 in \refsec{depalgmod}.
@@ -533,7 +531,7 @@ The right component is the interpretation of the description
 function (\AgdaVar{d}) and the \textit{dependent}
 infinitary argument (\AgdaVar{f}).
 Thus the subsequent argument types contained in \AgdaVar{D} can
-depend on the the composed function (returning an \AgdaVar{O}), but
+depend on the composed function (returning an \AgdaVar{O}), but
 cannot directly depend on the infinitary function
 (returning an inductive \AgdaVar{X}).
 
@@ -595,7 +593,7 @@ module El2 where
   open El1
 \end{code}}
 
-Second consider the interpretation function component (\AgdaFun{⟦\_⟧₂})
+\textit{Second}, consider the interpretation function component (\AgdaFun{⟦\_⟧₂})
 mapping slices to decoding functions. The decoding
 function works by consuming the arguments
 (of type \AgdaFun{⟦} \AgdaVar{D} \AgdaFun{⟧₁} \AgdaVar{R}) while
@@ -729,7 +727,7 @@ module _ where
 
 We expose the formal model of the \textit{non-infinitary} natural
 numbers presented above.
-Like in \refsec{depalgtps}, this means our type former
+As in \refsec{depalgtps}, this means our type former
 and constructors will have the \textit{names} and \textit{types}
 corresponding to the ones above. However, our underlying pattern
 functor formally models the \textit{infinitary} and \textit{slice-based}
@@ -831,7 +829,7 @@ the non-infinitary predecessor (\AgdaVar{n}).
 
 Now we model a non-trivially inductive-recursive and
 non-trivially infinitary type, namely the
-type of arithmetic expressions (\AgdaData{Arith}.
+type of arithmetic expressions (\AgdaData{Arith}).
 You may wish to revisit \refsec{irtypes} for
 examples of what arithmetic expressions represent.
 An \AgdaData{Arith} can be evaluated to the natural
@@ -1193,8 +1191,9 @@ non-dependent types (\refsec{nondepalgmod}),
 infinitary types (\refsec{infalgmod}),
 and dependent types (\refsec{depalgmod}),
 the formal model (i.e. a model in type theory)
-and the Agda model (i.e. a model in an implementation of type theory)
-corresponded. Unfortunately, this is not the case for the formal model
+corresponded to the Agda model (i.e. a model in an implementation of type
+theory).
+Unfortunately, this is not the case for the formal model
 presented for inductive-recursive types in \refsec{iralgmod}.
 
 Although we used Agda syntax in the formal model of \refsec{iralgmod},
@@ -1259,7 +1258,7 @@ the type fixpoint component (\Data{μ₁})
 is positive and that the decoding function fixpoint component
 (\Fun{μ₂}) terminates.
 
-All examples of inductive-recursive type encodings
+All of our earlier examples of inductive-recursive type encodings
 (\refsec{iralgtps}) still work.
 This is because our examples of type formers and constructors only
 rely on the interfaces exposed by \Data{μ₁} and \Fun{μ₂},

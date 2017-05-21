@@ -23,8 +23,8 @@ module _ where
 
 \section{Fully Generic Lookup}\label{sec:glookup}
 
-In this section we develop a fully generic \Fun{lookup} function,
-which can retrieve any node of a generically encoded value.
+In this section, we develop a fully generic \Fun{lookup} function
+that can retrieve any node of a generically encoded value.
 The input to \Fun{lookup} is a value and an index into a position
 within the value. To prevent out-of-bounds errors during lookups, we
 generalize the type of \Fun{lookup} for vectors (\Data{Vec}).
@@ -41,7 +41,7 @@ length of the vector. Recall the type of finite sets from
     there : {n : ℕ} → Fin n → Fin (suc n)
 \end{code}
 
-We think of the the type of finite sets acts as a 0-based index whose
+We think of the type of finite sets as a 0-based index whose
 maximum value is the natural number that \Data{Fin} is applied
 to, minus 1. For all
 \Var{n}, there are \Var{n} inhabitants of \Data{Fin} \Var{n}
@@ -58,7 +58,7 @@ To \Fun{lookup} a \Data{Vec}tor of length \Var{n}, we index by
 head of the vector (at index position \Num{0}) if the index is
 \Con{here}. If the index is \Con{there}, \Fun{lookup} recursively
 searches the tail of the vector (until it finally finds a value
-to return, indicated by peeling off enough \Con{there}'s to arrive
+to return, indicated by peeling off enough \Con{there}s to arrive
 at a \Con{here}).
 
 \begin{code}
@@ -86,14 +86,15 @@ module _ where
   lookup (cons x xs) (there i) = lookup xs i
 \end{code}
 
-Besides needing to supply explicit evidence, by pattern matching
+The implementation
+for \Data{List}s is the same as the implementation for \Data{Vec}tors,
+besides needing to supply explicit evidence by pattern matching
 against the uninhabited empty \Data{Fin} \Num{0} index
 (using empty parentheses, which is Agda syntax for explicitly
-pattern matching against an uninhabited type) in the \Con{nil} case, the implementation
-for \Data{List}s is the same as the implementation for \Data{Vec}tors.
+pattern matching against an uninhabited type) in the \Con{nil} case.
 
 Our fully generic \Fun{lookup} is defined similarly to the \Data{List}
-lookup, except \Fun{length} (calculating the bound of index
+lookup, except that \Fun{length} (calculating the bound of index
 \Data{Fin}) is replaced by our fully generic \Fun{count}
 from \refsec{gcount}. Recall that \Fun{count} sums the number of nodes
 in a generic value according to a depth-first traversal. Therefore,
@@ -364,8 +365,7 @@ descriptions, \textit{and} its \Data{Fin} indices.
 We will also classify the cases in the definition of \Fun{lookups} by
 the \textbf{Case} template numbers. Below, we repeat the first 2
 \textbf{Case} templates from \refsec{lookup} verbatim. However, the 3rd template is
-different because it lacks a ``\Num{1} \Fun{+} ...'' prefix.
-\footnote{
+different because it lacks a ``\Num{1} \Fun{+} ...'' prefix.\footnote{
   The lack of the ``\Num{1} \Fun{+} ...''
   prefix is because we allow indexing into any argument of a sequence,
   but prevent indexing into the sequence itself or subsequences. Instead,
@@ -559,7 +559,7 @@ module _ where
 When defining \Fun{lookup} (in \refsec{lookup}) and
 \Fun{lookups} (in \refsec{lookups}), we appealed to the helper
 functions \Fun{splitΣ}, \Fun{splitσ}, and \Fun{splitδ}.
-All 3 of these helpers are defined as shallow wrappers
+All three of these helpers are defined as shallow wrappers
 (in \reffig{split}) around a more general function,
 \Fun{splitFin}.
 

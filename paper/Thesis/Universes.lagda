@@ -29,7 +29,7 @@ module _ where
 For example the \AgdaData{BoolStar} universe is comprised of the type of booleans,
 lists of booleans, lists of lists of booleans, and so on.
 In other words, it is the Kleene star version of \AgdaData{Bits}
-(non-nested lists of booleans) from \refsec{closed}.
+(non-nested lists of booleans) from \refsec{closedt}.
 The type of codes is \AgdaData{BoolStar}, and its meaning function is
 \AgdaFun{⟦\_⟧}. As a convention, we prefix constructors of the code
 type with a backtick to emphasize the distinction between a code
@@ -180,8 +180,8 @@ Note that \AgdaFun{Dyn} is a \textit{computational family}
 terminology, calling \AgdaFun{Dyn} a
 \textit{computational argument family} (\refsec{comparg})
 that serves as a \textit{domain supplement} (\refsec{domsup}).
-Having defined \AgdaFun{Dyn}, we can define generic
-\AgdaFun{concat} to return a flattened list of dynamic universe
+Having defined \AgdaFun{Dyn}, we can define a generic
+\AgdaFun{concat} function to return a flattened list of dynamic universe
 values. 
 
 \begin{code}
@@ -335,8 +335,8 @@ Thus far we have constructed universes with certain properties from
 scratch, extending the \textit{primitive} types of our language with a
 \textit{primitive} universe. However, we can also \textit{derive} a
 universe from any \textit{type family} by
-considering the type of its indices the codes and the type
-family itself the meaning function. If we do this for the indexed type of
+considering the type of its indices as the codes and the type
+family itself as the meaning function. If we do this for the indexed type of
 finite sets (\AgdaData{Fin}), we get a universe (\AgdaFun{Pow}) like powerset but
 without the empty set (because \AgdaData{Fin} \AgdaCon{zero} is not inhabited).
 
@@ -440,7 +440,7 @@ of the universe as a parameterized dependent pair below.
 \end{code}
 
 
-We can still write \AgdaFun{concat}, by injecting values of the
+We can still write \AgdaFun{concat} by injecting values of the
 parameterized type into a singleton list as with \AgdaData{DynStar}
 (\refsec{openu}). Recall that \AgdaFun{concat} for \AgdaData{DynStar}
 required a special function \AgdaFun{Dyn} to extract the base

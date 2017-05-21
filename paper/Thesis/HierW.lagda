@@ -45,7 +45,7 @@ $$
 \Data{Set}_{\Var{n}} : \Data{Set}_{\Con{suc}~\Var{n}}
 $$
 
-There are 3 primary things we achieve by creating a closed hierarchy
+There are three primary things we achieve by creating a closed hierarchy
 of universes:
 \begin{enumerate}
 \item We can encode formers and constructors of kinds (as well as
@@ -105,7 +105,7 @@ module _ where
    suc : ⟦ `Π `ℕ (λ n → `ℕ) ⟧
 \end{code}
 
-Another way to look at it, is that we can fit the entire type
+Another way to look at this, is that we can fit the entire type
 signature of \Fun{suc} into the meaning brackets (\Fun{⟦\_⟧}),
 as a single closed type (\Data{`Set}).
 In contrast, let's consider the \textit{kind} signature of the
@@ -128,7 +128,7 @@ We cannot internalize the \textit{kind} signature of the \Fun{cons}
 function. Even though \Fun{cons} returns a list value, its signature
 is kinded because the \Var{A} argument is a kind (\Data{`Set}).
 We would like to internalize the kind of \Fun{cons} as
-3 nested uses of \Con{`Π}
+three nested uses of \Con{`Π}
 (for arguments \Var{A}, \Var{a}, and \Var{xs}).
 However, the domain of the first \Con{`Π}
 would need to be a constructor of closed kinds (\Con{`Set}),
@@ -155,8 +155,7 @@ In this section we extend the
 \textit{Closed Well-Order Types} universe of \refsec{wuni} to a closed
 hierarchy of universes. At first, we present a
 formal model (in \refsec{hierwi}) of the hierarchy.
-Agda (the implementation of type theory we use
-in this dissertation) does not recognize our definition of the
+Agda does not recognize our definition of the
 universe hierarchy type to be positive. However, we explain why the
 formal model presented in this section is consistent, and use it as
 motivation to define a model (in \refsec{hierwp}) that Agda
@@ -218,7 +217,7 @@ constructors.
 
 The name of the indexed type (\Data{`Set[\_]}) is Agda syntax for
 defining an infix operator, such that the natural number index
-appear where the underscore is located.
+appears where the underscore is located.
 For example, the universe of closed types is represented by
 \Data{`Set[ \Var{0} ]}. The left component of the infix operator name
 is \Data{`Set[}, and the right component of the name is \Data{]}.

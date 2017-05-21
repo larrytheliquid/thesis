@@ -20,7 +20,7 @@ Initial algebra semantics, unlike well-orderings,
 adequately models declared datatypes in
 intensional (as opposed to extensional) type theory.
 
-We begin with a naive failing attempt at defining a closed type theory
+We begin with a naive, failing attempt at defining a closed type theory
 using fixpoints (\refsec{naiveclosed}). After explaining why the
 simple but naive attempt actually defines an open (rather than
 closed) type theory, we explain how to properly close the theory
@@ -31,7 +31,7 @@ by comparing and contrasting types and kinds (\refsec{kinds}).
 
 \section{Open Inductive-Recursive Types}\label{sec:naiveclosed}
 
-In this section we present a naive failing attempt at creating a
+In this section, we present a naive, failing attempt at creating a
 \textit{closed} universe using fixpoints. It is a failing attempt
 because it actually defines an \textit{open} universe.
 We will define a universe similar to the
@@ -57,7 +57,7 @@ module _ where
     init : ⟦ D ⟧₁ D → μ₁ O D
 \end{code}
 
-The identity type allows us to propositionally state that two values
+The identity type allows us to state propositionally that two values
 (\Var{x} and \Var{y}) are equal. If they are indeed equal,
 the constructor \Con{refl} serves as a proof of the proposition.
 In previous parts of this dissertation, we used an infix
@@ -109,12 +109,12 @@ module _ where
     ⟦ `μ₁ O D ⟧ = μ₁ ⟦ O ⟧ D
 \end{code}
 
-Nothing immediately problematic stands out, as our
+Nothing immediately problematic stands out as our
 universe looks quite like the \textit{Closed Well-Order Types}
 universe. Let's take a closer look at why the addition of the
 identity type (\Con{`Id})
 is not problematic, but the addition of fixpoints
-(\Con{`μ₁}) is problematic, by constructing values of both.
+(\Con{`μ₁}) is, by constructing values of both.
 First, we construct the (uninhabited) boolean proposition that true
 is equal to false, using the identity type.
 
@@ -135,7 +135,7 @@ Hence, the identity type (\Data{Id}) can be encoded in the universe
 using its backtick equivalent (\Con{`Id}). Additionally,
 its \textit{type} argument can be \Con{`Bool},
 the backtick universe encoding of type \Data{Bool}.
-Next (in \refsec{source}), we will see that while the fixpoint
+Next (in \refsec{source}), we will see that, while the fixpoint
 type (\Data{μ₁}) can be encoded in the universe using its
 backtick equivalent (\Con{`μ₁}), its \textit{description}
 argument cannot be a backtick encoding of a \Data{Desc}
@@ -189,7 +189,7 @@ module _ where
 \end{code}
 
 The root of the problem is that the \Var{A} argument of \Con{σ} and
-\Con{δ} has Agda's type \Data{Set}, rather a code of our universe
+\Con{δ} has Agda's type \Data{Set}, rather than a code of our universe
 \Data{`Set}. Hence, the universe \Data{`Set} that we defined is
 actually \textit{open} because \Con{`μ₁} has an argument
 \Var{D} of type \Data{Desc}, which is an open type because it has \Data{Set}
@@ -206,7 +206,7 @@ an open type argument (\Var{D}):
 \item We \textit{cannot} write fully generic functions over the
   universe, which requires defining generic functions that work
   over any \Con{`μ₁} applied to any \Data{Desc}. We would get suck on
-  the \Con{σ} and \Con{δ} cases of such functions, because we could
+  the \Con{σ} and \Con{δ} cases of such functions because we could
   \textit{not} case-analyze (or recurse into) the
   \Var{A} arguments of type \Data{Set}.
 \end{enumerate}
@@ -245,8 +245,7 @@ In those universes, the kind (\Data{Set₁})
 of types (\Data{Set}) is the only kind in town. Now we create the
 \textit{Closed Inductive-Recursive Types} universe, where we
 additionally account for the kind (\Data{Set₁})
-of descriptions (\Data{Desc} of \refapen{openalg}).
-\footnote{
+of descriptions (\Data{Desc} of \refapen{openalg}).\footnote{
   The ``type'' of types is actually a \textit{kind}
   because \Data{Set} : \Data{Set₁}. Similarly,
   the ``type'' of descriptions is actually a \textit{kind} because
@@ -332,8 +331,8 @@ infinitary arguments (\Con{`δ}) of
 closed descriptions (\Data{`Desc}) now take a
 closed type (\Data{`Set}) as their \Var{A} argument.
 In contrast, the \Var{A}
-argument of \Con{σ} and \Con{δ},
-in the definition of open descriptions (\Data{Desc}),
+argument of \Con{σ} and \Con{δ}
+in the definition of open descriptions (\Data{Desc})
 is an open type (\Data{Set}).
 
 Before, the meaning function (\Fun{⟦\_⟧}) for closed types only recursed
@@ -369,7 +368,7 @@ that our parameter for open descriptions is well-typed
 (i.e. is a \Data{Set} rather than a \Data{`Set}).
 
 Finally, recall that our naive attempt
-(in \refsec{naiveclosed}) at closing the universe failed,
+(in \refsec{naiveclosed}) at closing the universe failed
 because the resulting universe is actually open. 
 In \refsec{naiveclosed}, \Data{`Set} contains a
 \Var{D} argument (in \Con{`μ₁}) whose \textit{kind} (\Data{Set₁})
@@ -506,7 +505,7 @@ is not possible in a \textit{closed} theory.
 \paragraph{Vectors}
 
 Next, we will encode a closed version of the trivially infinitary and
-non-trivially inductive-recursive vectors, using the translation from
+non-trivially inductive-recursive vectors using the translation from
 indexed types to inductive-recursive types
 described in \refsec{iralgtps}. We will encode a closed version of the
 vector type below.
@@ -622,12 +621,12 @@ natural number argument (\Fun{ℕ}) is defined as the
 \textit{interpretation} of the natural numbers, the type argument
 (\Data{`Set}) remains uninterpreted. Keeping the closed type
 (\Data{`Set}) argument uninterpreted is the key to writing fully
-generic functions (in \refchap{fullyg}), by pattern matching against
+generic functions (in \refchap{fullyg}) by pattern matching against
 closed type codes (i.e. the constructors of \Data{`Set}).
 
 \paragraph{Finite Sets}
 
-Now we the type of finite sets (\Data{Fin})
+Now we give the type of finite sets (\Data{Fin})
 as another example (in addition to \Data{Vec})
 of modeling an open indexed type as an open
 inductive-recursive type. First, review the high-level open indexed
@@ -845,8 +844,7 @@ Because we are claiming that we are formally modeling a closed
 inhabit the type of \textit{codes} and its
 \textit{meaning} function. A universe (\Data{Univ}) can be
 \textit{formally} modeled as a dependent record consisting of a \Field{Code} type, and
-a \Field{Meaning} function mapping codes to types (\Data{Set}).
-\footnote{
+a \Field{Meaning} function mapping codes to types (\Data{Set}).\footnote{
   In \refsec{universes}, universes are modeled as a dependent pair
   (\Data{Σ}) type, where the first component is the type of codes and
   the second is the meaning function. The \Data{Univ} record is really
@@ -967,7 +965,7 @@ for closed descriptions (\Data{`Desc}).
 
 \section{How to Close a Universe}\label{sec:closing}
 
-The closed universe of \refsec{closed} is a fine result, as it
+The closed universe of \refsec{closed} is a fine result, because it
 supports user-declared datatypes,
 but also fully generic programming (demonstrated in \refchap{fullyg}).
 However, readers may be curious how we arrived at this universe.
@@ -1126,11 +1124,11 @@ because \Data{Desc} in argument \Var{D} of \Con{`μ₁} is not closed yet.
 
 \paragraph{Step 3}
 
-Next, we encounter of the kind of descriptions (\Data{Desc}) in the
+Next, we encounter the kind of descriptions (\Data{Desc}) in the
 \Var{D} argument of the \Con{`μ₁} constructor,
 so we must recursively apply the
 procedure by choosing \Var{J} to be \Data{Desc}.
-For the next part of this this procedure run, we need to start over at
+For the next part of this procedure run, we need to start over at
 \textbf{Step 1} when recursively closing over the kind \Data{Desc}.
 However, we will instead call this \textbf{Step 3.1}, where the
 \textbf{3} prefix indicates that the recursion was initiated by
@@ -1203,7 +1201,7 @@ Similarly, \Var{A} arguments of \Data{`Desc} constructors,
 and the \Var{O} argument in the type of
 the closed descriptions meaning function (\Fun{⟪\_⟫}),
 \textit{already} have kind \Data{`Set}.
-In all 3 of these places, \textit{and} the body of
+In all three of these places, \textit{and} in the body of
 the closed descriptions meaning function (\Fun{⟪\_⟫}),
 references (e.g. \Var{A}) to kinds
 \Data{`Set} \textit{already}
@@ -1313,7 +1311,7 @@ that only \textit{kind} arguments of the original type
 formers are encoded, and the meaning function is only applied to
 members of kinds. This explains why the \Data{ℕ} argument of the
 vector type former (encoded as \Con{`Vec}) did \textit{not} get
-encoded. Hence, we \textit{did not} a create a code (i.e. \Con{`ℕ})
+encoded. Hence, we \textit{did not} create a code (i.e. \Con{`ℕ})
 and meaning function for the \textit{type} of natural numbers, but we
 \textit{did} (i.e. \Con{`Desc}) for the \textit{kind} of descriptions.
 Additionally, the type meaning function
@@ -1337,9 +1335,9 @@ universe construction.
 
 \subsection{Open Types and Kinds}
 
-While both type (\Data{Set}) and descriptions (\Data{Desc})
+While both types (\Data{Set}) and descriptions (\Data{Desc})
 are \textit{open} kinds (\Data{Set₁}), somehow \Data{Desc} feels
-``more closed'' than \Data{Set}. We will precisely identity the
+``more closed'' than \Data{Set}. We will precisely identify the
 properties that cause that feeling, by comparing and contrasting
 the open \textit{kinds} \Data{Set} and \Data{Desc}.
 First, let's revisit the idea of open \textit{types}
@@ -1470,7 +1468,7 @@ theory if the codomain of the \textit{signature} of the declaration is
 theory if the codomain of the \textit{signature} of the declaration is
 \Data{Set₁}.
 
-However, what determines that a declaration \textit{needs} to be a
+But what determines that a declaration \textit{needs} to be a
 kind, as opposed to a type? If all non-inductive arguments of all
 constructors are classified by types
 (like \Var{n} : \Data{ℕ}, \Var{b} : \Data{Bool},
@@ -1493,8 +1491,8 @@ module _ where
     cons : (a : A) (xs : List A) → List A
 \end{code}
 
-However, we may choose to \textit{gratuitously} declare lists as a
-\textit{kind} (\Data{List₁}, below),
+However, we may choose to declare lists \textit{gratuitously}
+as a \textit{kind} (\Data{List₁}, below),
 even though it is consistent to declare them as a type.
 
 \AgdaHide{
@@ -1583,7 +1581,6 @@ and a large constructor (of \Data{Desc}) appears in the body of a
 declaration, we can simply focus on the fact they are both formation
 rules of some kind. For example, below we list formation rules for
 kind \Data{Set} and kind \Data{Desc} in a unified way.
-
 \begin{center}
  \begin{tabular}{||c | c ||} 
  \hline
@@ -1617,7 +1614,7 @@ large constructors of \Data{Desc} as \textit{description formers}.
 
 \subsection{Kind-Parameterized Types}\label{sec:kindparam}
 
-In order to perform fully generic programming, our original goal
+To perform fully generic programming, our original goal
 was to create a closed universe of \textit{types}. This universe
 corresponds to the first universe in a hierarchy of universes
 (we define the hierarchy in \refchap{hier}). For the first universe to
@@ -1635,7 +1632,7 @@ universe at all? The answer is that the \textit{kind} \Data{Desc}
 appears as an argument to the \textit{type} former of \Data{μ₁}. This
 is similar to how the \textit{kind} \Data{Set} appears as an argument
 to the \textit{type} former of \Data{Vec}. However, this leads us to the
-next question, why can a type like \Data{Vec} have a kind-level type
+next question: why can a type like \Data{Vec} have a kind-level type
 former argument (i.e. its parameter \Var{A} of kind \Data{Set})
 while remaining a type itself (rather than being lifted to a
 kind)? The answer has to do with both \Data{Vec} and \Data{μ₁} being
@@ -1688,7 +1685,7 @@ module _ where
 \end{code}
 
 Notice that the \Con{cons} constructor must take \Var{n} as a formal
-argument, so that it may determine the index to be \Con{suc} \Var{n}.
+argument so that it may determine the index to be \Con{suc} \Var{n}.
 We call \Var{A} an informal argument because the
 underlying constructor declaration does not store the type \Var{A}
 (even though \Con{cons} does store the value \Var{a} of type \Var{A},
@@ -1730,8 +1727,9 @@ Now let's reconsider the definition of the \textit{type} of fixpoints,
 \textit{parameterized} by the decoding codomain \Var{O} and
 the description \Var{D}. Below, we only present the definition of the
 interpretation function (\Fun{⟦\_⟧₁}) and the
-fixpoint datatype (\Data{μ₁}), but see \refsec{iralgmod} for the
-full definition (including the decoding functions).
+fixpoint datatype (\Data{μ₁}).
+For the full definition, including the decoding function,
+see \refsec{iralgmod}.
 
 \AgdaHide{
 \begin{code}

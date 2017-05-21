@@ -19,7 +19,7 @@ module _ where
 Functions written in dependent type theory (DTT) must be
 \textit{total} (defined over all inputs). Thus, partial functions
 written in traditional languages cannot be directly encoded as
-functions in DTT. In this section we explain a general technique for
+functions in DTT. In this section, we explain a general technique for
 altering the type signature of a partial function so that it may be
 encoded as a total function in DTT.
 We use the \AgdaFun{head} function as our running example of a
@@ -139,9 +139,9 @@ computation, in the return type position of a function).
   HeadRet {A = A} (cons x xs) = A
 \end{code}
 
-If the input list is non-empty, \AgdaFun{HeadRet} computes to the
+If the input list is non-empty, \AgdaFun{HeadRet} computes the
 standard return type \AgdaVar{A}. However, if the list is empty then
-\AgdaFun{HeadRet} computes to the unit type. A function returning unit
+\AgdaFun{HeadRet} computes the unit type. A function returning unit
 may as well be undefined, as its output is uniquely determined to be
 \AgdaCon{tt}.
 
@@ -234,7 +234,7 @@ predicate (even though both technically restrict the domain).
 
 We have seen how to encode partial functions within total type theory
 by modifying the domain or codomain of a function, with and without
-the benefits afforded by dependent typing. Previously when writing
+the benefits afforded by dependent typing. Previously, when writing
 ordinary functions over types (\refsec{types}), and especially when
 writing generic functions over universes (\refsec{universes}), we
 deliberately chose examples that were naturally total to avoid using
@@ -243,7 +243,7 @@ the techniques of this section.
 However, as we write generic programs over larger universes (those
 containing more types),
 it often becomes necessary to use computational argument or
-return types to make generic functions total. This is especially
+return types to make generic functions total. This is particularly
 true when writing fully generic functions (\refsec{fullygeneric}), as
 it might not be possible to define them for certain values of a
 universe without domain supplements.

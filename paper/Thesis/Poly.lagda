@@ -18,7 +18,7 @@ functions that can be applied to values of a collection of types
 Given a collection of types, a \textit{generic function} can be
 applied to values of any type in the collection. A
 \textit{polymorphic function} universally
-quantifies over some collection of values, and references an arbitrary
+quantifies over some collection of values and references an arbitrary
 member of that collection in its type signature. Therefore, generic
 functions are merely polymorphic functions.
 The type of the quantified variable can be seen as the codes of the
@@ -48,8 +48,8 @@ to a code).
 
 \subsection{Parametric over Types}
 
-A common form of parametric polymorphism is over types, i.e. where
-\AgdaFun{Code} is defined to be \AgdaData{Set}.
+A common form of parametric polymorphism is over types( i.e. where
+\AgdaFun{Code} is defined to be \AgdaData{Set}).
 
 \AgdaHide{
 \begin{code}
@@ -64,7 +64,7 @@ module _ where
 \end{code}
 
 Notice that \AgdaFun{append} over lists behaves the same way for any
-type \AgdaVar{A} it gets applied to.
+type \AgdaVar{A} that it is applied to.
 
 \subsection{Parametric over Levels}\label{sec:levelpoly}
 

@@ -171,7 +171,7 @@ Dependent pairs (\AgdaData{Σ}) are another example.
 They are \textit{dependent},
 \textit{non-inductive}, and parameterized by a type \AgdaVar{A} and a function
 type \AgdaVar{B} (whose domain is \AgdaVar{A} and codomain is
-\AgdaData{Set}). We define the type of dependents pairs along with
+\AgdaData{Set}). We define the type of dependent pairs along with
 its dependent projections.
 
 \begin{code}
@@ -262,11 +262,10 @@ module _ where
 Another example is the type of finite sets (\AgdaData{Fin}), indexed by
 the natural numbers. For each natural number \AgdaVar{n}, the type
 \AgdaData{Fin} \AgdaVar{n} represents the subset of natural numbers
-from 1 to \AgdaVar{n}.
-\footnote{
+from 1 to \AgdaVar{n}.\footnote{
   Note that the finite set \AgdaData{Fin}~\AgdaNum{0} is
   uninhabited, as the subset of natural numbers from 1 to 0 does not
-  make sense.
+  have any values.
 }
 
 \begin{code}
@@ -296,8 +295,7 @@ represent a list of numbers as a function from \AgdaData{Fin}
 \AgdaVar{n} to \AgdaData{ℕ}. The idea is that each member of the
 finite set maps to a number (a member of our ``list'').
 For example, the list \texttt{[1,2,3]} is represented as
-the function below.
-\footnote{
+the function below.\footnote{
   Technically this is a length-3 vector rather than a list. However,
   \AgdaFun{prod} also takes a natural number argument, and a dependent
   pair consisting of a number \AgdaVar{n} and a vector of length
@@ -314,7 +312,7 @@ the function below.
 \end{code}
 
 Once again, \AgdaFun{prod} takes this functional list representation
-as an input and returns the the mathematical product of all members of
+as an input and returns the mathematical product of all members of
 the ``list''. \footnote{
   The final clause serves as a proof that \AgdaData{Fin}~\AgdaNum{3}
   has no inhabitants beyond three. The parentheses \texttt{()} serve
@@ -405,7 +403,7 @@ Alternatively, many types can be \textit{derived} from existing
 types. A derived datatype should be isomorphic to the type we have in
 mind. Rather than writing a function for each derived type, we derive
 its constructors as examples of how the derived type is used.
-For example, we can drive the type of booleans as the disjoint
+For example, we can derive the type of booleans as the disjoint
 union of two unit types.
 
 \AgdaHide{
@@ -530,7 +528,7 @@ this functional vector representation, so it could have been written like:
 
 Finally, we can derive \textit{non-indexed} types from indexed types by using a
 \textit{dependent pair}. The dependent pair acts like an existential, where the
-first component is a value from the the index domain and acts as a
+first component is a value from the index domain and acts as a
 witness, and the second component is the indexed type former applied
 to the witness and acts like a predicate. For example, we can derive
 the type of lists from the type of vectors as follows.
@@ -572,13 +570,12 @@ module _ where
 
 An \textit{infinitary} type is an inductive type where at least one
 constructor has one function argument whose codomain is the type being
-defined.
-\footnote{
+defined.\footnote{
   \textit{Infinitary types} are also referred to as
   \textit{generalized inductive definitions}~\cite{infinitary}.
   }
 The domain can never be the
-type being defined, because negative datatypes make type
+type being defined because negative datatypes make type
 theory inconsistent~\cite{negative}.
 For example, the datatype below is inconsistent
 with type theory.
@@ -696,7 +693,7 @@ expressions. Note that \AgdaData{Arith} is also an
 
 The length of the vector (the argument to \AgdaData{Fin} in the type
 of \AgdaVar{f})
-should be the \AgdaFun{eval}uation of the of the upper bound
+should be the \AgdaFun{eval}uation of the upper bound
 \AgdaVar{a}. Hence, the evaluation function \AgdaFun{eval} must be mutually defined
 with the type \AgdaData{Arith}. The \AgdaCon{Prod} constructor
 evaluates to the product computed with our \AgdaFun{prod} function
@@ -779,7 +776,8 @@ $$
 $$
 
 Notice that
-in \AgdaCon{cons} the index of the previous vector is given as an
+in \AgdaCon{cons} (i.e. the second summand)
+the index of the previous vector is given as an
 explicit argument (m), and the index (n) is constrained to be the
 successor of that argument.
 
@@ -869,7 +867,7 @@ has type \AgdaVar{A}. The type of lists parameterized by \AgdaVar{A}
 is open because \AgdaCon{cons} uses \AgdaVar{A}, and \AgdaVar{A} has
 type \AgdaData{Set}.
 
-\subsection{Closed Types}\label{sec:closed}
+\subsection{Closed Types}\label{sec:closedt}
 
 A \textit{closed} type is any type whose definition does not mention
 \AgdaData{Set}. For example, if we specialize the type of parametric

@@ -57,7 +57,7 @@ module _ where
 \paragraph{Abstract Universe Levels}
 
 Once again, we define a dependent record (\Data{Level})
-as the abstract notion of the previous universe, to be used
+as the abstract notion of the previous universe to be used
 as the parameter of \Data{SetForm} and \Data{DescForm}.
 
 \begin{code}
@@ -70,7 +70,7 @@ as the parameter of \Data{SetForm} and \Data{DescForm}.
 As before (in \refsec{hierwp}), the
 \Field{SetForm} field represents the closed types of the previous
 universe, and the \Field{⟦\_/\_⟧} field is their meaning function.
-Now we require 3 additional fields.
+Now we require three additional fields.
 
 \begin{code}
       DescForm : (O : SetForm) → Set
@@ -91,12 +91,12 @@ universe.
 
 \paragraph{Three Versions of Fixpoints}
 
-We now take a brief intermission to warn the reader that there are 3
+We now take a brief intermission to warn the reader that there are three
 versions of \textit{closed} fixpoints in this closed leveled universe
-construction. We explain why all 3 are necessary as this chapter
+construction. We explain why all three are necessary as this chapter
 unfolds, but for now just recognize that they are distinct
 (watch out for backtick prefixes and prime prefixes in the names of
-the 3 closed fixpoints):
+the three closed fixpoints):
 \begin{enumerate}
 \item{\Con{`μ₁}} This is a constructor of \Data{SetForm}, and
   represents the fixpoint of descriptions in the \textit{current}
@@ -428,7 +428,7 @@ The \textit{Closed Inductive-Recursive Types} universe does not
 include the kinds \Con{`Set} and \Con{`Desc}, hence all of the
 signatures (e.g. \Fun{NatDs}, \Fun{`ℕ}, etc.) used to construct the
 examples were defined \textit{externally} to the universe
-(using types, like function space, of our Agda metalanguage).
+(using types from our Agda metalanguage, like the function space).
 
 We can port all of the examples in \refsec{closedeg} to the zeroth
 universe of our hierarchy by patching them using the table below. For

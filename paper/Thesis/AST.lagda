@@ -146,7 +146,7 @@ fixpoint of any description.
    astInd : {O : `Set} (D : `Desc O) → μ₁ ⟦ O ⟧ ⟪ D ⟫ → Bool → AST
 \end{code}
 
-Normally, we inline the definition of such a function, by pattern
+Normally, we inline the definition of such a function by pattern
 matching on \Con{init} (in the \Con{`μ₁} case of \Fun{ast},
 and the \Con{`δ `⊤} case of \Fun{asts}),
 and applying \Fun{asts} to the contained
@@ -190,7 +190,7 @@ constructor of \Data{μ₁}.
 \end{code}
 
 The first argument of the rose \Con{tree} constructor has type
-\Data{Node}. Since initial algebras encode inductive types, we
+\Data{Node}. Because initial algebras encode inductive types, we
 use the \Con{ind} node. The boolean \Var{b} argument is also passed
 along to the \Con{ind} node.
 
@@ -280,7 +280,7 @@ uninhabited).
   ast (`Id A x y) refl = tree (non "refl") []
 \end{code}
 
-Each occurrence of \Con{non} is applied to string name corresponding to
+Each occurrence of \Con{non} is applied to a string name corresponding to
 the name of the marshalled constructor.
 
 \subsection{Marshalling Algebraic Arguments}\label{sec:asts}

@@ -61,8 +61,7 @@ model, and then transition to the formal model
 (i.e. within type theory) by converting abstract
 mathematical constructs to concrete datatypes (analogous to how we model
 the abstract notion of a universe as concrete code and meaning
-function types in \refsec{umodel}).
-\footnote{
+function types in \refsec{umodel}).\footnote{
   Here the words ``abstract'' and ``concrete'' have their general
   meanings, not the technical meanings we defined in
   \refsec{abscon}.
@@ -403,7 +402,7 @@ least fixed point operator (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
 as a datatype parameterized by a \textit{description},
 rather than a pattern functor ($\set \arr \set$).
 
-While categorical model applies the least fixpoint
+While the categorical model applies the least fixpoint
 operator directly to a pattern functor ($\mu~F$), our model instead
 applies it to a description (\AgdaData{μ} \AgdaVar{D}).
 The pattern functor ($\set \arr \set$) argument of $\mu$ can
@@ -451,7 +450,7 @@ applying (\AgdaFun{⟦}~\AgdaVar{D}~\AgdaFun{⟧})
 the interpretation function
 to the description
 of the pattern functor. Additionally, our model of the fixpoint operator
-applies (\AgdaData{μ} \AgdaVar{D}) it to a description, rather
+applies it to a description (\AgdaData{μ} \AgdaVar{D}), rather
 than a pattern functor directly. Therefore, the type of the argument
 to \AgdaCon{init} represents the types of the constructors (and the
 types of their arguments) for \AgdaData{μ} \AgdaVar{D}.
@@ -507,7 +506,7 @@ respectfully.
 
 \subsection{Examples}\label{sec:nondepalgtps}
 
-Having formally modeled \textit{initial algebra semantics},
+Having formally modeled \textit{initial algebra semantics}
 by reifying parts of the categorical model as
 datatypes of type theory, now we
 provide examples of modeling specific type formers and values
@@ -564,8 +563,9 @@ to the trivial unit constructor.
   zeroArgs = inj₁ tt
 \end{code}
 
-To construct a value of type \AgdaData{μ}, rather than the meaning
-function applied to its fixpoint, we must apply the the initial
+To construct a value of a fixpoint
+(e.g. \AgdaData{μ} \Fun{NatD}), rather than the meaning
+function applied to its fixpoint, we must apply the initial
 algebra (\AgdaCon{init}). We leave out describing this
 step explicitly in future exposition.
 
@@ -596,8 +596,8 @@ datatype declarations (rather than \AgdaData{μ}).
 \end{code}
 
 The example above expands to the encoded term below, but by using the
-standard interface of type formers and constructors we never need to
-manually construct it.
+standard interface of type formers and constructors we do not need to
+construct it manually.
 
 \begin{code}
   two' : μ (`1 `+ `X)
@@ -623,8 +623,8 @@ Similarly, any function defined by pattern matching
 can retain its standard appearance of pattern matching on declared
 constructors by using \textit{pattern synonyms}. Pattern synonyms are
 a notational feature of Agda that expands the left hand syntax to the
-term on the right hand side. It has the special property that such
-expandable text can be used in the pattern matching fragment of the
+term on the right hand side. Pattern synonyms
+can be used in the pattern matching fragment of the
 language. Thus, by defining pattern synonyms for
 \AgdaCon{zero} and \AgdaCon{suc} to expand into their \AgdaCon{init}
 encodings, we can write functions like \AgdaFun{plus} in a way that is
@@ -651,7 +651,8 @@ expands in the body of the function, such as the
   plus' (init (inj₂ n)) m = init (inj₂ (plus' n m))
 \end{code}
 
-In future examples we omit examples of values and functions
+In future examples, we omit examples of
+non-constructor values and functions
 defined over modeled types. As explained, once we have derived the
 type former and constructors of a type using the primitives of our
 formal model, using the types to define values and function
@@ -731,7 +732,7 @@ We introduce the type of
 \textit{untyped $\lambda$-calculus terms} (\AgdaData{Term}) as a final
 and slightly more complex example
 (i.e. modeling a type with more than 2 constructors). 
-Below we declare the \AgdaData{Term} type, consisting of
+Below we declare the \AgdaData{Term} type consisting of
 variable references (\AgdaCon{var}), lambda abstractions
 (\AgdaCon{lam}), and applications (\AgdaCon{app}). 
 
@@ -754,7 +755,7 @@ encoding for variables. A deBruijn-encoded term references variables
 by a natural number index, where 0 refers to the variable bound by the
 most recent $\lambda$ (and 1 refers to the next most recent, and so on). For
 example, below is a high-level syntax for the
-Church-encoded~\cite{churchencoding} numeral \textbf{one}, and its deBruijn-encoded
+Church-encoded~\cite{churchencoding} numeral \textbf{one} and its deBruijn-encoded
 equivalent. In the example,
 the term on the left names its variables, while the term
 on the right uses deBruijn variables, but both terms Church-encode the
@@ -767,8 +768,7 @@ $$
 As a \AgdaData{Term}, we write the deBruijn-encoded numeral \textbf{one} as
 follows. Note the applications of the variable constructor
 (\AgdaCon{var}) to natural numbers (\AgdaData{ℕ}) to refer to
-variables by their deBruijn index.
-\footnote{
+variables by their deBruijn index.\footnote{
   Our \AgdaData{Term} type is not scope safe in the sense that their
   could be natural numbers that are out of bounds with respect to
   the number of \AgdaCon{lam} occurrences. We could index
@@ -800,7 +800,7 @@ natural numbers (encoding \AgdaCon{var})
 with the disjoint union of an
 inductive occurrence (encoding \AgdaCon{lam})
 and a pair of inductive occurrences (encoding \AgdaCon{app}). This
-models 3 constructors using 2 right-nested
+models three constructors using two right-nested
 disjoint unions.
 
 \begin{code}

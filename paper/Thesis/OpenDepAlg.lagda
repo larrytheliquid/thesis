@@ -9,7 +9,7 @@ open import Data.Product
 
 \section{Open Dependent Types}\label{sec:depalg}
 
-In this section we review the initial algebra semantics for
+In this section, we review the initial algebra semantics for
 \textit{dependent} types.
 We extend our previous \textit{infinitary} and
 \textit{non-dependent}
@@ -62,12 +62,11 @@ $$
 
 
 We impose an additional restrictions on pattern functors
-(which are already restricted to only contain positive inductive
+(which are already restricted to contain only positive inductive
 occurrences)
 to always end in the unit set 1. That is, pattern functors must take
 the form of a (possibly empty) sequence of products (of either
-non-dependent or dependent arguments), ending in 1.
-\footnote{
+non-dependent or dependent arguments), ending in 1.\footnote{
   Any set $A$ is isomorphic to $A \cdot 1$. This is analogous
   to any type \AgdaVar{A} being isomorphic to the pair type
   \AgdaVar{A} \AgdaData{×} \AgdaVar{⊤}, as the unit type only adds
@@ -201,9 +200,8 @@ and subsequently compare it to the
 
 Below (in the definition of \Data{Desc}),
 the \AgdaCon{`ι} constructor models the pattern of ending a
-functor with the unit type. For now this is simply a renaming
-of the former \AgdaCon{`1} constructor.
-\footnote{
+functor with the unit type. For now, this is simply a renaming
+of the former \AgdaCon{`1} constructor.\footnote{
   However, in our subsequent extension
   supporting inductive-recursive
   types (\refsec{iralg})),
@@ -213,8 +211,7 @@ The \AgdaCon{`σ} constructor models a
 \textit{dependent}
 (but non-infinitary, thus also non-inductive) argument.
 The \AgdaCon{`δ} constructor models an
-\textit{infinitary} (but non-dependent) argument.
-\footnote{
+\textit{infinitary} (but non-dependent) argument.\footnote{
   At this point it does not make sense for an infinitary argument
   (\AgdaCon{`δ}) to be dependent.
   At the time a datatype is defined, no functions exist
@@ -242,12 +239,12 @@ module Desc where
     `δ : (A : Set) (D : Desc) → Desc
 \end{code}
 
-Let's compare this with the non-dependent
+Compare this with the non-dependent
 description datatype (\refsec{infalgmod}).
 The non-dependent pair (\AgdaCon{`∙}) there is replaced by the
 (no longer infix) dependent pair \AgdaCon{`σ} and infinitary
 non-dependent pair \AgdaCon{`δ}. For example,
-below \AgdaFun{RoseD} is the
+\AgdaFun{RoseD}, defined below, is the
 description of
 \AgdaData{Rose} trees.
 \AgdaFun{RoseD} uses \AgdaCon{`σ} to request a dependent
@@ -337,7 +334,7 @@ additional arguments).
 Finally, we emphasize that (\AgdaCon{`∙}) \textit{cannot} be derived from
 \AgdaCon{`σ} and \AgdaCon{`δ}. It is not clear whether the first
 argument (a \AgdaData{Desc}) to (\AgdaCon{`∙}) contains an infinitary
-(hence inductive) occurrence, so cannot decide whether to proceed
+(hence inductive) occurrence, so we cannot decide whether to proceed
 by using \AgdaCon{`σ} (disallowing inductiveness) or
 \AgdaCon{`δ} (allowing inductiveness). Additionally, we would somehow
 need to convert the first argument of (\AgdaCon{`∙}),
@@ -665,7 +662,7 @@ dependent pairs (\Data{Σ}) that ignores its first argument.
 
 \paragraph{$\lambda$-Calculus Terms}
 
-As a final example we model the untyped $\lambda$-calculus terms
+As a final example, we model the untyped $\lambda$-calculus terms
 introduced in \refsec{nondepalgtps} using descriptions of dependent
 types.
 We will first encode \Data{Term} using nested booleans for constructor
@@ -738,7 +735,7 @@ module _ where
       else `δ Bool `ι
 \end{code}
 
-The \AgdaCon{var} constructor is is encoded in the \AgdaCon{true}
+The \AgdaCon{var} constructor is encoded in the \AgdaCon{true}
 branch of the first choice, and the \AgdaCon{lam} and \AgdaCon{app}
 constructors are encoded in a nested choice within the \AgdaCon{false}
 branch. Below we model the type former and constructors of
@@ -760,7 +757,7 @@ branch. Below we model the type former and constructors of
 
 Notice how the 2nd and 3rd constructors (\AgdaCon{lam} and
 \AgdaCon{app}) are both defined as two nested choices, using
-\AgdaCon{false} as the their first pair component, and then another
+\AgdaCon{false} as the first pair component, and then another
 choice (\AgdaCon{true} and \AgdaCon{false} respectively) as their
 second component. Additionally, we expose an inductive
 (non-infinitary) model
@@ -808,6 +805,6 @@ module _ where
   app f a = init (appT , (λ b → if b then f else a) , tt)
 \end{code}
 
-Note how in the tagged construction the first component of the pair is
+Note how, in the tagged construction, the first component of the pair is
 always a single tag, hence \AgdaCon{lam} and \AgdaCon{app} are not
 defined with nested choices.

@@ -12,7 +12,7 @@ open import Data.Product
 In this section we review the initial algebra semantics for
 \textit{infinitary} (\refsec{inft}) non-dependent types.
 We extend our previous categorical model, formal model,
-and examples to support \textit{infinitary}
+and examples, to support \textit{infinitary}
 constructor arguments.
 
 \subsection{Categorical Model}\label{sec:infalgsem}
@@ -23,8 +23,7 @@ the inductive occurrences construction $X$ is subsumed by the
 \textit{infinitary} occurrences construction $X^A$. Functions are the
 type theoretic equivalent of exponential terms, where $X$ raised to
 the power of $A$ is equivalent to a function with domain $A$ and
-codomain $X$.
-\footnote{
+codomain $X$.\footnote{
   If $A$ and $X$ are finite sets, then the cardinality of $X^A$ is
   equal to the cardinality of the graph of the function $A \arr X$.
   }
@@ -94,7 +93,7 @@ module _ where
     branch : (f : ⊤ → Tree A B) (b : B) (g : ⊤ → Tree A B) → Tree A B
 \end{code}
 
-This translates to the the categorical model of infinitary binary
+This translates to the categorical model of infinitary binary
 trees below, without any surprises.
 $$
 \dfn{Tree} \lambda A.~ \lambda B.~ \mu X.~ A + X^1 \cdot B \cdot X^1
@@ -215,8 +214,9 @@ are not formally modeled
 directly. Instead, the formal model
 of a pattern functor (\AgdaFun{F} : \AgdaData{Set}
 \arr~\AgdaData{Set})
-is the result of partially applying a
-description to the interpretation function
+is the result of partially applying
+the interpretation function to a
+description 
 (\AgdaFun{⟦}\_\AgdaFun{⟧} : \AgdaData{Desc} \arr~\AgdaData{Set}
 \arr~\AgdaData{Set}).
 
@@ -493,7 +493,7 @@ predecessor as an infinitary function using the inductive input
 
 \paragraph{Binary Trees}
 
-Our pattern functor for binary trees models the the infinitary
+Our pattern functor for binary trees models the infinitary
 definition of binary trees below.
 
 \AgdaHide{

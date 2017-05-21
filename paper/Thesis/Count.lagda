@@ -14,11 +14,11 @@ closed dependently typed language. We write fully generic functions in
 the universe of \refsec{closed},
 supporting user-declared datatypes while remaining closed.
 
-Thus far, we have focused on defining concrete datatypes in our
+Thus far we have focused on defining concrete datatypes in our
 universe of (inductive-recursive) algebraic types.
 \textit{Smart constructors} (defined as functions, first demonstrated
-\refsec{nondepalgtps}), for the type former and constructors of a
-concrete algebraic datatypes, allow us
+in \refsec{nondepalgtps}), for the type former and constructors of a
+concrete algebraic datatype, allow us
 to \textit{construct} concrete types and their values while hiding
 their generic encoding in terms of initial algebra
 semantics. Similarly, \textit{pattern synonyms}
@@ -39,7 +39,7 @@ constructor of \Data{μ₁}. By definition, fully generic functions can
 be applied to (and may return) values of any user-declared type, thus
 understanding the underlying generic encoding
 (or something isomorphic to it) is necessary. In this
-chapter we define 4 fully generic functions:
+chapter we define three fully generic functions:
 \begin{enumerate}
 \item \Fun{count}, in \refsec{gcount}, counting the number of nodes
   in a generically encoded value.
@@ -53,8 +53,8 @@ chapter we define 4 fully generic functions:
 
 \section{Fully Generic Count}\label{sec:gcount}
 
-In this section we develop a fully generic \Fun{count} function,
-which counts the number of nodes that make up a generically encoded
+In this section, we develop a fully generic \Fun{count} function
+that counts the number of nodes that make up a generically encoded
 value. The \Fun{count} function is used in the type of the
 subsequently-defined generic \Fun{lookup} in \refsec{glookup}.
 The \Fun{count} function is used as the maximum bound for
@@ -156,7 +156,7 @@ introduction, is that we cannot directly define a function like
 The problem is that the
 inductive hypothesis is not general enough in the
 infinitary (hence, also inductive) \Con{`δ} case.
-If we tried to directly write \Fun{countμ}, we would not remember
+If we tried to write \Fun{countμ} directly, we would not remember
 the original inductive description when we reach the \Con{`δ} case,
 because \Fun{countμ} would be defined by recursively destructing
 the description argument.
@@ -250,7 +250,7 @@ module Count where
   count : (A : `Set) → ⟦ A ⟧ → ℕ
 \end{code}
 
-Remember, we wish to define \Fun{count} as the sum of all
+Recall that we wish to define \Fun{count} as the sum of all
 constructors and the recursive \Fun{count} of all constructor
 arguments. It may be helpful to review \Fun{count} for the
 \textit{fixed} closed universe in the introduction
@@ -275,7 +275,7 @@ first component (\Var{a}).
 
 \paragraph{Algebraic Fixpoint}
 
-We \Fun{count} an algebraic fixpoint by by recursively counting its
+We \Fun{count} an algebraic fixpoint by recursively counting its
 arguments (\Var{xs}) using \Fun{counts}, plus 1 to account
 for the \Con{init} constructor.
 
@@ -331,7 +331,7 @@ rather than something to be counted. Hence, \Fun{counts} treats its argument
 
 \paragraph{Non-Inductive Argument}
 
-When we come across a non-inductive argument, in a sequence of
+When we come across a non-inductive argument in a sequence of
 arguments, we sum the \Fun{count} of the non-inductive argument
 (\Var{a}) with the \Fun{counts} of the remainder of the sequence of
 arguments (\Var{xs}). 
@@ -360,7 +360,7 @@ arguments (\Var{xs}).
     counts (D (μ₂ ⟪ R ⟫ ∘ f)) R xs
 \end{code}
   
-Inductive arguments are a special case of infinitary arguments, where
+Inductive arguments are a special case of infinitary arguments where
 the domain of the infinitary function is the unit type (\Data{⊤}).
 The first argument to the \textit{closed description} \Con{`δ} is a
 \textit{closed type}. Because the first argument is a closed type, we
@@ -372,7 +372,7 @@ our universe is \textit{closed} (i.e. if the argument had kind
 it)!
 
 The inductive argument is obtained by applying the infinitary argument
-\Var{f} to the trivial value \Con{tt}, but what type should we
+\Var{f} to the trivial value \Con{tt}. But what type should we
 use to \Fun{count} it? Because it is an \textit{inductive}
 (hence, algebraic) value, the type should be the fixpoint (\Con{`μ₁})
 applied to some description. We kept the original description
@@ -396,7 +396,7 @@ expectation in the type of its description.
 \paragraph{Infinitary Argument}
 
 When we come across an infinitary argument, in a sequence of
-arguments, we add 1 to the the \Fun{counts} of the remainder of the
+arguments, we add 1 to the \Fun{counts} of the remainder of the
 sequence of arguments (\Var{xs}).
 This counts the infinitary $\lambda$ constructor as 1, treating it as
 a black box, analogous to how we \Fun{count} the \Con{`Π} case as 1.
@@ -426,8 +426,7 @@ is terminated by \Con{tt}. However, we choose to count \Con{tt} as 1
 because the subsequently defined generic function,
 \Fun{lookup} in \refsec{glookup},
 treats the result of \Fun{count} as
-an \textit{index} into all values and subvalues of a type.
-\footnote{
+an \textit{index} into all values and subvalues of a type.\footnote{
   Given our generic encoding of \textit{inductive-recursive} types,
   the ability to \Fun{count} or \Fun{lookup} the trivial
   value (\Con{tt}) may not seem useful. Nevertheless, we include this
@@ -487,8 +486,7 @@ numbers), and the unit value (\Con{tt}).
 
 We generically \Fun{count} the closed \Fun{zero} by summing 1 for
 the \Con{init}ial algebra constructor, 1 for the \Con{true} argument,
-and 1 for the terminating unit argument (\Con{tt}), resulting in 3.
-\footnote{
+and 1 for the terminating unit argument (\Con{tt}), resulting in 3.\footnote{
   Once again, this is an encoding-aware \Fun{count}, because it is
   used to \textit{index} which nodes (in a generically encoded
   data structure) to \Fun{lookup} (in \refsec{glookup}).
@@ -561,13 +559,6 @@ is able to pattern match against the closed type \Con{`⊤} to
 distinguish counting inductive (or trivially-infinitary)
 arguments from counting (truly) infinitary arguments.
 
-\begin{figure}[ht]
-\centering
-\includegraphics[scale=0.8]{one.pdf}
-\caption{The natural number 1, as a closed algebraic type.}
-\label{fig:one}
-\end{figure}
-
 \AgdaHide{
 \begin{code}
   _ :
@@ -597,14 +588,20 @@ root node). Because \Fun{count} (and \Fun{counts})
 traverses in a depth-first manner, each edge represents the aggregate
 count at the time \Fun{count} is called for the corresponding node.
 Note that the result of applying \Fun{count} to the root node is 1
-plus the final edge (1 + 5, above).
-\footnote{
+plus the final edge (1 + 5, above).\footnote{
   All algebraic types in Figures hide the infinitary $\lambda$
   constructor at inductive argument positions,
   because \Fun{count} (whose depth-first traversal the
   Figure represents) implicitly applies trivially infinitary functions
   to \Con{tt} in the \textbf{Inductive} (\Con{`δ}) case.
   }
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.8]{one.pdf}
+\caption{The natural number 1, as a closed algebraic type.}
+\label{fig:one}
+\end{figure}
 
 The depth-first labeling of edges pointing to nodes that \Fun{count}
 performs makes it an ideal function to index positions of arguments in

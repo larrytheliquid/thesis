@@ -352,7 +352,7 @@ arguments.
 
 In another previous publication~\cite{diehl:levelingup},
 we defined a closed hierarchy of algebraic (but not infinitary or
-inductive-recursive) types. That is the basis of \refchap{hier}.
+inductive-recursive) types. That work is the basis of \refchap{hier}.
 
 While our previous publication featured both description lifting
 functions, \Con{`⟦\_⟧₁} and \Con{`μ₁'}, it did \textit{not} feature

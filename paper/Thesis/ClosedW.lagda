@@ -38,8 +38,8 @@ the universe model of such a theory algebraic, inductive, autonomous,
 and concrete. This language supports
 \textit{fully generic programming} (\refsec{fullygeneric}), allowing
 programmers to write functions over all types of the
-language, including custom types!
-\footnote{By analogy, consider generic functions
+language, including custom types!\footnote{
+  By analogy, consider generic functions
   (like equality via \texttt{Eq} or comparison via \texttt{Ord})
   that a language like
   Haskell can derive for any appropriate type using the
@@ -153,8 +153,8 @@ module _ where
 Our example fully generic function is \AgdaFun{sum}, summing up
 all natural numbers (and values that can be coerced
 into natural numbers) contained within a value of the
-closed vector universe.
-\footnote{The \Fun{sum} function is different from the \Fun{count} function
+closed vector universe.\footnote{
+  The \Fun{sum} function is different from the \Fun{count} function
   (from \refsec{introcount}, which sums the total number of
   nodes). Instead, \Fun{sum} returns the sum of all values that have
   been interpreted as natural numbers by coercion.
@@ -228,8 +228,8 @@ module _ (A : ClosedVec.`Set) where
 
 The \AgdaFun{sum} cases for pairs and functions are actually for
 \textit{dependent} pairs (\AgdaCon{`Σ})
-and functions (\AgdaCon{`Π}). Notice that in our definition of sum for
-pairs the recursive call of \AgdaFun{sum} for the second
+and functions (\AgdaCon{`Π}). Notice that, in our definition of sum for
+pairs, the recursive call of \AgdaFun{sum} for the second
 component applies the codomain \AgdaVar{B} to an
 \AgdaFun{⟦}~\AgdaVar{A}~\AgdaFun{⟧} value. Luckily, the first
 component of the pair (\AgdaVar{x}) is exactly the value we need.
@@ -422,19 +422,21 @@ universe of this section is sufficient for all such translations.
 \subsection{Open Well-Order Types}\label{sec:wtypes}
 
 The type of well-orderings~\cite{wtypes} (\AgdaData{W}) can be used to model
-inductive datatype declarations as well-founded trees.
-\footnote{The etymology of
-``well-orderings'' comes from \AgdaData{W} being the constructive
-version of the classical notion of a well-order. A well-order
-interprets a set as an ordinal $\alpha$ and a relation specifying
-which ordinals are less than $\alpha$. However, in this thesis we
-focus on the more practical interpretation of \AgdaData{W} types as a
-means to define algebraic datatypes.}
+inductive datatype declarations as well-founded trees.\footnote{
+  The etymology of
+  ``well-orderings'' comes from \AgdaData{W} being the constructive
+  version of the classical notion of a well-order. A well-order
+  interprets a set as an ordinal $\alpha$ and a relation specifying
+  which ordinals are less than $\alpha$. However, in this thesis we
+  focus on the more practical interpretation of \AgdaData{W} types as a
+  means to define algebraic datatypes.
+}
 It is defined below, where the \AgdaVar{A} parameter
 encodes non-inductive arguments for each constructor of an
 algebraic datatype, and the cardinality of \AgdaVar{B}~\AgdaVar{a}
-encodes the number of inductive arguments for each constructor.
-\footnote{Besides cardinailty, the content of the \AgdaVar{B} parameter
+encodes the number of inductive arguments for each
+constructor.\footnote{
+  Besides cardinailty, the content of the \AgdaVar{B} parameter
   also determines the domain of
   infinitary arguments~\cite{infinitary}.
   %% discussed in \refsec{openalginf}. % TODO cite better section
@@ -551,11 +553,12 @@ module _ where
 Replace the disjoint union of pairs whose domain is non-inductive
 arguments and codomain is inductive arguments, with a single pair
 whose domain is the disjoint union of non-inductive arguments and
-codomain is the disjoint union of inductive arguments.
-\footnote{For datatypes with infinitary arguments,
-\AgdaVar{B} and \AgdaVar{B'} may depend on \AgdaVar{A} and
-\AgdaVar{A'} respectively, so the \texttt{if} conditional is replaced by
-\texttt{case} analysis.}
+codomain is the disjoint union of inductive arguments.\footnote{
+  For datatypes with infinitary arguments,
+  \AgdaVar{B} and \AgdaVar{B'} may depend on \AgdaVar{A} and
+  \AgdaVar{A'} respectively, so the \texttt{if} conditional is replaced by
+  \texttt{case} analysis.
+}
 
 \AgdaHide{
 \begin{code}

@@ -173,13 +173,13 @@ Our fully generic \Fun{count} (\refsec{gcount}),
 \Fun{lookup} (\refsec{glookup}), and
 \Fun{ast} (\refsec{gast}) functions all treat the case of inductive
 arguments of the initial algebra as a special case of infinitary
-arguments. Being able to pattern matching against the domain of an
+arguments. Being able to pattern match against the domain of an
 infinitary argument,
 and ensuring that it is the unit type (\Con{`⊤}), demonstrates the
 power of closed type theory (because we can match against a type).
 
 In our previous work~\cite{diehl:gupdate}, we have also defined
-higher-order domain supplements (\refsec{domsup}),
+higher-order domain supplements (\refsec{domsup})
 that allow us to write fully generic
 functions over higher-order data (like the body of functions, or truly
 infinitary arguments). However, neither the definition of \Fun{count}
@@ -189,7 +189,7 @@ using higher-order domain supplements~\cite{diehl:gupdate}, are
 defined by \textit{induction} on the higher-order domains
 (like the domain of functions or the domain of infinitary arguments).
 In the future, we would like to explore what horizons have opened up
-to us, now that our closed universe allows us to write functions
+to us now that our closed universe allows us to write functions
 by induction on closed higher-order domains.
 
 \chapter{Conclusion}\label{ch:conclusion}

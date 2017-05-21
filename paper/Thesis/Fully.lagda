@@ -54,10 +54,11 @@ must inhabit the same level as its type parameter.
 
 Just like \AgdaData{Set}, Agda does not expose an elimination
 principle for \AgdaData{Level} (thus you cannot, for example, pattern
-match on levels in a function definition).
-\footnote{Nevertheless, we can write parametrically
-level-polymorphic functions over \AgdaData{List} as in
-\refsec{levelpoly}.}
+match on levels in a function definition).\footnote{
+  Nevertheless, we can write parametrically
+  level-polymorphic functions over \AgdaData{List} as in
+  \refsec{levelpoly}.
+}
 
 \subsection{Concrete Types}\label{sec:concrete}
 
@@ -93,7 +94,7 @@ are concrete.
 This brings us to the primary ambition of this thesis, which we call
 \textit{fully generic programming}.
 A fully generic function is a special kind of ad hoc polymorphic
-function by coercion (\refsec{coercion}), with the additional property
+function by coercion (\refsec{coercion}) with the additional property
 that the universe is concrete. By consequence, fully generic functions
 can eliminate any value or subvalue and recurse on any code or
 interpretation.
@@ -133,8 +134,8 @@ on all [sub]codes and all [sub]values (thanks to concreteness). Compare this
 to \AgdaFun{concat} for \AgdaData{DynStar} in \refsec{coercion}. The
 \AgdaFun{concat} function cannot pattern match on the interpretation
 of the \AgdaCon{`Dyn}
-base case, because the type is \AgdaData{Set} (the source of
-abstractness). In contrast, \AgdaFun{nor} can match on the
+base case because the type is \AgdaData{Set} (the source of
+abstractness). By contrast, \AgdaFun{nor} can match on the
 interpretation of \AgdaCon{`Bool} by distinguishing between
 \AgdaCon{true} and \AgdaCon{false} (because \AgdaData{Bool} is a
 concrete type).
