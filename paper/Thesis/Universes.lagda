@@ -231,7 +231,7 @@ the \AgdaData{HListStar} universe is \textit{open}!
 
 \subsection{Inductive Universes}\label{sec:indu}
 
-We call a universe \textit{inductive} if its type are closed over one
+We call a universe \textit{inductive} if its types are closed over one
 or more type formers. For example, the \AgdaData{BoolStar},
 \AgdaData{DynStar}, and \AgdaData{HListStar} universes above are
 inductive because they are closed under \AgdaData{List} formation (via

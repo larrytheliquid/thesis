@@ -138,7 +138,7 @@ universe.
   isTrueBits (cons true xs) = isTrueBits xs
 \end{code}
 
-Now can define \AgdaFun{isTrue} by matching on
+Now we can define \AgdaFun{isTrue} by matching on
 each type code, and returning the appropriate function specialized to
 that type.
 

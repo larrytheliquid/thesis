@@ -90,8 +90,8 @@ $$
 F : \set/O \arr \set/O ~\triangleq~ \lambda R.~ (F_1~R ,~ F_2~R)
 $$
 
-We can separate the definition of least fixed points to similarly be
-defined in terms of a fixed point operator ($\mu_1$, returning a set),
+We can separate the definition of least fixed points to be
+defined similarly in terms of a fixed point operator ($\mu_1$, returning a set),
 and its decoding function ($\mu_2$, taking an $\mu_1~F$ and returning
 an $O$).
 $$
@@ -202,7 +202,7 @@ $$
 Any ordinary inductive type can instead be modeled as a trivial
 inductive-recursive type by combining the inductive type with a
 trivial decoding function from its values to unit.
-The inductive type can thus be defined as normally, without referring
+The inductive type can thus be defined normally, without referring
 to its trivial function.
 For example, below we define the
 type of natural numbers along with the trivial function

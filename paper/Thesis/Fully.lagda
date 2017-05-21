@@ -81,7 +81,7 @@ implementation. For example, a dictionary may be exposed as a list of
 key/value pairs but internally be implemented as a balanced binary
 search tree. Therefore, an ADT defined to expose its type former and
 constructors, but not its elimination principle, is \textit{abstract}
-by our definition. However, if such an ADT also exposed it elimination
+by our definition. However, if such an ADT also exposed its elimination
 principle we would call it \textit{concrete} (despite the fact that
 the ADT would be hiding its true implementation).
 

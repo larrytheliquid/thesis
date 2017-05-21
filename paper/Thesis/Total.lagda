@@ -224,8 +224,11 @@ function in type theory:
 This thesis focuses more on the second
 option. Functions made total using domain supplements are
 more interesting than ones using domain predicates, as the supplement
-adds computationally relevant data rather than just restricting the
+adds computationally relevant
+data rather than just restricting the
 domain to be undefined for certain cases.
+Thus, a domain supplement is like a proof-relevant version of a domain
+predicate (even though both technically restrict the domain). 
 
 \subsubsection{Conclusion}
 
