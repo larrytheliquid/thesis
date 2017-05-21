@@ -36,7 +36,15 @@ $$
 
 This pattern repeats itself indefinitely. We refer to any such
 construction (e.g., a type, or a kind, or a superkind, etc.) as a
-\textit{universe}. In \refsec{closed}, we only considered the first
+\textit{universe}.\footnote{
+  In this context, a universe refers to a level in a hierarchy of types
+  (e.g. the types level, or the kinds level, or the superkinds level, etc.).
+  This is distinct from a universe as a formal device consisting of
+  a type of codes and a meaning function. Although these are distinct concepts, the
+  image of a particular meaning function could be a universe level of
+  a hierarchy.
+}
+In \refsec{closed}, we only considered the first
 (or zeroth, because we count universe levels by starting with 0)
 closed universe (i.e., the universe of types, classified by kinds). Now, we expand this
 notion to a closed infinite hierarchy of universes, where each universe in
@@ -367,7 +375,7 @@ the natural numbers, we can see that the index decreases (from 1 to 0)
 when a negative occurrence manifests.
 Furthermore, there are no constructors of
 \Data{`Set[\_]} with an argument whose level increases.
-Therefore, each leveled type in the hierarchy does not contain types
+Therefore, no leveled type in the hierarchy contains types
 from levels above it (it only contains types from levels below it).
 Hence, argument \Var{B} is not actually a negative occurrence, because
 it only contains lower types, which cannot contain any types at the

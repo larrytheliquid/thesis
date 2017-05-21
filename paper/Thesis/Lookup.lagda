@@ -88,7 +88,7 @@ module _ where
 
 The implementation
 for \Data{List}s is the same as the implementation for \Data{Vec}tors,
-besides needing to supply explicit evidence by pattern matching
+other than needing to supply explicit evidence by pattern matching
 against the uninhabited empty \Data{Fin} \Num{0} index
 (using empty parentheses, which is Agda syntax for explicitly
 pattern matching against an uninhabited type) in the \Con{nil} case.
@@ -255,8 +255,8 @@ or \Fun{counts} (in \refsec{counts}).
 
 To know which \textbf{Case} template to use for \Fun{lookup}
 at some type \Var{A},
-match the template with the \Var{A} case
-of \Fun{count} in \refsec{count}.
+match the template with the case
+of \Fun{count} in \refsec{count} that \Var{A} corresponds to.
 
 \paragraph{Algebraic Fixpoint}
 
@@ -320,7 +320,7 @@ as a dependent pair (\Con{,}).\footnote{
   clause. Unfortunately, we cannot write \Fun{lookup} using the same
   catch-all pattern structure, and must instead enumerate all types
   and duplicate their right-hand sides manually.
-  Defining \Fun{lookup} by repating the catch-all structure of
+  Defining \Fun{lookup} by repeating the catch-all structure of
   \Fun{count} would be possible if Agda were changed to type-check
   code \textit{after} coverage checking. 
   }
@@ -462,7 +462,7 @@ trivially infinitary \Var{f}.
 
 For the \Con{there} case of an infinitary argument (\textbf{Case 2}),
 in a sequence of arguments,
-we recursively \Fun{lookups} its arguments (\Var{xs}).
+we recursively call \Fun{lookups} on its arguments (\Var{xs}).
 
 \begin{code}
   lookups (`δ A@`Bool D) R (f , xs) (there i) = lookups (D (μ₂ ⟪ R ⟫ ∘ f)) R xs i
@@ -520,7 +520,7 @@ described by \Con{`ι} , simply returns the unit type and value.
 \end{code}
 
 Note also that \Con{`ι} does not have a \Con{there} case, because it
-encodes and final argument, so there is nothing left to index.
+encodes the final (trivial) argument, so there is nothing left to index.
 
 \AgdaHide{
 \begin{code}

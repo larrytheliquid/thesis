@@ -242,7 +242,7 @@ Previously, we created the \textit{Closed Vector Types} universe
 (\refsec{closedvecu}) and the 
 \textit{Closed Well-Order Types} universe (\refsec{closedw}).
 In those universes, the kind (\Data{Set₁})
-of types (\Data{Set}) is the only kind in town. Now we create the
+of types (\Data{Set}) is the only kind around. Now we create the
 \textit{Closed Inductive-Recursive Types} universe, where we
 additionally account for the kind (\Data{Set₁})
 of descriptions (\Data{Desc} of \refapen{openalg}).\footnote{
@@ -1402,7 +1402,7 @@ Similar to why \Data{List} is an open type, \Data{Desc} is an open
 kind because its collection of large values grows as its \Var{O} parameter
 is instantiated to different types, and is used as the type of the
 \Var{o} argument in the \Con{ι} constructor. Another reason why descriptions
-are an open kind, is because the \Var{A} argument of the \Con{σ} and
+are an open kind is that the \Var{A} argument of the \Con{σ} and
 \Con{δ} constructors have kind \Data{Set}. Because \Data{Desc}
 constructors define elements of a kind, we sometimes call them
 \textit{large constructors}.
@@ -1507,7 +1507,7 @@ module _ where
     cons : (a : A) (xs : List₁ A) → List₁ A
 \end{code}
 
-However, if at least one algebraic constructor has an argument that is
+If at least one algebraic constructor has an argument that is
 classified by a \textit{kind} (like \Var{A} : \Data{Set},
 \Var{D} : \Data{Desc} \Var{O}, etc.), then we \textit{must} algebraically
 declare a \textit{kind}. For example, heterogenous lists
@@ -1551,7 +1551,7 @@ Every other kind (like \Data{Desc}) is defined by
 a closed collection of formation rules (i.e., the constructors in the body
 of the datatype declaration for the kind).
 
-The open versus closed formation rules distinction between kinds
+The open-versus-closed formation rules distinction between kinds
 \Data{Set} and \Data{Desc}, and the difference in the way the
 formation rules are defined by datatype declaration signatures or
 bodies, is what made coming up with an adequate definition of a closed
@@ -1561,7 +1561,7 @@ certain algebraic types (like natural numbers) were (adequately) encoded
 in the first universe, but others (like parameterized lists) needed to
 be (inadequately) lifted to the second universe.
 
-The solution to adequately defining a closed universe
+The solution to defining a closed universe adequately
 (as in \refsec{closed}, following the procedure in \refsec{closing})
 is to create codes for types (\Data{`Set}) \textit{mutually} with
 codes for descriptions (\Data{`Desc}). At first, this may seem odd
@@ -1695,7 +1695,7 @@ It is exactly this fact, that the declaration of the
 do not formally store \Var{A} (of kind \Data{Set}) as an argument, that allows 
 \Data{Vec} to be a type (\Data{Set}) rather than a kind (\Data{Set₁}).
 To see the difference, we define vectors to be indexed by \Var{A},
-rather than parameterized \Var{A}, below.
+rather than parameterized by \Var{A}, below.
 
 \AgdaHide{
 \begin{code}

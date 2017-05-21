@@ -43,8 +43,8 @@ chapter we define three fully generic functions:
 \begin{enumerate}
 \item \Fun{count}, in \refsec{gcount}, counting the number of nodes
   in a generically encoded value.
-\item \Fun{lookup}, in \refsec{glookup}, looking up any subnode in a
-  in a generically encoded value.
+\item \Fun{lookup}, in \refsec{glookup}, looking up any subnode of
+  a generically encoded value.
 \item \Fun{ast}, in \refsec{gast}, marshalling any generically
   encoded value to an abstract syntax tree (AST), defined as a rose
   tree.
@@ -230,7 +230,8 @@ descriptions (\Data{`Desc}).
 \subsection{Counting All Values}\label{sec:count}
 
 First, let's define \Fun{count} fully generically for all values of
-all types. This involves calling \Fun{counts} in the \Con{`μ₁} case,
+all types (of \refapen{closed}).
+This involves calling \Fun{counts} in the \Con{`μ₁} case,
 defined mutually (in \refsec{counts}) over all arguments of the
 \Con{init}ial algebra.
 Below, we restate the type of \Fun{count}, and then define
@@ -327,7 +328,20 @@ arguments (for \Var{xs}). Even though \Var{xs} is technically implemented as a
 sequence of dependent pairs (\Con{,}), we will not add 1 for each
 pair constructor (\Con{,}), which we choose to view as part of the encoding
 rather than something to be counted. Hence, \Fun{counts} treats its argument
-\Var{xs} as a single $n$-tuple, rather than several nested pairs.
+\Var{xs} as a single $n$-tuple, rather than several nested
+pairs.\footnote{
+  Although we are hiding the nested-pairs (of the initial algebra)
+  aspect of the encoding, we are exposing the encoding when counting
+  constructors. Constructors are encoded as a dependent pair,
+  representing a disjoint union. Our \Fun{count} function counts the
+  boolean and the pair constructor, rather than hiding that aspect of
+  the encoding. We could create a separate universe of codes
+  that explicitly represents constructors, along with a new meaning
+  function mapping to the underlying \Data{Desc}riptions,
+  so that our generic \Fun{count} could hide the encoding
+  of constructors as derived disjoint unions. However, we chose not to do
+  so to make the presentation easier to follow.
+  }
 
 \paragraph{Non-Inductive Argument}
 
@@ -589,7 +603,7 @@ traverses in a depth-first manner, each edge represents the aggregate
 count at the time \Fun{count} is called for the corresponding node.
 Note that the result of applying \Fun{count} to the root node is 1
 plus the final edge (1 + 5, above).\footnote{
-  All algebraic types in Figures hide the infinitary $\lambda$
+  All algebraic types in figures hide the infinitary $\lambda$
   constructor at inductive argument positions,
   because \Fun{count} (whose depth-first traversal the
   Figure represents) implicitly applies trivially infinitary functions

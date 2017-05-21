@@ -311,7 +311,7 @@ representations.
 
 Sijsling leaves extending his static \Data{Desc} to account for
 infinitary arguments and induction-recursion as future work, which we
-believe is possible. We also cannot imagine any problems with defining
+believe is possible. We also do not foresee any problems with defining
 a closed universe in terms of such static \Data{Desc} types, by
 applying our closing procedure from \refsec{closing}.
 

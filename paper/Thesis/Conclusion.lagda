@@ -140,10 +140,10 @@ considered low-level induction principles of a core language.
 We would like to explore implementing a closed dependently typed
 language. It would be nice if we had a high-level feature for writing
 fully generic functions, that could be elaborated to the fully generic
-functions of this dissertations, which explicitly match on low-level
+functions of this dissertation, which explicitly match on low-level
 encodings (like the \Con{init}ial algebra).
 
-Just like McBride allows users to define functions by dependent
+Just as McBride allows users to define functions by dependent
 pattern matching, without understanding how to program directly with
 eliminators, we would like users to be able to define fully generic
 functions, without understanding our closed universe model.
