@@ -33,8 +33,8 @@ In other words, it is the Kleene star version of \AgdaData{Bits}
 The type of codes is \AgdaData{BoolStar}, and its meaning function is
 \AgdaFun{⟦\_⟧}. As a convention, we prefix constructors of the code
 type with a backtick to emphasize the distinction between a code
-(e.g. \AgdaCon{`Bool}) and the actual type it denotes
-(e.g. \AgdaData{Bool}).
+(e.g., \AgdaCon{`Bool}) and the actual type it denotes
+(e.g., \AgdaData{Bool}).
 
 \begin{code}
   data BoolStar : Set where
@@ -46,7 +46,7 @@ type with a backtick to emphasize the distinction between a code
   ⟦ `List A ⟧ = List ⟦ A ⟧
 \end{code}
 
-To get the actual universe type, apply the dependent pair type
+To get the actual universe type, we apply the dependent pair type
 former (\AgdaData{Σ}) to the codes and meaning function. Therefore,
 values of the universe are dependent pairs whose first component is
 a code and second component is a value (the type of the value is the
@@ -396,7 +396,7 @@ A \textit{parameterized} universe is a collection of universes, parameterized
 by some type \AgdaVar{A}, such that the collection is
 uniformly defined for each universe regardless of what \AgdaVar{A} is.
 
-The model of a parameterized universe (i.e. its representation in type
+The model of a parameterized universe (i.e., its representation in type
 theory) may depend on its parameter
 in its codes, meaning function, or both. The Kleene star universes of booleans
 (\AgdaData{BoolStar}), heterogenous lists (\AgdaData{HListStar}) and

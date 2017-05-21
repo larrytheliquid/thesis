@@ -15,7 +15,7 @@ postulate ??? : {A : Set} → A
 
 A \textit{closed type theory} is a dependently typed language with a
 built-in collection of types
-(i.e. \textit{primitives}) that will never be extended.
+(i.e., \textit{primitives}) that will never be extended.
 Such a type
 theory can be modeled as a \textit{fully closed universe}. To qualify
 as a closed type theory, we require that its collection of types is at
@@ -100,11 +100,11 @@ closed under vector (\AgdaData{Vec}) formation.
 \end{code}
 
 Recall our naming convention of prefixing universe code constructors
-(e.g. \AgdaCon{`Bool}) with a backtick to distinguish the code (the
+(e.g., \AgdaCon{`Bool}) with a backtick to distinguish the code (the
 ``quoted'' version of the type) from the actual type it models
 (in this case \AgdaData{Bool}, which is the result of applying the
 meaning function to the code). For closed type theories we establish the
-new naming convention of prefixing the type of codes (e.g. \AgdaData{`Set}) with a
+new naming convention of prefixing the type of codes (e.g., \AgdaData{`Set}) with a
 backtick. Thus the type of the meaning function is a function
 whose domain is \AgdaData{`Set}
 (a ``quoted'' type of types) and whose codomain is
@@ -235,7 +235,7 @@ component applies the codomain \AgdaVar{B} to an
 component of the pair (\AgdaVar{x}) is exactly the value we need.
 If we wanted to provide an alternative definition of sum for
 functions, we would have no such luck because the value we are summing
-(\AgdaVar{f}) is itself a function (i.e. there is no \AgdaVar{x} in sight).
+(\AgdaVar{f}) is itself a function (i.e., there is no \AgdaVar{x} in sight).
 In the next section we 
 change our definitions to end up with an \AgdaVar{x} in the function
 case that we can pass to both \AgdaVar{B} and \AgdaVar{f}.
@@ -517,7 +517,7 @@ A non-dependent pair can be defined as a dependent function from a
 boolean to each component of the pair. Replace all pairs of inductive
 constructor arguments with such a dependent function whose domain
 cardinality is equal to the number of inductive arguments for that
-constructor (i.e. \AgdaData{Bool} for 2 inductive arguments and
+constructor (i.e., \AgdaData{Bool} for 2 inductive arguments and
 \AgdaData{⊥} for 0 inductive arguments).
 
 \AgdaHide{
@@ -599,7 +599,7 @@ module _ where
 It would seem like \AgdaData{W} is a sufficient datatype to represent
 any inductive datatype a user would define.
 Any \textit{Open Well-Order Type}
-(i.e. any \textit{open} algebraic type defined using \Data{W})
+(i.e., any \textit{open} algebraic type defined using \Data{W})
 can be translated to a \textit{Closed Well-Order Type},
 or a value of type \Data{`Set}, by
 using the sufficient collection of
@@ -654,7 +654,7 @@ The base cases of inductively defined datatypes using
 values. Recall that the base case \AgdaCon{leaf} had
 \texttt{⊥ → Tree A B} as its inductive argument. Because the
 domain of the function is bottom, we can write it many different
-ways (i.e. \AgdaFun{elim⊥}, \AgdaFun{elim⊥ ∘ elim⊥}, etc). Even
+ways (i.e., \AgdaFun{elim⊥}, \AgdaFun{elim⊥ ∘ elim⊥}, etc). Even
 though all leaves containing such functions are extensionally
 equivalent, it is inadequate~\cite{winad} to have an infinite number of
 intensionally distinct canonical forms for the model of
@@ -667,7 +667,7 @@ theory. For this reason, we represent algebraic datatypes using
 initial algebra semantics (instead of \Data{W} types),
 as covered in \refchap{open}.
 In \refchap{closed} we define a universe suitable for modeling closed
-type theory (i.e. a dependently typed language supporting fully
+type theory (i.e., a dependently typed language supporting fully
 generic programming), using closed initial algebra semantics, and
 analogous to the \textit{Closed Well-Order Types} universe
 of \refsec{closedw}.

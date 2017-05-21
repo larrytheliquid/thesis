@@ -35,10 +35,10 @@ $$
 $$
 
 This pattern repeats itself indefinitely. We refer to any such
-construction (e.g. a type, or a kind, or a superkind, etc.) as a
+construction (e.g., a type, or a kind, or a superkind, etc.) as a
 \textit{universe}. In \refsec{closed}, we only considered the first
 (or zeroth, because we count universe levels by starting with 0)
-closed universe (i.e. the universe of types, classified by kinds). Now, we expand this
+closed universe (i.e., the universe of types, classified by kinds). Now, we expand this
 notion to a closed infinite hierarchy of universes, where each universe in
 the hierarchy is classified by another universe, one level above.
 $$
@@ -180,7 +180,7 @@ universe codes (\Data{`Set[\_]}), \textit{indexed}
 by the natural numbers, and a
 meaning function (\Fun{⟦\_∣\_⟧})
 mapping a universe in the hierarchy to an
-Agda type (i.e. a type of our metalanguage).
+Agda type (i.e., a type of our metalanguage).
 Henceforth, we refer to \Data{`Set[\_]} as
 the \textit{leveled types} and
 \Fun{⟦\_∣\_⟧} as the
@@ -347,7 +347,7 @@ captures the high-level notion
 that \Data{Set₀} : \Data{Set₁}, preventing
 a ``type in type''
 (or ``kind in kind'', etc.) paradox
-(i.e. \Data{Set₁} : \Data{Set₁}, if the level
+(i.e., \Data{Set₁} : \Data{Set₁}, if the level
 did not decrease).
 
 \paragraph{Failing Positivity Check}
@@ -358,8 +358,8 @@ Agda's positivity checker. The meaning function
 \Con{`Σ}, \Con{`Π}, and \Con{`W} constructors of
 leveled types (\Data{`Set[\_]}).
 If this meaning function is applied to the code of types
-(e.g. \Fun{⟦} \Num{1} \Fun{∣} \Con{`Set} \Fun{⟧}), then the result
-will be a leveled type (e.g. \Data{`Set[ \Num{0} ]}),
+(e.g., \Fun{⟦} \Num{1} \Fun{∣} \Con{`Set} \Fun{⟧}), then the result
+will be a leveled type (e.g., \Data{`Set[ \Num{0} ]}),
 making \Var{B} a \textit{negative} infinitary argument.
 
 By external analysis of the definition of the leveled types indexed by
@@ -386,7 +386,7 @@ First, we define the negation function
 (\Fun{not}),
 whose type is defined using a dependent function (→),
 external to our
-closed hierarchy (i.e. from our Agda metalanguage).
+closed hierarchy (i.e., from our Agda metalanguage).
 Below, we insert the type of \Fun{not} in open type
 theory as a comment.
 
@@ -406,7 +406,7 @@ module _ where
 \end{code}
 
 Note that the signature is a \textit{type} because the universe level
-(i.e. the first argument to the meaning function)
+(i.e., the first argument to the meaning function)
 is 0. Now, we internalize the type signature of negation.
 
 \AgdaHide{
@@ -473,7 +473,7 @@ module _ where
 
 Above, we have internalized the \textit{kind} signature of
 \Fun{id}. The signature is a kind, because the universe level
-(i.e. the first argument to the meaning function) is 1. At
+(i.e., the first argument to the meaning function) is 1. At
 universe level 1, the closed type constructor \Con{`Set} and closed
 meaning function constructor (\Con{`⟦\_⟧}) are inhabited, allowing us
 to internalize the signature of \Fun{id} as a closed kind.
@@ -572,7 +572,7 @@ Whereas \Data{`Set[\_]} is \textit{indexed} by natural numbers,
 level. We call this type \Data{SetForm}, because we intend to
 ``fill in'' the abstract universe level
 with a concrete universe in
-the second stage of the construction (i.e. when deriving
+the second stage of the construction (i.e., when deriving
 the indexed type \Data{`Set[\_]}),
 just like we would ``fill in'' a ``form''.
 
@@ -707,7 +707,7 @@ to a \Data{Level}, encoding the \textit{previous} universe.
 
 If the universe level is 0, then there is no previous universe. Hence,
 we define the previous closed types (\Field{SetForm})
-to be uninhabited (i.e. the bottom type \Data{⊥}). The meaning function
+to be uninhabited (i.e., the bottom type \Data{⊥}). The meaning function
 \Field{⟦\_/\_⟧} for these previous closed types is also uninhabited, as
 indicated by a $\lambda$ term matching against its empty argument
 (empty parentheses, in an argument position,

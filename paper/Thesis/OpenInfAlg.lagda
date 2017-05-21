@@ -103,7 +103,7 @@ However, recall our series of isomorphic translations of the binary
 tree declaration used to model \AgdaData{Tree} via \AgdaData{W}
 types (\refsec{wtypes}). We can borrow two of those isomorphisms
 to transform \AgdaData{Tree} into a less trivial instance of an
-infinitary type (i.e. one whose infinitary domains are types
+infinitary type (i.e., one whose infinitary domains are types
 other than unit).
 
 First, we reorder the \AgdaVar{b} argument (of type \AgdaVar{B}) to the front via symmetry
@@ -144,7 +144,7 @@ module _ where
 
 This translates both inductive arguments into a \textit{single}
 infinitary argument, where the domain is now \AgdaData{Bool} instead
-of \AgdaData{⊤}. It makes sense for the domain (i.e. branching factor)
+of \AgdaData{⊤}. It makes sense for the domain (i.e., branching factor)
 to be \AgdaData{Bool}, as we are defining \textit{binary} trees.
 Given that the cardinality of \AgdaData{Bool} is 2, we use
 initial algebra semantics to define a categorical model of
@@ -355,11 +355,11 @@ Alternatively, we can \textit{expose} a model of
 that are defined in terms of \textit{unexposed infinitary} pattern
 functors.
 In this scenario type formers
-do not require special treatment (i.e. their definitions can be
+do not require special treatment (i.e., their definitions can be
 equivalent to their non-infinitary counterparts).
 However, we must
 take special care when modeling constructors by exposing a
-non-infinitary type signature (i.e. interface) that is defined in
+non-infinitary type signature (i.e., interface) that is defined in
 terms of an infinitary (hidden, or unexposed) implementation.
 
 \paragraph{Natural Numbers}

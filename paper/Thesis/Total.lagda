@@ -156,7 +156,7 @@ Rather than dynamically enforcing partiality by returning a
 is statically ``partial'' as its definition for the empty list case is
 uniquely determined.
 
-\subsection{Domain Supplements}\label{sec:domsup}
+\subsection{Domain Predicates versus Domain Supplements}\label{sec:domsup}
 
 \AgdaHide{
 \begin{code}
@@ -185,7 +185,7 @@ list case.
 \end{code}
 
 This allows us to leave the empty list case undefined, as a value of
-type \AgdaData{⊥} is known to not exist.
+type \AgdaData{⊥} is known not to exist.
 
 \begin{code}
   head : {A : Set} (xs : List A) → HeadArg xs → A
@@ -203,12 +203,13 @@ the empty type (\AgdaData{⊥}). Compare this to the version of \AgdaFun{HeadArg
 case. The \refsec{comparg} \AgdaFun{HeadArg} is also technically a
 domain predicate, as it restricts the input of all lists to supply
 additional data (\AgdaVar{A}) in the empty list case
-(i.e. \AgdaFun{head} is no longer defined for all lists, only those
+(i.e., \AgdaFun{head} is no longer defined for all lists, only those
 with additional data). However,
 this usage of the word ``predicate'' feels unnatural, as predicates
 are associated with logically restricting a domain (rather than
 requesting additional data). For this reason, we prefer to call
-the \refsec{comparg} \AgdaFun{HeadArg} a \textit{domain supplement}.
+the \refsec{comparg} \AgdaFun{HeadArg} a \textit{domain supplement}
+(this is a non-standard term that we are introducing).
 Thus, we have two options when embedding a partial
 function in type theory:
 \begin{enumerate}

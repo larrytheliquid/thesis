@@ -38,10 +38,10 @@ We mostly keep the syntax of the non-dependent polynomial set constructions
 sets ($\cdot$) is actually
 the \textit{dependent} product (or dependent pair).
 The syntax of a dependent product
-uses type ascription (e.g. $(x : A) \cdot B~x$),
+uses type ascription (e.g., $(x : A) \cdot B~x$),
 allowing the type ($B$) of the second component of the pair to depend on the
 value ($x$) of the first. In contrast, the syntax of a
-non-dependent product (e.g. $A \cdot B$) does not ascribe the type of
+non-dependent product (e.g., $A \cdot B$) does not name the type of
 the first component of the pair.
 For example, dependent product can be used to express the set of pairs of
 natural numbers and finite sets (whose size depends on the
@@ -81,8 +81,8 @@ $$
 
 In general, the pattern functor is a (possibly dependent) product of $n$ (possibly
 0) sets, ending in a multiplication by the unit set 1. Each
-of the $n$ sets (i.e. each $A_i$ below) may dependent on the values of
-previous sets (i.e. each $x_i$ below). Additionally, each $A_i$ may
+of the $n$ sets (i.e., each $A_i$ below) may dependent on the values of
+previous sets (i.e., each $x_i$ below). Additionally, each $A_i$ may
 be non-inductive (not using $X$) or infinitary (using $X$).
 $$
 F \triangleq \lambda X.~
@@ -92,10 +92,10 @@ F \triangleq \lambda X.~
 \cdot (x_n : A_n ~ x_0 ~...~ x_{n-1}) \cdot 1
 $$
 
-The purpose of these additional constraints \textit{may not} be readily
+The purpose of these additional constraints may not be readily
 apparent now. However, they allow us to seamlessly extend
 the categorical model of dependent types to include
-induction-recursion (\refsec{iralg}) in the future.
+induction-recursion (in \refsec{iralg}).
 
 Finally, note that any use of sums (+) obeys our constraint
 as long as the
@@ -542,7 +542,7 @@ constructor.
 
 Because our dependent types are modeled as least fixed points of
 functors constrained to be sequences of pair types, values
-(e.g. like the \AgdaCon{rose} constructor) are simply the
+(e.g., like the \AgdaCon{rose} constructor) are simply the
 \AgdaCon{init}ial algebra of a tuple encoded as a sequence of
 right-nested pairs (ending in the trivial unit value \AgdaCon{tt}).
 
@@ -553,7 +553,7 @@ dependent types. We begin with the pattern functor for a dependent and
 infinitary encoding of the natural numbers.
 The \AgdaCon{zero} constructor immediately ends with \AgdaCon{`ι}.
 The \AgdaCon{suc}
-constructor uses \AgdaCon{`δ} to demand a trivial (i.e. where the
+constructor uses \AgdaCon{`δ} to demand a trivial (i.e., where the
 domain is the unit type) infinitary argument (similar to
 \refsec{infalgtps}), then ends with \AgdaCon{`ι}.
 
@@ -650,7 +650,7 @@ fixpoint, and its constructors as initial algebras of that fixpoint.
 Now we are encoding constructor choices as the initial algebra applied
 to a dependent pairs whose domain is an enumeration of tags and
 codomain is the description of arguments for each constructor
-tag. Hence, the first component (e.g. \AgdaCon{zeroT} or
+tag. Hence, the first component (e.g., \AgdaCon{zeroT} or
 \AgdaCon{sucT}) in the tuple that the initial algebra
 is applied to is always the tag name.
 

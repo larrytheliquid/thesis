@@ -58,7 +58,7 @@ In this section we review the initial algebra semantics for
 \textit{non-dependent} and potentially
 \textit{inductive} (\refsec{ind}) types. We begin with the categorical
 model, and then transition to the formal model
-(i.e. within type theory) by converting abstract
+(i.e., within type theory) by converting abstract
 mathematical constructs to concrete datatypes (analogous to how we model
 the abstract notion of a universe as concrete code and meaning
 function types in \refsec{umodel}).\footnote{
@@ -221,11 +221,11 @@ The first part of our formal model is the type of descriptions
 (\AgdaData{Desc}), a syntax for the \textit{pattern} fragment of functors.
 A \AgdaData{Desc} is the syntactic reification of
 the polynomial expression language that must be used for a functor to
-qualify as a \textit{pattern} functor (i.e. a \AgdaData{Desc}
+qualify as a \textit{pattern} functor (i.e., a \AgdaData{Desc}
 ``describes'' a valid, or pattern, functor).
 Rather than defining a pattern
 \textit{functor} directly, we first \textit{represent} it as a \AgdaData{Desc} such
-that any well typed description can be \textit{converted} into a functor
+that any well-typed description can be \textit{converted} into a functor
 meeting all pattern restrictions.
 
 Below, the \AgdaData{Desc} constructors
@@ -237,7 +237,7 @@ The \textit{constant} constructor reifies a syntax for injecting
 \textit{non-inductive} constructor arguments (such as \AgdaVar{A} in the
 \AgdaCon{leaf} constructor of \AgdaData{Tree}). \footnote{
   As is often the case with injections, its syntax is implicit
-  (i.e. invisible) when defining pattern functors using polynomial set
+  (i.e., invisible) when defining pattern functors using polynomial set
   constructions. For example, the categorical model of trees, using
   $\kappa$ for explicit non-inductive arguments, would be
   $\lambda A.~ \lambda B.~ \mu X.~ \kappa~A + X \cdot \kappa~B \cdot X$.
@@ -288,7 +288,7 @@ module _ where
 \end{code}
 
 Finally, note that we establish another convention of ``quoting''
-description constructors with a backtick (e.g. \AgdaCon{`X} for $X$).
+description constructors with a backtick (e.g., \AgdaCon{`X} for $X$).
 This emphasizes that they are a syntactic encoding of polynomial set
 constructions. As we will see, quoting \AgdaData{Desc} constructors is
 natural as they also act as codes of a universe (\refsec{hierir}).
@@ -390,7 +390,7 @@ problematic because the type (\AgdaVar{A}) that \AgdaCon{`κ} injects
 must be \textit{non-inductive}. The non-inductivity of \AgdaVar{A} is
 enforced because \AgdaVar{A} must be a type defined independently of
 \AgdaVar{X}. In other words, the interpretation of
-\AgdaCon{`κ} (i.e. \Fun{⟦} \Con{`κ} \Var{A} \Fun{⟧} \Var{X} = \Var{A}) does
+\AgdaCon{`κ} (i.e., \Fun{⟦} \Con{`κ} \Var{A} \Fun{⟧} \Var{X} = \Var{A}) does
 not pass \AgdaVar{X} to \AgdaVar{A}.
 
 \paragraph{Fixpoints}
@@ -498,7 +498,7 @@ Natural numbers are constructed by applying
 
 Finally, notice that descriptions and fixpoints
 can also be
-interpreted as a universe (i.e. the universe of open algebraic types)
+interpreted as a universe (i.e., the universe of open algebraic types)
 by considering them to be
 codes (\AgdaData{Desc} : \AgdaData{Set}) and a
 meaning function (\AgdaData{μ} : \AgdaData{Desc} \arr~\AgdaData{Set})
@@ -564,7 +564,7 @@ to the trivial unit constructor.
 \end{code}
 
 To construct a value of a fixpoint
-(e.g. \AgdaData{μ} \Fun{NatD}), rather than the meaning
+(e.g., \AgdaData{μ} \Fun{NatD}), rather than the meaning
 function applied to its fixpoint, we must apply the initial
 algebra (\AgdaCon{init}). We leave out describing this
 step explicitly in future exposition.
@@ -586,7 +586,7 @@ as a function argument.
 There is no need to provide examples of using natural
 numbers encoded using our formal model. Once we
 model the type former and constructors according to their standard
-interface (i.e. their standard type signatures), their usage is
+interface (i.e., their standard type signatures), their usage is
 indistinguishable from using type formers and constructors defined using
 datatype declarations (rather than \AgdaData{μ}).
 
@@ -707,7 +707,7 @@ module _ where
 
 To model the \AgdaCon{leaf} constructor, we apply the left disjoint
 union injection to the function argument of type
-\AgdaVar{A} (i.e. the node value for the leaf).
+\AgdaVar{A} (i.e., the node value for the leaf).
 
 \begin{code}
   leaf : {A B : Set} → A → Tree A B
@@ -716,10 +716,10 @@ union injection to the function argument of type
 
 To model the \AgdaCon{branch} constructor, we apply the right disjoint
 union injection to a triple (2 right-nested pairs). The triple consists of
-the first inductive function argument (i.e. the left branch),
+the first inductive function argument (i.e., the left branch),
 the function argument of
-type \AgdaVar{B} (i.e. the node value for the branch), and the second
-inductive function argument (i.e. the right branch).
+type \AgdaVar{B} (i.e., the node value for the branch), and the second
+inductive function argument (i.e., the right branch).
 
 \begin{code}
   branch : {A B : Set} → Tree A B → B → Tree A B → Tree A B
@@ -731,7 +731,7 @@ inductive function argument (i.e. the right branch).
 We introduce the type of
 \textit{untyped $\lambda$-calculus terms} (\AgdaData{Term}) as a final
 and slightly more complex example
-(i.e. modeling a type with more than 2 constructors). 
+(i.e., modeling a type with more than 2 constructors). 
 Below we declare the \AgdaData{Term} type consisting of
 variable references (\AgdaCon{var}), lambda abstractions
 (\AgdaCon{lam}), and applications (\AgdaCon{app}). 

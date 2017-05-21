@@ -7,15 +7,15 @@ module _ where
 
 A \textit{type} is a collection of values, and a \textit{universe} is
 a collection of types (possibly closed under certain type formers).
-In this section we review different classes of types (e.g. indexed
+In this section we review different classes of types (e.g., indexed
 types, infinitary types, etc).
 This allows us to be clear about what each class adds
-to the expressive power of a language (i.e. what sorts of new values we
+to the expressive power of a language (i.e., what sorts of new values we
 can construct.)
 
 We also review properties of both types and universes
-(e.g. inductiveness, openness, etc). These properties determine how we
-can use values (i.e. what elimination principles are valid for them).
+(e.g., inductiveness, openness, etc). These properties determine how we
+can use values (i.e., what elimination principles are valid for them).
 With a thorough understanding of classifications and
 properties of types and universes, we can precisely describe which
 classifications and properties we need to perform the main goal of
@@ -136,7 +136,7 @@ module _ where
 \end{code}
 
 An alternative definition of an inductive type is a collection of
-values closed under certain value constructors (e.g. \AgdaData{ℕ} as
+values closed under certain value constructors (e.g., \AgdaData{ℕ} as
 \AgdaCon{zero} closed under \AgdaCon{suc}).
 
 \subsection{Parameterized Types}\label{sec:param}
@@ -289,7 +289,8 @@ values of the \AgdaData{Fin}~\AgdaNum{3} type.
   three = there (there here)
 \end{code}
 
-Our example function using finite sets, named \AgdaFun{prod}, computes
+We give an example function using finite sets, named \AgdaFun{prod},
+which computes
 the product of a list of \AgdaVar{n} natural numbers. However, we
 represent a list of numbers as a function from \AgdaData{Fin}
 \AgdaVar{n} to \AgdaData{ℕ}. The idea is that each member of the
@@ -319,13 +320,13 @@ the ``list''. \footnote{
   as a witness that a value of the type that \textit{would} be there
   there (\AgdaData{Fin}~\AgdaNum{0} in this case, which is
   \AgdaData{Fin}~\AgdaNum{3} minus 3 \AgdaCon{there}s) is
-  uninhbated. Such witnesses are required for type checking to be
+  uninhabited. Such witnesses are required for type checking to be
   decidable in Agda.
   }
 
 The base case
 represents the empty list, for which we return the number one (the
-identify of the product operation).
+identity of the product operation).
 The recursive case multiplies the current number at the
 head position of the list (accessed by applying \AgdaVar{f} to the
 \AgdaCon{here} constructor of finite sets) with the recursive call on the tail of the
@@ -491,7 +492,7 @@ Vectors are a special case of a class of datatypes called
 \textit{containers}~\cite{containers}, which are functions from datatype
 positions to contained values. Below, the type of vectors is
 represented as a
-\textit{constant} function (i.e. one that does not vary for \AgdaVar{n})
+\textit{constant} function (i.e., one that does not vary for \AgdaVar{n})
 whose domain is a finite set of \AgdaVar{n} elements, and whose
 codomain is \AgdaVar{A}. Think of the function as an \AgdaVar{n}-ary
 projection for each \AgdaVar{A} value in the vector.
@@ -515,7 +516,7 @@ The \AgdaFun{cons} function ``extends'' the function
 head of the vector, and otherwise calls the ``tail'' by applying
 \AgdaVar{f} to the sub-index \AgdaVar{p}. Notice that in
 \refsec{indx} the ``list'' argument to \AgdaFun{prod} was actually
-this functional vector representation, so it could have been written like:
+this functional vector representation, so it could have been written as:
 
 \AgdaHide{
 \begin{code}
@@ -676,7 +677,7 @@ The type is defined as follows.
   
     eval : Arith → ℕ
     eval (Num n) = n
-    eval (Prod a f) = prod (eval a) (λ a → eval (f a))
+    eval (Prod a f) = prod (eval a) (λ i → eval (f i))
 \end{code}
 
 A literal number is represented using the \AgdaCon{Num} constructor,
@@ -776,7 +777,7 @@ $$
 $$
 
 Notice that
-in \AgdaCon{cons} (i.e. the second summand)
+in \AgdaCon{cons} (i.e., the second summand)
 the index of the previous vector is given as an
 explicit argument (m), and the index (n) is constrained to be the
 successor of that argument.
@@ -829,7 +830,15 @@ using an internalized \AgdaData{μ} type~\cite{dagand:phd}.
 \subsection{Open Types}\label{sec:open}
 
 An \textit{open} type is any type whose definition mentions the type
-of types (\AgdaData{Set}). In an \textit{open type theory} datatype
+of types (\AgdaData{Set}).\footnote{
+  A type is open if its definition \textit{directly} mentions
+  \Data{Set}, for example as an argument to one of its
+  constructors. However, a type is also open if its definition
+  \textit{indirectly} mentions \Data{Set}. For example, an argument to
+  one of its constructors may be another open type (which is open
+  because it either directly or indirectly mentions \Data{Set}).
+}
+In an \textit{open type theory} datatype
 declarations add new types to the language, extending \AgdaData{Set}
 with additional type formers. Therefore the collection of type formers
 (values of type \AgdaData{Set}) is considered to be ``open''.
@@ -870,7 +879,8 @@ type \AgdaData{Set}.
 \subsection{Closed Types}\label{sec:closedt}
 
 A \textit{closed} type is any type whose definition does not mention
-\AgdaData{Set}. For example, if we specialize the type of parametric
+\AgdaData{Set}.
+For example, if we specialize the type of parametric
 lists to booleans (as the type \AgdaFun{Bits}) the source of openness
 (the parameter \AgdaVar{A} of type \AgdaData{Set}) disappears.
 

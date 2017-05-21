@@ -315,7 +315,7 @@ Now that we've defined pre-closed leveled types and descriptions,
 leveled types and descriptions, \textit{indexed} by natural numbers
 (as a computational family). First, we define \Fun{level} to map each
 natural number to a \Data{Level} representing the \textit{previous}
-universe (i.e. a natural number $n$ is mapped to universe $n$-1).
+universe (i.e., a natural number $n$ is mapped to universe $n$-1).
 
 \begin{code}
   level : (ℓ : ℕ) → Level
@@ -426,7 +426,7 @@ examples in \refsec{closedeg} correspond to examples that we can
 demonstrate in the zeroth universe of our hierarchy.
 The \textit{Closed Inductive-Recursive Types} universe does not
 include the kinds \Con{`Set} and \Con{`Desc}, hence all of the
-signatures (e.g. \Fun{NatDs}, \Fun{`ℕ}, etc.) used to construct the
+signatures (e.g., \Fun{NatDs}, \Fun{`ℕ}, etc.) used to construct the
 examples were defined \textit{externally} to the universe
 (using types from our Agda metalanguage, like the function space).
 
@@ -483,7 +483,7 @@ Let's internalize the signatures used in the natural number examples.
 The definition bodies remain the same as those in \refsec{closedeg}, so we
 only present the signatures below.
 First, we internalize the signatures of the closed description and
-type \textit{kinds} (i.e. at universe level 1).
+type \textit{kinds} (i.e., at universe level 1).
 
 \begin{code}
   NatDs : ⟦ 1 ∣ `Bool `→ `Desc `⊤ ⟧
@@ -496,7 +496,7 @@ closed types (\Con{`Set}) and closed descriptions (\Con{`Desc}).
 If an internalized signature needs to refer to a type, it must refer
 to the internalized ``backtick'' version of the type.
 Because we can internalize \textit{all} signatures, we no longer need
-to define non-backtick versions of types (e.g. \Fun{ℕ}). We can always
+to define non-backtick versions of types (e.g., \Fun{ℕ}). We can always
 recover a non-backtick version of a type by applying the meaning
 function (\Fun{⟦\_∣\_⟧}) to the backtick version, at the appropriate
 level. 
@@ -507,7 +507,7 @@ level.
 \end{code}
 
 Above, we internalize the
-\textit{value} (i.e. typed at universe level 0)
+\textit{value} (i.e., typed at universe level 0)
 constructors of the natural numbers. 
 
 \AgdaHide{
@@ -571,12 +571,12 @@ actually a value of \textit{type} \Con{`ℕ}, which has merely been
 lifted to the kind level to fit in the signature of \Con{cons}.
 
 To determine what level an argument or codomain lives at, substract
-the number of liftings (i.e. nested occurrences of \Con{`⟦\_⟧}) from
-the level of the signature (i.e. the number to the left of the pipe in
+the number of liftings (i.e., nested occurrences of \Con{`⟦\_⟧}) from
+the level of the signature (i.e., the number to the left of the pipe in
 the meaning function). For example, the codomain of \Con{nil} is
 1 minus 1 lifting, thus \Con{nil} returns a value of \textit{type}
-(i.e. universe level 0) \Fun{`Vec}, even though its signature is
-kinded (i.e. at universe level 1).
+(i.e., universe level 0) \Fun{`Vec}, even though its signature is
+kinded (i.e., at universe level 1).
 
 Finally, note that both \Fun{nil} and \Fun{cons} have explicit type
 arguments, and \Fun{cons} also has an explicit natural number
@@ -672,10 +672,10 @@ open \Data{HList} is classified as an open kind (\Data{Set₁}).
 \end{code}
 
 Above, we define the
-\textit{kind} (i.e. universe level 1)
+\textit{kind} (i.e., universe level 1)
 constructors of the heterogenous lists. We know that \Fun{nil} and
 \Fun{cons} construct kinds, because their codomains do not have any
-liftings (i.e. occurrences of \Con{`⟦\_⟧}),
+liftings (i.e., occurrences of \Con{`⟦\_⟧}),
 so 1 - 0 leaves the codomains at universe level 1,
 the level of kinds.
 
@@ -905,7 +905,7 @@ Hence, our sanity check in \refapen{intern}, that the signature of all
 datatype constructors can be internalized in our closed universe
 hierarchy, drives the need for quantification over closed kinds
 (\Con{`Set} and \Con{`Desc}). In turn, quantification over closed
-kinds drives results in types (i.e. the previous universe), which
+kinds drives results in types (i.e., the previous universe), which
 drives the need for lifting functions appropriate to each kind
 (\Con{`⟦\_⟧}, \Con{`⟦\_⟧₁}, and \Con{`μ₁'}).
 Thus, we recognize the sanity check in \refapen{intern} as a good way

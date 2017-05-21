@@ -188,9 +188,9 @@ taking the first (\Fun{proj₁}) and
 second (\Fun{proj₂}) projections of the dependent pairs (\Data{Σ})
 resulting from the new versions of \Fun{lookup} and \Fun{lookups}.
 By convention, we refer to the first projection (type component)
-of these functions by suffixing ₁ (e.g. \Fun{lookup₁}),
+of these functions by suffixing ₁ (e.g., \Fun{lookup₁}),
 and to the second projection (value component)
-version by suffixing ₂ (e.g. \Fun{lookup₂}).
+version by suffixing ₂ (e.g., \Fun{lookup₂}).
 
 \subsection{Looking Up All Values}\label{sec:lookup}
 
@@ -444,7 +444,7 @@ arguments, we use the helper function
 The helper function turns \Var{i}, a single index (\Data{Fin})
 containing a sum (\Fun{+}), into a disjoint union (\Data{⊎})
 of two indices. The \Fun{splitδ} function is specialized to work with
-an \textit{inductive} (i.e. not infinitary) argument, and its
+an \textit{inductive} (i.e., not infinitary) argument, and its
 dependent sequence (\Var{xs}). Hence, we apply \Fun{splitδ}
 to (\Var{f} \Con{tt}), computing the inductive codomain from the
 trivially infinitary \Var{f}.
@@ -591,12 +591,12 @@ the type of \Var{i}, namely \Data{Fin} (\Var{n} \Fun{+} \Var{m}), to reduce.
 
 Because \Fun{lookup} is defined as a depth-first search, the
 \Fun{splitFin} function must be left-biased
-(i.e. biased to return a \Data{Fin} index whose bound is \Var{n},
+(i.e., biased to return a \Data{Fin} index whose bound is \Var{n},
 the left component of the sum).
 Hence, \Fun{splitFin} should return the left injection
 if index \Var{i} points to \Con{here}, and \Var{n}
 is greater than 0
-(i.e. it is the \Con{suc}cessor of some other number).
+(i.e., it is the \Con{suc}cessor of some other number).
 
 \begin{code}
   splitFin (suc n) m here = inj₁ here

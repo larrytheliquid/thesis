@@ -67,8 +67,9 @@ principle. For the purpose of this thesis, this will mean any type
 that does not mention \AgdaData{Set} or \AgdaData{Level}.
 Therefore, concrete types have the special properties that all of its
 values and subvalues may be eliminated. Algebraic datatypes are
-concrete and may be eliminated by pattern matching. Function types are
-concrete and may be eliminated by application.
+concrete and they may be eliminated by pattern matching.
+Function types are
+concrete and they may be eliminated by application.
 
 \subsection{Abstract Data Types}\label{sec:adt}
 

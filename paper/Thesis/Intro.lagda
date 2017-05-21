@@ -166,7 +166,7 @@ takes two natural number (\Data{ℕ}) arguments, and
 equality (\AgdaData{≡}) takes two values of some type \Var{A}.
 Rather than constraining a datatype (like
 lists) using relations after-the-fact, we can create
-more specific (i.e. \textit{indexed})
+more specific (i.e., \textit{indexed})
 variants of datatypes that encode certain
 properties before-the-fact.
 
@@ -216,10 +216,10 @@ Programmers of non-dependently typed languages already struggle with the
 issue of needing to define logically similar versions of functions
 (like \Fun{count}, \Fun{lookup}, etc.)
 for their various algebraic types
-(e.g. natural numbers, lists, binary trees, etc.).
+(e.g., natural numbers, lists, binary trees, etc.).
 This problem is more pronounced in a dependently typed language, where
 programmers also define indexed variants of types
-(e.g. finite sets, vectors, balanced binary trees, etc.)
+(e.g., finite sets, vectors, balanced binary trees, etc.)
 that intrinsically capture preconditions and postconditions.
 
 Rather than punishing programmers for creating new datatypes,
@@ -332,7 +332,7 @@ version, we must choose the types for which we will provide
 Each constructor of \Data{Size} is not a type, but rather an
 encoding of a type. Next, we define a function (\Fun{⟦\_⟧}) that
 interprets each encoded \Data{Size} type as an actual
-Agda type (i.e. a \Data{Set}). 
+Agda type (i.e., a \Data{Set}). 
 
 \begin{code}
   ⟦_⟧ : Size → Set
@@ -359,7 +359,7 @@ same logic as the instances in the Haskell version above.
 
 A significant difference with the Haskell version is that
 we supply the encoded type explicitly in recursive calls
-(i.e. \Con{`List} \Var{A} in the \Con{cons} case).\footnote{
+(i.e., \Con{`List} \Var{A} in the \Con{cons} case).\footnote{
   It is possible to make this an implicit argument so the Agda
   surface language also infers it. However, the argument would still
   be explicit in the underlying core language to which the surface
@@ -419,7 +419,7 @@ instance (Count a) => Count [a] where
 The \texttt{Count} instances for pairs and lists are able to recurse
 into their non-inductive arguments because they have type class
 premises for their type parameters
-(e.g. the left of the arrow in
+(e.g., the left of the arrow in
 \texttt{(Count a) => Count [a]} in the list instance).
 This allows instances of one type
 to recurse into instances of other types, and is called ad hoc
@@ -441,7 +441,7 @@ reifying the types over which we will
 generically program \Fun{count}.
 Unlike \Data{Size}, \Data{Count} is an \textit{inductive} type, as
 the arguments to \Con{`Pair} and \Con{`List} are inductive
-(i.e. the \Var{A} and \Var{B} arguments have type \Data{Count} below,
+(i.e., the \Var{A} and \Var{B} arguments have type \Data{Count} below,
 but they have type \Data{Set} in the \Data{Size} datatype).
 
 \begin{code}
@@ -503,9 +503,9 @@ In Agda, generic programming (like the \Fun{count} function) is
 accomplished using a \textit{universe} (\refsec{universes}). A
 universe is the combination of a type of
 \textit{codes} for types
-(e.g. \Data{Count}) and a
+(e.g., \Data{Count}) and a
 \textit{meaning}
-function (e.g. \Fun{⟦\_⟧})
+function (e.g., \Fun{⟦\_⟧})
 mapping codes to actual types. Generic functions (over all types of
 the universe) are dependent function parameterized
 over all type codes (\Data{Code} below)
@@ -595,7 +595,7 @@ universe (\Data{Desc}), in a way that supports
 
 One important property of what makes fully generic programming possible
 in \Data{Count} is that the arguments to its codes
-(i.e. the arguments to \Con{`Pair} and \Con{`List}) are
+(i.e., the arguments to \Con{`Pair} and \Con{`List}) are
 \textit{inductive}. This makes \Data{Count} a universe of booleans
 \textit{closed under} pair formation and list formation. Closure
 properties are an important defining feature of a universe.
@@ -637,11 +637,11 @@ datatype declarations \textit{and} fully generic programming.
 \subsection{Fully Generic versus Deriving}
 
 Finally, we would like to make an analogy:
-Having access to fully generic functions (e.g. \Fun{count}) defined for
+Having access to fully generic functions (e.g., \Fun{count}) defined for
 all possible types is like \texttt{deriving} a type class instance for a
 datatype in Haskell. In both cases, users get to declare a new
 datatype and have access to functions operating over it
-(i.e. fully generic \Fun{count} or derived \texttt{count}) for free.
+(i.e., fully generic \Fun{count} or derived \texttt{count}) for free.
 
 The big difference is that users of a closed but extensible
 dependently typed language (like a variant of Agda)
@@ -679,7 +679,7 @@ arguments to constructors of an algebraic datatype can be defined
 independently. In Agda, the \textit{types}
 of subsequent constructor arguments can depend on the
 \textit{values} of previous constructor arguments.
-There are 2 common generic encodings (i.e. semantic models)
+There are 2 common generic encodings (i.e., semantic models)
 of dependent algebraic datatypes:
 \begin{itemize}
 \item{\textbf{Containers} (\refsec{wtypes})} These are data structures that represent
@@ -912,7 +912,7 @@ properties they can have.
 
 \paragraph{\chaptitle{generic}}
 We clarify what we mean by \textit{generic programming}
-(i.e. programming over many types, using various forms of
+(i.e., programming over many types, using various forms of
 polymorphism~\cite{paramadhocpoly}),
 because the meaning of this term is overloaded.
 We compare and contrast generic
@@ -926,7 +926,7 @@ we review techniques to make total programming possible (\refsec{totality}).
 
 \paragraph{\chaptitle{closedtt}}
 This chapter contains examples
-of closed type theories (i.e. those that do not contain \Data{Set})
+of closed type theories (i.e., those that do not contain \Data{Set})
 supporting fully generic programming.
 We present (\refsec{closedvecu})
 the closed type theory of \textit{Closed Vector Types}, modeling a
@@ -1009,7 +1009,7 @@ to also be \textit{universe-level generic}. We call such functions
 and show that they can be applied to
 any type at any level of the universe hierarchy. Importantly, leveled
 fully generic programming is possible because our universe hierarchy
-model is closed (i.e. the hierarchy still does not contain \Data{Set},
+model is closed (i.e., the hierarchy still does not contain \Data{Set},
 but additionally does not contain \Data{Level}).
 
 \subsubsection{\parttitle{postlude}}

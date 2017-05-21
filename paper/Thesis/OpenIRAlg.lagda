@@ -66,7 +66,7 @@ and the fixpoint
 of such a pattern functor returns a slice
 ($\mu F : \set/O$).
 It is convenient to separate the definition of $F$ into 2 parts, where
-we denote the part by a subscript (i.e. $F_1$ and $F_2$).
+we denote the part by a subscript (i.e., $F_1$ and $F_2$).
 $$
 F_1 : \set/O \arr \set
 $$
@@ -104,7 +104,7 @@ $$
 \lambda F.~ (\mu_1~F ,~ \mu_2~F)
 $$
 
-Recall our restriction of pattern functors as a sequence of dependent
+Recall our restriction of pattern functors to a sequence of dependent
 products of non-inductive or infinitary arguments, terminating in 1.
 $$
 F_1 \triangleq \lambda (X, d).~
@@ -114,7 +114,7 @@ F_1 \triangleq \lambda (X, d).~
 \cdot (x_n : A_n ~ x_0 ~...~ x_{n-1}) \cdot 1
 $$
 
-Before, it only make sense for non-inductive arguments to be
+Before, it only made sense for non-inductive arguments to be
 dependent. For example, we could have a functor like the following
 (where $A : \set$ and $B : A \arr \set$).
 $$
@@ -388,20 +388,20 @@ module De where
 Recall that \AgdaCon{`σ} denotes a dependent
 \textit{non-inductive} argument (of type \AgdaVar{A})
 that subsequent arguments, encoded by \AgdaVar{D}, may depend on in.
-With inductive-recursion, \AgdaCon{`δ} denotes an
+With induction-recursion, \AgdaCon{`δ} denotes an
 infinitary (hence \textit{inductive}) argument
 (whose domain is \AgdaVar{A}) that subsequent arguments (\Var{D})
 may depend on. However, subsequent arguments in \AgdaVar{D} do not
 depend directly on an infinitary argument
-(i.e. \AgdaVar{A} \arr~\AgdaVar{X}). Instead, \AgdaVar{D} depends on
-a function (i.e. \AgdaVar{A} \arr~\AgdaVar{O}) that is an implicit
+(i.e., \AgdaVar{A} \arr~\AgdaVar{X}). Instead, \AgdaVar{D} depends on
+a function (i.e., \AgdaVar{A} \arr~\AgdaVar{O}) that is an implicit
 \textit{composition} of the decoding function and the infinitary function.
 This implicit composition hides the underlying infinitary argument,
 preventing an inductive argument (\AgdaVar{X}) from
 appearing negatively in the domain of the infinitary argument
 \AgdaVar{D} (instead, \AgdaVar{O} appears).
 Below is an example of the natural numbers encoded as a
-trivially (i.e. where the codomain of the decoding function
+trivially (i.e., where the codomain of the decoding function
 \AgdaVar{O} is the unit type \AgdaData{⊤})
 inductive-recursive description.\footnote{
   It also happens to be a trivially infinitary type,
@@ -854,7 +854,7 @@ module _ where
   
     eval : Arith → ℕ
     eval (Num n) = n
-    eval (Prod a f) = prod (eval a) (λ a → eval (f a))
+    eval (Prod a f) = prod (eval a) (λ i → eval (f i))
 \end{code}
 
 Our pattern functor models the \textit{slice-based} and
@@ -878,7 +878,7 @@ module _ where
   
     Arith₂ : Arith₁ → ℕ
     Arith₂ (Num n) = n
-    Arith₂ (Prod a f) = prod (Arith₂ (a tt)) (λ a → Arith₂ (f a))
+    Arith₂ (Prod a f) = prod (Arith₂ (a tt)) (λ i → Arith₂ (f i))
 
   Arith : Set/ ℕ
   Arith = Arith₁ , Arith₂
@@ -1190,8 +1190,8 @@ In previous sections on
 non-dependent types (\refsec{nondepalgmod}),
 infinitary types (\refsec{infalgmod}),
 and dependent types (\refsec{depalgmod}),
-the formal model (i.e. a model in type theory)
-corresponded to the Agda model (i.e. a model in an implementation of type
+the formal model (i.e., a model in type theory)
+corresponded to the Agda model (i.e., a model in an implementation of type
 theory).
 Unfortunately, this is not the case for the formal model
 presented for inductive-recursive types in \refsec{iralgmod}.

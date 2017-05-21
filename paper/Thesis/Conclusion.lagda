@@ -94,7 +94,7 @@ generic programs that we could write in our modeled closed dependently
 typed language. For future work, we would like to add universe level
 quantification as a code of our universe, so that the types of
 definitions like \Fun{`ℕ} and \Fun{count} can be \textit{internalized}
-(i.e. made to appear within the brackets).
+(i.e., made to appear within the brackets).
 
 
 \section{Large Induction-Recursion}
@@ -128,7 +128,7 @@ function would allow the codomain to be any superkind.
 In \refchap{fullyg}, we mention that we
 can hide our algebraic encodings via smart constructors and pattern
 synonyms, when defining \textit{concrete} functions
-(i.e. over concrete datatypes).
+(i.e., over concrete datatypes).
 However, we need to understand the underlying
 \Con{init}ial-algebra base encoding,
 when defining \textit{fully generic functions}.
@@ -196,7 +196,7 @@ by induction on closed higher-order domains.
 
 Generic programming, within dependently typed programming languages,
 over a universe closed under a fixed collection of type formers
-(e.g. \refsec{closedvecu}) has a rich history.
+(e.g., \refsec{closedvecu}) has a rich history.
 If we consider such a universe to be a model of a
 \textit{closed} dependently typed programming language, then users of that
 language may use its fixed collection of types, but may not declare
@@ -204,7 +204,7 @@ their own domain-specific types.
 
 Inspired by categorical models of algebraic semantics, which model
 algebraic datatypes as least-fixed points of pattern functors,
-type theorists have also defined formal models (i.e. in type theory)
+type theorists have also defined formal models (i.e., in type theory)
 of algebraic semantics. We can view strictly-positive polynomial
 functors (\Data{Desc}) as codes of a universe,
 whose meaning is their fixpoints (\Data{μ₁}).

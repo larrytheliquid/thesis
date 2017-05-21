@@ -42,7 +42,7 @@ Leveling a function primarily involves 2 things:
 \begin{enumerate}
 \item The type of the fully generic function must be
   \textit{internalized} as a kind
-  (i.e. we move from level 0, to the subsequent level, 1).
+  (i.e., we move from level 0, to the subsequent level, 1).
 \item Additional cases must be handled, for the closed kinds
   \Con{`Set} and \Con{`Desc}, and their associated
   lifting functions (\Con{`⟦\_⟧}, \Con{`⟦\_⟧₁}, and \Con{`μ₁'}).
@@ -336,8 +336,8 @@ defined at level 2, \Fun{CountSet} and \Fun{CountDesc} are defined at
 level 1.
 
 The definitions of \Fun{CountSet} and \Fun{CountDesc} are in
-\reffig{Count1}. They count each type (e.g. \Con{`Σ}) and
-description (e.g. \Con{`σ}) the same way that
+\reffig{Count1}. They count each type (e.g., \Con{`Σ}) and
+description (e.g., \Con{`σ}) the same way that
 \Fun{count} and \Fun{counts} (\reffig{count0}) count values.
 
 For example, the \Con{`Σ} case of \Fun{CountSet}
@@ -362,7 +362,7 @@ level 1, so kinds at level 2 are uninhabited. If we defined another
 version of \Fun{count} and all the associated function at universe
 level 3 (of superkinds), then the kind and lifiting cases of
 \Fun{CountSet} at level 3 would call their variants at level 2
-(e.g. the \Con{`Set} case of \Fun{CountSet} at level 3 would
+(e.g., the \Con{`Set} case of \Fun{CountSet} at level 3 would
 pass its argument to \Fun{CountSet} of level 2).
 
 \subsection{Leveled Generic Template}\label{sec:template1}

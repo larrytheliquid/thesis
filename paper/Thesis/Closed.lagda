@@ -78,7 +78,7 @@ is defined in \refsec{iralgmod}.
 In the vector example of \refsec{iralgtps} we saw that \textit{indexed types}
 can be derived from \textit{inductive-recursive types} and
 \textit{equality constraints}
-(i.e. use of identity type). In our universe below, we want to encode
+(i.e., use of identity type). In our universe below, we want to encode
 indexed types in addition to inductive-recursive types, thus we
 replace \Con{`W} with \Con{`μ₁}, \textit{and} add
 \Con{`Id}.
@@ -124,7 +124,7 @@ is equal to false, using the identity type.
 \end{code}
 
 Above, the proposition (\Fun{`Bottom}) can be encoded in the
-universe (i.e. defined as a value of \Data{`Set})
+universe (i.e., defined as a value of \Data{`Set})
 by using the encoded identity type
 (\Con{`Id}, rather than \Data{Id}).
 Additionally, the type of the compared values
@@ -146,7 +146,7 @@ constructor, which is the source of openness of our universe.
 To discover why \Data{`Set} actually defines an \textit{open}
 universe, let's try
 to define the type of natural numbers in the universe
-(i.e. as a member of \Data{`Set}).
+(i.e., as a member of \Data{`Set}).
 
 \begin{code}
   NatDs : Bool → Desc ⊤
@@ -365,7 +365,7 @@ Because open descriptions expect an
 \textit{open type} (\Data{Set}) parameter, we must apply the meaning
 function of types (\Fun{⟦\_⟧}) to the closed type \Var{O}, to ensure
 that our parameter for open descriptions is well-typed
-(i.e. is a \Data{Set} rather than a \Data{`Set}).
+(i.e., is a \Data{Set} rather than a \Data{`Set}).
 
 Finally, recall that our naive attempt
 (in \refsec{naiveclosed}) at closing the universe failed
@@ -479,7 +479,7 @@ the open version in \refsec{iralgtps}. While we encode the closed type
 of natural numbers as \Fun{`ℕ}, we also interpret it as the open type
 \Fun{ℕ} in our formal model. While we \textit{encode types} in
 a closed way, we can \textit{use values} of the underlying open formal
-model. That is why constructors (e.g. \Fun{zero} and \Fun{suc}, below)
+model. That is why constructors (e.g., \Fun{zero} and \Fun{suc}, below)
 appear no differently than in \refsec{iralgtps}.
 
 \begin{code}
@@ -547,9 +547,9 @@ open description in \refsec{iralgtps} by replacing every instance of
 an open type with a closed type. For example, the decoding function
 codomain is the natural numbers, as specified by applying the type of
 closed descriptions (\Data{`Desc}) to the type of closed natural
-numbers (i.e. \Fun{`ℕ}, which we just defined above).
+numbers (i.e., \Fun{`ℕ}, which we just defined above).
 Every first argument to \Con{`σ} and \Con{`δ} is a
-closed type (i.e. one with a backtick). The \Var{A} parameter of
+closed type (i.e., one with a backtick). The \Var{A} parameter of
 \Fun{VecDs} and \Fun{Vec} is also a closed type (\Data{`Set}).
 
 \begin{code}
@@ -622,7 +622,7 @@ natural number argument (\Fun{ℕ}) is defined as the
 (\Data{`Set}) remains uninterpreted. Keeping the closed type
 (\Data{`Set}) argument uninterpreted is the key to writing fully
 generic functions (in \refchap{fullyg}) by pattern matching against
-closed type codes (i.e. the constructors of \Data{`Set}).
+closed type codes (i.e., the constructors of \Data{`Set}).
 
 \paragraph{Finite Sets}
 
@@ -770,7 +770,7 @@ module _ where
   
     eval : Arith → ℕ
     eval (Num n) = n
-    eval (Prod a f) = prod (eval a) (λ a → eval (f a))
+    eval (Prod a f) = prod (eval a) (λ i → eval (f i))
 \end{code}
 
 Below, we define the closed description of arithmetic expressions,
@@ -947,7 +947,7 @@ Thus, \Fun{`DescU} is the evidence that
 is a \textit{parameterized} universe (\refsec{paru}),
 where the parameter \Var{O} represents the codomain of the decoding
 function of the closed inductive-recursive algebraic datatypes.
-If we modeled standard (i.e. not inductive-recursive) dependent
+If we modeled standard (i.e., not inductive-recursive) dependent
 algebraic datatypes (like in \refsec{depalgmod}), then
 this parameter would disappear.
 
@@ -1029,10 +1029,10 @@ Typically, we are interested
 in closing over a universe of types, so our initial \Var{K} will be
 the kind of open types (\Data{Set}), and its formation rules will
 be some finite collection of \textit{type formers}
-(e.g. \Data{Bool}, \Data{Id}, \Data{Σ}, \Data{μ₁}, etc.)
-Subsequently, other kinds \Var{K} (e.g. \Data{Desc})
+(e.g., \Data{Bool}, \Data{Id}, \Data{Σ}, \Data{μ₁}, etc.)
+Subsequently, other kinds \Var{K} (e.g., \Data{Desc})
 that we encounter have
-\textit{constructors} (e.g. \Con{ι}, \Con{σ}, and \Con{δ})
+\textit{constructors} (e.g., \Con{ι}, \Con{σ}, and \Con{δ})
 as their formation rules.
 For example, consider closing over the subset of the
 kind \Data{Set} below.
@@ -1203,10 +1203,10 @@ the closed descriptions meaning function (\Fun{⟪\_⟫}),
 \textit{already} have kind \Data{`Set}.
 In all three of these places, \textit{and} in the body of
 the closed descriptions meaning function (\Fun{⟪\_⟫}),
-references (e.g. \Var{A}) to kinds
+references (e.g., \Var{A}) to kinds
 \Data{`Set} \textit{already}
 have the meaning function of closed types
-applied to them (e.g. \Fun{⟦} \Var{A} \Fun{⟧}).
+applied to them (e.g., \Fun{⟦} \Var{A} \Fun{⟧}).
 
 \paragraph{Step 3.2}
 
@@ -1311,9 +1311,9 @@ that only \textit{kind} arguments of the original type
 formers are encoded, and the meaning function is only applied to
 members of kinds. This explains why the \Data{ℕ} argument of the
 vector type former (encoded as \Con{`Vec}) did \textit{not} get
-encoded. Hence, we \textit{did not} create a code (i.e. \Con{`ℕ})
+encoded. Hence, we \textit{did not} create a code (i.e., \Con{`ℕ})
 and meaning function for the \textit{type} of natural numbers, but we
-\textit{did} (i.e. \Con{`Desc}) for the \textit{kind} of descriptions.
+\textit{did} (i.e., \Con{`Desc}) for the \textit{kind} of descriptions.
 Additionally, the type meaning function
 (\Fun{⟦\_⟧}) does not recurse on \Var{n} in the \Con{`Vec} case, nor
 does the description meaning function (\Fun{⟪\_⟫})
@@ -1352,7 +1352,7 @@ elements of the list).
 because its collection of values is open.
 Hence, whenever a new type is declared (in open type theory), it can
 be used as the \Var{A} parameter
-(e.g. by applying \Data{List} to \Data{Bool}, \Data{Tree}, etc.).
+(e.g., by applying \Data{List} to \Data{Bool}, \Data{Tree}, etc.).
 This is because the kind of the \Var{A} parameter is \Data{Set}, the
 canonical source of openness.
 
@@ -1453,7 +1453,7 @@ We can split a datatype declaration into 2 parts.
 
 The formation rules of kind \Data{Set} are defined by the
 \textit{signature} part of datatype declarations, but the collection
-of formation rules is \textit{open} to extension (i.e. whenever a new
+of formation rules is \textit{open} to extension (i.e., whenever a new
 type is declared).
 In contrast, the formation rules of kind \Data{Desc} is defined by the
 \textit{body} part of its datatype declaration, using the
@@ -1544,11 +1544,11 @@ possible in \refsec{kindparam}). On the other hand, below we gratuitously declar
 \subsection{Types versus Descriptions}
 
 In an open type theory like Agda, \Data{Set} is a unique kind because
-it is \textit{not} inductively defined (i.e. it has an open collection
+it is \textit{not} inductively defined (i.e., it has an open collection
 of formation rules, extended by type formers in the signature of
 datatype declarations).
 Every other kind (like \Data{Desc}) is defined by
-a closed collection of formation rules (i.e. the constructors in the body
+a closed collection of formation rules (i.e., the constructors in the body
 of the datatype declaration for the kind).
 
 The open versus closed formation rules distinction between kinds
@@ -1633,7 +1633,7 @@ appears as an argument to the \textit{type} former of \Data{μ₁}. This
 is similar to how the \textit{kind} \Data{Set} appears as an argument
 to the \textit{type} former of \Data{Vec}. However, this leads us to the
 next question: why can a type like \Data{Vec} have a kind-level type
-former argument (i.e. its parameter \Var{A} of kind \Data{Set})
+former argument (i.e., its parameter \Var{A} of kind \Data{Set})
 while remaining a type itself (rather than being lifted to a
 kind)? The answer has to do with both \Data{Vec} and \Data{μ₁} being
 defined as \textit{kind-parameterized} types.
@@ -1660,7 +1660,7 @@ Vectors are \textit{types}, rather than \textit{kinds},
 because the codomain of their type former is \Data{Set} (rather than
 \Data{Set₁}). An algebraic datatype can consistently be classified as
 a \textit{type} so long as its constructors do not contain a
-kind (e.g. \Data{Set}) as a formal argument. Datatype \textit{parameters}
+kind (e.g., \Data{Set}) as a formal argument. Datatype \textit{parameters}
 give us a way to refer to \Var{A} (of kind \Data{Set}) in the vector constructors,
 without actually taking \Var{A} as a formal argument in the
 \textit{declaration} of each constructor.
@@ -1778,11 +1778,11 @@ used in a significant way. The interpretation function (\Fun{⟦\_⟧₁})
 is applied to the \Var{D} parameter to compute the \textit{type} of
 the argument to \Con{init}. While \Fun{⟦\_⟧₁} takes a \textit{kind}
 (\Var{D}) as an input, it returns a type as an output. Hence,
-\Con{init} never actually stores a description (i.e. a kind) as a
+\Con{init} never actually stores a description (i.e., a kind) as a
 formal argument.
 
 We discuss the significance of computing over a
-\textit{large} (i.e. a \textit{kind}) parameter in a constructor
+\textit{large} (i.e., a \textit{kind}) parameter in a constructor
 argument of a \textit{type} in \refchap{future}.
 The consequence is that fixpoints can be defined as a
 \textit{type}, hence they model algebraic datatypes as types, whose
@@ -1829,8 +1829,8 @@ rather than a type.
 The first closed universe (of \refsec{closed}) cannot encode
 kinds like \Data{Set}, \Data{Desc}, and \Data{HList}.
 However, \refchap{hier} defines a closed hierarchy of universes, allowing
-kinds to be represented in the next (i.e. second) universe
-(i.e. the universe of closed kinds). Further levels of the universe
+kinds to be represented in the next (i.e., second) universe
+(i.e., the universe of closed kinds). Further levels of the universe
 correspond to closed superkinds (\Data{Set₂}), and so on
 (\Data{Set₃}, \Data{Set₄}, ... , \Data{Set$_\omega$}).
 

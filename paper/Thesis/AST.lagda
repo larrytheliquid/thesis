@@ -82,7 +82,7 @@ constructor represents and how it affects the translation to DOT code:
   If the \Data{Bool} argument is \Con{true}, then a rectangle is
   drawn around the node.
 \item{\Con{lam}:} Used for higher-order values
-  (i.e. the function case \Con{`Π} and the infinitary case \Con{`δ}).
+  (i.e., the function case \Con{`Π} and the infinitary case \Con{`δ}).
   The name of the node is ``$\lambda$'', and is colored \textit{black}.
 \end{itemize}
 
@@ -127,7 +127,7 @@ Additionally, we will define (in \refsec{asts}) \Fun{asts} to fully
 generically translate algebraic arguments (of \Con{init}),
 to a \textit{list} of \Fun{AST}s.
 Recall that the first argument of the \Con{tree} constructor of
-\Fun{AST} (i.e. \Data{Rose} specialized to \Data{Node}) is a
+\Fun{AST} (i.e., \Data{Rose} specialized to \Data{Node}) is a
 \Data{Node}. The second argument to \Con{tree} is a list of other rose
 trees (or \Fun{AST}s). Hence, \Fun{asts} returns a \Data{List} of
 \Fun{AST}s, as it will be used
@@ -305,7 +305,7 @@ rather than $n$ nested pairs. This is why each case of
   (\Con{\_,\_}) as its child node. The first component of the pair
   would be the \Fun{head} of \Var{xs}.
   The second component of the pair
-  child node would be a nested sequence of pairs, i.e. the
+  child node would be a nested sequence of pairs, i.e., the
   nested representation of the \Fun{tail}
   of arguments \Var{xs}.
   }

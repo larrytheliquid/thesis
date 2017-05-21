@@ -141,7 +141,7 @@ albeit one with additional
 indexing and containing additional data in the form of termination
 witnesses. The fundamental theorem,
 used to prove that the operational semantics terminates,
-is defined over this universe (i.e. the logical relation is one of its
+is defined over this universe (i.e., the logical relation is one of its
 arguments). Hence, the fundamental theorem can be
 seen as a \textit{fully generic} function. Many lemmas used in the
 proof of termination can likewise be seen as fully generic
@@ -201,7 +201,7 @@ Benke et al.~\cite{benke:generic}
 perform generic programming in the domain of universal
 algebra. Various restrictions of the open inductive-recursive universe
 of \refsec{iralgmod} are used
-for each algebra (e.g. one-sorted term algebras, many-sorted
+for each algebra (e.g., one-sorted term algebras, many-sorted
 term algebras, parameterized term algebras, etc.). Some of these
 algebras restrict the universe to be finitary, some remain infinitary,
 but all of them restrict the use of induction-recursion. As they
@@ -298,7 +298,7 @@ argument. Hence, we cannot statically determine the number of
 remaining constructor arguments, encoded by
 the second argument of \Con{σ},
 because its type may depend on the first argument of \Con{σ}
-(i.e. a value, only dynamically available).
+(i.e., a value, only dynamically available).
 
 Sijsling reflects datatype declarations written in high-level Agda
 (using Agda's reflection machinery),

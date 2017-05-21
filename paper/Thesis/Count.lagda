@@ -367,7 +367,7 @@ The first argument to the \textit{closed description} \Con{`δ} is a
 can pattern match against the closed unit type (\Con{`⊤}). This allows
 us to distinguish how we count \textit{inductive} arguments from how
 we count \textit{infinitary} arguments, and is \textit{only possible} because
-our universe is \textit{closed} (i.e. if the argument had kind
+our universe is \textit{closed} (i.e., if the argument had kind
 \Data{Set}, it would be open and we could not pattern match against
 it)!
 
@@ -554,7 +554,7 @@ encoded as \textit{trivially infinitary} types,
 using the unit type (\Data{⊤}) as the domain of the infinitary
 function. The \textbf{Inductive} case of \Fun{counts} is able to
 recursively count
-the inductive body of the \Fun{suc}cessor (i.e. \Fun{zero}) because it
+the inductive body of the \Fun{suc}cessor (i.e., \Fun{zero}) because it
 is able to pattern match against the closed type \Con{`⊤} to
 distinguish counting inductive (or trivially-infinitary)
 arguments from counting (truly) infinitary arguments.
@@ -696,7 +696,7 @@ by its type).
 \end{code}
 
 Our examples count vectors of pairs of strings.
-The generic \Fun{count} of the empty vector (i.e. \Fun{nil}) of pairs
+The generic \Fun{count} of the empty vector (i.e., \Fun{nil}) of pairs
 of strings is 5, the sum of 1 for \Con{init}, \Con{true}, \Con{tt},
 (\Con{,}), and \Con{refl}.
 

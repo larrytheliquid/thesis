@@ -34,7 +34,7 @@ We have already seen many generic functions fitting this pattern in
 \refsec{types} and \refsec{universes}. Below we reconsider some of
 them, while classifying them by different forms of polymorphism. In
 each of these examples, we emphasize the definition of
-\AgdaData{Code} (i.e. what the function is polymorphic over).
+\AgdaData{Code} (i.e., what the function is polymorphic over).
 
 
 \section{Parametric Polymorphism}\label{sec:parapoly}
@@ -42,13 +42,13 @@ each of these examples, we emphasize the definition of
 A \textit{parametrically polymorphic} function is defined uniformly
 over its codes and their meanings. That is, the function does not inspect the
 type of codes and therefore does not behave differently for any code
-or its \textit{interpretation} (i.e. it does not behave differently for
+or its \textit{interpretation} (i.e., it does not behave differently for
 different values in the type returned by the meaning function applied
 to a code).
 
 \subsection{Parametric over Types}
 
-A common form of parametric polymorphism is over types( i.e. where
+A common form of parametric polymorphism is over types( i.e., where
 \AgdaFun{Code} is defined to be \AgdaData{Set}).
 
 \AgdaHide{
@@ -69,7 +69,16 @@ type \AgdaVar{A} that it is applied to.
 \subsection{Parametric over Levels}\label{sec:levelpoly}
 
 Functions can also be defined parametrically over universe
-\AgdaData{Level}s. Types in Agda are arranged in a hierarchy, where
+\AgdaData{Level}s.\footnote{
+  Here, a ``universe'' refers to all types, or all kinds, or
+  all superkinds, etc. This use of the word universe is distinct from
+  a type of codes and a meaning function. While these are related (the
+  former is the image of the meaning function of the latter), the
+  former refers to a level in a hierarchy of types, while the latter is a
+  technical formal device used for generic programming or modeling a
+  domain. 
+}
+Types in Agda are arranged in a hierarchy, where
 base types are classified by \AgdaData{Set0}, kinds are classified by
 \AgdaData{Set1}, superkinds are classified by \AgdaData{Set2}, and so
 on. Rather than defining different functions operating over types in
