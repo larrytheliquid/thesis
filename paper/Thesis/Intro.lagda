@@ -18,13 +18,13 @@ In this dissertation we expand the class of functions that can be
 written generically for all types, in a type-safe manner,
 within a dependently typed
 language~\cite{martinintuitionistic,genericwithdtp}.
-Below, we contrast typical
+Below, we contrast traditional
 generic programming~\cite{generic1,generic2}
 with the approach we describe in this thesis,
 which we call \textit{fully generic programming}.
 
-\paragraph{Generic Programming}
-Typical generic programming captures the pattern of folding an
+\paragraph{Traditional Generic Programming}
+Traditional generic programming captures the pattern of folding an
 algebra through the \textit{inductive} occurrences of an algebraic
 datatype.
 For example, we could write a generic \AgdaFun{size} function, that
@@ -33,7 +33,7 @@ For any constructor of any datatype, \AgdaFun{size}
 returns 1 plus the sum of:
 \begin{itemize}
 \item The number of non-inductive arguments.
-\item The \textit{recursive} sum of the number of inductive arguments.
+\item The \textit{recursive} \Fun{size} of the inductive arguments.
 \end{itemize}
 Applying \AgdaFun{size}
 to a single-element list containing a pair of
@@ -56,8 +56,8 @@ can also be applied to \textit{any} datatype.
 For any constructor of any datatype, \AgdaFun{count}
 returns 1 plus the sum of:
 \begin{itemize}
-\item The \textit{recursive} sum of the number of non-inductive arguments.
-\item The \textit{recursive} sum of the number of inductive arguments.
+\item The \textit{recursive} \Fun{count} of the non-inductive arguments.
+\item The \textit{recursive} \Fun{count} of the inductive arguments.
 \end{itemize}
 Applying \AgdaFun{count}
 to a single-element list containing a pair of
@@ -85,7 +85,7 @@ and finally cover our thesis statement and contributions
 
 A standard dependently typed
 language~\cite{martin1975intuitionistic,nordstrom1990programming} is
-\textit{purely functional} (meaning the absence of side effects),
+\textit{purely functional} (meaning an absence of side effects),
 \textit{total}
 (meaning all inductively defined functions
 terminate and cover all possible inputs), and has a
@@ -102,11 +102,11 @@ notion of dependency between types allows any proposition of
 intuitionistic logic to be expressed as a type.
 A value (or equivalently, a total program) inhabiting a
 type encoding a proposition serves as its intuitionistic proof. This
-correspondence between values \& types, and proofs \& propositions, is known
+correspondence between values and types, and proofs and propositions, is known
 as the \textit{Curry-Howard isomorphism}~\cite{curryhoward}.
 For example, below we compare universally quantified
 propositions to dependent function types, and existentially
-propositions to dependent pair types.
+quantified propositions to dependent pair types.
 $$
 \forall x.~ \mrm{P}(x) \approx (\Var{x} : \Var{A}) \arr \Fun{P}~\Var{x}
 $$
@@ -198,7 +198,7 @@ property about the codomain of \Fun{append}.
 Another example of an indexed type is the type of finite sets
 (\Data{Fin} \Var{n}), indexed by a natural number constraining
 the size of the finite set. A finite set
-is like a subset of the of the natural numbers from 0 to \Var{n} - 1. 
+is like a subset of the natural numbers from 0 to \Var{n} - 1. 
 This subset property
 (whose maximum value is \Var{n} - 1) is the perfect datatype to act as
 an \textit{intrinsic} version of the \textit{extrinsic} less-than
@@ -230,13 +230,14 @@ mechanisms for \textit{code reuse}.
 Fully generic functions are predefined once-and-for-all to work with
 any datatype of the language, whether it is defined now or will be
 defined in the future.
-Programmers defining new types should be able to \textit{apply} fully generic
+Programmers defining new types should be able to
+\textit{apply} fully generic
 functions to them, and programmers should also be able to
-\textit{define} fully generic functions themselves.
+\textit{define} new fully generic functions themselves.
 
 \section{A Taste of Fully Generic Programming}\label{sec:fullyeg}
 
-Ordinary generic programming in dependently typed
+Generic programming in dependently typed
 languages~\cite{martinintuitionistic,genericwithdtp}
 is accomplished using a construction known as a universe
 (\refsec{universes}). Rather than explaining how universes work in
@@ -250,20 +251,20 @@ Haskell type classes
 makes sense, as \textit{ad hoc polymorphism} (\refsec{adhoc}) is a
 form of generic programming.
 
-Below we first develop the \Fun{size} function using generic
-programming (in Haskell and Agda),
+In the following, we first develop the \Fun{size} function using
+traditional generic programming (in Haskell and Agda),
 and then develop the \Fun{count} function using
 \textit{fully} generic programming
 (albeit over a fixed and small language,
 and also in Haskell and Agda),
-both described in the introduction (\refch{intro}).
+both described in the introduction.
 
-\subsection{Generic Programming}
+\subsection{Traditional Generic Programming}
 
-Recall (from \refch{intro}) that \Fun{size} returns the sum of all
+Recall (from the introduction) that \Fun{size} returns the sum of all
 inductive constructors, inductive arguments, and non-inductive
 arguments. Notably, \Fun{size} \textit{only} recurses into
-inductive arguments.
+inductive constructor arguments.
 
 \paragraph{Haskell}
 
@@ -316,7 +317,7 @@ module _ where
 \end{code}}
 
 In Agda, we start by declaring a new type (\Data{Size}),
-which is the syntactic reification of the types we
+which is a syntactic reification of the types we
 wish to generically program \Fun{size} for. Unlike the Haskell
 version, we must choose the types for which we will provide
 ``instances'' upfront.
@@ -357,20 +358,20 @@ same logic as the instances in the Haskell version above.
 \end{code}
 
 A significant difference with the Haskell version is that
-we explicitly supply the encoded type in recursive calls
-(i.e. \Con{`List} \Var{A} in the \Con{cons} case).
-\footnote{It is possible to make this an implicit argument so the Agda
+we supply the encoded type explicitly in recursive calls
+(i.e. \Con{`List} \Var{A} in the \Con{cons} case).\footnote{
+  It is possible to make this an implicit argument so the Agda
   surface language also infers it. However, the argument would still
-  be explicit in the underlying core language that the surface
-  language elaborates to.
+  be explicit in the underlying core language to which the surface
+  language elaborates.
   }
 
 \subsection{Fully Generic Programming}\label{sec:introcount}
 
-Recall (from \refch{intro}) that \Fun{count} returns the sum of all
+Recall (from the introduction) that \Fun{count} returns the sum of all
 inductive constructors, non-inductive constructors, inductive
 arguments, and non-inductive arguments. Notably, \Fun{count} recurses
-into inductive \textit{and} non-inductive arguments.
+into inductive \textit{and} non-inductive constructor arguments.
 
 \paragraph{Haskell}
 
@@ -417,15 +418,15 @@ instance (Count a) => Count [a] where
 
 The \texttt{Count} instances for pairs and lists are able to recurse
 into their non-inductive arguments because they have type class
-premises
+premises for their type parameters
 (e.g. the left of the arrow in
-\texttt{(Count a) => Count [a]} in the list instance)
-for their type parameters. This allows instances of one type
+\texttt{(Count a) => Count [a]} in the list instance).
+This allows instances of one type
 to recurse into instances of other types, and is called ad hoc
 polymorphism by \textit{coercion} (\refsec{coercion}). The etymology of
 the name is the idea that \texttt{count} for lists can be defined by
-``coercing'' the meaning of \texttt{count} for the parameterized type
-to the type of lists.
+``coercing'' the meaning of \texttt{count}
+for the parameter type of the lists.
 
 \paragraph{Agda}
 
@@ -519,11 +520,12 @@ $$
 
 \paragraph{Fixed Types Universe}
 
-We have a seen how to perform a limited version of
+In the \Fun{count} example
+(using the \Data{Count} universe),
+we have a seen how to perform a limited version of
 \textit{fully generic programming}, in
 which recursion into both \textit{non-inductive} and
-\textit{inductive} arguments is possible, in the \Fun{count} example
-using the \Data{Count} universe.
+\textit{inductive} arguments is possible.
 The problem with the \Data{Count} universe is that it is
 \textit{fixed} to a particular collection of types, chosen ahead of
 time.
@@ -554,8 +556,8 @@ datatypes (as in \refsec{depalg}).
 We call the type of codes for this universe
 \Data{Desc}, as they \textit{describe} algebraic datatype declarations.
 The meaning function for this universe, named \Data{μ}, interprets a
-declaration as the declared type.
-\footnote{As we see in the next section, another way to think about
+declaration as the declared type.\footnote{
+  As we see in the next section, another way to think about
   \Data{Desc} is a reification of pattern functors from initial
   algebra semantics, whose least fixed point is calculated by
   \Data{μ}.
@@ -635,7 +637,7 @@ datatype declarations \textit{and} fully generic programming.
 \subsection{Fully Generic versus Deriving}
 
 Finally, we would like to make an analogy:
-Having access to fully generic functions (e.g \Fun{count}) defined for
+Having access to fully generic functions (e.g. \Fun{count}) defined for
 all possible types is like \texttt{deriving} a type class instance for a
 datatype in Haskell. In both cases, users get to declare a new
 datatype and have access to functions operating over it
@@ -645,14 +647,15 @@ The big difference is that users of a closed but extensible
 dependently typed language (like a variant of Agda)
 may define fully generic functions
 themselves. Furthermore, because these are ordinary dependent
-functions defined within the language they are ensured to be type-safe.
+functions defined within the language, they are ensured to be type-safe.
 In contrast, users of
 a non-dependently typed language like Haskell must rely on compiler
-writers to provide them with derivable functions.
+writers to provide them with derivable functions for a
+fixed collection of type classes.
 
 \section{Class of Supported Datatypes}\label{sec:algclass}
 
-Previously (\refsec{fullyeg}) we introduced the idea of
+Previously (in \refsec{fullyeg}) we introduced the idea of
 \textit{fully generic programming} over a mutually defined
 universe, encoding a fixed
 collection of primitive types \textit{and} an extensible collection of
@@ -671,7 +674,7 @@ after finishing \parttitle{prelude}.
 
 We certainly want to support algebraic
 datatypes with \textit{dependencies} between their
-arguments. In a non-dependent language like Haskell the types of all
+arguments. In a non-dependent language like Haskell, the types of all
 arguments to constructors of an algebraic datatype can be defined
 independently. In Agda, the \textit{types}
 of subsequent constructor arguments can depend on the
@@ -726,8 +729,10 @@ capture intrinsic correctness properties:
   whose domain is the algebraic type and codomain is some type
   \AgdaVar{O}. For example,
   \Data{Arith}metic expressions (\refsec{irtypes}) of
-  ``Big Pi'' formulae, mutually defined with an \Fun{eval}uation
-  function returning the number they encode. The upper bound of
+  ``Big Pi'' formulae are an inductive-recursive type,
+  mutually defined with an \Fun{eval}uation
+  function (as their decoding function)
+  returning the number they encode. The upper bound of
   ``Big Pi'' arithmetic expressions is calculated using the mutually
   defined evaluation function. 
 \end{itemize}
@@ -744,12 +749,13 @@ indexed type.
 Thus, picking either indexed or inductive-recursive types is adequate
 to capture all of the algebraic types we would like to encode in our
 closed universe. We choose \textbf{inductive-recursive} types because
-there is little research on using them to even do ordinary generic
-programming.
+there is little research on using them to even do traditional generic
+programming, so we hope to make inductive-recursive types more popular
+by providing more examples of programming with them.
 
 \subsection{Smallness versus Largeness}
 
-There are 2 more significant reasons why picking
+There are two more significant reasons why picking
 induction-recursion to showcase generic programming is important. The
 first is merely an issue of encoding, but the second emphasizes that
 the isomorphism between indexed and inductive-recursive does not scale
@@ -789,8 +795,8 @@ choice would be to use
 \textbf{indexed inductive-recursive}~\cite{indexedinductionrecursion}
 algebraic types. These are a 3rd option for expressing intensional
 correctness properties of datatypes, where both indexing and
-induction-recursion are expressed naturally.
-\footnote{Interestingly, even indexed inductive-recursive types are
+induction-recursion are expressed naturally.\footnote{
+  Interestingly, even indexed inductive-recursive types are
   isomorphic to indexed types and inductive-recursive types in the
   small case~\cite{smallir}.
 }
@@ -916,10 +922,10 @@ idea of \textit{concreteness} (\refsec{abscon}) to help clarify what
 we mean by \textit{fully} generic programming. Programming
 total functions in type theory can be non-trivial, especially as the
 class of types we program over expands during generic programming, so
-review techniques to make total programming possible (\refsec{totality}).
+we review techniques to make total programming possible (\refsec{totality}).
 
 \paragraph{\chaptitle{closedtt}}
-This chapter serves as a mini-version of our thesis, giving examples
+This chapter contains examples
 of closed type theories (i.e. those that do not contain \Data{Set})
 supporting fully generic programming.
 We present (\refsec{closedvecu})
@@ -933,6 +939,11 @@ algebraic datatype declarations. Unfortunately, while this closed
 universe model is easy to define and supports fully generic
 programming, the \Data{W} type it
 uses to model algebraic types is inadequate for our purposes.
+Even though \Data{W} types are inadequate for our purposes,
+it is helpful to understand a closed universe of dependent types
+in this simpler setting, before understanding the more
+complicated (but adequate) version in
+\refch{closed}.
 
 \subsubsection{\parttitle{open}}
 
@@ -994,8 +1005,9 @@ containing algebraic types modeled using initial algebra semantics.
 
 In this chapter we also show how to extend \textit{fully generic functions}
 to also be \textit{universe-level generic}. We call such functions
-\textit{leveled fully generic functions}, and they can be applied to
-any type at any level of the universe hierarchy . Importantly, leveled
+\textit{leveled fully generic functions},
+and show that they can be applied to
+any type at any level of the universe hierarchy. Importantly, leveled
 fully generic programming is possible because our universe hierarchy
 model is closed (i.e. the hierarchy still does not contain \Data{Set},
 but additionally does not contain \Data{Level}).
@@ -1005,6 +1017,6 @@ but additionally does not contain \Data{Level}).
 Finally, we address
 \textbf{\chaptitle{related}},
 \textbf{\chaptitle{future}},
-and summarize our dissertation in the
-(\textbf{\chaptitle{conclusion}}).
+and summarize our dissertation in
+\textbf{\chaptitle{conclusion}}.
 

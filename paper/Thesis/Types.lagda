@@ -10,7 +10,7 @@ a collection of types (possibly closed under certain type formers).
 In this section we review different classes of types (e.g. indexed
 types, infinitary types, etc).
 This allows us to be clear about what each class adds
-to the express power of a language (i.e. what sorts of new values we
+to the expressive power of a language (i.e. what sorts of new values we
 can construct.)
 
 We also review properties of both types and universes
@@ -19,7 +19,7 @@ can use values (i.e. what elimination principles are valid for them).
 With a thorough understanding of classifications and
 properties of types and universes, we can precisely describe which
 classifications and properties we need to perform the main goal of
-this thesis, \textit{generic programming} (\refch{generic}) within
+this thesis, \textit{fully generic programming} (\refch{generic}) within
 \textit{closed type theory} (\refch{closedtt}).
 
 
@@ -42,7 +42,8 @@ $$
 (\AgdaVar{a} : \AgdaFun{A}) → \AgdaFun{B}~\AgdaVar{a}
 $$
 
-Values of function types are lambda expressions, for example the lambda
+Values of function types are lambda expressions,
+such as the lambda
 expression in the body of the identity function (\AgdaVar{id}) below.
 
 \AgdaHide{
@@ -66,10 +67,10 @@ values. The definition of a non-inductive type does
 not mention itself in the types of any of the arguments to its
 constructors.
 
-Functions are an example of a non-inductive type,
+Functions are an example of a non-inductive type
 because the domain and codomain of a $\lambda$ does not
 recursively mention the function type.
-Booleans are another example, because the \AgdaCon{true} and
+Booleans are another example because the \AgdaCon{true} and
 \AgdaCon{false} constructors do not have arguments.
 Below is the type of booleans, defined with the negation function
 \AgdaFun{not} as an example.
