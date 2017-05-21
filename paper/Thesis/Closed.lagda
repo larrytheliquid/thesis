@@ -1579,8 +1579,8 @@ focusing on the syntactic difference that a type former (of
 \Data{Set}) appears in the signature of a declaration,
 and a large constructor (of \Data{Desc}) appears in the body of a
 declaration, we can simply focus on the fact they are both formation
-rules of some kind. For example, below we list formation rules for
-kind \Data{Set} and kind \Data{Desc} in a unified way.
+rules of some kind. For example, below we list the formation rules for
+the kind \Data{Set} and the kind \Data{Desc} in a unified way.
 \begin{center}
  \begin{tabular}{||c | c ||} 
  \hline
@@ -1591,10 +1591,10 @@ kind \Data{Set} and kind \Data{Desc} in a unified way.
  \Con{ι} : (\Var{o} : \Var{O}) → \Data{Desc} \Var{O} \\ 
  \hline
  \Data{Vec} : (\Var{A} : \Data{Set}) (\Var{n} : \Data{ℕ}) → \Data{Set} &
- \Con{σ} : (\Var{A} : \Data{Set}) (\Var{D} : \Var{A} → \Data{Desc} \Var{O}) → \Data{Desc} \Var{O} \\
+ \makecell{\Con{σ} : (\Var{A} : \Data{Set}) \\ (\Var{D} : \Var{A} → \Data{Desc} \Var{O}) → \Data{Desc} \Var{O}} \\
  \hline
  \Data{μ₁} : (\Var{O} : \Data{Set}) (\Var{D} : \Data{Desc} \Var{O}) → \Data{Set} &
- \Con{δ} : (\Var{A} : \Data{Set}) (\Var{D} : (\Var{A} → \Var{O}) → \Data{Desc} \Var{O}) → \Data{Desc} \Var{O} \\ [1ex] 
+ \makecell{\Con{δ} : (\Var{A} : \Data{Set}) \\(\Var{D} : (\Var{A} → \Var{O}) → \Data{Desc} \Var{O}) → \Data{Desc} \Var{O}} \\ [1ex] 
  \hline
 \end{tabular}
 \end{center}
