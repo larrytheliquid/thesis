@@ -533,6 +533,8 @@ Now we define an Agda model of a
 Previously (in \refsec{hierwi}), we defined a formal model of the
 hierarchy as a datatype \textit{indexed} by the natural numbers, which
 Agda fails to recognize as a positive definition.
+The Agda model of a \textit{Closed Hierarchy of Well-Order Universes} is
+due to McBride~\cite{typeform}.
 
 Now, we define the hierarchy in 2 stages, allowing Agda to recognize
 the positivity of the definition. In the first stage,

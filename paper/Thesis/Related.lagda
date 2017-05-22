@@ -353,6 +353,11 @@ arguments.
 In another previous publication~\cite{diehl:levelingup},
 Sheard and I defined a closed hierarchy of algebraic (but not infinitary or
 inductive-recursive) types. That work is the basis of \refchap{hier}.
+The novel part of \refchap{hier} is adapting McBride's
+\textit{Closed Hierarchy of Well-Order Universes}~\cite{typeform}
+(reviewed in \refsec{hierwp}) to a
+\textit{Closed Hierarchy of Inductive-Recursive Universes}
+(presented in \refsec{hierir}).
 
 While our previous publication featured both description lifting
 functions, \Con{`⟦\_⟧₁} and \Con{`μ₁'}, it did \textit{not} feature
