@@ -9,7 +9,11 @@ open import Appendix
 
 \chapter{Fully Generic Functions}\label{ch:fullyg}
 
-In this chapter we formally model fully generic programming in a
+In this chapter\footnote{
+  This chapter is
+  adapted from work by myself and Sheard~\cite{diehl:gupdate},
+  as explained in \refsec{previous}.
+} we formally model fully generic programming in a
 closed dependently typed language. We write fully generic functions in
 the universe of \refsec{closed},
 supporting user-declared datatypes while remaining closed.

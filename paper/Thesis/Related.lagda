@@ -317,7 +317,7 @@ applying our closing procedure from \refsec{closing}.
 
 %% TODO ahmal
 
-\section{Previous Work}
+\section{Previous Work}\label{sec:previous}
 
 Now we discuss how the contributions of this dissertation relate to
 our previously published work.
@@ -325,7 +325,7 @@ our previously published work.
 \paragraph{Closed Universe Zero and Fully Generic Programming}
 
 In a previous publication~\cite{diehl:gupdate},
-we defined the closed universe of inductive-recursive
+Sheard and I defined the closed universe of inductive-recursive
 algebraic types, and wrote fully generic functions over the universe.
 That work is the basis of \refchap{closed} and \refchap{hier}.
 An important contribution of our dissertation from \refchap{closed},
@@ -351,7 +351,7 @@ arguments.
 \paragraph{Closed Universe Hierarchy and Leveled Fully Generic Programming}
 
 In another previous publication~\cite{diehl:levelingup},
-we defined a closed hierarchy of algebraic (but not infinitary or
+Sheard and I defined a closed hierarchy of algebraic (but not infinitary or
 inductive-recursive) types. That work is the basis of \refchap{hier}.
 
 While our previous publication featured both description lifting

@@ -7,7 +7,11 @@ open import Appendix
 
 \chapter{Closed Algebraic Universe}\label{ch:closed}
 
-In this chapter we formally model a closed type theory,
+In this chapter\footnote{
+  This chapter is
+  adapted from work by myself and Sheard~\cite{diehl:gupdate},
+  as explained in \refsec{previous}.
+} we formally model a closed type theory,
 or dependently typed language, supporting declared
 datatypes and fully generic programming. The high-level idea is to
 define a closed type theory, similar to the
@@ -31,9 +35,11 @@ by comparing and contrasting types and kinds (\refsec{kinds}).
 
 \paragraph{Major Ideas}
 
-The purpose of this chapter is to define a closed universe that models
+The purpose of this chapter
+is to define a closed universe that models
 a dependently typed language supporting user-declared types, so that
-we may perform fully generic programming over it in \refch{fullyg}.
+we may perform
+fully generic programming over it in \refch{fullyg}.
 The key to defining the universe is to define a closed universe of
 built-in types, which includes the type of fixpoints (\Data{μ₁})
 from \refsec{iralg} as a built-in type. Essentially, we are replacing

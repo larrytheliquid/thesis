@@ -19,7 +19,11 @@ data W (A : Set) (B : A → Set) : Set where
 \refchap{closed} demonstrates closing a universe of
 algebraic (inductive-recursive) \textit{types}, and
 \refchap{fullyg} demonstrates fully generic programming over that
-universe. In this chapter, we expand the closed universe of
+universe. In this chapter\footnote{
+  This chapter is
+  adapted from work by myself and Sheard~\cite{diehl:levelingup},
+  as explained in \refsec{previous}.
+}, we expand the closed universe of
 \refsec{closed} to also include \textit{kinds},
 \textit{superkinds}, and an infinite hierarchy of such
 classifications. Types (\Data{Set}) are classified by
