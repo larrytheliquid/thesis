@@ -1020,3 +1020,12 @@ Finally, we address
 and summarize our dissertation in
 \textbf{\chaptitle{conclusion}}.
 
+\subsubsection{Major Ideas}
+
+Each chapter (besides the introduction and the postlude chapters)
+is preceded by a paragraph titled \textbf{Major Ideas}.
+This paragraph explains the purpose of the chapter, and anything
+unconventional, to help prevent readers from getting lost in the
+details and forgetting the motivation. This paragraph may assume ideas
+explained within the chapter, so it may be necessary to reference the
+major ideas as the chapter is read.

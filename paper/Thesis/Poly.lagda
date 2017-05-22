@@ -36,6 +36,24 @@ them, while classifying them by different forms of polymorphism. In
 each of these examples, we emphasize the definition of
 \AgdaData{Code} (i.e., what the function is polymorphic over).
 
+\paragraph{Major Ideas}
+
+This chapter clarifies our definition of generic programming, relating it
+to parametric (\refsec{parapoly})
+and ad hoc (\refsec{adhoc}) polymorphism.
+It also introduces non-standard terminology, namely the properties of
+abstractness (\refsec{abstract})
+and concreteness (\refsec{concrete}), which can apply to both types
+and universes. This final bit of terminology allows us to precisely
+capture the universe properties
+(along with properties from \refsec{types} and
+\refsec{universes}) necessary to perform
+\textit{fully generic programming} in \refsec{fullygeneric}.
+We also include a section on dependently typed programming techniques
+used to write \textit{total functions} (\refsec{totality}), which
+often become necessary when writing sufficiently complex generic
+functions. The techniques of \refsec{totality} are primarily used in
+\refch{fullyg}.
 
 \section{Parametric Polymorphism}\label{sec:parapoly}
 

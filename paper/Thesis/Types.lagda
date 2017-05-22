@@ -22,6 +22,27 @@ classifications and properties we need to perform the main goal of
 this thesis, \textit{fully generic programming} (\refch{generic}) within
 \textit{closed type theory} (\refch{closedtt}).
 
+\paragraph{Major Ideas}
+
+The purpose of this chapter is to review mostly standard terminology used to
+classify types and universes in DTT. Expert readers may wish to skip this
+review. One deviation we make from standard terminology is calling a
+universe \textit{inductively defined} (\refsec{indu}). If the datatype
+of codes of a universe is inductive, then the universe represented by
+the codes is ``closed under'' certain type formers. Nevertheless, we
+call the universe \textit{inductive} to not confuse that concept with the
+idea of a \textit{closed} universe (one not defined in terms of
+\Data{Set}, as described in \refsec{closedu}). We also introduce some
+new terminology for describing universes,
+namely subordinate (\refsec{subord}) and
+autonomous (\refsec{autonomous}) universes. Finally, although the
+concept of open-versus-closed types and universes is well
+established, it is uncommon to focus on this distinction
+(we do so because a closed universe is essential for fully generic
+programming).
+By defining all of these concept, we can precisely capture the
+universe properties that are necessary to perform
+\textit{fully generic programming} in \refsec{fullygeneric}. 
 
 \section{Types}\label{sec:types}
 

@@ -49,6 +49,24 @@ language, including custom types!\footnote{
   operating over any appropriate type.
 }
 
+\paragraph{Major Ideas}
+
+This chapter gives two examples of closed universes that can serve
+as models of dependently typed languages. The first universe
+models a language with a fixed collection of
+of built-in types related to vectors (\refsec{closedvecu}).
+The second universe models a language supporting user-declared types,
+by including the type of well-orderings (\Data{W})
+as a built-in type (\refsec{wuni}). Although we could perform fully
+generic programming over this universe, the universe is
+inadequate for our purposes (\refsec{inad}). Nevertheless,
+it is easy to understand, and is good background material for
+the universe of user-declared types in \refch{closed}
+that we actually use for fully generic
+programming (which replaces the built-in well-order type \Data{W}
+with a built-in fixpoint type \Data{μ₁}).
+
+
 \section{Closed Vector Universe}\label{sec:closedvecu}
 
 In this section we present one example of a closed type theory, which
