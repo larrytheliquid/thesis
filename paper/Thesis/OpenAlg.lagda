@@ -51,6 +51,40 @@ inductive-recursive types as an \textit{open} universe
 to a \textit{closed} universe (\refsec{closed}),
 suitable for fully generic programming.
 
+\paragraph{Major Ideas}
+
+The purpose of this chapter is to define the type of
+fixpoints (\Data{μ₁}) used to model inductive-recursive types. This
+fixpoint type is added as a built-in type to our closed universe of
+user-declared types in \refch{closed}, over which we perform fully
+generic programming in \refch{fullyg}. This chapter reviews initial
+algebra semantics for datatypes, and does not
+contain a novel technical contribution. But, we build up to
+defining inductive-recursive fixpoints by starting from fixpoints for
+non-dependent types (\refsec{nondepalg}), then moving to infinitary
+non-dependent types (\refsec{infalg}),
+then moving to dependent types (\refsec{depalg}), and finally arriving
+at fixpoints for inductive-recursive types
+(\refsec{iralg}). Our non-technical contribution is relating initial
+algebra semantics for these progressively more complex classes of
+datatypes using common terminology, while providing both a categorical
+and formal model of each class of datatypes. The model of
+non-dependent types in \refsec{nondepalg}
+is the same as the model given by
+Norell~\cite{agdatut}. We make a minor extension of that model in
+\refsec{infalg} to support infinitary types. The model of
+inductive-recursive types in \refsec{iralg} is due to
+Dybjer and Setzer~\cite{inductionrecursion1,inductionrecursion2}
+In \refsec{depalg} we present a restriction of the model of Dybjer and
+Setzer to support dependent and infinitary types, but not
+inductive-recursive types. This restriction is somewhat interesting
+because its functors are still defined as a sequence of dependent pairs,
+ending in the unit type, or a ``dependent tuple''.
+More conventionally, dependent polynomials
+are not restricted to such a dependent tuple format. We only use
+dependent tuple functors for dependent types in \refsec{depalg} so
+that the explanation of functors for inductive-recursive types
+in \refsec{iralg} seems natural. 
 
 \section{Open Non-Dependent Types}\label{sec:nondepalg}
 
