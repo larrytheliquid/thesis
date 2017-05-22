@@ -123,6 +123,21 @@ by moving up a universe level. At universe level 1, the codomain of
 a small decoding function could be any kind, but a large decoding
 function would allow the codomain to be any superkind.
 
+\section{Induction-Induction}
+
+We close over small inductive-recursive types in \refsec{closed}.
+We have also applied our closing procedure
+(\refsec{closing}) to close
+over an encoding of small indexed inductive-recursive
+types~\cite{indexedinductionrecursion}. This dissertation does not
+cover the closed universe of indexed inductive-recursive because no
+problems arise when applying our closing procedure. Nordvall has shown how to
+formally model inductive-inductive types~\cite{nordvall:phd}. An
+inductive-inductive type is defined as a pair of mutually defined
+types, where the second type is indexed by the first. We have not yet attempted to
+close over a universe of inductive-inductive types, but we plan to in
+future work.
+
 \section{High-Level Generic Programming}
 
 In \refchap{fullyg}, we mention that we
