@@ -157,6 +157,32 @@ check for our closed hierarchy of inductive-recursive universes, making sure
 that the signature of every constructor in the universe can be
 internalized (the evidence is in \refapen{intern}).
 
+\paragraph{Major Points}
+
+The purpose of this chapter is to expand the closed universe of types
+from \refsec{closed} to a hierarchy of universes, including kinds,
+superkinds, etc. Because the universe of \refsec{closed}
+only models the \textit{types} of a dependently typed language, it
+does not model a language that supports \textit{polymorphism}. This is
+because there is no way to quantify over all types
+or descriptions (i.e., there is no code for \Con{`Set} or
+\Con{`Desc}). Because types and descriptions are \textit{kinds},
+a model of a language supporting polymorphism must model kinds in
+addition to types. We go one step further and model the entire
+closed hierarchy of universes (in \refsec{hierir}).
+Hence, the closed hierarchy of universes
+in this chapter models a dependently typed language that supports
+polymorphic functions, including fully generic ones!
+The fully generic functions of \refch{fullyg},
+like \Fun{count} of \refsec{gcount}, are written using the function space
+of Agda (our metalanguage), by quantifying over all
+\Data{`Set} and \Data{`Desc}. In contrast, in \refsec{lgcount}
+we write a fully generic \Fun{count} \textit{within} the
+dependently typed language that we are modeling,
+because the kind signature of the generic function can be
+internalized using codes from our hierarchy of universes
+(i.e., by quantifying over kind codes \Con{`Set} and \Con{`Desc}).
+
 \section{Closed Hierarchy of Well-Order Types}\label{sec:hierw}
 
 In this section we extend the
