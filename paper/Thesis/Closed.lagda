@@ -49,7 +49,7 @@ description codes for non-inductive arguments (\Con{`σ`})
 and infinitary arguments (\Con{`δ})
 can take a closed type (\Data{`Set}) as an argument
 (for the non-inductive argument type and the non-inductive infinitary domain,
-respectivelly).
+respectively).
 The closed codes of built-in types (\Data{`Set}) and the closed codes
 of functor descriptions (\Data{`Desc}) both have meaning functions
 that map the closed codes to their open equivalents. Specifically,

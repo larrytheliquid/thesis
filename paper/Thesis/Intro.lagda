@@ -91,7 +91,11 @@ language~\cite{martin1975intuitionistic,nordstrom1990programming} is
 terminate and cover all possible inputs), and has a
 type system that captures the notion of \textit{dependency}.
 In this thesis we use the dependently typed language
-Agda~\cite{lang:agda} for all of our developments.
+Agda~\cite{lang:agda} for all of our developments.\footnote{\raggedright{
+  This dissertation is written as a literate Adga program. The literate Agda
+  source file and accompanying code can be found at:
+  \url{https://github.com/larrytheliquid/thesis}
+}}
 
 \subsection{Curry-Howard Isomorphism}
 
@@ -259,7 +263,7 @@ and then develop the \Fun{count} function using
 and also in Haskell and Agda),
 both described in the introduction.
 
-\subsection{Traditional Generic Programming}
+\subsection{Traditional Generic Programming}\label{sec:introsize}
 
 Recall (from the introduction) that \Fun{size} returns the sum of all
 inductive constructors, inductive arguments, and non-inductive

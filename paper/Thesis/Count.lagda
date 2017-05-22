@@ -50,6 +50,41 @@ chapter we define three fully generic functions:
   tree.
 \end{enumerate}
 
+\paragraph{Major Points}
+
+The purpose of this chapter is to demonstrate examples of fully
+generic programming over the universe defined in
+\refsec{closed} (which also appears in \refapen{closed}). Traditional
+generic programs (as explained in the introduction
+of \refchap{intro}) only recurse into inductive constructor
+arguments. We could write a traditional generic \Fun{size} function,
+like the one in \refsec{introsize}, over the open universe of
+inductive-recursive types in \refsec{iralgagda}. We could also write
+other traditional generic functions that only need to recurse into
+inductive constructor arguments, such as \Fun{map} and
+\Fun{fold}. In contrast, this chapter focuses on writing fully generic
+programs, like the \Fun{count} function of \refsec{introcount}. Fully
+generic programs can recurse into \textit{both} the inductive and
+non-inductive arguments of constructors. In \refsec{gcount}, we define
+a fully generic \Fun{count} function over the closed universe of
+\refsec{closed}, modeling a dependently typed language supporting
+user-declared types. 
+Functions that marshal data into another format
+(such as binary, JSON, XML, etc.)
+are a prime example of fully generic programming. When marshaling
+data, it is not enough to marshal just the
+\textit{inductive structure} of values, we also want to marshal all of
+the \textit{non-inductive} values contained in the structure.
+\refsec{gast} features a fully generic function (\Fun{ast}) that
+marshals data into a common rose tree format, used to visualize values
+with Graphviz~\cite{graphviz}.
+The primary thing to notice in this chapter is that the definitions of
+generic functions recurse into non-inductive arguments. This includes
+recursion into both components of the built-in type of pairs
+(in the \Con{`Σ} case of closed built-in types \Data{`Set}),
+and recursion into the
+non-inductive constructor arguments (in the \Con{`σ} case of
+closed functor descriptions \Data{`Desc}).
 
 \section{Fully Generic Count}\label{sec:gcount}
 
