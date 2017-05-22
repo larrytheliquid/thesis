@@ -29,6 +29,35 @@ theory (\refsec{closing}), rather than just the universe we chose
 for generic programming in this dissertation. Finally, we conclude
 by comparing and contrasting types and kinds (\refsec{kinds}).
 
+\paragraph{Major Ideas}
+
+The purpose of this chapter is to define a closed universe that models
+a dependently typed language supporting user-declared types, so that
+we may perform fully generic programming over it in \refch{fullyg}.
+The key to defining the universe is to define a closed universe of
+built-in types, which includes the type of fixpoints (\Data{μ₁})
+from \refsec{iralg} as a built-in type. Essentially, we are replacing
+the \Data{W} type in the closed universe of \refsec{closedw} with
+the fixpoint type \Data{μ₁}. Crucially,
+this requires us to mutually define the
+universe of closed built-in types (\Data{`Set} in \refsec{closed}) with a
+\textit{closed} equivalent (\Data{`Desc} in \refsec{closed}) of the
+\textit{open} descriptions (\Data{Desc}) from \refsec{iralg}.
+This way, the code of closed fixpoints (\Con{`μ₁}) can take a closed
+description (\Data{`Desc}) as its argument, and the closed functor
+description codes for non-inductive arguments (\Con{`σ`})
+and infinitary arguments (\Con{`δ})
+can take a closed type (\Data{`Set}) as an argument
+(for the non-inductive argument type and the non-inductive infinitary domain,
+respectivelly).
+The closed codes of built-in types (\Data{`Set}) and the closed codes
+of functor descriptions (\Data{`Desc}) both have meaning functions
+that map the closed codes to their open equivalents. Specifically,
+the type meaning function (\Fun{⟦\_⟧}) maps a closed type \Data{`Set} to an open type
+\Data{Set}, and the description meaning
+function (\Fun{⟪\_⟫}) maps a closed description
+\Data{`Desc} to an open description \Data{Desc}.
+
 \section{Open Inductive-Recursive Types}\label{sec:naiveclosed}
 
 In this section, we present a naive, failing attempt at creating a
