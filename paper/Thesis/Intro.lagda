@@ -820,7 +820,7 @@ supporting functions defined by recursion into
 all non-inductive and inductive constructor arguments of all types in
 the universe, is possible over a universe that:
 \begin{itemize}
-\item{(\refsec{closedu})} Models a
+\item{(\refsec{closed})} Models a
   \textbf{dependently typed language}
   (or type theory, supporting the Curry-Howard isomorphism)
   with datatype declarations.
@@ -831,16 +831,16 @@ the universe, is possible over a universe that:
   in the universe of \refsec{closedw}).
 
 \item{(\refsec{fullygeneric})} Supports the
-  elimination of all values by:
+  elimination of all (i.e., inductive and non-inductive) values by:
   \begin{itemize}
     \item{(\refsec{indu})} being \textbf{inductively defined},
       allowing types to be closed under other types.
     \item{(\refsec{closedu})} being \textbf{closed}, by not 
-      containing values defined using \Data{Set} or \Data{Level}.
+      containing values defined using \Data{Set}.
     \item{(\refsec{autonomous})} being \textbf{autonomous}, by only
       containing values whose types are in the universe.
     \item{(\refsec{concrete})} being \textbf{concrete}, by only
-      containing types that have some elimination form.
+      containing types that have some elimination principle.
   \end{itemize}
 
 \end{itemize}

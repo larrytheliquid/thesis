@@ -96,9 +96,17 @@ This brings us to the primary ambition of this thesis, which we call
 \textit{fully generic programming}.
 A fully generic function is a special kind of ad hoc polymorphic
 function by coercion (\refsec{coercion}) with the additional property
-that the universe is concrete. By consequence, fully generic functions
-can eliminate any value or subvalue and recurse on any code or
-interpretation.
+that the universe is \textit{concrete}.\footnote{
+  Because the universe is both
+  \textit{inductively defined} (\refsec{indu})
+  and \textit{concrete} (\refsec{concrete}),
+  it is also \textit{closed} (\refsec{closedu}).
+  }
+By consequence, fully generic functions
+can eliminate any value or subvalue
+(including both inductive and non-inductive
+constructor arguments)
+and recurse on any universe code.
 
 \AgdaHide{
 \begin{code}
