@@ -679,7 +679,7 @@ intensionally (or, definitionally) distinct canonical forms for the model of
 \AgdaData{Tree} (whose initial declaration was first-order).\footnote{
   McBride also explains~\cite{winad} that W types are inadequate for
   representing inductive types in
-  Observational Type Theory (OTT)~\cite{altenkirch2007observational},
+  Observational Type Theory (OTT)~\cite{Altenkirch:2007:OE:1292597.1292608},
   where evidence of extensional equality is internalized in the types
   of the theory (unlike Extensional Type Theory, where the evidence is at
   the judgmental level). In OTT, coercion between extensionally
