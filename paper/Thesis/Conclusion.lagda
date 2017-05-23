@@ -166,6 +166,18 @@ Finally, note that Dagand~\cite{dagand2012elaborating} has already
 shown how to elaborate high-level datatype declarations to their
 description-based (\Data{Desc}) encodings.
 
+\section{Efficient Implementation}
+
+Al-Sibahi~\cite{alsibahi:masters} shows how to efficiently implement
+traditional generic programming over a
+(description-based) open algebraic universe of indexed types.
+He uses partial evaluation to remove most of the overhead associated
+with encoding datatypes as fixpoints of functor descriptions.
+It would be interesting to explore
+extending Al-Sibahi's work to fully generic programming
+over a closed universe, to see if any complications arise in the
+closed setting.
+
 \section{Termination of Intensional Closed Type Theory}
 
 In our related work (\refchap{related}), we discus
