@@ -173,7 +173,7 @@ or descriptions (i.e., there is no code for \Con{`Set} or
 \Con{`Desc}). Because types and descriptions are \textit{kinds},
 a model of a language supporting polymorphism must model kinds in
 addition to types. We go one step further and model the entire
-closed hierarchy of universes (in \refsec{hierir}).
+closed hierarchy of universes (in \refsec{hieriri}).
 Hence, the closed hierarchy of universes
 in this chapter models a dependently typed language that supports
 polymorphic functions, including fully generic ones!
@@ -206,7 +206,7 @@ setting where \Data{Set} is the only kind being closed over
 (\refsec{hierwi} and \refsec{hierwp}). With this
 background material under our belt, we move on to extending
 the \textit{Closed Inductive-Recursive Types} universe
-in \refsec{hierir}. There, we must close over a hierarchy
+in \refsec{hieriri}. There, we must close over a hierarchy
 involving two kinds,
 \Data{Set} and \Data{Desc}.
 

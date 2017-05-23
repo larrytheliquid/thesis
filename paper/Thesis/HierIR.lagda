@@ -21,7 +21,7 @@ We define the Agda model of the hierarchy
 (as in \refsec{hierwp}), skipping
 the formal model (as in \refsec{hierwi}).
 
-\subsection{Agda Model}\label{sec:hierir}
+\subsection{Agda Model}\label{sec:hieriri}
 
 Now we define an Agda model of a
 \textit{Closed Hierarchy of Inductive-Recursive Universes}.
@@ -731,7 +731,7 @@ module _ where
 
 As a sanity check for the construction of our
 \textit{Closed Hierarchy of Inductive-Recursive Universes}
-(\refsec{hierir}), we should be able to internalize each signature
+(\refsec{hieriri}), we should be able to internalize each signature
 (whether it be a type or kind) of every constructor of every datatype
 in the universe. This sanity check can be found in \refapen{intern}.
 

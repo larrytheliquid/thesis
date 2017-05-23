@@ -328,7 +328,7 @@ Finally, note that we establish another convention of ``quoting''
 description constructors with a backtick (e.g., \AgdaCon{`X} for $X$).
 This emphasizes that they are a syntactic encoding of polynomial set
 constructions. As we will see, quoting \AgdaData{Desc} constructors is
-natural as they also act as codes of a universe (\refsec{hierir}).
+natural as they also act as codes of a universe (\refsec{hieriri}).
 
 \paragraph{Pattern Functors}
 
