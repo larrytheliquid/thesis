@@ -672,11 +672,29 @@ The base cases of inductively defined datatypes using
 values. Recall that the base case \AgdaCon{leaf} had
 \texttt{⊥ → Tree A B} as its inductive argument. Because the
 domain of the function is bottom, we can write it many different
-ways (i.e., \AgdaFun{elim⊥}, \AgdaFun{elim⊥ ∘ elim⊥}, etc). Even
+ways (i.e., \AgdaFun{elim⊥}, \AgdaFun{elim⊥ ∘ elim⊥}, etc.). Even
 though all leaves containing such functions are extensionally
 equivalent, it is inadequate~\cite{winad} to have an infinite number of
 intensionally (or, definitionally) distinct canonical forms for the model of
-\AgdaData{Tree} (whose initial declaration was first-order).
+\AgdaData{Tree} (whose initial declaration was first-order).\footnote{
+  McBride also explains~\cite{winad} that W types are inadequate for
+  representing inductive types in
+  Observational Type Theory (OTT)~\cite{altenkirch2007observational},
+  where evidence of extensional equality is internalized in the types
+  of the theory (unlike Extensional Type Theory, where the evidence is at
+  the judgmental level). In OTT, coercion between extensionally
+  equal values requires explicit evidence of the extensional equality,
+  but this evidence is erased when coercing between equal values (rather than
+  neutral terms, and also assuming that the evidence is a value rather
+  than a neutral term). In OTT, the induction principle of an inductive
+  type can be derived from the induction principle of
+  \Data{W}. However, coercion only erases the equality evidence used
+  in the definition of the derived induction principle for one of
+  the infinitely many base cases of an inductive type
+  (for example, \Con{zero} as \Fun{elim⊥} would be erased,
+  but \Fun{elim⊥ ∘ elim⊥},
+  and subsequent compositions of \Fun{elim⊥}, would not).
+}
 
 \Data{W} types are inadequate for our purposes because
 we are interested in dependently typed languages (like Agda)
