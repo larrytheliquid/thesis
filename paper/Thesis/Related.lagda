@@ -317,6 +317,34 @@ applying our closing procedure from \refsec{closing}.
 
 %% TODO ahmal
 
+\paragraph{Arity-Generic and Datatype-Generic Programming}
+
+Weirich and Casinghino~\cite{Weirich:2010:ADP:1707790.1707799}
+demonstrate writing arity-generic and datatype-generic functions, such
+as a \Fun{map} function for any type
+(i.e., the datatype-generic part)
+with any number of datatype parameters
+(i.e., the arity-generic part). They also define generic \Fun{zip} and
+\Fun{eq}uality functions. Note that all of these functions are
+traditional generic programs, because they do not recurse into the
+structure of datatype parameters. Instead, functions like
+\Fun{eq}uality are parameterized by a function to compare the values
+of the parameterized types.
+
+The universe used by Weirich and Casinghino captures the class of
+datatypes that can be built from non-dependent functions, the unit
+type, natural numbers, non-dependent pairs, and disjoint
+unions. Some indexed types can be built this way, like vectors.
+But, their universe cannot represent indexed types whose constructor
+arguments have indices that are structurally larger than the index
+returned by the constructor.
+This is because their indexed types are derived
+as computational families (\refsec{compu}), as a non-dependent
+function in their universe, so a function deriving
+such an indexed type would not terminate. Additionally, their universe
+cannot represent indexed types with dependencies between indices,
+because their function-space is non-dependent.
+
 \section{Previous Work}\label{sec:previous}
 
 Now we discuss how the contributions of this dissertation relate to
