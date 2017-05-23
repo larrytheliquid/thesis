@@ -44,7 +44,9 @@ The key to defining the universe is to define a closed universe of
 built-in types, which includes the type of fixpoints (\Data{μ₁})
 from \refsec{iralg} as a built-in type. Essentially, we are replacing
 the \Data{W} type in the closed universe of \refsec{closedw} with
-the fixpoint type \Data{μ₁}. Crucially,
+the fixpoint type \Data{μ₁}.
+
+Crucially,
 this requires us to mutually define the
 universe of closed built-in types (\Data{`Set} in \refsec{closed}) with a
 \textit{closed} equivalent (\Data{`Desc} in \refsec{closed}) of the
@@ -56,6 +58,7 @@ and infinitary arguments (\Con{`δ})
 can take a closed type (\Data{`Set}) as an argument
 (for the non-inductive argument type and the non-inductive infinitary domain,
 respectively).
+
 The closed codes of built-in types (\Data{`Set}) and the closed codes
 of functor descriptions (\Data{`Desc}) both have meaning functions
 that map the closed codes to their open equivalents. Specifically,

@@ -49,6 +49,7 @@ capture the universe properties
 (along with properties from \refsec{types} and
 \refsec{universes}) necessary to perform
 \textit{fully generic programming} in \refsec{fullygeneric}.
+
 We also include a section on dependently typed programming techniques
 used to write \textit{total functions} (\refsec{totality}), which
 often become necessary when writing sufficiently complex generic

@@ -59,13 +59,15 @@ fixpoint type is added as a built-in type to our closed universe of
 user-declared types in \refch{closed}, over which we perform fully
 generic programming in \refch{fullyg}. This chapter reviews initial
 algebra semantics for datatypes, and does not
-contain a novel technical contribution. But, we build up to
+contain any novel technical contributions. But, we build up to
 defining inductive-recursive fixpoints by starting from fixpoints for
 non-dependent types (\refsec{nondepalg}), then moving to infinitary
 non-dependent types (\refsec{infalg}),
 then moving to dependent types (\refsec{depalg}), and finally arriving
 at fixpoints for inductive-recursive types
-(\refsec{iralg}). Our non-technical contribution is relating initial
+(\refsec{iralg}).
+
+Our non-technical contribution is relating initial
 algebra semantics for these progressively more complex classes of
 datatypes using common terminology, while providing both a categorical
 and formal model of each class of datatypes. The model of
@@ -74,7 +76,7 @@ is the same as the model given by
 Norell~\cite{agdatut}. We make a minor extension of that model in
 \refsec{infalg} to support infinitary types. The model of
 inductive-recursive types in \refsec{iralg} is due to
-Dybjer and Setzer~\cite{inductionrecursion1,inductionrecursion2}
+Dybjer and Setzer~\cite{inductionrecursion1,inductionrecursion2}.
 In \refsec{depalg} we present a restriction of the model of Dybjer and
 Setzer to support dependent and infinitary types, but not
 inductive-recursive types. This restriction is somewhat interesting
@@ -84,7 +86,8 @@ More conventionally, dependent polynomials
 are not restricted to such a dependent tuple format. We only use
 dependent tuple functors for dependent types in \refsec{depalg} so
 that the explanation of functors for inductive-recursive types
-in \refsec{iralg} seems natural. 
+in \refsec{iralg} progresses naturally from the explanation
+of functors for dependent types in \refsec{depalg}. 
 
 \section{Open Non-Dependent Types}\label{sec:nondepalg}
 

@@ -161,7 +161,7 @@ check for our closed hierarchy of inductive-recursive universes, making sure
 that the signature of every constructor in the universe can be
 internalized (the evidence is in \refapen{intern}).
 
-\paragraph{Major Points}
+\paragraph{Major Ideas}
 
 The purpose of this chapter is to expand the closed universe of types
 from \refsec{closed} to a hierarchy of universes, including kinds,
@@ -177,10 +177,11 @@ closed hierarchy of universes (in \refsec{hierir}).
 Hence, the closed hierarchy of universes
 in this chapter models a dependently typed language that supports
 polymorphic functions, including fully generic ones!
+
 The fully generic functions of \refch{fullyg},
 like \Fun{count} of \refsec{gcount}, are written using the function space
-of Agda (our metalanguage), by quantifying over all
-\Data{`Set} and \Data{`Desc}. In contrast, in \refsec{lgcount}
+of Agda (our metalanguage), by quantifying over
+\Data{`Set} and \Data{`Desc}. In contrast, in \refsec{lgcount},
 we write a fully generic \Fun{count} \textit{within} the
 dependently typed language that we are modeling,
 because the kind signature of the generic function can be

@@ -32,12 +32,14 @@ of codes of a universe is inductive, then the universe represented by
 the codes is ``closed under'' certain type formers. Nevertheless, we
 call the universe \textit{inductive} to not confuse that concept with the
 idea of a \textit{closed} universe (one not defined in terms of
-\Data{Set}, as described in \refsec{closedu}). We also introduce some
+\Data{Set}, as described in \refsec{closedu}).
+
+We also introduce some
 new terminology for describing universes,
 namely subordinate (\refsec{subord}) and
-autonomous (\refsec{autonomous}) universes. Finally, although the
+autonomous (\refsec{autonomous}) universes. Although the
 concept of open-versus-closed types and universes is well
-established, it is uncommon to focus on this distinction
+established, we focus on this uncommon distinction in this dissertation
 (we do so because a closed universe is essential for fully generic
 programming).
 By defining all of these concept, we can precisely capture the
