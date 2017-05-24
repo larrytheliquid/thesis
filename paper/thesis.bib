@@ -99,19 +99,20 @@
 @article{martinintuitionistic,
   title={Intuitionistic type theory.},
   author={Martin-L{\"o}f, Per},
-  journal={Notes by Giovanni Sambin},
   year = {1984},
-  location = {Bibliopolis, Naples},
+  journal={Notes by Giovanni Sambin},
+  note = {Bibliopolis, Naples},
   annote= "In this seminal work the author presents notes from a lecture series on Intuitionistic Type Theory given by Martin-L{\"o}f. The notes present each type as a package containing its formation rule, the introduction rules for its values, the elimination rules for its values, and the equality rules for its values. In particular dependent functions (\textPi), dependent pairs (\textSigma), and wellorderings / inductive types (W) are covered. Additionally, the important concept of a type theoretical universe is explained, which consists of a set of codes representing types, and a meaning function translating codes into concrete types. This notion of a universe is the primary method by which generic programming is performed in dependently typed languages."
 }
 
-@incollection{genericwithdtp,
+@inproceedings{genericwithdtp,
   title={Generic programming within dependently typed programming},
   author={Altenkirch, Thorsten and McBride, Conor},
-  booktitle={Generic Programming},
-  pages={1--20},
+  booktitle={Generic Programming. Proceedings of the IFIP TC2 Working Conference on Generic Programming},
   year={2003},
-  publisher={Springer}
+  publisher={Springer},
+  note={Held in Schloss Dagstuhl},
+  pages={1--20}
 }
 
 @inproceedings{generic1,
@@ -354,7 +355,7 @@ number=1}
 }
 
 @online{winad,
-  title={{W-types: good news and bad news. Blog post.}},
+  title={{W-types: good news and bad news. Blog post}},
   url = {http://mazzo.li/epilogue/index.html\%3Fp=324.html},
   year = {2010},
   month = mar,
@@ -362,7 +363,7 @@ number=1}
 }
 
 @online{typeform,
-  title={{Hier Soir, an OTT Hierarchy. Blog post.}},
+  title={{Hier Soir, an OTT Hierarchy. Blog post}},
   url = {http://mazzo.li/epilogue/index.html\%3Fp=1098.html},
   year = {2011},
   month = nov,
@@ -371,7 +372,7 @@ number=1}
 
 
 @online{diehl:irblog,
-  title={Inductive-Recursive Descriptions. Blog post.},
+  title={Inductive-Recursive Descriptions. Blog post},
   url = {http://spire-lang.org/blog/2014/08/04/inductive-recursive-descriptions/},
   year = {2014},
   month = aug,
@@ -403,20 +404,21 @@ number=1}
   publisher={College Publications}
 }
 
-@article{curryhoward,
+@inproceedings{curryhoward,
   title={The formulae-as-types notion of construction},
   author={Howard, William A},
-  journal={To HB Curry: essays on combinatory logic, lambda calculus and formalism},
+  booktitle={To HB Curry: essays on combinatory logic, lambda calculus and formalism},
   volume={44},
   pages={479--490},
-  year={1980}
+  year={1980},
+  organization={Academic Press}
 }
 
-@book{lang:agda,
+@phdthesis{lang:agda,
   title={Towards a practical programming language based on dependent type theory},
   author={Norell, Ulf},
   year={2007},
-  publisher={Chalmers University of Technology}
+  school={Chalmers University of Technology}
 }
 
 @article{lang:idris,
@@ -570,8 +572,8 @@ url = {http://bentnib.org/posts/2011-12-14-type-checker.html}
 }
 
 @book{lang:nuprl,
-  title={Implementing mathematics},
-  author={Constable, RL and Allen, SF and Bromley, HM and Cleaveland, WR and Cremer, JF and Harper, RW and Howe, DJ and Knoblock, TB and Mendler, NP and Panangaden, P and others},
+  title={{Implementing Mathematics with The Nuprl Proof Development System}},
+  author={Robert L. Constable and Stuart F. Allen and S. F. Allen and H. M. Bromley and W. R. Cleaveland and J. F. Cremer and R. W. Harper and Douglas J. Howe and T. B. Knoblock and N. P. Mendler and P. Panangaden and Scott F. Smith and James T. Sasaki and S. F. Smith},
   year={1986},
   publisher={Prentice-Hall}
 }
@@ -615,11 +617,11 @@ url = {http://bentnib.org/posts/2011-12-14-type-checker.html}
   publisher={ACM}
 }
 
-@article{dagand2012elaborating,
+@inproceedings{dagand2012elaborating,
   title={Elaborating inductive definitions},
-  author={Dagand, Pierre-Evariste and McBride, Conor},
-  journal={arXiv preprint arXiv:1210.6390},
-  year={2012}
+  author={Dagand, Pierre-Evariste and Mcbride, Conor},
+  booktitle={JFLA-Journ{\'e}es francophones des langages applicatifs},
+  year={2013}
 }
 
 @inproceedings{ko2013relational,
@@ -681,8 +683,9 @@ url = {http://bentnib.org/posts/2011-12-14-type-checker.html}
 
 @book{churchencoding,
   title={The calculi of lambda-conversion},
+  volume={6},
+  booktitle={Annals of Mathematics Studies},
   author={Church, Alonzo},
-  number={6},
   year={1941},
   publisher={Princeton University Press}
 }
@@ -753,11 +756,13 @@ url = {http://bentnib.org/posts/2011-12-14-type-checker.html}
  keywords = {dependent types, domain-specific embedded languages},
 } 
 
-@article{coquand:realizability,
+@inproceedings{coquand:realizability,
   title={{A realizability interpretation of Martin-L{\"o}f’s type theory}},
   author={Coquand, Catarina},
-  journal={Twenty-Five Years of Constructive Type Theory},
-  year={1998}
+  booktitle={Twenty-Five Years of Constructive Type Theory. Proceedings of a Congress Held in Venice},
+  address={Oxford},
+  year={1998},
+  publisher={Clarendon Press}
 }
 
 @inproceedings{indind,
