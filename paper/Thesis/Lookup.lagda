@@ -665,7 +665,7 @@ injection, but not if it results in a right injection.
   (\Fun{splitΣ}, \Fun{splitσ}, and \Fun{splitδ})
   used in \refsec{lookup} and \refsec{lookups}.
   The helpers are all just shallow wrappers around the
-  \Fun{splitFin} function, defined in \refsec{split}.}
+  \Fun{splitFin}~function (\refsec{split}).}
 \label{fig:split}
 \end{figure}
 
@@ -850,10 +850,10 @@ at position 10 is the string \Str{"x"}.
 \caption{The inductive-recursive component of the
   length-1 vector of pairs of strings
   \texttt{[("b", "y")]}, as a closed algebraic type.
-  Recall that indexed vectors are encoded as a dependent pair,
-  where the first component is an inductive-recursive value and the
-  second component is a length constraint. This figure depicts the
-  first component of the vector.}
+  This figure depicts the inductive-recursive
+  first component of the vector
+  encoded as a dependent pair (the second component
+  is the length constraint).}
 \label{fig:vec21}
 \end{figure}
 
