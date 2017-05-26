@@ -395,8 +395,8 @@ level. This resulted in needing to inadequately define certain types
 at one level higher in the hierarchy, so that they may be defined in
 terms of the lifting fixpoint \Con{`μ₁'}.
 
-Our novel solution to this problem appears in \refchap{hier}, where
-we add a non-lifting fixpoint \Con{`μ₁}, whose argument is a
+My (i.e., Diehl's) novel solution to this problem appears in \refchap{hier}, where
+I add a non-lifting fixpoint \Con{`μ₁}, whose argument is a
 \textit{mutually} defined \Data{DescForm}. Hence, the novelty of
 \refchap{hier} is combining the
 idea of mutually defined code types
