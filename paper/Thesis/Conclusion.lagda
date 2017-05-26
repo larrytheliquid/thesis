@@ -170,13 +170,26 @@ description-based (\Data{Desc}) encodings.
 
 Al-Sibahi~\cite{alsibahi:masters} shows how to efficiently implement
 traditional generic programming over a
-(description-based) open algebraic universe of indexed types.
+(description-based) open algebraic
+universe of non-infinitary indexed types.\footnote{
+  Al-Sibani also demonstrates a form of fully generic
+  programming by writing functions like a
+  generic pretty printer (\Fun{gshow}). Rather than closing the
+  universe of descriptions, he adds extra arguments that
+  constrain non-inductive constructor arguments
+  (inspired by type class constraints). Unlike fully generic
+  programming over a closed universe, custom constraints must be
+  defined for each fully generic function.
+}
 He uses partial evaluation to remove most of the overhead associated
 with encoding datatypes as fixpoints of functor descriptions.
 It would be interesting to explore
 extending Al-Sibahi's work to fully generic programming
 over a closed universe, to see if any complications arise in the
-closed setting.
+closed setting. We expect that his open-universe optimizations will
+continue to work in the closed-universe setting, and we hope
+that further optimizations will be possible in the closed-universe
+setting.
 
 \section{Termination of Intensional Closed Type Theory}
 
