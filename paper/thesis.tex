@@ -114,7 +114,9 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\renewcommand{\contentsname}{Table of Contents}
+\addto\captionsenglish{
+  \renewcommand{\contentsname}{Table of Contents}
+}
 
 \addtocontents{toc}{\protect\renewcommand{\protect\cftpartpresnum}{\partname\;}}
 \addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{\chaptername\;}}
@@ -306,7 +308,7 @@ welcoming a naive industry programmer.
 
 \clearpage
 \phantomsection{}
-\addcontentsline{toc}{part}{Appendix}
+\addcontentsline{toc}{part}{Appendices}
 \begin{appendices}
 \input{Thesis/Appendix}
 \end{appendices}
