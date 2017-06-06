@@ -3,6 +3,14 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@part}{\huge}{\large}{}{}
+\patchcmd{\@part}{\Huge}{\large}{}{}
+\makeatother
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \usepackage{amsmath,amsfonts,amssymb,textgreek,stmaryrd}
 \usepackage{bbm}
 \usepackage[greek,english]{babel}
