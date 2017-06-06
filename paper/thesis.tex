@@ -116,8 +116,11 @@
 
 \addto\captionsenglish{
   \renewcommand{\contentsname}{\hfill\uppercase{Table of Contents}\hfill}
+  \renewcommand{\listfigurename}{\hfill\uppercase{List of Figures}\hfill}
+  \renewcommand{\bibname}{References}
 }
 \renewcommand{\cfttoctitlefont}{\normalsize\normalfont}
+\renewcommand{\cftloftitlefont}{\normalsize\normalfont}
 
 \renewcommand{\cftpartfont}{\normalsize\bfseries}
 \renewcommand{\cftpartpagefont}{\normalsize\bfseries}
@@ -296,7 +299,7 @@ welcoming a naive industry programmer.
 \addtocontents{toc}{\protect\renewcommand{\protect\cftchappresnum}{}}
 \clearpage
 \phantomsection{}
-\addcontentsline{toc}{part}{Bibliography}
+\addcontentsline{toc}{part}{References}
 \bibliographystyle{plainnat}
 \bibliography{thesis}
 
