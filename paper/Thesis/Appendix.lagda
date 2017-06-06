@@ -210,7 +210,7 @@ module ClosedHier where
   `μ₂ D = μ₂ ⟪ _ / D ⟫
 \end{code}}
 
-\chapter{Internalized Signatures of Closed Constructors}\label{apen:intern}
+\chapter{Internalized Constructor Signatures}\label{apen:intern}
 
 \AgdaHide{
 \begin{code}
