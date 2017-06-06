@@ -256,6 +256,44 @@ welcoming a naive industry programmer.
 \tablespagefalse
 %% \figurespagefalse
 \afterpreface
+
+\prefacesection{Color Conventions}
+
+This dissertation can be read in black and white, but it benefits from
+being read in color. The main programming language used in this
+dissertation is Agda, which is dependently typed. Agda does not use
+any syntactic conventions, like capitalization,
+to distinguish identifiers of various program elements,
+like datatypes, definitions, and constructors (this is partially due
+to the fact most program elements can be legally used at both the
+\textit{type} and \textit{value} levels of the dependently typed
+language).
+
+Knowing which program element an identifier stands for
+depends on the \textit{environment}. In other words, readers of the
+black and white version of the dissertation can check previous definitions to
+see what an identifier was declared as, in order to understand a
+particular piece of code. Readers of the colored version of the
+dissertation can understand a piece of code by being aware of color
+conventions (described below), without needing to consult previous
+definitions of identifiers. The Agda system keeps track of what
+identifiers were declared as in the environment, allowing the
+appropriate color to be emitted when displaying syntax highlighted
+code (because the \textit{syntax} highlighting
+depends on the environment, it may make sense to think of the output
+of Agda as \textit{semantics} highlighted code).
+
+We use the following Agda source code highlighting color conventions:
+\AgdaKeyword{Keywords} are orange,
+\AgdaComment{comments} are red (and prefixed by a dash),
+\AgdaString{strings} are red (and enclosed in quotes),
+\AgdaData{datatypes} are dark blue,
+\AgdaFun{definitions} are light blue,
+\AgdaCon{constructors} are green,
+\AgdaField{record projections} are pink,
+and \AgdaVar{variables} are purple.
+\newpage
+
 \body
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
